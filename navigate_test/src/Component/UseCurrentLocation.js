@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const UseCurrentLocation = () => {
+const UseCurrentLocation = ({ setLat, setLon, setTime }) => {
   const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
 
@@ -10,11 +10,12 @@ const UseCurrentLocation = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            console.log(position);
             const { latitude, longitude } = position.coords;
+            // console.log(position.timestamp);
             setLocation({ latitude, longitude });
-            console.log(latitude);
-            console.log(longitude);
+            setLat(latitude);
+            setLon(longitude);
+            setTime(position.timestamp);
           },
           (error) => {
             setError(error.message);
@@ -26,11 +27,11 @@ const UseCurrentLocation = () => {
     };
 
     // 일정 간격으로 위치 정보를 업데이트하려면 아래 주석 해제
-    const locationInterval = setInterval(getLocation, 1000);
+    const locationInterval = setInterval(getLocation, 500);
 
     // 컴포넌트가 언마운트될 때 clearInterval을 호출하여 간격으로 위치 정보를 업데이트하는 것을 중지
     return () => {
-      clearInterval(locationInterval);
+      // clearInterval(locationInterval);
     };
 
     // [] 안에 있는 값이 변경될 때마다 useEffect가 실행됩니다.
