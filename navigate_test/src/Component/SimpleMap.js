@@ -10,8 +10,8 @@ const SimpleMap = ({ lat, lon, time }) => {
     console.log(lat);
     console.log(lon);
     if (map !== null) {
-      // map._status.center._lat = lat;
-      // map._status.center._lng = lon;
+      map._status.center._lat = lat;
+      map._status.center._lng = lon;
       console.log(map._status.center._lat);
       console.log(map._status.center._lng);
     } else {
@@ -25,7 +25,7 @@ const SimpleMap = ({ lat, lon, time }) => {
     map = new window.Tmapv2.Map("map_div", {
       center: new window.Tmapv2.LatLng(lat, lon),
       width: "100%",
-      height: "400px",
+      height: "500px",
       zoom: 19,
       zoomControl: true,
       scrollwheel: true,
