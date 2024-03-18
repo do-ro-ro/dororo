@@ -12,6 +12,10 @@ function CourseDetailPage() {
     console.log(lon);
     // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때 한 번만 실행됩니다.
 
+    const handleCustomClick = () => {
+        navigate(`/course/${courseId}/custom`);
+    };
+
     return (
         <>
             <p>코스 조회 페이지</p>
@@ -22,6 +26,7 @@ function CourseDetailPage() {
             <button onClick={() => navigate(`/course/${courseId}/drive`)}>
                 주행하기
             </button>
+            <button onClick={handleCustomClick}>코스 커스텀</button>
         </>
     );
 }
