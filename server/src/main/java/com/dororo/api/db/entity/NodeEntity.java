@@ -1,6 +1,6 @@
 package com.dororo.api.db.entity;
 
-import org.springframework.data.geo.Point;
+import org.locationtech.jts.geom.Point;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

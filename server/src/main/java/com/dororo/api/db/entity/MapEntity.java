@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-//import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LineString;
 
 @Entity
 @Table(name = "maps")
@@ -23,14 +23,13 @@ public class MapEntity {
     private String mapName;
     private String mapImage;
     @Column(columnDefinition = "geometry(LineString, 4326)")
-    //private LineString mapRouteAxis;
+    private LineString mapRouteAxis;
     @Enumerated(EnumType.STRING)
     private Maptype mapType = Maptype.DEFAULT;
     private Float mapDistance;
     private Integer orginalMapId;
     @ColumnDefault("false")
     private Boolean mapCompletion;
-
 
     public enum Maptype{
         DEFAULT, CUMTOM, SCRAP

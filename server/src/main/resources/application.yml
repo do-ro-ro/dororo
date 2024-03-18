@@ -13,6 +13,9 @@ spring :
             jdbc:
                 lob:
                     non_contextual_creation: true
+        database: postgresql
+        database-platform: org.hibernate.spatial.dialect.postgis.PostgisPG95Dialect
+
     profiles:
         active: ${profile}
     output:
