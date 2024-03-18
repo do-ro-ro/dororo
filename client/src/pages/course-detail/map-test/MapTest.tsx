@@ -1,46 +1,55 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-const MapTest = ({ lat, lon }) => {
-    const [map, setMap] = useState(null);
-    const [marker, setMarker] = useState(null);
-    // Tmap 스크립트를 동적으로 로드하는 함수
+interface MapProps {
+    lat: number;
+    lon: number;
+}
 
-    // console.log(lat, lon);
+interface Tmapv2 {
+    Map: any; // Map의 타입을 정확히 알 수 없는 경우에는 any를 사용합니다.
+    Marker: any; // Marker의 타입도 마찬가지로 any를 사용합니다.
+    LatLng: any;
+    // 필요한 다른 메서드나 프로퍼티들도 동일한 방식으로 선언해줍니다.
+}
+
+declare global {
+    interface Window {
+        Tmapv2: Tmapv2;
+    }
+}
+
+const MapTest: React.FC<MapProps> = ({ lat, lon }) => {
+    const [map, setMap] = useState<any>(null); // 여기서 any를 사용하는 것은 Tmap 스크립트의 타입을 정확히 알 수 없기 때문입니다.
+    const [marker, setMarker] = useState<any>(null); // 마찬가지로 any를 사용합니다.
+
     useEffect(() => {
         if (map !== null) {
-            // console.log(map._status.center);
-            // map._status.center._lat = lat;
-            // map._status.center._lng = lon;
-            // console.log(map._status.center);
             map.setCenter(new window.Tmapv2.LatLng(lat, lon));
 
             if (marker) {
                 marker.setPosition(new window.Tmapv2.LatLng(lat, lon));
             } else {
-                // 새 마커 생성 및 지도에 추가
                 const newMarker = new window.Tmapv2.Marker({
                     position: new window.Tmapv2.LatLng(lat, lon),
                     map: map,
                 });
-                setMarker(newMarker); // 마커 상태 업데이트
+                setMarker(newMarker);
             }
         } else {
             initTmap();
-            console.log(map);
         }
-    }, [lat, lon, map]);
+    }, [lat, lon, map, marker]);
+
     const initTmap = () => {
-        // if (document.getElementById("map_div").querySelector(".tmap")) {
-        //     return; // 이미 지도가 있으면 초기화하지 않음
-        // }
-        const newMap = new window.Tmapv2.Map("map_div", {
+        const newMap = new window.Tmapv2.Map('map_div', {
             center: new window.Tmapv2.LatLng(lat, lon),
-            width: "100%",
-            height: "915px",
+            width: '100%',
+            height: '915px',
             zoom: 19,
         });
         setMap(newMap);
     };
+
     return (
         <div>
             <div id="map_div" />
