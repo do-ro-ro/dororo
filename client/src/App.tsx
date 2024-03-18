@@ -22,26 +22,26 @@ function App() {
                     />
                     <Route
                         // path={`/course/:courseId/*`} 이게 나중에 쓸 것. 아래는 임시
-                        path="/course"
+                        path="/course/:courseId"
                         element={<CourseDetailPage />}
-                    >
-                        <Route path="custom" element={<CourseCustomPage />} />
-                        <Route path="drive" element={<CourseDrivePage />} />
-                    </Route>
+                    />
                     <Route
-                        path={`/community/*`}
-                        element={<CommunityListPage />}
-                    >
-                        <Route
-                            path=":articleId"
-                            element={<CommunityDetailPage />}
-                        />
-                    </Route>
+                        path="/course/:courseId/custom"
+                        element={<CourseCustomPage />}
+                    />
+                    <Route
+                        path="/course/:courseId/drive"
+                        element={<CourseDrivePage />}
+                    />
+                    <Route path="/community" element={<CommunityListPage />} />
+                    <Route
+                        path="/community/:articleId"
+                        element={<CommunityDetailPage />}
+                    />
                     <Route path="/myPage/:userId" element={<MyPage />} />
                 </Routes>
             </Suspense>
         </>
     );
 }
-
 export default App;
