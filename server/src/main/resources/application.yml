@@ -1,0 +1,27 @@
+spring :
+    profiles:
+        active: ${profile}
+    output:
+        ansi:
+            enabled: ALWAYS
+
+#logging
+logging:
+    level:
+        root: info
+        org:
+            hibernate:
+                orm:
+                    jdbc:
+                        bind: trace
+    pattern:
+        file: "%d %-5level [%thread] %logger : %msg%n"
+
+#swagger
+springdoc:
+    api-docs:
+        enabled: true
+    swagger-ui:
+        enabled: true
+
+
