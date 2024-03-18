@@ -4,8 +4,8 @@ import UseCurrentLocation from "./map-test/UseCurrentLocation";
 import MapTest from "./map-test/MapTest";
 
 function CourseDetailPage() {
-    const [lat, setLat] = useState(35.309216);
-    const [lon, setLon] = useState(129.0633216);
+    const [lat, setLat] = useState<number>(35.309216);
+    const [lon, setLon] = useState<number>(129.0633216);
     const { courseId } = useParams();
     const navigate = useNavigate();
     console.log(lat);

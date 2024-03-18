@@ -6,10 +6,9 @@ interface MapProps {
 }
 
 interface Tmapv2 {
-    Map: any; // Map의 타입을 정확히 알 수 없는 경우에는 any를 사용합니다.
-    Marker: any; // Marker의 타입도 마찬가지로 any를 사용합니다.
+    Map: any;
+    Marker: any;
     LatLng: any;
-    // 필요한 다른 메서드나 프로퍼티들도 동일한 방식으로 선언해줍니다.
 }
 
 declare global {
@@ -19,24 +18,22 @@ declare global {
 }
 
 const MapTest: React.FC<MapProps> = ({ lat, lon }) => {
-    const [map, setMap] = useState<any>(null); // 여기서 any를 사용하는 것은 Tmap 스크립트의 타입을 정확히 알 수 없기 때문입니다.
-    const [marker, setMarker] = useState<any>(null); // 마찬가지로 any를 사용합니다.
+    const [map, setMap] = useState<any>(null);
+    const [marker, setMarker] = useState<any>(null);
 
     useEffect(() => {
-        if (map !== null) {
-            map.setCenter(new window.Tmapv2.LatLng(lat, lon));
-
-            if (marker) {
-                marker.setPosition(new window.Tmapv2.LatLng(lat, lon));
-            } else {
+        if (map === null) {
+            initTmap();
+        } else {
+            if (marker === null) {
                 const newMarker = new window.Tmapv2.Marker({
                     position: new window.Tmapv2.LatLng(lat, lon),
                     map: map,
                 });
                 setMarker(newMarker);
+            } else {
+                marker.setPosition(new window.Tmapv2.LatLng(lat, lon));
             }
-        } else {
-            initTmap();
         }
     }, [lat, lon, map, marker]);
 
