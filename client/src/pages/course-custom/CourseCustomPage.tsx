@@ -6,7 +6,7 @@ import { useState } from "react";
 function CourseCustomPage() {
     const dummyMap = { map_name: "테스트코스" };
     const [lat, setLat] = useState(35.309216);
-    const [lon, setLon] = useState(129.0733216);
+    const [lon, setLon] = useState(129.033216);
     return (
         <>
             <Box
