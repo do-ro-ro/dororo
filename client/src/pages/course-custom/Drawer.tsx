@@ -27,7 +27,7 @@ const Puller = styled("div")(({ theme }) => ({
     left: "calc(50% - 15px)",
 }));
 
-export default function Drawer() {
+function Drawer() {
     const [open, setOpen] = React.useState(false);
 
     const toggleDrawer = (newOpen: boolean) => () => {
@@ -202,3 +202,5 @@ export default function Drawer() {
         </>
     );
 }
+
+export default Drawer;
