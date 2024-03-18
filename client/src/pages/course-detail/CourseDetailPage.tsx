@@ -12,10 +12,9 @@ function CourseDetailPage() {
     console.log(lon);
     // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때 한 번만 실행됩니다.
 
-    // courseId가 null인 경우를 처리
-    if (!courseId) {
-        return <p>코스 ID를 찾을 수 없습니다.</p>;
-    }
+    const handleCustomClick = () => {
+        navigate(`/course/${courseId}/custom`);
+    };
 
     return (
         <>
@@ -27,6 +26,7 @@ function CourseDetailPage() {
             <button onClick={() => navigate(`/course/${courseId}/drive`)}>
                 주행하기
             </button>
+            <button onClick={handleCustomClick}>코스 커스텀</button>
         </>
     );
 }
