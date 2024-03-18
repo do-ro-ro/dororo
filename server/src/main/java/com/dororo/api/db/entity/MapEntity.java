@@ -9,7 +9,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.locationtech.jts.geom.LineString;
 
 @Entity
-@Table(name = "Maps")
+@Table(name = "maps")
 @Getter
 @Setter
 @NoArgsConstructor
