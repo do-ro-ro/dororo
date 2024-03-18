@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
-const UseCurrentLocation = ({ setLat, setLon }) => {
-    const [location, setLocation] = useState(null);
-    const [error, setError] = useState(null);
+interface UseCurrentLocationProps {
+    setLat: React.Dispatch<React.SetStateAction<number>>;
+    setLon: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const UseCurrentLocation: React.FC<UseCurrentLocationProps> = ({ setLat, setLon }) => {
+    const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        // 위치 정보를 가져오는 함수
         const getLocation = () => {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
@@ -14,8 +18,6 @@ const UseCurrentLocation = ({ setLat, setLon }) => {
                         setLocation({ latitude, longitude });
                         setLat(latitude);
                         setLon(longitude);
-                        // console.log(latitude);
-                        // console.log(longitude);
                     },
                     (error) => {
                         setError(error.message);
@@ -26,16 +28,13 @@ const UseCurrentLocation = ({ setLat, setLon }) => {
             }
         };
 
-        // 일정 간격으로 위치 정보를 업데이트하려면 아래 주석 해제
         const locationInterval = setInterval(getLocation, 100);
 
-        // 컴포넌트가 언마운트될 때 clearInterval을 호출하여 간격으로 위치 정보를 업데이트하는 것을 중지
         return () => {
-            // clearInterval(locationInterval);
+            clearInterval(locationInterval);
         };
 
-        // [] 안에 있는 값이 변경될 때마다 useEffect가 실행됩니다.
-    }, []);
+    }, [setLat, setLon]);
 
     return (
         <div>
