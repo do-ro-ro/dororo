@@ -1,10 +1,11 @@
 import LoginButton from "./LoginButton";
+import logoWhite from "../../assets/logo_white.png";
 
 function LandingPage() {
     return (
-        // Tailwind CSS 클래스를 사용하여 최상위 div에 배경색, 너비, 최소 높이 설정
         <div className="bg-dororoBlue w-full h-screen flex flex-col justify-center items-center">
-            <p>랜딩 페이지</p>
+            <img src={logoWhite} alt="로고" className="p-10" />
+            <p></p>
             <LoginButton></LoginButton>
         </div>
     );
