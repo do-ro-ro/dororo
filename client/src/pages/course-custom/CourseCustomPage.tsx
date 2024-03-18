@@ -1,8 +1,12 @@
 import { Box } from "@mui/material";
 import Drawer from "./Drawer";
+import Map from "./Map";
+import { useState } from "react";
 
 function CourseCustomPage() {
     const dummyMap = { map_name: "테스트코스" };
+    const [lat] = useState(35.309216);
+    const [lon] = useState(129.033216);
     return (
         <>
             <Box
@@ -14,7 +18,7 @@ function CourseCustomPage() {
             >
                 {dummyMap.map_name} 수정하기
             </Box>
-            <div>지도 들어갈 영역</div>
+            <Map lat={lat} lon={lon} />
             <Drawer />
             <Box>푸터바</Box>
         </>
