@@ -87,8 +87,8 @@ export default function Drawer() {
                                 width={"80vw"}
                                 bgcolor={"steelblue"}
                                 textAlign={"center"}
-                                py={"4vw"}
-                                my={"4vw"}
+                                py={"2vh"}
+                                my={"2vh"}
                             >
                                 출발점
                             </Box>
@@ -97,11 +97,11 @@ export default function Drawer() {
                             </Fab>
                             <Stack direction={"row"} alignItems={"center"}>
                                 <Box
-                                    width={"60vw"}
+                                    width={"70vw"}
                                     bgcolor={"steelblue"}
                                     textAlign={"center"}
-                                    py={"4vw"}
-                                    my={"4vw"}
+                                    py={"2vh"}
+                                    my={"2vh"}
                                     mx="4vw"
                                 >
                                     노드1
@@ -115,11 +115,11 @@ export default function Drawer() {
                             </Fab>
                             <Stack direction={"row"} alignItems={"center"}>
                                 <Box
-                                    width={"60vw"}
+                                    width={"70vw"}
                                     bgcolor={"steelblue"}
                                     textAlign={"center"}
-                                    py={"4vw"}
-                                    my={"4vw"}
+                                    py={"2vh"}
+                                    my={"2vh"}
                                     mx="4vw"
                                 >
                                     노드2
@@ -133,11 +133,11 @@ export default function Drawer() {
                             </Fab>
                             <Stack direction={"row"} alignItems={"center"}>
                                 <Box
-                                    width={"60vw"}
+                                    width={"70vw"}
                                     bgcolor={"steelblue"}
                                     textAlign={"center"}
-                                    py={"4vw"}
-                                    my={"4vw"}
+                                    py={"2vh"}
+                                    my={"2vh"}
                                     mx="4vw"
                                 >
                                     노드3
@@ -151,11 +151,11 @@ export default function Drawer() {
                             </Fab>
                             <Stack direction={"row"} alignItems={"center"}>
                                 <Box
-                                    width={"60vw"}
+                                    width={"70vw"}
                                     bgcolor={"steelblue"}
                                     textAlign={"center"}
-                                    py={"4vw"}
-                                    my={"4vw"}
+                                    py={"2vh"}
+                                    my={"2vh"}
                                     mx="4vw"
                                 >
                                     노드4
@@ -169,11 +169,11 @@ export default function Drawer() {
                             </Fab>
                             <Stack direction={"row"} alignItems={"center"}>
                                 <Box
-                                    width={"60vw"}
+                                    width={"70vw"}
                                     bgcolor={"steelblue"}
                                     textAlign={"center"}
-                                    py={"4vw"}
-                                    my={"4vw"}
+                                    py={"2vh"}
+                                    my={"2vh"}
                                     mx="4vw"
                                 >
                                     노드5
@@ -189,8 +189,8 @@ export default function Drawer() {
                                 width={"80vw"}
                                 bgcolor={"steelblue"}
                                 textAlign={"center"}
-                                py={"4vw"}
-                                my={"4vw"}
+                                py={"2vh"}
+                                my={"2vh"}
                             >
                                 도착점
                             </Box>
