@@ -21,7 +21,8 @@ function App() {
                         element={<RecommendedCoursePage />}
                     />
                     <Route
-                        path={`/course/:courseId/*`}
+                        // path={`/course/:courseId/*`} 이게 나중에 쓸 것. 아래는 임시
+                        path="/course"
                         element={<CourseDetailPage />}
                     >
                         <Route path="custom" element={<CourseCustomPage />} />
