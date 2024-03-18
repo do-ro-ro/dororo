@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-interface Coordinates {
-    latitude: number;
-    longitude: number;
+interface UseCurrentLocationProps {
+    setLat: React.Dispatch<React.SetStateAction<number>>;
+    setLon: React.Dispatch<React.SetStateAction<number>>;
 }
 
-interface Props {
-    setLat: (lat: number) => void;
-    setLon: (lon: number) => void;
-}
-
-const UseCurrentLocation: React.FC<Props> = ({ setLat, setLon }) => {
-    const [location, setLocation] = useState<Coordinates>({ latitude: 0, longitude: 0 });
-    const [error, setError] = useState<string>("");
+const UseCurrentLocation: React.FC<UseCurrentLocationProps> = ({ setLat, setLon }) => {
+    const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const getLocation = () => {
@@ -29,11 +24,16 @@ const UseCurrentLocation: React.FC<Props> = ({ setLat, setLon }) => {
                     }
                 );
             } else {
-                setError("Geolocation is not supported by this browser.");
+                setError('Geolocation is not supported by this browser.');
             }
         };
 
-        getLocation();
+        const locationInterval = setInterval(getLocation, 100);
+
+        return () => {
+            clearInterval(locationInterval);
+        };
+
     }, [setLat, setLon]);
 
     return (

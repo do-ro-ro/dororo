@@ -1,51 +1,58 @@
 import React, { useEffect, useState } from 'react';
 
-interface MapProps {
+// Window 객체에 대한 TypeScript 선언
+declare global {
+    interface Window {
+        Tmapv2: {
+            Map: any; // Map 클래스의 타입
+            Marker: any; // Marker 클래스의 타입
+            LatLng: any; // LatLng 클래스의 타입
+        };
+    }
+}
+
+interface MapTestProps {
     lat: number;
     lon: number;
 }
 
-interface Tmapv2 {
-    Map: any;
-    Marker: any;
-    LatLng: any;
-}
-
-declare global {
-    interface Window {
-        Tmapv2: Tmapv2;
-    }
-}
-
-const MapTest: React.FC<MapProps> = ({ lat, lon }) => {
-    const [map, setMap] = useState<any>(null);
-    const [marker, setMarker] = useState<any>(null);
+const MapTest: React.FC<MapTestProps> = ({ lat, lon }) => {
+    const [map, setMap] = useState<Window['Tmapv2']['Map'] | null>(null);
+    const [marker, setMarker] = useState<Window['Tmapv2']['Marker'] | null>(null);
 
     useEffect(() => {
-        if (map === null) {
-            initTmap();
-        } else {
-            if (marker === null) {
-                const newMarker = new window.Tmapv2.Marker({
-                    position: new window.Tmapv2.LatLng(lat, lon),
-                    map: map,
-                });
-                setMarker(newMarker);
-            } else {
-                marker.setPosition(new window.Tmapv2.LatLng(lat, lon));
-            }
-        }
-    }, [lat, lon, map, marker]);
+        const initTmap = () => {
+            const newMap = new window.Tmapv2.Map('map_div', {
+                center: new window.Tmapv2.LatLng(lat, lon),
+                width: '100%',
+                height: '915px',
+                zoom: 19,
+            });
+            setMap(newMap);
 
-    const initTmap = () => {
-        const newMap = new window.Tmapv2.Map('map_div', {
-            center: new window.Tmapv2.LatLng(lat, lon),
-            width: '100%',
-            height: '915px',
-            zoom: 19,
-        });
-        setMap(newMap);
-    };
+            // 가운데에 마커 추가
+            const centerMarker = new window.Tmapv2.Marker({
+                position: new window.Tmapv2.LatLng(lat, lon),
+                map: newMap,
+            });
+            setMarker(centerMarker);
+        };
+
+        const updateMap = () => {
+            if (map !== null) {
+                map.setCenter(new window.Tmapv2.LatLng(lat, lon));
+
+                if (marker !== null) {
+                    marker.setPosition(new window.Tmapv2.LatLng(lat, lon));
+                }
+            } else {
+                initTmap();
+            }
+        };
+
+        updateMap();
+
+    }, [lat, lon, map, marker]);
 
     return (
         <div>
