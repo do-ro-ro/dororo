@@ -1,5 +1,8 @@
 package com.dororo.api.db.entity;
 
+
+import java.sql.Timestamp;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,7 +28,7 @@ public class PostEntity {
 	private Integer userId;
 	private String postTitle;
 	private String postContent;
-	private String createdAt;
-	private String updatedAt;
+	private Timestamp createdAt;
+	private Timestamp updatedAt;
 	private Integer scrapCount;
 }

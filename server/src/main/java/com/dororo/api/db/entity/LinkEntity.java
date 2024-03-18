@@ -28,4 +28,3 @@ public class LinkEntity {
 	private Integer traffic; //교통량
 	private Integer accidentVolume; //사고량
 }
-
