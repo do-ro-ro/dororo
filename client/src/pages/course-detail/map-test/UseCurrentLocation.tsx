@@ -10,9 +10,11 @@ const UseCurrentLocation: React.FC<UseCurrentLocationProps> = ({ setLat, setLon 
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        let watchId: number | null = null;
+
         const getLocation = () => {
             if (navigator.geolocation) {
-                navigator.geolocation.watchPosition(
+                watchId = navigator.geolocation.watchPosition(
                     (position) => {
                         const { latitude, longitude } = position.coords;
                         setLocation({ latitude, longitude });
@@ -28,10 +30,12 @@ const UseCurrentLocation: React.FC<UseCurrentLocationProps> = ({ setLat, setLon 
             }
         };
 
-        const locationInterval = setInterval(getLocation, 500);
+        getLocation();
 
         return () => {
-            clearInterval(locationInterval);
+            if (watchId) {
+                navigator.geolocation.clearWatch(watchId);
+            }
         };
 
     }, [setLat, setLon]);
