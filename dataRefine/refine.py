@@ -37,6 +37,8 @@ def get_accident():
                 print(f"The file {file_name} does not contain 'eventType' column.")
         print("개수: " + str(len(dataframes_list)))
 
+    return dataframes_list
+
 def get_traffic():   # 교통량은 api를 통해 받아옴
     api_URL = "https://openapi.its.go.kr:9443/vdsInfo?apiKey=" + API_KEY + "&getType=json"
     res = requests.get(api_URL)
@@ -45,10 +47,14 @@ def get_traffic():   # 교통량은 api를 통해 받아옴
     for data in data_list:
         print(data)
 
-def main():
-    # getAccident()
-    # getTraffic()
+    return data_list
+
+def do_insert(accident_data_list: list, traffic_data_list: list):    # POSTGRES_OBJECT를 이용해서 db 데이터 수정하는 로직
     pass
+
+def main():
+    accident_data_list = get_accident()
+    traffic_data_list = get_traffic()
 
 if __name__ == "__main__":
     main()
