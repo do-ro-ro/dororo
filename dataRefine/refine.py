@@ -5,7 +5,6 @@ import configReader
 
 crInstacne = configReader.PropertiesObject()
 apiKey = crInstacne.getProperty("KEY", "apiKey")
-print(apiKey)
 
 def getAccident():
     # for data in dataframes_list:
@@ -49,8 +48,6 @@ def getTraffic():
     data_list = parsedRes["body"]["items"]
     for data in data_list:
         print(data)
-    
-
 
 def main():
     # getAccident()
