@@ -1,5 +1,7 @@
 function CourseDrivePage() {
-    return <></>;
+    return <>
+    
+    </>;
 }
 
 export default CourseDrivePage;
