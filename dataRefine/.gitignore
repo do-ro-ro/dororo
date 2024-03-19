@@ -1,0 +1,5 @@
+*.log
+*.xml
+*.iml
+node_modules/
+dolbal_data/
