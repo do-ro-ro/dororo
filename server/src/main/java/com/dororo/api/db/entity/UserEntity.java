@@ -20,8 +20,8 @@ public class UserEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer userId;
-
 	private String name;
 	private String nickname;
 	private String profileImage;
+	private String uniqueId;
 }
