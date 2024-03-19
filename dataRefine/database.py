@@ -14,13 +14,12 @@ class PostGresObject():
         self.cursor = self.db.cursor()
 
     def __del__(self):
-        self.db.close()
         self.cursor.close()
+        self.db.close()
 
     def execute(self, query, args={}):
         self.cursor.execute(query, args)
-        row = self.cursor.fetchall()
-        return row
+        return self.cursor.fetchall()
 
     def commit(self):
-        self.cursor.commit()
+        self.db.commit()
