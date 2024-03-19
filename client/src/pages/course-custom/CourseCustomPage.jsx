@@ -20,8 +20,10 @@ function CourseCustomPage() {
                 {dummyMap.map_name} 수정하기
             </Box>
             <Map lat={lat} lon={lon} />
-            <Drawer />
-            <FooterBar />
+            <Box position={"absolute"} bottom={"20vw"} mb={20}>
+                <Drawer />
+            </Box>
+            {/* <FooterBar /> */}
         </>
     );
 }
