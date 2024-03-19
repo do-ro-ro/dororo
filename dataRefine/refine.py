@@ -1,9 +1,11 @@
 import os
 import pandas as pd
 import requests
-import json
+import configReader
 
-apiKey = "047a54c24a634593b2975b67ec7819b2"
+crInstacne = configReader.PropertiesObject()
+apiKey = crInstacne.getProperty("KEY", "apiKey")
+print(apiKey)
 
 def getAccident():
     # for data in dataframes_list:
@@ -52,7 +54,8 @@ def getTraffic():
 
 def main():
     # getAccident()
-    getTraffic()
+    # getTraffic()
+    pass
 
 if __name__ == "__main__":
     main()
