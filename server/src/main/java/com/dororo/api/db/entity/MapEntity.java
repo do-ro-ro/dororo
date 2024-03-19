@@ -19,7 +19,9 @@ public class MapEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer mapId;
-    private Integer userId;
+    @ManyToOne(targetEntity = UserEntity.class)
+    @JoinColumn(name="userId")
+    private UserEntity userId;
     private String mapName;
     private String mapImage;
     @Column(columnDefinition = "geometry(LineString, 4326)")
@@ -30,6 +32,8 @@ public class MapEntity {
     private Integer orginalMapId;
     @ColumnDefault("false")
     private Boolean mapCompletion;
+    @OneToOne(mappedBy = "mapId")
+    private PostEntity post;
 
     public enum Maptype{
         DEFAULT, CUMTOM, SCRAP
