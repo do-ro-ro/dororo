@@ -1,4 +1,4 @@
-import { Box, Button, Theme, makeStyles } from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 function FooterBar() {
     return (

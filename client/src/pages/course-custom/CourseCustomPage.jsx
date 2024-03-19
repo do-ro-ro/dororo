@@ -21,7 +21,7 @@ function CourseCustomPage() {
             </Box>
             <Map lat={lat} lon={lon} />
             <Drawer />
-            {/* <FooterBar /> */}
+            <FooterBar />
         </>
     );
 }

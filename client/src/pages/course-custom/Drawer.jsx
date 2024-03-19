@@ -10,6 +10,8 @@ import Typography from "@mui/material/Typography";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { Box, Fab, Stack } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const drawerBleeding = 56;
 
@@ -27,10 +29,10 @@ const Puller = styled("div")(({ theme }) => ({
     left: "calc(50% - 45px)",
 }));
 
-function Drawer() {
-    const [open, setOpen] = React.useState(false);
+function Drawer(props) {
+    const [open, setOpen] = useState(false);
 
-    const toggleDrawer = function () {
+    const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
     };
 
