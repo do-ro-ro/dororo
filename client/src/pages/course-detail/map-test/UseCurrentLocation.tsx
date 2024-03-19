@@ -12,7 +12,7 @@ const UseCurrentLocation: React.FC<UseCurrentLocationProps> = ({ setLat, setLon 
     useEffect(() => {
         const getLocation = () => {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
+                navigator.geolocation.watchPosition(
                     (position) => {
                         const { latitude, longitude } = position.coords;
                         setLocation({ latitude, longitude });
@@ -28,7 +28,7 @@ const UseCurrentLocation: React.FC<UseCurrentLocationProps> = ({ setLat, setLon 
             }
         };
 
-        const locationInterval = setInterval(getLocation, 100);
+        const locationInterval = setInterval(getLocation, 500);
 
         return () => {
             clearInterval(locationInterval);

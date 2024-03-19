@@ -29,19 +29,18 @@ const MapTest: React.FC<MapTestProps> = ({ lat, lon }) => {
                 zoom: 19,
             });
             setMap(newMap);
-
-            // 가운데에 마커 추가
-            const centerMarker = new window.Tmapv2.Marker({
+            
+            const newMarker = new window.Tmapv2.Marker({
                 position: new window.Tmapv2.LatLng(lat, lon),
                 map: newMap,
             });
-            setMarker(centerMarker);
+            setMarker(newMarker);
         };
-
+    
         const updateMap = () => {
             if (map !== null) {
                 map.setCenter(new window.Tmapv2.LatLng(lat, lon));
-
+    
                 if (marker !== null) {
                     marker.setPosition(new window.Tmapv2.LatLng(lat, lon));
                 }
@@ -49,9 +48,9 @@ const MapTest: React.FC<MapTestProps> = ({ lat, lon }) => {
                 initTmap();
             }
         };
-
+    
         updateMap();
-
+    
     }, [lat, lon, map, marker]);
 
     return (
