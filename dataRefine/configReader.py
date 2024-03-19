@@ -5,5 +5,5 @@ class PropertiesObject():
         self.properties = cp.ConfigParser()
         self.properties.read("config.ini")
 
-    def getProperty(self, section, key):
+    def get_property(self, section, key):
         return self.properties.get(section, key)
