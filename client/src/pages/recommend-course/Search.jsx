@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import SearchIcon from "@mui/icons-material/Search";
+import { Box } from "@mui/system";
 
 const Search = ({ setLat, setLon }) => {
     const [keyword, setKeyword] = useState("");
@@ -44,6 +48,7 @@ const Search = ({ setLat, setLon }) => {
     const handleInputChange = (e) => {
         setKeyword(e.target.value);
         setSearchTerm(e.target.value);
+        setShowPlacesList(true);
     };
     // 항목 클릭 시 실행되는 함수
     const handleItemClick = (place) => {
@@ -91,13 +96,35 @@ const Search = ({ setLat, setLon }) => {
                             // searchPlaces();
                         }}
                     >
-                        키워드 :
-                        <input
-                            type="text"
-                            value={keyword}
-                            onChange={handleInputChange}
-                            size="15"
-                        />
+                        <div>
+                            <TextField
+                                id="search-box"
+                                label=""
+                                variant="outlined"
+                                size="medium" // 필드 크기 조절 (small 또는 medium)
+                                value={keyword}
+                                onChange={handleInputChange}
+                                fullWidth // 필드를 부모 컨테이너의 전체 너비로 설정
+                                sx={{
+                                    border: 2,
+                                    borderColor: "#6389BE",
+                                    borderRadius: 1,
+
+                                    mx: 1,
+                                    my: 1,
+                                    width: 95 / 100,
+                                }}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <SearchIcon
+                                                sx={{ color: "#6389BE" }}
+                                            />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </div>
                         {/* <button type="submit">검색하기</button> */}
                     </form>
                 </div>
