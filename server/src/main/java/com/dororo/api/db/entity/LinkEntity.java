@@ -15,6 +15,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Setter
 @Table(name = "links")	// schema 설정 따로 x, public schema 내에 생성됨.
 public class LinkEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer linkGid;
@@ -30,4 +31,5 @@ public class LinkEntity {
 	@Column(nullable = false)
 	@ColumnDefault("0")	// 새로운 링크가 추가될 때를 대비, default 값을 0으로 설정
 	private Integer accidentVolume; // 사고량
+
 }
