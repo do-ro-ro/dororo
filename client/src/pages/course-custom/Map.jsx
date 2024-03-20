@@ -1,25 +1,35 @@
 import { Box, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-function Map({ lat, lon }) {
+function Map({ course, lat, lon }) {
     const [map, setMap] = useState(null);
     const [markers, setMarkers] = useState([]);
     const [courseLine, setCourseLine] = useState(null);
+    const centerPoint = {
+        lat: (course[0].lat + course[3].lat) / 2,
+        lon: (course[0].lon + course[3].lon) / 2,
+    };
 
     // 지도 초기화
     const initMap = () => {
         const newMap = new window.Tmapv2.Map("map_div", {
-            center: new window.Tmapv2.LatLng(lat, lon),
+            center: new window.Tmapv2.LatLng(centerPoint.lat, centerPoint.lon),
+
+            // center: new window.Tmapv2.LatLng(lat, lon),
+
             width: "100vw",
             height: "80vh",
             zoom: 14,
         });
+
         setMap(newMap);
 
         // 초기 경로와 마커 생성
         updateMap(newMap, [
-            new window.Tmapv2.LatLng(lat, lon),
-            new window.Tmapv2.LatLng(lat + 0.01, lon + 0.01),
+            new window.Tmapv2.LatLng(course[0].lat, course[0].lon),
+            new window.Tmapv2.LatLng(course[1].lat, course[1].lon),
+            new window.Tmapv2.LatLng(course[2].lat, course[2].lon),
+            new window.Tmapv2.LatLng(course[3].lat, course[3].lon),
             // 추가 꼭지점은 여기에
         ]);
     };
@@ -36,14 +46,19 @@ function Map({ lat, lon }) {
                 map: map,
                 draggable: true,
             });
-
             // 드래그 이벤트 리스너
-            window.Tmapv2.Event.addListener(marker, "dragend", function (evt) {
-                const newPosition = evt.latLng;
-                const updatedPathPoints = [...pathPoints];
-                updatedPathPoints[index] = newPosition;
-                updateMap(map, updatedPathPoints); // 마커 이동 후 경로 업데이트
-            });
+            if (markers.length !== 0) {
+                window.Tmapv2.Event.addListener(
+                    marker,
+                    "dragend",
+                    function (evt) {
+                        const newPosition = evt.latLng;
+                        const updatedPathPoints = [...pathPoints];
+                        updatedPathPoints[index] = newPosition;
+                        updateMap(map, updatedPathPoints); // 마커 이동 후 경로 업데이트
+                    },
+                );
+            }
 
             return marker;
         });
@@ -63,8 +78,18 @@ function Map({ lat, lon }) {
     };
 
     useEffect(() => {
-        initMap();
-    }, [lat, lon]); // lat, lon이 변경되면 지도를 초기화합니다.
+        if (map === null) {
+            initMap();
+        }
+    }, []);
+
+    useEffect(() => {
+        if (map === null) {
+            initMap();
+        } else {
+            updateMap(map, markers);
+        }
+    }, [course]); // lat, lon이 변경되면 지도를 초기화합니다.
 
     return (
         <>

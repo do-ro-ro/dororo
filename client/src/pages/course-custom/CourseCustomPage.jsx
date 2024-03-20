@@ -6,8 +6,14 @@ import FooterBar from "./FooterBar";
 
 function CourseCustomPage() {
     const dummyMap = { map_name: "테스트코스" };
-    const [lat] = useState(35.309216);
-    const [lon] = useState(129.033216);
+    const [lon] = useState(128.8556740624568);
+    const [lat] = useState(35.09355579715464);
+    const course = [
+        { lon: 128.855674, lat: 35.093555 },
+        { lon: 128.859205, lat: 35.093515 },
+        { lon: 128.859254, lat: 35.08902 },
+        { lon: 128.862074, lat: 35.089101 },
+    ];
     return (
         <>
             <Box
@@ -19,7 +25,7 @@ function CourseCustomPage() {
             >
                 {dummyMap.map_name} 수정하기
             </Box>
-            <Map lat={lat} lon={lon} />
+            <Map course={course} lat={lat} lon={lon} />
             <Box position={"absolute"} bottom={"20vw"} mb={20}>
                 <Drawer />
             </Box>
