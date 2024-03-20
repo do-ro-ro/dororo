@@ -4,9 +4,7 @@ import BasicNavbar from "../../components/navbar/BasicNavbar";
 function CommunityListPage() {
     return (
         <>
-            <Box>
-                <BasicNavbar />
-            </Box>
+            <Box>커뮤니티 리스트</Box>
         </>
     );
 }
