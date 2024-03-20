@@ -28,7 +28,7 @@ function Map({ course, lat, lng }) {
 
             width: "100vw",
             height: "80vh",
-            zoom: 14,
+            zoom: 15,
         });
 
         setMap(newMap);
@@ -183,7 +183,7 @@ function Map({ course, lat, lng }) {
                             const polyline = new window.Tmapv2.Polyline({
                                 path: drawInfoArr,
                                 strokeColor: "#6386BE",
-                                strokeWeight: 10,
+                                strokeWeight: 15,
                                 map: newMap,
                             });
                             console.log(polyline);
