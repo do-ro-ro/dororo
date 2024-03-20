@@ -11,6 +11,7 @@ import CommunityListPage from "./pages/community-list/CommunityListPage";
 import CommunityDetailPage from "./pages/community-detail/CommunityDetailPage";
 import MyPage from "./pages/my-page/MyPage";
 import { ThemeProvider, createTheme } from "@mui/material";
+import MainPage from "./components/navbar/MainPage";
 
 const colorTheme = createTheme({
     palette: {
@@ -28,10 +29,18 @@ function App() {
                 <Suspense>
                     <Routes>
                         <Route path="/" element={<LandingPage />} />
-                        <Route
-                            path="/recommend"
-                            element={<RecommendedCoursePage />}
-                        />
+                        <Route path={"/main/*"} element={<MainPage />}>
+                            <Route
+                                path="recommend"
+                                element={<RecommendedCoursePage />}
+                            />
+                            <Route
+                                path="community"
+                                element={<CommunityListPage />}
+                            />
+                            <Route path="myPage/:userId" element={<MyPage />} />
+                        </Route>
+
                         <Route
                             // path={`/course/:courseId/*`} 이게 나중에 쓸 것. 아래는 임시
                             path="/course/:courseId"
@@ -45,15 +54,11 @@ function App() {
                             path="/course/:courseId/drive"
                             element={<CourseDrivePage />}
                         />
-                        <Route
-                            path="/community"
-                            element={<CommunityListPage />}
-                        />
+
                         <Route
                             path="/community/:articleId"
                             element={<CommunityDetailPage />}
                         />
-                        <Route path="/myPage/:userId" element={<MyPage />} />
                     </Routes>
                 </Suspense>
             </ThemeProvider>
