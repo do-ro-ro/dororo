@@ -12,7 +12,7 @@ const ServerTest = ({ setcoolList }) => {
             });
     }, []);
 
-    return <div>하위</div>;
+    return <div></div>;
 };
 
 export default ServerTest;
