@@ -1,5 +1,5 @@
-import Map from "../../components/map/Map";
-import CurrentLocation from "../../components/map/CurrentLocation";
+import Map from "./Map";
+import CurrentLocation from "./CurrentLocation";
 import Search from "./Search";
 import { useState } from "react";
 
