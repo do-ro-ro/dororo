@@ -35,11 +35,16 @@ public class PostEntity {
 	@OneToOne(targetEntity = MapEntity.class)
 	@JoinColumn(name = "mapId", nullable = false)
 	private MapEntity mapId;
-	@Column(nullable = false) private String postTitle;
-	@Column(nullable = false) private String postContent;
-	@Column(nullable = false) private Timestamp createdAt;
-	@Column(nullable = false) private Timestamp updatedAt;
-	@Column(nullable = false) private int scrapCount;
+	@Column(nullable = false)
+	private String postTitle;
+	@Column(nullable = false)
+	private String postContent;
+	@Column(nullable = false)
+	private Timestamp createdAt;
+	@Column(nullable = false)
+	private Timestamp updatedAt;
+	@Column(nullable = false)
+	private int scrapCount;
 
 	@ElementCollection
 	@CollectionTable(name = "reviews", joinColumns = @JoinColumn(name = "post_id"))

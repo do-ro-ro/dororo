@@ -19,18 +19,21 @@ public class MapEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer mapId;
-    @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(name="userId", nullable = false)
+
+    @ManyToOne(targetEntity = UserEntity.class) @JoinColumn(name="userId", nullable = false)
     private UserEntity userId;
-    @Column(nullable = false) private String mapName;
+    @Column(nullable = false)
+    private String mapName;
     @Column(nullable = false) @ColumnDefault("''")  // 이미지 없을 경우 빈 스트링으로
     private String mapImage;
     @Column(nullable = false, columnDefinition = "geometry(LineString, 4326)")
     private LineString mapRouteAxis;
     @Column(nullable = false) @Enumerated(EnumType.STRING)
     private Maptype mapType = Maptype.DEFAULT;
-    @Column(nullable = false) private Float mapDistance;
-    @Column(nullable = false) private Integer originalMapId;
+    @Column(nullable = false)
+    private Float mapDistance;
+    @Column(nullable = false)
+    private Integer originalMapId;
     @Column(nullable = false) @ColumnDefault("false")
     private Boolean mapCompletion;
 
