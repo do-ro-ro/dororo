@@ -20,7 +20,7 @@ public class MapEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer mapId;
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(name="userId") @Column(nullable = false)
+    @JoinColumn(name="userId", nullable = false)
     private UserEntity userId;
     @Column(nullable = false) private String mapName;
     @Column(nullable = false) @ColumnDefault("''")  // 이미지 없을 경우 빈 스트링으로

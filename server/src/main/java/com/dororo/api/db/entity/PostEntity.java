@@ -33,7 +33,7 @@ public class PostEntity {
 	private Integer postId;
 
 	@OneToOne(targetEntity = MapEntity.class)
-	@JoinColumn(name = "mapId") @Column(nullable = false)
+	@JoinColumn(name = "mapId", nullable = false)
 	private MapEntity mapId;
 	@Column(nullable = false) private String postTitle;
 	@Column(nullable = false) private String postContent;
@@ -43,7 +43,7 @@ public class PostEntity {
 
 	@ElementCollection
 	@CollectionTable(name = "reviews", joinColumns = @JoinColumn(name = "post_id"))
-	@Column(name="reviewRef")
+	@Column(nullable = false, name="reviewRef")
 	private List<String> reviewRefs = new ArrayList<>();
 
 }
