@@ -71,7 +71,7 @@ const SimpleMap = ({ lat, lng, coolList, fillterList, setFillterList }) => {
 
         document.getElementById("btn_select").addEventListener("click", () => {
             {
-                console.log(fillterList);
+                // console.log(fillterList);
             }
 
             const searchOption = document.getElementById("selectLevel").value;
@@ -82,16 +82,16 @@ const SimpleMap = ({ lat, lng, coolList, fillterList, setFillterList }) => {
             };
 
             {
-                console.log(fillterList);
+                console.log(coolList[coolList.length - 1].lat);
             }
             const param = {
                 startName: "출발지",
-                startX: "128.8526203291761",
-                startY: "35.09347302851154",
+                startX: coolList[0].lon.toString(),
+                startY: coolList[0].lat.toString(),
                 startTime: "201708081103",
                 endName: "도착지",
-                endX: "128.85708689689676",
-                endY: "35.09093500015323",
+                endX: coolList[coolList.length - 1].lon.toString(),
+                endY: coolList[coolList.length - 1].lat.toString(),
                 viaPoints: fillterList.map((point) => ({
                     viaPointId: `test${fillterList.indexOf(point) + 1}`,
                     viaPointName: `name${fillterList.indexOf(point) + 1}`,

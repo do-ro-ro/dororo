@@ -1,6 +1,6 @@
 import { useState } from "react";
 import RealTimeCurrentLocation from "../../components/course-drive/RealTimeCurrentLocation";
-import Map from "../../components/course-drive/Map";
+// import Map from "../../components/course-drive/Map";
 import StopOver from "../../components/course-drive/StopOver";
 import ServerTest from "../../components/course-drive/ServerTest";
 
