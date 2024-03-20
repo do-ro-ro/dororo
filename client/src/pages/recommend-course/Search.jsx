@@ -62,14 +62,14 @@ const Search = ({ setLat, setLon }) => {
         return (
             <li
                 key={index}
-                className="item"
+                className="item z-10"
                 onClick={() => {
                     handleItemClick(place);
                 }}
             >
                 <span className={`markerbg marker_${index + 1}`}></span>
                 <div
-                    className="info border-b border-gray-200 py-1 flex items-center space-x-2
+                    className="info border-b border-gray-200 py-1 flex items-center space-x-2 
                 "
                 >
                     <div>
@@ -119,6 +119,7 @@ const Search = ({ setLat, setLon }) => {
                                 size="medium" // 필드 크기 조절 (small 또는 medium)
                                 value={keyword}
                                 onChange={handleInputChange}
+                                placeholder="지역검색"
                                 fullWidth // 필드를 부모 컨테이너의 전체 너비로 설정
                                 sx={{
                                     border: 2,
