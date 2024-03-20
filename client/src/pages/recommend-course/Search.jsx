@@ -1,8 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Search = ({ setLat, setLon }) => {
-    const [keyword, setKeyword] = useState("이태원 맛집");
+    const [keyword, setKeyword] = useState("");
     const [places, setPlaces] = useState([]);
+    const [searchTerm, setSearchTerm] = useState(keyword);
+    const [showPlacesList, setShowPlacesList] = useState(true); // 리스트 표시 여부를 위한 상태 추가
+
+    useEffect(() => {
+        const delayDebounce = setTimeout(() => {
+            if (searchTerm) {
+                searchPlaces();
+            }
+        }, 100); // 500ms 지연
+
+        return () => clearTimeout(delayDebounce);
+    }, [searchTerm]); // searchTerm이 변경될 때마다 이 effect를 실행
 
     // 키워드로 장소를 검색하는 함수
     const searchPlaces = () => {
@@ -21,12 +33,23 @@ const Search = ({ setLat, setLon }) => {
             } else if (
                 status === window.kakao.maps.services.Status.ZERO_RESULT
             ) {
-                alert("검색 결과가 존재하지 않습니다.");
+                // alert("검색 결과가 존재하지 않습니다.");
                 setPlaces([]);
             } else if (status === window.kakao.maps.services.Status.ERROR) {
-                alert("검색 결과 중 오류가 발생했습니다.");
+                // alert("검색 결과 중 오류가 발생했습니다.");
             }
         });
+    };
+
+    const handleInputChange = (e) => {
+        setKeyword(e.target.value);
+        setSearchTerm(e.target.value);
+    };
+    // 항목 클릭 시 실행되는 함수
+    const handleItemClick = (place) => {
+        setLat(place.y);
+        setLon(place.x);
+        setShowPlacesList(false); // 클릭 시 리스트 숨김
     };
 
     // 검색결과 항목을 Element로 반환하는 함수
@@ -36,10 +59,7 @@ const Search = ({ setLat, setLon }) => {
                 key={index}
                 className="item"
                 onClick={() => {
-                    // console.log(place.x);
-                    // console.log(place.y);
-                    setLat(place.y);
-                    setLon(place.x);
+                    handleItemClick(place);
                 }}
             >
                 <span className={`markerbg marker_${index + 1}`}></span>
@@ -68,21 +88,23 @@ const Search = ({ setLat, setLon }) => {
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
-                            searchPlaces();
+                            // searchPlaces();
                         }}
                     >
-                        키워드 :{" "}
+                        키워드 :
                         <input
                             type="text"
                             value={keyword}
-                            onChange={(e) => setKeyword(e.target.value)}
+                            onChange={handleInputChange}
                             size="15"
                         />
-                        <button type="submit">검색하기</button>
+                        {/* <button type="submit">검색하기</button> */}
                     </form>
                 </div>
                 <hr />
-                <ul id="placesList">{places.map(getListItem)}</ul>
+                {showPlacesList && (
+                    <ul id="placesList">{places.map(getListItem)}</ul>
+                )}
             </div>
         </div>
     );
