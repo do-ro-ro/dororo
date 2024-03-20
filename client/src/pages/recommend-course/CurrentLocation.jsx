@@ -1,3 +1,5 @@
+import GpsFixedIcon from "@mui/icons-material/GpsFixed";
+
 const CurrentLocation = ({ setLat, setLon, setTimestamp }) => {
     // 위치 정보를 가져오고 상태를 업데이트하는 함수
     const fetchCurrentPosition = () => {
@@ -9,8 +11,10 @@ const CurrentLocation = ({ setLat, setLon, setTimestamp }) => {
         });
     };
     return (
-        <div>
-            <button onClick={fetchCurrentPosition}>Get Current Location</button>
+        <div className="w-10 h-10 z-1 ">
+            <button onClick={fetchCurrentPosition}>
+                <GpsFixedIcon sx={{ color: "#6389BE", fontSize: "40px" }} />
+            </button>
         </div>
     );
 };
