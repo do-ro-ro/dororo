@@ -33,7 +33,7 @@ public class PostEntity {
 	private Integer postId;
 
 	@OneToOne(targetEntity = MapEntity.class)
-	@JoinColumn(name = "mapId")
+	@JoinColumn(name = "mapId") @Column(nullable = false)
 	private MapEntity mapId;
 	@Column(nullable = false) private String postTitle;
 	@Column(nullable = false) private String postContent;
