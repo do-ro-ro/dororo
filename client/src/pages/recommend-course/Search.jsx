@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
-import { Box } from "@mui/system";
+import PlaceIcon from "@mui/icons-material/Place";
 
 const Search = ({ setLat, setLon }) => {
     const [keyword, setKeyword] = useState("");
@@ -68,19 +68,34 @@ const Search = ({ setLat, setLon }) => {
                 }}
             >
                 <span className={`markerbg marker_${index + 1}`}></span>
-                <div className="info">
-                    <h5>{place.place_name}</h5>
-                    {place.road_address_name ? (
-                        <>
-                            <span>{place.road_address_name}</span>
-                            <span className="jibun gray">
+                <div
+                    className="info border-b border-gray-200 py-1 flex items-center space-x-2
+                "
+                >
+                    <div>
+                        <PlaceIcon
+                            sx={{ color: "#6389BE", fontSize: "35px", mx: 1 }}
+                        />
+                    </div>
+                    <div>
+                        <h5 className="text-lg font-semibold  ">
+                            {place.place_name}
+                        </h5>
+                        {place.road_address_name ? (
+                            <>
+                                <span className="text-sm text-gray-500">
+                                    {place.road_address_name}
+                                </span>
+                                {/* <span className="jibun gray">
+                                {place.address_name}
+                            </span> */}
+                            </>
+                        ) : (
+                            <span className="text-sm text-gray-500">
                                 {place.address_name}
                             </span>
-                        </>
-                    ) : (
-                        <span>{place.address_name}</span>
-                    )}
-                    <span className="tel">{place.phone}</span>
+                        )}
+                    </div>
                 </div>
             </li>
         );
@@ -109,7 +124,6 @@ const Search = ({ setLat, setLon }) => {
                                     border: 2,
                                     borderColor: "#6389BE",
                                     borderRadius: 1,
-
                                     mx: 1,
                                     my: 1,
                                     width: 95 / 100,
