@@ -25,9 +25,12 @@ public class NodeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer nodeGid;
 
-	@Column(nullable = false) private String nodeId;
-	@Column(nullable = false) private String nodeType;
-	@Column(nullable = false) private String nodeName;
+	@Column(nullable = false)
+	private String nodeId;
+	@Column(nullable = false)
+	private String nodeType;
+	@Column(nullable = false)
+	private String nodeName;
 	@Column(nullable = false, columnDefinition = "geometry(Point, 4326)")
 	private Point nodePoint;
 

@@ -17,9 +17,14 @@ public class UserEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer userId;
-	@Column(nullable = false) private String name;
-	@Column(nullable = false) private String nickname;
-	@Column(nullable = false) private String profileImage;
-	@Column(nullable = false) private String uniqueId;
+
+	@Column(nullable = false)
+	private String name;
+	@Column(nullable = false)
+	private String nickname;
+	@Column(nullable = false)
+	private String profileImage;
+	@Column(nullable = false)
+	private String uniqueId;
 
 }
