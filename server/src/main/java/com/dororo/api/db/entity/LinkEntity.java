@@ -20,7 +20,6 @@ public class LinkEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer linkGid;
-
 	private String linkId;
 	private String fNodeId; //출발 노드
 	private String tNodeId; //도착 노드
