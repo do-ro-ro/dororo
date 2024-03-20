@@ -1,6 +1,6 @@
 import { useState } from "react";
 import RealTimeCurrentLocation from "../../components/course-drive/RealTimeCurrentLocation";
-import Map from "./Map";
+import Map from "../../components/course-drive/Map";
 
 function CourseDrivePage() {
     const [lat, setLat] = useState(35.309216);
