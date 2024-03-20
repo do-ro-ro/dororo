@@ -1,10 +1,6 @@
 package com.dororo.api.db.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,14 +11,16 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "turninfos")
+@Table(name = "turninfos")	// schema 설정 따로 x, public schema 내에 생성됨.
 public class TurnInfoEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer turnInfoGid;
 
-	private String nodeId;
-	private String stLinkId;
-	private String edLinkId;
-	private String turnType;
+	@Column(nullable = false) private String nodeId;
+	@Column(nullable = false) private String stLinkId;
+	@Column(nullable = false) private String edLinkId;
+	@Column(nullable = false) private String turnType;
+
 }
