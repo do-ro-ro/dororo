@@ -18,15 +18,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "nodes")
+@Table(name = "nodes")	// schema 설정 따로 x, public schema 내에 생성됨.
 public class NodeEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer nodeGid;
 
-	private String nodeId;
-	private String nodeType;
-	private String nodeName;
-	@Column(columnDefinition = "geometry(Point, 4326)")
+	@Column(nullable = false) private String nodeId;
+	@Column(nullable = false) private String nodeType;
+	@Column(nullable = false) private String nodeName;
+	@Column(nullable = false, columnDefinition = "geometry(Point, 4326)")
 	private Point nodePoint;
+
 }
