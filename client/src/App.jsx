@@ -10,38 +10,53 @@ import CourseDrivePage from "./pages/course-drive/CourseDrivePage";
 import CommunityListPage from "./pages/community-list/CommunityListPage";
 import CommunityDetailPage from "./pages/community-detail/CommunityDetailPage";
 import MyPage from "./pages/my-page/MyPage";
+import { ThemeProvider, createTheme } from "@mui/material";
+
+const colorTheme = createTheme({
+    palette: {
+        primary: {
+            main: "#6386BE",
+        },
+        // 아래에 색 추가하시면 됩니다. MUI Tokens/Palette 참조
+    },
+});
 
 function App() {
     return (
         <>
-            <Suspense>
-                <Routes>
-                    <Route path="/" element={<LandingPage />} />
-                    <Route
-                        path="/recommend"
-                        element={<RecommendedCoursePage />}
-                    />
-                    <Route
-                        // path={`/course/:courseId/*`} 이게 나중에 쓸 것. 아래는 임시
-                        path="/course/:courseId"
-                        element={<CourseDetailPage />}
-                    />
-                    <Route
-                        path="/course/:courseId/custom"
-                        element={<CourseCustomPage />}
-                    />
-                    <Route
-                        path="/course/:courseId/drive"
-                        element={<CourseDrivePage />}
-                    />
-                    <Route path="/community" element={<CommunityListPage />} />
-                    <Route
-                        path="/community/:articleId"
-                        element={<CommunityDetailPage />}
-                    />
-                    <Route path="/myPage/:userId" element={<MyPage />} />
-                </Routes>
-            </Suspense>
+            <ThemeProvider theme={colorTheme}>
+                <Suspense>
+                    <Routes>
+                        <Route path="/" element={<LandingPage />} />
+                        <Route
+                            path="/recommend"
+                            element={<RecommendedCoursePage />}
+                        />
+                        <Route
+                            // path={`/course/:courseId/*`} 이게 나중에 쓸 것. 아래는 임시
+                            path="/course/:courseId"
+                            element={<CourseDetailPage />}
+                        />
+                        <Route
+                            path="/course/:courseId/custom"
+                            element={<CourseCustomPage />}
+                        />
+                        <Route
+                            path="/course/:courseId/drive"
+                            element={<CourseDrivePage />}
+                        />
+                        <Route
+                            path="/community"
+                            element={<CommunityListPage />}
+                        />
+                        <Route
+                            path="/community/:articleId"
+                            element={<CommunityDetailPage />}
+                        />
+                        <Route path="/myPage/:userId" element={<MyPage />} />
+                    </Routes>
+                </Suspense>
+            </ThemeProvider>
         </>
     );
 }

@@ -1,9 +1,10 @@
-import { AccountBox, AddRoad, Forum } from "@mui/icons-material";
+import { AccountBox, AddRoad, Forum, Palette } from "@mui/icons-material";
 import {
     BottomNavigation,
     BottomNavigationAction,
     Box,
     Paper,
+    ThemeProvider,
 } from "@mui/material";
 import { useState } from "react";
 
@@ -11,6 +12,7 @@ function BasicNavbar() {
     const [value, setValue] = useState(1);
     return (
         <>
+            {/* <ThemeProvider theme={Palette}> */}
             <Paper
                 sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
                 elevation={3}
@@ -33,6 +35,7 @@ function BasicNavbar() {
                     />
                 </BottomNavigation>
             </Paper>
+            {/* </ThemeProvider> */}
         </>
     );
 }
