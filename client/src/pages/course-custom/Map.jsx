@@ -1,5 +1,7 @@
 import { Box, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import startPin from "../../assets/start_pin.png";
+import endPin from "../../assets/end_pin.png";
 
 function Map({ course, lat, lng }) {
     const [map, setMap] = useState(null);
@@ -31,21 +33,21 @@ function Map({ course, lat, lng }) {
 
         setMap(newMap);
 
-        // 출발점 설정
+        // 출발점 마커 설정
         const marker_s = new window.Tmapv2.Marker({
             position: new window.Tmapv2.LatLng(startPoint.lat, startPoint.lng),
-            icon: "/upload/tmap/marker/pin_r_m_s.png",
+            icon: startPin,
             iconSize: new window.Tmapv2.Size(24, 38),
-            map: map,
+            map: newMap,
         });
         setResultMarkerArr((prev) => [...prev, marker_s]);
 
-        //종착점 설정
+        //종착점 마커 설정
         const marker_e = new window.Tmapv2.Marker({
             position: new window.Tmapv2.LatLng(endPoint.lat, endPoint.lng),
-            icon: "/upload/tmap/marker/pin_r_m_e.png",
+            icon: endPin,
             iconSize: new window.Tmapv2.Size(24, 38),
-            map: map,
+            map: newMap,
         });
         setResultMarkerArr((prev) => [...prev, marker_e]);
 
@@ -63,19 +65,21 @@ function Map({ course, lat, lng }) {
             },
         ];
 
+        // 각 웨이포인트에 마커 찍어주기
         waypoints.forEach((waypoint) => {
             const marker = new window.Tmapv2.Marker({
                 position: new window.Tmapv2.LatLng(waypoint.lat, waypoint.lng),
                 icon: waypoint.icon,
                 iconSize: new window.Tmapv2.Size(24, 38),
-                map: map,
+                map: newMap,
                 draggable: true,
             });
             setResultMarkerArr((prev) => [...prev, marker]);
         });
 
-        document.getElementById("btn_select").addEventListener("click", () => {
-            const searchOption = document.getElementById("selectLevel").value;
+        //
+        const postRouteSequential30 = async () => {
+            const searchOption = "2";
 
             const headers = {
                 appKey: "biTbgqZv225ydagowr17d9sD74C6uMF55JjTMkOT",
@@ -84,54 +88,28 @@ function Map({ course, lat, lng }) {
 
             const param = {
                 startName: "출발지",
-                startX: `${course[0].lat}`,
-                startY: `${course[0].lng}`,
-                startTime: "201708081103",
+                startX: `${startPoint.lng}`,
+                startY: `${startPoint.lat}`,
+                // startX: "128.855674",
+                // startY: "35.093555",
+                startTime: "202403201103",
                 endName: "도착지",
-                endX: "127.142571",
-                endY: "37.414382",
+                endX: `${endPoint.lng}`,
+                endY: `${endPoint.lat}`,
+                // endX: "128.862074",
+                // endY: "35.089101",
                 viaPoints: [
                     {
                         viaPointId: "test01",
                         viaPointName: "name01",
-                        viaX: "127.103790",
-                        viaY: "37.399569",
+                        viaX: "128.859205",
+                        viaY: "35.093515",
                     },
                     {
                         viaPointId: "test02",
                         viaPointName: "name02",
-                        viaX: "127.108913",
-                        viaY: "37.402748",
-                    },
-                    {
-                        viaPointId: "test03",
-                        viaPointName: "name03",
-                        viaX: "127.113403",
-                        viaY: "37.397153",
-                    },
-                    {
-                        viaPointId: "test04",
-                        viaPointName: "name04",
-                        viaX: "127.121210",
-                        viaY: "37.410135",
-                    },
-                    {
-                        viaPointId: "test05",
-                        viaPointName: "name05",
-                        viaX: "127.123296",
-                        viaY: "37.399400",
-                    },
-                    {
-                        viaPointId: "test06",
-                        viaPointName: "name06",
-                        viaX: "127.130933",
-                        viaY: "37.406327",
-                    },
-                    {
-                        viaPointId: "test07",
-                        viaPointName: "name07",
-                        viaX: "127.127337",
-                        viaY: "37.413227",
+                        viaX: "128.859254",
+                        viaY: "35.08902",
                     },
                 ],
                 reqCoordType: "WGS84GEO",
@@ -149,7 +127,12 @@ function Map({ course, lat, lng }) {
             )
                 .then((response) => response.json())
                 .then((data) => {
+                    console.log("호출 완료!");
+                    // console.log(data);
+                    // 총 거리, 시간, 요금이 담겨있는 데이터
                     const resultData = data.properties;
+
+                    // 경유지 위치 정보들이 담겨 있는 배열
                     const resultFeatures = data.features;
 
                     const tDistance =
@@ -162,18 +145,22 @@ function Map({ course, lat, lng }) {
                         "분,  ";
                     const tFare = "총 요금 : " + resultData.totalFare + "원";
 
-                    document.getElementById("result").innerText =
-                        tDistance + tTime + tFare;
+                    // document.getElementById("result").innerText =
+                    //     tDistance + tTime + tFare;
 
+                    // resultInfoArr에 값이 존재하면, 갱신할 것
                     if (resultInfoArr.length > 0) {
                         resultInfoArr.forEach((info) => info.setMap(null));
                         setResultInfoArr([]);
                     }
 
+                    // resultFeatures 의 정보 추출하기 위한 forEach문
                     resultFeatures.forEach((feature) => {
                         const geometry = feature.geometry;
                         const properties = feature.properties;
+                        // console.log(geometry);
 
+                        // 해당 정보 타입이 LineString(링크) 일 경우
                         if (geometry.type === "LineString") {
                             const drawInfoArr = geometry.coordinates.map(
                                 (coord) => {
@@ -185,6 +172,7 @@ function Map({ course, lat, lng }) {
                                         new window.Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
                                             latlng,
                                         );
+                                    // console.log(convertPoint);
                                     return new window.Tmapv2.LatLng(
                                         convertPoint._lat,
                                         convertPoint._lng,
@@ -194,35 +182,42 @@ function Map({ course, lat, lng }) {
 
                             const polyline = new window.Tmapv2.Polyline({
                                 path: drawInfoArr,
-                                strokeColor: "#FF0000",
-                                strokeWeight: 6,
-                                map: map,
+                                strokeColor: "#6386BE",
+                                strokeWeight: 10,
+                                map: newMap,
                             });
+                            console.log(polyline);
 
                             setResultInfoArr((prev) => [...prev, polyline]);
                         } else {
+                            // type이 Point(노드)일 경우
                             let markerImg = "";
                             let size = "";
+                            let draggable = false;
 
                             if (properties.pointType === "S") {
-                                markerImg = "/upload/tmap/marker/pin_r_m_s.png";
+                                // 시작점이면
+                                markerImg = startPin;
                                 size = new window.Tmapv2.Size(24, 38);
                             } else if (properties.pointType === "E") {
-                                markerImg = "/upload/tmap/marker/pin_r_m_e.png";
+                                // 종착점이면
+                                markerImg = endPin;
                                 size = new window.Tmapv2.Size(24, 38);
                             } else {
+                                // 거쳐가는 점이면
                                 markerImg =
                                     "http://topopen.tmap.co.kr/imgs/point.png";
-                                size = new window.Tmapv2.Size(8, 8);
+                                size = new window.Tmapv2.Size(24, 24);
+                                draggable = true;
                             }
 
-                            const latlon = new window.Tmapv2.Point(
+                            const latlng = new window.Tmapv2.Point(
                                 geometry.coordinates[0],
                                 geometry.coordinates[1],
                             );
                             const convertPoint =
                                 new window.Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
-                                    latlon,
+                                    latlng,
                                 );
 
                             const marker = new window.Tmapv2.Marker({
@@ -232,7 +227,8 @@ function Map({ course, lat, lng }) {
                                 ),
                                 icon: markerImg,
                                 iconSize: size,
-                                map: map,
+                                draggable: draggable,
+                                map: newMap,
                             });
 
                             setResultMarkerArr((prev) => [...prev, marker]);
@@ -242,65 +238,15 @@ function Map({ course, lat, lng }) {
                 .catch((error) => {
                     console.error("Error:", error);
                 });
-        });
-    };
-
-    // 지도 업데이트 (경로 및 마커)
-    const updateMap = (map, pathPoints) => {
-        // 기존 마커 제거
-        markers.forEach((marker) => marker.setMap(null));
-
-        // 새 마커와 경로 생성
-        const newMarkers = pathPoints.map((point, index) => {
-            const marker = new window.Tmapv2.Marker({
-                position: point,
-                map: map,
-                draggable: true,
-            });
-            // 드래그 이벤트 리스너
-            if (markers.length !== 0) {
-                window.Tmapv2.Event.addListener(
-                    marker,
-                    "dragend",
-                    function (evt) {
-                        const newPosition = evt.latLng;
-                        const updatedPathPoints = [...pathPoints];
-                        updatedPathPoints[index] = newPosition;
-                        updateMap(map, updatedPathPoints); // 마커 이동 후 경로 업데이트
-                    },
-                );
-            }
-
-            return marker;
-        });
-        setMarkers(newMarkers);
-
-        // 경로 업데이트
-        if (courseLine) {
-            courseLine.setMap(null); // 기존 경로 제거
-        }
-        const newCourseLine = new window.Tmapv2.Polyline({
-            path: pathPoints,
-            strokeColor: "#dd00dd",
-            strokeWeight: 6,
-            map: map,
-        });
-        setCourseLine(newCourseLine);
+        };
+        postRouteSequential30();
     };
 
     useEffect(() => {
         if (map === null) {
             initMap();
         }
-    }, []);
-
-    useEffect(() => {
-        if (map === null) {
-            initMap();
-        } else {
-            updateMap(map, markers);
-        }
-    }, [course]); // lat, lon이 변경되면 지도를 초기화합니다.
+    }, [map]);
 
     return (
         <>
