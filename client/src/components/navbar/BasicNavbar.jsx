@@ -7,12 +7,14 @@ import {
     ThemeProvider,
 } from "@mui/material";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function BasicNavbar() {
     const [value, setValue] = useState(1);
+
+    const navigate = useNavigate();
     return (
         <>
-            {/* <ThemeProvider theme={Palette}> */}
             <Paper
                 sx={{
                     position: "fixed",
@@ -28,6 +30,20 @@ function BasicNavbar() {
                     value={value}
                     onChange={(event, newValue) => {
                         setValue(newValue);
+                        switch (newValue) {
+                            case 0:
+                                navigate("/main/community");
+                                break;
+                            case 1:
+                                navigate("/main/recommend");
+                                break;
+                            case 2:
+                                navigate("/main/myPage/123"); // 예시 userId
+                                break;
+                            default:
+                                navigate("/main/recommend");
+                                break;
+                        }
                     }}
                 >
                     <BottomNavigationAction label="커뮤니티" icon={<Forum />} />
@@ -41,7 +57,6 @@ function BasicNavbar() {
                     />
                 </BottomNavigation>
             </Paper>
-            {/* </ThemeProvider> */}
         </>
     );
 }
