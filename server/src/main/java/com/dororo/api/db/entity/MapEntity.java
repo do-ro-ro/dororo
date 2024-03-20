@@ -35,7 +35,7 @@ public class MapEntity {
     private Boolean mapCompletion;
 
     public enum Maptype{
-        DEFAULT, CUMTOM, SCRAP
+        DEFAULT, CUSTOM, SCRAP
     }
 
 }
