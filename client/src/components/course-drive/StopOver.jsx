@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 
-const SimpleMap = ({ lat, lng, coolList, fillterList, setFillterList }) => {
+const SimpleMap = ({
+    lat,
+    lng,
+    coolList,
+    fillterList,
+    setFillterList,
+    setTime,
+    setKm,
+}) => {
     let [map, setMap] = useState(null);
     const [resultMarkerArr, setResultMarkerArr] = useState([]);
     const [resultInfoArr, setResultInfoArr] = useState([]);
@@ -114,18 +122,13 @@ const SimpleMap = ({ lat, lng, coolList, fillterList, setFillterList }) => {
                     const resultData = data.properties;
                     const resultFeatures = data.features;
 
-                    const tDistance =
-                        "총 거리 : " +
-                        (resultData.totalDistance / 1000).toFixed(1) +
-                        "km,  ";
-                    const tTime =
-                        "총 시간 : " +
-                        (resultData.totalTime / 60).toFixed(0) +
-                        "분,  ";
-                    const tFare = "총 요금 : " + resultData.totalFare + "원";
+                    const tDistance = (resultData.totalDistance / 1000).toFixed(
+                        1,
+                    );
+                    const tTime = (resultData.totalTime / 60).toFixed(0);
 
-                    document.getElementById("result").innerText =
-                        tDistance + tTime + tFare;
+                    setTime(tTime);
+                    setKm(tDistance);
 
                     if (resultInfoArr.length > 0) {
                         resultInfoArr.forEach((info) => info.setMap(null));

@@ -9,6 +9,8 @@ function CourseDrivePage() {
     const [lng, setLng] = useState(129.0633216);
     const [coolList, setcoolList] = useState([{}]);
     const [fillterList, setFillterList] = useState([{}]);
+    const [time, setTime] = useState(0);
+    const [km, setKm] = useState(0);
     // console.log(coolList);
     // console.log(fillterList);
     return (
@@ -23,7 +25,11 @@ function CourseDrivePage() {
                 coolList={coolList}
                 fillterList={fillterList}
                 setFillterList={setFillterList}
+                setTime={setTime}
+                setKm={setKm}
             />
+            <div>거리 : {km} km</div>
+            <div>시간 : {time} 분</div>
         </>
     );
 }
