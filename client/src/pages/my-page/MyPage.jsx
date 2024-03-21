@@ -9,7 +9,7 @@ import {
 import Topbar from "../../components/topbar/Topbar";
 import CourseCard from "../../components/course-card/CourseCard";
 import BasicProfile from "../../assets/user_profile_basic.png";
-import { Edit } from "@mui/icons-material";
+import { BorderColor, Edit } from "@mui/icons-material";
 
 const DummyCourseList = [
     {
@@ -92,7 +92,7 @@ function MyPage() {
                                 </Typography>
                             </Stack>
                             <IconButton color="primary">
-                                <Edit />
+                                <BorderColor />
                             </IconButton>
                         </Stack>
                     </Paper>
