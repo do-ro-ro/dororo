@@ -25,24 +25,30 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "posts")
+@Table(name = "posts")	// schema 설정 따로 x, public schema 내에 생성됨.
 public class PostEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer postId;
 
 	@OneToOne(targetEntity = MapEntity.class)
-	@JoinColumn(name = "mapId")
+	@JoinColumn(name = "mapId", nullable = false)
 	private MapEntity mapId;
-	private Integer userId;
+	@Column(nullable = false)
 	private String postTitle;
+	@Column(nullable = false)
 	private String postContent;
+	@Column(nullable = false)
 	private Timestamp createdAt;
+	@Column(nullable = false)
 	private Timestamp updatedAt;
-	private Integer scrapCount;
+	@Column(nullable = false)
+	private int scrapCount;
 
 	@ElementCollection
 	@CollectionTable(name = "reviews", joinColumns = @JoinColumn(name = "post_id"))
-	@Column(name="reviewRef")
+	@Column(nullable = false, name="reviewRef")
 	private List<String> reviewRefs = new ArrayList<>();
+
 }
