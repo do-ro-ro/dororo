@@ -2,9 +2,9 @@ package com.dororo.api.db.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.dororo.api.db.entity.UserEntity;
+
+import com.dororo.api.db.entity.CertificationEntity;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Integer> {
-	UserEntity findByUserId(Integer userId);
+public interface CertificationRepository extends JpaRepository<CertificationEntity, String> {
 }

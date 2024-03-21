@@ -26,5 +26,6 @@ public class UserEntity {
 	private String profileImage;
 	@Column(nullable = false)
 	private String uniqueId;
-
+	@Column(nullable = false)
+	private String role;
 }
