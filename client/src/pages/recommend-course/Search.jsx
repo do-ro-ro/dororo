@@ -63,9 +63,10 @@ const Search = ({ setLat, setLon }) => {
         return (
             <li
                 key={index}
-                className="item z-10"
+                className="item"
                 onClick={() => {
                     handleItemClick(place);
+                    setKeyword(place.place_name);
                 }}
             >
                 <span className={`markerbg marker_${index + 1}`}></span>
@@ -150,6 +151,8 @@ const Search = ({ setLat, setLon }) => {
                                 }}
                             />
                         </Paper>
+                        <div style={{ marginTop: "75px" }}></div>
+
                         {/* <button type="submit">검색하기</button> */}
                     </form>
                 </div>

@@ -11,7 +11,9 @@ function RecommendedCoursePage() {
     return (
         <>
             {/* <div className="relative "> */}
-            <Search setLat={setLat} setLon={setLon}></Search>
+            <div>
+                <Search setLat={setLat} setLon={setLon}></Search>
+            </div>
             <div className="relative ">
                 {/* 지도에 대한 컨테이너 */}
                 <Map lat={lat} lon={lon}></Map>
