@@ -2,7 +2,7 @@ import { Box, Button, ButtonGroup, Stack, Typography } from "@mui/material";
 import Topbar from "../../components/topbar/Topbar";
 import CourseCard from "../../components/course-card/CourseCard";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const DummyCourseList = [
     {
@@ -84,15 +84,13 @@ function CommunityListPage() {
         return chunkedCourses.map((chunk, index) => (
             <Stack key={index} direction="row">
                 {chunk.map((course) => (
-                    <CourseCard key={course.post_id}>
+                    <CourseCard postId={course.post_id} key={course.post_id}>
                         {course.post_title}
                     </CourseCard>
                 ))}
             </Stack>
         ));
     };
-
-    const navigate = useNavigate();
 
     return (
         <>
@@ -108,11 +106,7 @@ function CommunityListPage() {
                             return (
                                 <CourseCard
                                     key={course.post_id}
-                                    onClick={() =>
-                                        navigate(
-                                            `/main/community/${course.post_id}`,
-                                        )
-                                    }
+                                    postId={course.post_id}
                                 >
                                     {course.post_title}
                                 </CourseCard>

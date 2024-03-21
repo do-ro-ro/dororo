@@ -1,8 +1,15 @@
 import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import SampleCourseImg from "../../assets/sample_course_img.png";
+import { useNavigate } from "react-router-dom";
 
 function CourseCard(props) {
-    const { children, ...rest } = props;
+    const { children, postId, ...rest } = props;
+
+    const navigate = useNavigate();
+    const handleNavigate = (postId) => {
+        navigate(`/main/community/${postId}`);
+    };
+
     return (
         <>
             <Card
@@ -11,6 +18,7 @@ function CourseCard(props) {
                     height: "20vh",
                     mx: 1,
                 }}
+                onClick={() => handleNavigate(`/main/community/${postId}`)}
             >
                 <CardMedia sx={{ height: "8rem" }} image={SampleCourseImg} />
                 <CardContent>
