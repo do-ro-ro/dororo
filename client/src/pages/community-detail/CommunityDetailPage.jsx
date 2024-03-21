@@ -14,6 +14,7 @@ import BasicProfile from "../../assets/user_profile_basic.png";
 import { Bookmark, BookmarkBorder, Image } from "@mui/icons-material";
 import SampleCourseImg from "../../assets/sample_course_img.png";
 import { useState } from "react";
+import EditArticleModal from "../../components/community-detail/EditArticleModal";
 
 const DummyCourse = {
     post_id: 0,
@@ -36,13 +37,8 @@ function CommunityDetailPage() {
     const [isScrapped, setIsScrapped] = useState(false);
     const [scrapCount, setScrapCount] = useState(DummyCourse.scrap_count);
 
-    // snack바 관련
+    // snack바 상태 관리
     const [scrapSnackbarOpen, setScrapSnackbarOpen] = useState(false);
-
-    // 스크랩 버튼 클릭시
-    // const handleScrapClick = () => {
-
-    // };
 
     // 스낵바 닫기
     const handleScrapSnackbarClose = (event, reason) => {
@@ -79,13 +75,7 @@ function CommunityDetailPage() {
                     </Box>
                     {DummyCourse.user_id === DummyUser.user_id ? (
                         <Stack direction={"row"} alignItems={"center"}>
-                            <Button
-                                variant="contained"
-                                size="small"
-                                sx={{ height: "3vh", width: "3vw", mx: 0.3 }}
-                            >
-                                수정
-                            </Button>
+                            <EditArticleModal />
                             <Button
                                 variant="contained"
                                 color="error"
