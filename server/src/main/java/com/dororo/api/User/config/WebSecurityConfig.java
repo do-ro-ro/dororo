@@ -51,9 +51,9 @@ public class WebSecurityConfig {
 				.requestMatchers("/api/map-posts/**").hasRole("USER")
 				.anyRequest().authenticated()
 			)
-			// .oauth2Login(oauth2 -> oauth2
-			// 	.redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
-			// )
+			.oauth2Login(oauth2 -> oauth2
+				.redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+			)
 			.exceptionHandling(exceptionHandling -> exceptionHandling
 				.authenticationEntryPoint(new FailedAuthenticationEntryPoint())
 			)
