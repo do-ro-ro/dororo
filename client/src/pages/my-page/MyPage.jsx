@@ -1,7 +1,15 @@
-import { Box, Stack, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    IconButton,
+    Paper,
+    Stack,
+    Typography,
+} from "@mui/material";
 import Topbar from "../../components/topbar/Topbar";
 import CourseCard from "../../components/course-card/CourseCard";
 import BasicProfile from "../../assets/user_profile_basic.png";
+import { Edit } from "@mui/icons-material";
 
 const DummyCourseList = [
     {
@@ -68,6 +76,26 @@ function MyPage() {
                 <Topbar>마이페이지</Topbar>
 
                 <Stack mx={4} mt={2}>
+                    <Paper>
+                        <Stack
+                            direction={"row"}
+                            sx={{ p: 2 }}
+                            justifyContent={"space-between"}
+                        >
+                            <Stack direction={"row"} alignItems={"center"}>
+                                <Box sx={{ mr: 2 }}>
+                                    <img width={"30vw"} src={BasicProfile} />
+                                </Box>
+
+                                <Typography>
+                                    안녕하세요, {DummyUser.nickname}님!
+                                </Typography>
+                            </Stack>
+                            <IconButton color="primary">
+                                <Edit />
+                            </IconButton>
+                        </Stack>
+                    </Paper>
                     <Typography sx={{ my: 2 }}>내가 추천받은 코스</Typography>
                     <Stack direction={"row"}>
                         {DummyCourseList.map((course) => {
