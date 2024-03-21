@@ -95,8 +95,9 @@ def do_query(param_list: list, query: str):    # POSTGRES_OBJECT를 이용해서
 def main():
     # accident_data_list = get_accident()
     # do_query(accident_data_list, "UPDATE links SET accident_volume = accident_volume + 1 WHERE link_id = %s")
-    traffic_data_list = get_traffic()
-    do_query(traffic_data_list, "UPDATE links SET traffic = traffic + %s WHERE link_id = %s")
+    # traffic_data_list = get_traffic()
+    # do_query(traffic_data_list, "UPDATE links SET traffic = traffic + %s WHERE link_id = %s")
+    pass
 
 if __name__ == "__main__":
     main()
