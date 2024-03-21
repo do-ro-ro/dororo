@@ -3,6 +3,8 @@ package com.dororo.api.commnunity.controller;
 import com.dororo.api.commnunity.dto.response.GetPostDetailsDto;
 import com.dororo.api.commnunity.service.CommunityService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,7 +36,8 @@ public class CommunityController {
     // <-------------------- GET part -------------------->
     @Operation(summary = "커뮤니티 map post 상세 조회 요청", description = "커뮤니티에 등록된 map post의 상세 조회를 수행하는 API입니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "코스 상세 조회 성공")
+            @ApiResponse(responseCode = "200", description = "코스 상세 조회 성공",
+                    content = @Content(schema = @Schema(implementation = GetPostDetailsDto.class)))
     })
     @GetMapping("/{mapId}")
     public ResponseEntity postDetails(@PathVariable Integer mapId) {
