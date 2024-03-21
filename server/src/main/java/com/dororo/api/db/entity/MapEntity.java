@@ -29,13 +29,13 @@ public class MapEntity {
     @Enumerated(EnumType.STRING)
     private Maptype mapType = Maptype.DEFAULT;
     private Float mapDistance;
-    private Integer orginalMapId;
+    private Integer originalMapId;
     @ColumnDefault("false")
     private Boolean mapCompletion;
     @OneToOne(mappedBy = "mapId")
     private PostEntity post;
 
     public enum Maptype{
-        DEFAULT, CUMTOM, SCRAP
+        DEFAULT, CUSTOM, SCRAP
     }
 }
