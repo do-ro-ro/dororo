@@ -1,5 +1,6 @@
 package com.dororo.api.commnunity.controller;
 
+import com.dororo.api.commnunity.dto.response.GetPostDetailsDto;
 import com.dororo.api.commnunity.service.CommunityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,9 +38,9 @@ public class CommunityController {
     })
     @GetMapping("/{mapId}")
     public ResponseEntity postDetails(@PathVariable Integer mapId) {
-        communityService.postDetails();
+        GetPostDetailsDto getPostDetailsDto = communityService.postDetails();
 
-        return new ResponseEntity("temp", HttpStatus.OK);
+        return new ResponseEntity(getPostDetailsDto, HttpStatus.OK);
     }
 
 }

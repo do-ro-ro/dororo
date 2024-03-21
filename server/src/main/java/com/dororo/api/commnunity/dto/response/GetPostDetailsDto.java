@@ -1,4 +1,4 @@
 package com.dororo.api.commnunity.dto.response;
 
-public class PostResponseDto {
+public class GetPostDetailsDto {
 }

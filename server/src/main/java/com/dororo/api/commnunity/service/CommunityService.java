@@ -1,5 +1,6 @@
 package com.dororo.api.commnunity.service;
 
+import com.dororo.api.commnunity.dto.response.GetPostDetailsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +12,10 @@ public class CommunityService {
 
     }
 
-    public void postDetails() {
+    public GetPostDetailsDto postDetails() {
+        GetPostDetailsDto getPostDetailsDto = new GetPostDetailsDto();
 
+        return getPostDetailsDto;
     }
 
 }
