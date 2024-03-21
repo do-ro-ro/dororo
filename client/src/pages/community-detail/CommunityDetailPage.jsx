@@ -5,6 +5,8 @@ import {
     IconButton,
     Stack,
     Typography,
+    Snackbar,
+    Alert,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import Topbar from "../../components/topbar/Topbar";
@@ -33,6 +35,24 @@ function CommunityDetailPage() {
     const { postId } = useParams();
     const [isScrapped, setIsScrapped] = useState(false);
     const [scrapCount, setScrapCount] = useState(DummyCourse.scrap_count);
+
+    // snack바 관련
+    const [scrapSnackbarOpen, setScrapSnackbarOpen] = useState(false);
+
+    // 스크랩 버튼 클릭시
+    // const handleScrapClick = () => {
+
+    // };
+
+    // 스낵바 닫기
+    const handleScrapSnackbarClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setScrapSnackbarOpen(false);
+    };
+
     return (
         <>
             <Box>
@@ -89,6 +109,7 @@ function CommunityDetailPage() {
                             onClick={() => {
                                 setIsScrapped(true);
                                 setScrapCount(scrapCount + 1);
+                                setScrapSnackbarOpen(true);
                             }}
                         >
                             <BookmarkBorder color={"primary"} />{" "}
@@ -99,6 +120,7 @@ function CommunityDetailPage() {
                             onClick={() => {
                                 setIsScrapped(false);
                                 setScrapCount(scrapCount - 1);
+                                setScrapSnackbarOpen(true);
                             }}
                         >
                             <Bookmark color={"primary"} />
@@ -111,6 +133,23 @@ function CommunityDetailPage() {
                     <Typography>{DummyCourse.post_content}</Typography>
                 </Box>
             </Box>
+            <Snackbar
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                open={scrapSnackbarOpen}
+                autoHideDuration={2500}
+                onClose={handleScrapSnackbarClose}
+                sx={{ mb: 10 }}
+            >
+                {isScrapped ? (
+                    <Alert variant="filled" severity="success">
+                        마이페이지로 스크랩되었습니다
+                    </Alert>
+                ) : (
+                    <Alert variant="filled" severity="error">
+                        스크랩이 취소되었습니다
+                    </Alert>
+                )}
+            </Snackbar>
         </>
     );
 }
