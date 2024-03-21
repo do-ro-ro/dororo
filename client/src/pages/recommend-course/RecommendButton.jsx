@@ -1,9 +1,10 @@
 import { Button } from "@mui/material";
 
-const RecommendButton = () => {
+const RecommendButton = ({ openModal }) => {
     return (
         <>
             <Button
+                onClick={openModal}
                 variant="contained"
                 sx={{
                     width: "15rem",
