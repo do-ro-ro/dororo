@@ -21,8 +21,8 @@ public class SwaggerConfig {
     }
     private Info apiInfo() {
         return new Info()
-                .title("도로로 Swegger")
-                .description("도로로 API 명세입니다.");
+                .title("도로로 Swagger")
+                .description("도로로의 API 명세입니다람쥐드래곤.");
     }
 
 }
