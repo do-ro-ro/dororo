@@ -1,3 +1,4 @@
+import { ArrowBack } from "@mui/icons-material";
 import {
     AppBar,
     Box,
@@ -15,6 +16,7 @@ function Topbar(props) {
                 <AppBar position="static">
                     <Container maxWidth="xl">
                         <Toolbar>
+                            <ArrowBack />
                             <Typography {...rest}>{children}</Typography>
                         </Toolbar>
                     </Container>
