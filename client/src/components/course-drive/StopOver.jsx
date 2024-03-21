@@ -1,23 +1,38 @@
 import React, { useEffect, useState } from "react";
 
-const SimpleMap = ({ lat, lng, coolList, fillterList, setFillterList }) => {
+const SimpleMap = ({
+    lat,
+    lng,
+    coolList,
+    fillterList,
+    setFillterList,
+    setTime,
+    setKm,
+}) => {
     let [map, setMap] = useState(null);
     const [resultMarkerArr, setResultMarkerArr] = useState([]);
     const [resultInfoArr, setResultInfoArr] = useState([]);
 
     useEffect(() => {
-        // console.log(lat);
-        // console.log(lon);
-        // console.log(coolList);
-        // console.log(coolList.length);
+        if (coolList.length > 2) {
+            initTmap();
+        }
+    }, [fillterList]);
+
+    useEffect(() => {
         if (coolList.length > 1) {
-            // console.log(coolList);
             setFillterList(coolList.slice(1, coolList.length - 1));
+            // console.log(fillterList.length);
+
             // initTmap();
+            //
         }
     }, [coolList]);
 
     const initTmap = () => {
+        if (map !== null) {
+            return;
+        }
         setResultMarkerArr([]);
 
         map = new window.Tmapv2.Map("map_div", {
@@ -70,20 +85,11 @@ const SimpleMap = ({ lat, lng, coolList, fillterList, setFillterList }) => {
         });
 
         document.getElementById("btn_select").addEventListener("click", () => {
-            {
-                // console.log(fillterList);
-            }
-
-            const searchOption = document.getElementById("selectLevel").value;
-
             const headers = {
-                appKey: "biTbgqZv225ydagowr17d9sD74C6uMF55JjTMkOT",
+                appKey: import.meta.env.VITE_TMAP_API_KEY,
                 "Content-Type": "application/json",
             };
 
-            {
-                console.log(coolList[coolList.length - 1].lat);
-            }
             const param = {
                 startName: "출발지",
                 startX: coolList[0].lon.toString(),
@@ -100,7 +106,7 @@ const SimpleMap = ({ lat, lng, coolList, fillterList, setFillterList }) => {
                 })),
                 reqCoordType: "WGS84GEO",
                 resCoordType: "EPSG3857",
-                searchOption: searchOption,
+                searchOption: 1,
             };
 
             fetch(
@@ -116,18 +122,13 @@ const SimpleMap = ({ lat, lng, coolList, fillterList, setFillterList }) => {
                     const resultData = data.properties;
                     const resultFeatures = data.features;
 
-                    const tDistance =
-                        "총 거리 : " +
-                        (resultData.totalDistance / 1000).toFixed(1) +
-                        "km,  ";
-                    const tTime =
-                        "총 시간 : " +
-                        (resultData.totalTime / 60).toFixed(0) +
-                        "분,  ";
-                    const tFare = "총 요금 : " + resultData.totalFare + "원";
+                    const tDistance = (resultData.totalDistance / 1000).toFixed(
+                        1,
+                    );
+                    const tTime = (resultData.totalTime / 60).toFixed(0);
 
-                    document.getElementById("result").innerText =
-                        tDistance + tTime + tFare;
+                    setTime(tTime);
+                    setKm(tDistance);
 
                     if (resultInfoArr.length > 0) {
                         resultInfoArr.forEach((info) => info.setMap(null));
@@ -212,20 +213,7 @@ const SimpleMap = ({ lat, lng, coolList, fillterList, setFillterList }) => {
     return (
         <div>
             <p id="result"></p>
-            <select id="selectLevel">
-                <option value="0">교통최적+추천</option>
-                <option value="1">교통최적+무료우선</option>
-                <option value="2">교통최적+최소시간</option>
-                <option value="3">교통최적+초보</option>
-            </select>
             <button id="btn_select">적용하기</button>
-            <button
-                onClick={() => {
-                    initTmap();
-                }}
-            >
-                클릭
-            </button>
             <div id="map_wrap" className="map_wrap">
                 <div id="map_div"></div>
             </div>
