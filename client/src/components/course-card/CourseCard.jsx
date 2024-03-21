@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 function CourseCard(props) {
     const { children, postId, ...rest } = props;
 
+    // 클릭시 이동을 위한 navigate
     const navigate = useNavigate();
     const handleNavigate = (postId) => {
-        navigate(`/main/community/${postId}`);
+        navigate(`${postId}`);
     };
 
     return (
@@ -18,7 +19,7 @@ function CourseCard(props) {
                     height: "20vh",
                     mx: 1,
                 }}
-                onClick={() => handleNavigate(`/main/community/${postId}`)}
+                onClick={() => handleNavigate(`${postId}`)}
             >
                 <CardMedia sx={{ height: "8rem" }} image={SampleCourseImg} />
                 <CardContent>
