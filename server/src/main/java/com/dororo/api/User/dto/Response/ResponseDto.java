@@ -17,7 +17,7 @@ public class ResponseDto {
 
 	public ResponseDto() {
 		this.code = ResponseCode.SUCCESS;
-		this.message = ResponseCode.SUCCESS;
+		this.message = ResponseMessage.SUCCESS;
 	}
 
 	public static ResponseEntity<ResponseDto> databaseError() {

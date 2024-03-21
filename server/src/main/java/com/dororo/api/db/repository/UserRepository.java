@@ -6,5 +6,6 @@ import com.dororo.api.db.entity.UserEntity;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
+	UserEntity findByUniqueId(String uniqueId);
 	UserEntity findByUserId(Integer userId);
 }

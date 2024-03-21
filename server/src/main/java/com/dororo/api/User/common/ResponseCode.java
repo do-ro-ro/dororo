@@ -6,6 +6,7 @@ public interface ResponseCode {
 	String DUPLICATE_ID = "DI";
 
 	String SIGN_IN_FAIL = "SF";
+	String SIGN_UP_FAIL = "SUF";
 	String CERTIFICATION_FAIL = "CF";
 
 	String DATABASE_ERROR = "DBE";
