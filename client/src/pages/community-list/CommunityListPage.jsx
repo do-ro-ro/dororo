@@ -127,15 +127,15 @@ function CommunityListPage() {
                         <Typography>코스 보기</Typography>
                         <Box>
                             <Button
-                                variant="contained"
-                                color={isActivated ? "primary" : "secondary"}
+                                variant={isActivated ? "contained" : "text"}
+                                color="primary"
                                 onClick={() => setIsActivated(true)}
                             >
                                 최신순
                             </Button>
                             <Button
-                                variant="contained"
-                                color={isActivated ? "secondary" : "primary"}
+                                variant={isActivated ? "text" : "contained"}
+                                color="primary"
                                 onClick={() => setIsActivated(false)}
                             >
                                 인기순

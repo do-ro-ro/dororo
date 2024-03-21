@@ -21,7 +21,7 @@ function CourseCard(props) {
                 sx={{
                     width: "30vw",
                     height: "20vh",
-                    mx: 1,
+                    m: 1,
                 }}
                 onClick={() => handleNavigate(`${postId}`)}
             >
