@@ -19,7 +19,7 @@ public class CommunityController {
     private CommunityService communityService;
 
     // <-------------------- POST part -------------------->
-    @Operation(summary = "커뮤니티 게시글 생성 요청", description = "코스 공유를 했을 때 동작을 수행하는 API입니다.")
+    @Operation(summary = "커뮤니티 map post 생성 요청", description = "코스 공유를 했을 때 동작을 수행하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "코스 공유 성공")
     })
@@ -30,7 +30,7 @@ public class CommunityController {
     }
 
     // <-------------------- GET part -------------------->
-    @Operation(summary = "커뮤니티 게시글 상세 조회 요청", description = "커뮤니티에 등록된 게시글의 상세 조회를 수행하는 API입니다.")
+    @Operation(summary = "커뮤니티 map post 상세 조회 요청", description = "커뮤니티에 등록된 map post의 상세 조회를 수행하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "코스 상세 조회 성공")
     })
