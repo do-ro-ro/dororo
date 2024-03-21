@@ -98,6 +98,7 @@ function MyPage() {
                                     <CourseCard
                                         key={course.post_id}
                                         postId={course.post_id}
+                                        variant={"course"}
                                     >
                                         {course.post_title}
                                     </CourseCard>

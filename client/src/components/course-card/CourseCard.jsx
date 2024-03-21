@@ -3,12 +3,16 @@ import SampleCourseImg from "../../assets/sample_course_img.png";
 import { useNavigate } from "react-router-dom";
 
 function CourseCard(props) {
-    const { children, postId, ...rest } = props;
+    const { children, postId, variant, ...rest } = props;
 
     // 클릭시 이동을 위한 navigate
     const navigate = useNavigate();
     const handleNavigate = (postId) => {
-        navigate(`${postId}`);
+        if (variant === "post") {
+            navigate(`${postId}`);
+        } else {
+            navigate(`/course/${postId}`);
+        }
     };
 
     return (

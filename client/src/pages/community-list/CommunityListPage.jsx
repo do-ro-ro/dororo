@@ -84,7 +84,11 @@ function CommunityListPage() {
         return chunkedCourses.map((chunk, index) => (
             <Stack key={index} direction="row">
                 {chunk.map((course) => (
-                    <CourseCard postId={course.post_id} key={course.post_id}>
+                    <CourseCard
+                        postId={course.post_id}
+                        key={course.post_id}
+                        variant={"post"}
+                    >
                         {course.post_title}
                     </CourseCard>
                 ))}
@@ -107,6 +111,7 @@ function CommunityListPage() {
                                 <CourseCard
                                     key={course.post_id}
                                     postId={course.post_id}
+                                    variant={"post"}
                                 >
                                     {course.post_title}
                                 </CourseCard>
