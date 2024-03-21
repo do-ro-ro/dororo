@@ -6,9 +6,15 @@ const SimpleMap = ({ lat, lng, coolList, fillterList, setFillterList }) => {
     const [resultInfoArr, setResultInfoArr] = useState([]);
 
     useEffect(() => {
+        if (coolList.length > 2) {
+            initTmap();
+        }
+    }, [fillterList]);
+
+    useEffect(() => {
         if (coolList.length > 1) {
             setFillterList(coolList.slice(1, coolList.length - 1));
-            console.log(fillterList.length);
+            // console.log(fillterList.length);
 
             // initTmap();
             //
@@ -204,20 +210,7 @@ const SimpleMap = ({ lat, lng, coolList, fillterList, setFillterList }) => {
     return (
         <div>
             <p id="result"></p>
-            {/* <select id="selectLevel">
-                <option value="0">교통최적+추천</option>
-                <option value="1">교통최적+무료우선</option>
-                <option value="2">교통최적+최소시간</option>
-                <option value="3">교통최적+초보</option>
-            </select> */}
             <button id="btn_select">적용하기</button>
-            <button
-                onClick={() => {
-                    initTmap();
-                }}
-            >
-                클릭
-            </button>
             <div id="map_wrap" className="map_wrap">
                 <div id="map_div"></div>
             </div>
