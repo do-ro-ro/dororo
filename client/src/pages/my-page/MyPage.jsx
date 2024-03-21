@@ -10,6 +10,7 @@ import Topbar from "../../components/topbar/Topbar";
 import CourseCard from "../../components/course-card/CourseCard";
 import BasicProfile from "../../assets/user_profile_basic.png";
 import { BorderColor, Edit } from "@mui/icons-material";
+import EditProfileModal from "../../components/my-page/EditProfileModal";
 
 const DummyCourseList = [
     {
@@ -91,9 +92,7 @@ function MyPage() {
                                     안녕하세요, {DummyUser.nickname}님!
                                 </Typography>
                             </Stack>
-                            <IconButton color="primary">
-                                <BorderColor />
-                            </IconButton>
+                            <EditProfileModal />
                         </Stack>
                     </Paper>
                     <Typography sx={{ my: 2 }}>내가 추천받은 코스</Typography>
