@@ -25,6 +25,7 @@ public class CommunityController {
     })
     @PostMapping("")
     public ResponseEntity addPost() {
+        communityService.addPost();
 
         return new ResponseEntity("temp", HttpStatus.CREATED);
     }
@@ -35,7 +36,8 @@ public class CommunityController {
             @ApiResponse(responseCode = "200", description = "코스 상세 조회 성공")
     })
     @GetMapping("/{mapId}")
-    public ResponseEntity getPost(@PathVariable Integer mapId) {
+    public ResponseEntity postDetails(@PathVariable Integer mapId) {
+        communityService.postDetails();
 
         return new ResponseEntity("temp", HttpStatus.OK);
     }
