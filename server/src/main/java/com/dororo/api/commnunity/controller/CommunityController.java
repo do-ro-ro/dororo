@@ -8,9 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Community", description = "커뮤니티 기능의 API 명세")
 @RestController
@@ -26,9 +24,20 @@ public class CommunityController {
             @ApiResponse(responseCode = "201", description = "코스 공유 성공")
     })
     @PostMapping("")
-    public ResponseEntity addPosts() {
+    public ResponseEntity addPost() {
 
         return new ResponseEntity("temp", HttpStatus.CREATED);
+    }
+
+    // <-------------------- GET part -------------------->
+    @Operation(summary = "커뮤니티 게시글 상세 조회 요청", description = "커뮤니티에 등록된 게시글의 상세 조회를 수행하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "코스 상세 조회 성공")
+    })
+    @GetMapping("/{mapId}")
+    public ResponseEntity getPost(@PathVariable Integer mapId) {
+
+        return new ResponseEntity("temp", HttpStatus.OK);
     }
 
 }
