@@ -29,7 +29,7 @@ const Map = ({ lat, lon }) => {
         const newMap = new window.Tmapv2.Map("map_div", {
             center: new window.Tmapv2.LatLng(lat, lon),
             width: "100%",
-            height: "600px",
+            height: "100%",
             zoom: 17,
             zoomControl: true,
             scrollwheel: true,

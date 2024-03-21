@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import PlaceIcon from "@mui/icons-material/Place";
-
+import { Paper } from "@mui/material";
 const Search = ({ setLat, setLon }) => {
     const [keyword, setKeyword] = useState("");
     const [places, setPlaces] = useState([]);
@@ -111,7 +112,16 @@ const Search = ({ setLat, setLon }) => {
                             // searchPlaces();
                         }}
                     >
-                        <div>
+                        <Paper
+                            elevation={3}
+                            sx={{
+                                position: "fixed",
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                zIndex: 10,
+                            }}
+                        >
                             <TextField
                                 id="search-box"
                                 label=""
@@ -139,7 +149,7 @@ const Search = ({ setLat, setLon }) => {
                                     ),
                                 }}
                             />
-                        </div>
+                        </Paper>
                         {/* <button type="submit">검색하기</button> */}
                     </form>
                 </div>
