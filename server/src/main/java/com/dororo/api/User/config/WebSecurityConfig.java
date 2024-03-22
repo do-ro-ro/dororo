@@ -77,6 +77,7 @@ public class WebSecurityConfig {
 		corsConfiguration.addAllowedOrigin("https://j10e202.p.ssafy.io");
 		corsConfiguration.addAllowedMethod("*");
 		corsConfiguration.addAllowedHeader("*");
+		corsConfiguration.setAllowCredentials(true);	// 응답에 Access-Control-Allow-Credentials 헤더를 true로 설정
 
 		/*
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
