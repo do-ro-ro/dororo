@@ -11,6 +11,14 @@ function RecommendedCoursePage() {
     const [lon, setLon] = useState(126.98702028);
     const [timestamp, setTimestamp] = useState();
 
+    const [option, setOption] = useState({
+        method: "",
+        length: 5,
+        left: 1,
+        right: 1,
+        uturn: 1,
+    });
+
     const [showModal, setShowModal] = useState(false);
 
     const openModal = () => {
@@ -19,6 +27,7 @@ function RecommendedCoursePage() {
 
     const closeModal = () => {
         setShowModal(false);
+        console.log(option);
     };
 
     return (
@@ -44,7 +53,12 @@ function RecommendedCoursePage() {
             </div>
             <div>
                 {showModal && (
-                    <OptionModal open={showModal} closeModal={closeModal} />
+                    <OptionModal
+                        open={showModal}
+                        closeModal={closeModal}
+                        setOption={setOption}
+                        option={option}
+                    />
                 )}
             </div>
         </>
