@@ -20,7 +20,7 @@ public class CommunityService {
 
     // <------------------------ POST part ------------------------>
     public void addPost(AddPostDto addPostDto) {
-
+        Integer mapId = addPostDto.getMapId();  // 참조하는 맵의 ID
     }
 
     // <------------------------ GET part ------------------------>
