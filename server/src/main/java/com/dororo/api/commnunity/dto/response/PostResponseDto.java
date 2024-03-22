@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.sql.Timestamp;
 
-public abstract class PostResponseDto {
+public abstract class PostResponseDto { // post의 response에서 공통으로 반환하는 값들을 선언한 추상 클래스
 
     private Integer postId;
     

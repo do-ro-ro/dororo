@@ -1,6 +1,7 @@
 package com.dororo.api.commnunity.service;
 
-import com.dororo.api.commnunity.dto.response.GetPostDetailsDto;
+import com.dororo.api.commnunity.dto.request.AddPostDto;
+import com.dororo.api.commnunity.dto.response.PostDetailsDto;
 import com.dororo.api.db.entity.PostEntity;
 import com.dororo.api.db.repository.PostRepository;
 import com.dororo.api.exception.NoMatchingResourceException;
@@ -18,18 +19,18 @@ public class CommunityService {
     private final PostRepository postRepository;
 
     // <------------------------ POST part ------------------------>
-    public void addPost() {
+    public void addPost(AddPostDto addPostDto) {
 
     }
 
     // <------------------------ GET part ------------------------>
-    public GetPostDetailsDto postDetails(Integer postId) {
+    public PostDetailsDto postDetails(Integer postId) {
         Optional<PostEntity> tempPostEntity = postRepository.findByPostId(postId);  // 존재하는지 체크하기 위해 Optional 객체로 생성
         if (!tempPostEntity.isPresent()) throw new NoMatchingResourceException("해당하는 게시글이 존재하지 않습니다.");
 
         PostEntity postEntity = tempPostEntity.get();   // Optional 객체가 존재한다면 get() 메서드로 실제 엔티티 받기
 
-        return modelMapper.map(postEntity, GetPostDetailsDto.class);
+        return modelMapper.map(postEntity, PostDetailsDto.class);
     }
 
     // <------------------------ Common method part ------------------------>

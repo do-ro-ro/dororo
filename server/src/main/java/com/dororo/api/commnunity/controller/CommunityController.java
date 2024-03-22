@@ -1,6 +1,7 @@
 package com.dororo.api.commnunity.controller;
 
-import com.dororo.api.commnunity.dto.response.GetPostDetailsDto;
+import com.dororo.api.commnunity.dto.request.AddPostDto;
+import com.dororo.api.commnunity.dto.response.PostDetailsDto;
 import com.dororo.api.commnunity.service.CommunityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,8 +28,8 @@ public class CommunityController {
             @ApiResponse(responseCode = "201", description = "코스 공유 성공")
     })
     @PostMapping("")
-    public ResponseEntity addPost() {
-        communityService.addPost();
+    public ResponseEntity addPost(@RequestBody AddPostDto addPostDto) {
+        communityService.addPost(addPostDto);
 
         return new ResponseEntity("temp", HttpStatus.CREATED);
     }
@@ -37,13 +38,13 @@ public class CommunityController {
     @Operation(summary = "커뮤니티 map post 상세 조회 요청", description = "커뮤니티에 등록된 map post의 상세 조회를 수행하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "코스 상세 조회 성공",
-                    content = @Content(schema = @Schema(implementation = GetPostDetailsDto.class)))
+                    content = @Content(schema = @Schema(implementation = PostDetailsDto.class)))
     })
     @GetMapping("/{postId}")
     public ResponseEntity postDetails(@PathVariable Integer postId) {
-        GetPostDetailsDto getPostDetailsDto = communityService.postDetails(postId);
+        PostDetailsDto postDetailsDto = communityService.postDetails(postId);
 
-        return new ResponseEntity(getPostDetailsDto, HttpStatus.OK);
+        return new ResponseEntity(postDetailsDto, HttpStatus.OK);
     }
 
 }
