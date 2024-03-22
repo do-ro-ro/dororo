@@ -35,7 +35,7 @@ public class CommunityService {
     // <------------------------ GET part ------------------------>
     public PostDetailsDto postDetails(Integer postId) {
         Optional<PostEntity> tempPostEntity = postRepository.findByPostId(postId);  // 존재하는지 체크하기 위해 Optional 객체로 생성
-        if (!tempPostEntity.isPresent()) throw new NoMatchingResourceException("해당하는 게시글이 존재하지 않습니다.");
+        if (!tempPostEntity.isPresent()) throw new NoMatchingResourceException("No Content");
 
         PostEntity postEntity = tempPostEntity.get();   // Optional 객체가 존재한다면 get() 메서드로 실제 엔티티 받기
 

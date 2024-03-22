@@ -38,7 +38,8 @@ public class CommunityController {
     @Operation(summary = "커뮤니티 map post 상세 조회 요청", description = "커뮤니티에 등록된 map post의 상세 조회를 수행하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "코스 상세 조회 성공",
-                    content = @Content(schema = @Schema(implementation = PostDetailsDto.class)))
+                    content = @Content(schema = @Schema(implementation = PostDetailsDto.class))),
+            @ApiResponse(responseCode = "401", description = "요청 받은 post의 ID로 게시글 조회 불가")
     })
     @GetMapping("/{postId}")
     public ResponseEntity postDetails(@PathVariable Integer postId) {
