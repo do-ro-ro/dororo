@@ -8,7 +8,7 @@ import org.locationtech.jts.geom.LineString;
 @AllArgsConstructor
 @Getter
 @Setter
-public class GetPostDetailsDto extends GetPostDto {
+public class GetPostDetailsDto extends PostResponseDto {
 
     private String postTitle;
     private String postContent;

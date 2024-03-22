@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.sql.Timestamp;
 
-public abstract class GetPostDto {
+public abstract class PostResponseDto {
 
     private Integer postId;
     
