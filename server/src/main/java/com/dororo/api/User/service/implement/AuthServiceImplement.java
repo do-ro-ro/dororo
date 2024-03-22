@@ -35,8 +35,6 @@ public class AuthServiceImplement implements AuthService {
 			//role
 			String role = "ROLE_USER";
 
-			System.out.println(name+userUniqueId+nickname);
-
 			UserEntity userEntity = new UserEntity();
 			userEntity.setName(name);
 			userEntity.setUniqueId(userUniqueId);

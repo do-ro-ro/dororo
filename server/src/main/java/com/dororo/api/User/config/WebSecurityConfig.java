@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.dororo.api.User.filter.JwtAuthenticationFilter;
+import com.dororo.api.User.handler.OAuth2SuccessHandler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 public class WebSecurityConfig {
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	private final DefaultOAuth2UserService oAuth2UserService;
+	private final OAuth2SuccessHandler oAuth2SuccessHandler;
 	@Bean
 	protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
 
@@ -46,15 +48,17 @@ public class WebSecurityConfig {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			)
 			.authorizeHttpRequests(request -> request
-				.requestMatchers("/", "/api/auth/**","/oauth2/**").permitAll()
+				.requestMatchers("/","/index.html", "/api/auth/**","/oauth2/**").permitAll()
 				.requestMatchers("/api/users/**").hasRole("USER")
 				.requestMatchers("/api/maps/**").hasRole("USER")
 				.requestMatchers("/api/map-posts/**").hasRole("USER")
 				.anyRequest().authenticated()
 			)
 			.oauth2Login(oauth2 -> oauth2
+				.authorizationEndpoint(endpoint -> endpoint.baseUri("/api/auth/oauth2"))
 				.redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
 				.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
+				.successHandler(oAuth2SuccessHandler)
 			)
 			.exceptionHandling(exceptionHandling -> exceptionHandling
 				.authenticationEntryPoint(new FailedAuthenticationEntryPoint())

@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 
 @Controller
 public class AuthController {
+
 	@Autowired
 	private AuthService authService;
 
@@ -24,4 +25,6 @@ public class AuthController {
 		ResponseEntity<? super SignUpResponseDto> response = authService.signUp(requestBody);
 		return response;
 	}
+
+
 }
