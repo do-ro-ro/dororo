@@ -1,4 +1,4 @@
-package com.dororo.api.db.entity;
+package com.dororo.api.User.dto.Response;
 
 import java.util.Collection;
 import java.util.Map;
@@ -29,6 +29,4 @@ public class CustomOAuth2User implements OAuth2User {
 	public String getName() {
 		return this.userUniqueId;
 	}
-
-
 }

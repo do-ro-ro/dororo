@@ -7,7 +7,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import com.dororo.api.User.provider.JwtProvider;
-import com.dororo.api.db.entity.CustomOAuth2User;
+import com.dororo.api.User.dto.Response.CustomOAuth2User;
 
 import jakarta.servlet.ServletException;
 

@@ -16,7 +16,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.dororo.api.User.provider.JwtProvider;
-import com.dororo.api.User.service.AuthService;
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.UserRepository;
 
@@ -31,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final UserRepository userRepository;
 	private final JwtProvider jwtProvider;
-	private final AuthService authService;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -82,5 +80,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		String token = authorization.substring(7);
 		return token;
 	}
-
 }
