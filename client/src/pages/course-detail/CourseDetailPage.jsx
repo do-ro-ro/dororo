@@ -10,6 +10,9 @@ import Topbar from "../../components/topbar/Topbar";
 import { Cancel, CheckCircle } from "@mui/icons-material";
 import SampleCourseImg from "../../assets/sample_course_img.png";
 import DriveIcon from "../../assets/drive_icon.png";
+import Map from "../recommend-course/Map";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const DummyMap = {
     map_id: 0,
@@ -22,9 +25,13 @@ const DummyMap = {
 };
 
 function CourseDetailPage() {
+    const [lat, setLat] = useState(37.5652045);
+    const [lon, setLon] = useState(126.98702028);
+
+    const navigate = useNavigate();
     return (
         <>
-            <Box>
+            <div className="relative">
                 <Topbar>코스 조회하기</Topbar>
                 <Paper>
                     <Stack>
@@ -37,7 +44,13 @@ function CourseDetailPage() {
                             <Typography variant="h5">
                                 {DummyMap.map_name}
                             </Typography>
-                            <Button>삭제</Button>
+                            <Button
+                                variant="contained"
+                                color="error"
+                                sx={{ height: "3vh" }}
+                            >
+                                삭제
+                            </Button>
                         </Stack>
                         <Stack
                             direction={"row"}
@@ -67,18 +80,36 @@ function CourseDetailPage() {
                         </Stack>
                     </Stack>
                 </Paper>
-                <img width={"100%"} src={DummyMap.map_image} />
-                <Stack alignItems={"center"}>
-                    <Button variant="contained" sx={{ width: "90vw", py: 1 }}>
-                        <Stack direction={"row"} alignItems={"center"}>
-                            <img src={DriveIcon} />
-                            <Typography variant="h4" sx={{ ml: 1 }}>
-                                주행하기
-                            </Typography>
+                <div className="relative">
+                    <div className="absolute z-50 top-1 left-0  m-4">
+                        <Stack direction={"row"}>
+                            <Button variant="contained" sx={{}}>
+                                코스 수정
+                            </Button>
+                            <Button variant="contained" sx={{ ml: 1 }}>
+                                공유하기
+                            </Button>
                         </Stack>
-                    </Button>
-                </Stack>
-            </Box>
+                    </div>
+                    <Map lat={lat} lon={lon} />
+                </div>
+                <div className="fixed z-50 bottom-2 inset-x-0">
+                    <Stack alignItems={"center"}>
+                        <Button
+                            variant="contained"
+                            sx={{ width: "90vw", py: 1 }}
+                            onClick={() => navigate(`drive`)}
+                        >
+                            <Stack direction={"row"} alignItems={"center"}>
+                                <img src={DriveIcon} />
+                                <Typography variant="h4" sx={{ ml: 1 }}>
+                                    주행하기
+                                </Typography>
+                            </Stack>
+                        </Button>
+                    </Stack>
+                </div>
+            </div>
         </>
     );
 }
