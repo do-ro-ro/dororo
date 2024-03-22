@@ -14,7 +14,7 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         Server localServer = new Server().url("http://localhost:8080").description("Local HTTP Server");
-        Server httpsServer = new Server().url("https://i10e105.p.ssafy.io").description("Test HTTPS Server");
+        Server httpsServer = new Server().url("https://j10e202.p.ssafy.io").description("Prod HTTPS Server");
         return new OpenAPI()
                 .servers(Arrays.asList(httpsServer, localServer))
                 .info(apiInfo());
