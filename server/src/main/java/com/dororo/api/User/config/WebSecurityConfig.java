@@ -73,7 +73,8 @@ public class WebSecurityConfig {
 	protected CorsConfigurationSource corsConfigurationSource() {
 
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
-		corsConfiguration.addAllowedOrigin("*");
+		corsConfiguration.addAllowedOrigin("http://localhost:3000");
+		corsConfiguration.addAllowedOrigin("https://j10e202.p.ssafy.io");
 		corsConfiguration.addAllowedMethod("*");
 		corsConfiguration.addAllowedHeader("*");
 
