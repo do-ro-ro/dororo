@@ -2,6 +2,7 @@ package com.dororo.api.commnunity.service;
 
 import com.dororo.api.commnunity.dto.request.AddPostDto;
 import com.dororo.api.commnunity.dto.response.PostDetailsDto;
+import com.dororo.api.db.entity.MapEntity;
 import com.dororo.api.db.entity.PostEntity;
 import com.dororo.api.db.repository.PostRepository;
 import com.dororo.api.exception.NoMatchingResourceException;
@@ -21,6 +22,11 @@ public class CommunityService {
     // <------------------------ POST part ------------------------>
     public void addPost(AddPostDto addPostDto) {
         Integer mapId = addPostDto.getMapId();  // 참조하는 맵의 ID
+        PostEntity postEntity = PostEntity.builder()
+                .mapId(new MapEntity()) // MapRepository 메서드 선언 전 임시 처리
+                .postTitle(addPostDto.getPostTitle())
+                .postContent(addPostDto.getPostContent())
+                .build();
     }
 
     // <------------------------ GET part ------------------------>
