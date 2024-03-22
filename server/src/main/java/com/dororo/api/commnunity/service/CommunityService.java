@@ -26,7 +26,10 @@ public class CommunityService {
                 .mapId(new MapEntity()) // MapRepository 메서드 선언 전 임시 처리
                 .postTitle(addPostDto.getPostTitle())
                 .postContent(addPostDto.getPostContent())
+                .reviewRef(addPostDto.getReviewRef())
                 .build();
+
+        postRepository.save(postEntity);
     }
 
     // <------------------------ GET part ------------------------>
