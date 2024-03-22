@@ -49,6 +49,7 @@ public class WebSecurityConfig {
 			)
 			.authorizeHttpRequests(request -> request
 				.requestMatchers("/","/index.html", "/api/auth/**","/oauth2/**").permitAll()
+				.requestMatchers("/api/docs", "/api/swagger-ui/**", "/v3/api-docs/**").permitAll()	// swagger에 대해 토큰 없이 요청해도 확인할 수 있도록 하는 설정
 				.requestMatchers("/api/users/**").hasRole("USER")
 				.requestMatchers("/api/maps/**").hasRole("USER")
 				.requestMatchers("/api/map-posts/**").hasRole("USER")
