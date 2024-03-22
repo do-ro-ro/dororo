@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor    // Autowired가 아닌 생성자를 통한 주입 방식 적용
 public class CommunityController {
     
-    private CommunityService communityService;
+    private final CommunityService communityService;
 
     // <-------------------- POST part -------------------->
     @Operation(summary = "커뮤니티 map post 생성 요청", description = "코스 공유를 했을 때 동작을 수행하는 API입니다.")
