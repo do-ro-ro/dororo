@@ -2,7 +2,6 @@ package com.dororo.api.commnunity.service;
 
 import com.dororo.api.commnunity.dto.response.GetPostDetailsDto;
 import com.dororo.api.db.entity.PostEntity;
-import com.dororo.api.db.repository.MapRepository;
 import com.dororo.api.db.repository.PostRepository;
 import com.dororo.api.exception.NoMatchingResourceException;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,6 @@ public class CommunityService {
 
     private final ModelMapper modelMapper;    // Entity -> Dto 간 변환에 사용
     private final PostRepository postRepository;
-    private final MapRepository mapRepository;
 
     // <------------------------ POST part ------------------------>
     public void addPost() {
