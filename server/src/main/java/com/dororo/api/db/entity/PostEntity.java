@@ -36,8 +36,24 @@ public class PostEntity {
 	private String reviewRef;
 
 	@Builder
-	public PostEntity(Integer mapId, String postTitle, String postContent) {
+	public PostEntity(MapEntity mapId, String postTitle, String postContent, String reviewRef) {
+		this.mapId = mapId;
+		this.postTitle = postTitle;
+		this.postContent = postContent;
+		this.scrapCount = 0;
+		this.reviewRef = reviewRef;
+	}
 
+	@PrePersist
+	protected void onCreate() {	// 데이터베이스에 저장되기 전 시점에 실행되는 메서드
+		Timestamp now = new Timestamp(System.currentTimeMillis());	// 그때의 시간을 받아옴
+		this.createdAt = now;
+		this.updatedAt = now;
+	}
+
+	@PreUpdate
+	protected void onUpdate() {	// 엔티티가 업데이트 되는 시점에 실행되는 메서드
+		this.updatedAt = new Timestamp(System.currentTimeMillis());
 	}
 
 }
