@@ -2,23 +2,63 @@ package com.dororo.api.map.controller;
 
 
 import com.dororo.api.db.entity.MapEntity;
+import com.dororo.api.map.dto.AddMapRequestDto;
+import com.dororo.api.map.dto.DetailMapResponseDto;
 import com.dororo.api.map.dto.MapResponseDto;
 import com.dororo.api.map.service.MapService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 public class MapController {
     @Autowired
     private MapService mapService;
 
-
+    //맵 전체 조회(map-type별로)
     @GetMapping("/maps")
-    public List<MapResponseDto> getAllMaps(@RequestParam("map-type") MapEntity.Maptype maptype){
-        return mapService.getAllMaps(maptype);
+    public ResponseEntity getAllMaps(@RequestParam("map-type") MapEntity.Maptype maptype) {
+        List<MapResponseDto> maps = mapService.getAllMaps(maptype);
+        return ResponseEntity.ok(maps);
     }
+
+    //맵 상세조회
+    @GetMapping("/maps/{mapId}")
+    public ResponseEntity getMapdetails(@PathVariable Integer mapId){
+        DetailMapResponseDto detailMapResponseDto = mapService.getMapById(mapId);
+        return ResponseEntity.ok(detailMapResponseDto);
+    }
+
+    //맵 생성
+    @PostMapping("/maps")
+    public ResponseEntity addMap(@RequestBody AddMapRequestDto addMapRequestDto){
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+    //맵 저장
+    @PostMapping("/maps/save")
+    public ResponseEntity saveMap(){
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    //맵 수정 (주행여부 갱신)
+    @DeleteMapping("/maps/{mapId}")
+    public ResponseEntity deleteMap(@PathVariable Integer mapId){
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+    //맵 삭제
+    @PutMapping("/maps/{mapId}")
+    public ResponseEntity updateMap(@PathVariable Integer mapId){
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+
+
+
 }

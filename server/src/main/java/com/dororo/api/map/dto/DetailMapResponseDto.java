@@ -1,16 +1,11 @@
 package com.dororo.api.map.dto;
 
 import com.dororo.api.db.entity.MapEntity;
-import lombok.*;
-import org.apache.coyote.Response;
+import lombok.Builder;
 import org.locationtech.jts.geom.LineString;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class MapResponseDto {
+public class DetailMapResponseDto {
 
     private Integer mapId;
     private String mapName;
@@ -23,8 +18,8 @@ public class MapResponseDto {
     private Boolean mapCompletion;
 
 
-    public static MapResponseDto fromEntity(MapEntity entity) {
-        return MapResponseDto.builder()
+    public static DetailMapResponseDto fromEntity(MapEntity entity) {
+        return DetailMapResponseDto.builder()
                 .mapId(entity.getMapId())
                 .mapName(entity.getMapName())
                 .mapImage(entity.getMapImage())
@@ -35,6 +30,4 @@ public class MapResponseDto {
                 .mapCompletion(entity.getMapCompletion())
                 .build();
     }
-
-
 }

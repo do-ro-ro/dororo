@@ -2,11 +2,14 @@ package com.dororo.api.map.service;
 
 import com.dororo.api.db.entity.MapEntity;
 import com.dororo.api.db.repository.MapRepository;
+import com.dororo.api.map.dto.DetailMapResponseDto;
 import com.dororo.api.map.dto.MapResponseDto;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MapService {
@@ -15,10 +18,22 @@ public class MapService {
     private MapRepository mapRepository;
 
     public List<MapResponseDto> getAllMaps(MapEntity.Maptype maptype) {
-        List<MapEntity> maps = mapRepository.findAll();
+        // mapRepository에서 maptype에 해당하는 MapEntity 리스트를 가져오기
+        List<MapEntity> maps = mapRepository.findByMapType(maptype);
 
-        //로직구현
-        List<MapResponseDto> lists = null;
-        return lists;
+        // 가져온 MapEntity 리스트를 MapResponseDto 리스트로 변환
+        List<MapResponseDto> mapResponseDtos = maps.stream()
+                .map(mapEntity -> MapResponseDto.fromEntity(mapEntity))
+                .collect(Collectors.toList());
+
+        return mapResponseDtos;
     }
-}
+
+    public DetailMapResponseDto getMapById(Integer mapId) {
+        MapEntity mapEntity = mapRepository.findByMapId(mapId);
+        if (mapEntity == null) {
+            throw new EntityNotFoundException("Map not found with id: " + mapId);
+        }
+        return DetailMapResponseDto.fromEntity(mapEntity);
+    }
+ }
