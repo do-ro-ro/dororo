@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -31,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
+	private final DefaultOAuth2UserService oAuth2UserService;
 	@Bean
 	protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
 
@@ -53,6 +54,7 @@ public class WebSecurityConfig {
 			)
 			.oauth2Login(oauth2 -> oauth2
 				.redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+				.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
 			)
 			.exceptionHandling(exceptionHandling -> exceptionHandling
 				.authenticationEntryPoint(new FailedAuthenticationEntryPoint())
