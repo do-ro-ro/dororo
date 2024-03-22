@@ -39,9 +39,9 @@ public class CommunityController {
             @ApiResponse(responseCode = "200", description = "코스 상세 조회 성공",
                     content = @Content(schema = @Schema(implementation = GetPostDetailsDto.class)))
     })
-    @GetMapping("/{mapId}")
-    public ResponseEntity postDetails(@PathVariable Integer mapId) {
-        GetPostDetailsDto getPostDetailsDto = communityService.postDetails();
+    @GetMapping("/{postId}")
+    public ResponseEntity postDetails(@PathVariable Integer postId) {
+        GetPostDetailsDto getPostDetailsDto = communityService.postDetails(postId);
 
         return new ResponseEntity(getPostDetailsDto, HttpStatus.OK);
     }
