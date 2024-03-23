@@ -23,7 +23,7 @@ public class CommunityService {
     private final PostRepository postRepository;
 
     // <------------------------ POST part ------------------------>
-    public void addPost(AddPostDto addPostDto) {
+    public PostEntity addPost(AddPostDto addPostDto) {
         Integer mapId = addPostDto.getMapId();  // 참조하는 맵의 ID
         PostEntity postEntity = PostEntity.builder()
                 .mapId(new MapEntity()) // MapRepository 메서드 선언 전 임시 처리
@@ -31,8 +31,9 @@ public class CommunityService {
                 .postContent(addPostDto.getPostContent())
                 .reviewRef(addPostDto.getReviewRef())
                 .build();
+        PostEntity savedPost = postRepository.save(postEntity);
 
-        postRepository.save(postEntity);
+        return savedPost;
     }
 
     // <------------------------ GET part ------------------------>

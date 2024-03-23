@@ -3,6 +3,7 @@ package com.dororo.api.commnunity.controller;
 import com.dororo.api.commnunity.dto.request.AddPostDto;
 import com.dororo.api.commnunity.dto.response.PostDetailsDto;
 import com.dororo.api.commnunity.service.CommunityService;
+import com.dororo.api.db.entity.PostEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -13,11 +14,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Tag(name = "Community", description = "커뮤니티 기능의 API 명세")
 @RestController
@@ -34,9 +39,9 @@ public class CommunityController {
     })
     @PostMapping("")
     public ResponseEntity addPost(@RequestBody AddPostDto addPostDto) {
-        communityService.addPost(addPostDto);
+        PostEntity savedPost = communityService.addPost(addPostDto);
 
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity(EntityModel.of(savedPost, linkTo(methodOn(CommunityController.class).postDetails(savedPost.getPostId())).withRel("postDetails")), HttpStatus.CREATED);
     }
 
     // <-------------------- GET part -------------------->
