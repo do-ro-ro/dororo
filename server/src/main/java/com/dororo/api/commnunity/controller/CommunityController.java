@@ -4,6 +4,8 @@ import com.dororo.api.commnunity.dto.request.AddPostDto;
 import com.dororo.api.commnunity.dto.response.PostDetailsDto;
 import com.dororo.api.commnunity.service.CommunityService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -44,7 +46,7 @@ public class CommunityController {
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = PostDetailsDto.class)))),
     })
     @GetMapping("")
-    public ResponseEntity postList(@PathVariable Integer postId) {
+    public ResponseEntity postList() {
         List<PostDetailsDto> postDetailsDtoList = communityService.postList();
 
         return new ResponseEntity(postDetailsDtoList, HttpStatus.OK);
@@ -57,7 +59,19 @@ public class CommunityController {
             @ApiResponse(responseCode = "401", description = "요청 받은 post의 ID로 게시글 조회 불가")
     })
     @GetMapping("/{postId}")
-    public ResponseEntity postDetails(@PathVariable Integer postId) {
+    public ResponseEntity postDetails(@Parameter(in = ParameterIn.PATH) @PathVariable Integer postId) {
+        PostDetailsDto postDetailsDto = communityService.postDetails(postId);
+
+        return new ResponseEntity(postDetailsDto, HttpStatus.OK);
+    }
+
+    // <-------------------- DELETE part -------------------->
+    @Operation(summary = "커뮤니티 map post 삭제 요청", description = "커뮤니티에 등록된 map post의 삭제를 수행하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "코스 상세 조회 성공")
+    })
+    @DeleteMapping("/{postId}")
+    public ResponseEntity deletePost(@Parameter(in = ParameterIn.PATH) @PathVariable Integer postId) {
         PostDetailsDto postDetailsDto = communityService.postDetails(postId);
 
         return new ResponseEntity(postDetailsDto, HttpStatus.OK);
