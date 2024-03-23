@@ -36,6 +36,13 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 			return new CustomOAuth2User(uniqueId);
 
 		String nickname = randomNickname(); //닉네임
+		user = userRepository.findByNickname(nickname); //닉네임 중복 검사
+
+		while(user!=null){ //닉네임 새로 발급
+			nickname = randomNickname();
+			user = userRepository.findByNickname(nickname);
+		}
+
 		String profileImage = "0322이미지 경로"; //프로필이미지
 		String role = "ROLE_USER"; //role
 
