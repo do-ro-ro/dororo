@@ -36,7 +36,7 @@ public class CommunityController {
     public ResponseEntity addPost(@RequestBody AddPostDto addPostDto) {
         communityService.addPost(addPostDto);
 
-        return new ResponseEntity("temp", HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     // <-------------------- GET part -------------------->
@@ -72,9 +72,9 @@ public class CommunityController {
     })
     @DeleteMapping("/{postId}")
     public ResponseEntity deletePost(@Parameter(in = ParameterIn.PATH) @PathVariable Integer postId) {
-        PostDetailsDto postDetailsDto = communityService.postDetails(postId);
+        communityService.deletePost(postId);
 
-        return new ResponseEntity(postDetailsDto, HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }

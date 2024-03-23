@@ -54,9 +54,11 @@ public class CommunityService {
     // <------------------------ DELETE part ------------------------>
     public void deletePost(Integer postId) {
         PostEntity postEntity = findPostInDataBaseByPostId(postId);
+        postRepository.delete(postEntity);  // deleteById(postId)를 써도 되지만 위의 메서드에서 객체가 있는지 확인 했고, 있다면 이미 메모리에 객체가 로드 됐으므로 delete(postEntity)를 사용했음
     }
 
     // <------------------------ Common method part ------------------------>
+    // <------------ For Error Handling ------------>
     private PostEntity findPostInDataBaseByPostId(Integer postId) {
         Optional<PostEntity> tempPostEntity = postRepository.findByPostId(postId);  // 존재하는지 체크하기 위해 Optional 객체로 생성
         if (!tempPostEntity.isPresent()) throw new NoMatchingResourceException("No Content");
