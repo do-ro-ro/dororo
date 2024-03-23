@@ -10,7 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +23,7 @@ public class CommunityService {
     private final PostRepository postRepository;
 
     // <------------------------ POST part ------------------------>
-    public void addPost(AddPostDto addPostDto) {
+    public PostEntity addPost(AddPostDto addPostDto) {
         Integer mapId = addPostDto.getMapId();  // 참조하는 맵의 ID
         PostEntity postEntity = PostEntity.builder()
                 .mapId(new MapEntity()) // MapRepository 메서드 선언 전 임시 처리
@@ -28,20 +31,41 @@ public class CommunityService {
                 .postContent(addPostDto.getPostContent())
                 .reviewRef(addPostDto.getReviewRef())
                 .build();
+        PostEntity savedPost = postRepository.save(postEntity);
 
-        postRepository.save(postEntity);
+        return savedPost;
     }
 
     // <------------------------ GET part ------------------------>
-    public PostDetailsDto postDetails(Integer postId) {
-        Optional<PostEntity> tempPostEntity = postRepository.findByPostId(postId);  // 존재하는지 체크하기 위해 Optional 객체로 생성
-        if (!tempPostEntity.isPresent()) throw new NoMatchingResourceException("No Content");
+    public List<PostDetailsDto> postList() {
+        List<PostEntity> userPostListEntity = postRepository.findAll();
+        List<PostDetailsDto> postDetailsDtoList = userPostListEntity.stream()    // DB에서 꺼낸 Entity에 대해 stream을 이용,
+                .map(m -> modelMapper.map(m, PostDetailsDto.class)) // Entity -> Dto 변환
+                .collect(Collectors.toList());
 
-        PostEntity postEntity = tempPostEntity.get();   // Optional 객체가 존재한다면 get() 메서드로 실제 엔티티 받기
+        return postDetailsDtoList;
+    }
+
+    public PostDetailsDto postDetails(Integer postId) {
+        PostEntity postEntity = findPostInDataBaseByPostId(postId);
 
         return modelMapper.map(postEntity, PostDetailsDto.class);
     }
 
+    // <------------------------ DELETE part ------------------------>
+    public void deletePost(Integer postId) {
+        PostEntity postEntity = findPostInDataBaseByPostId(postId);
+        postRepository.delete(postEntity);  // deleteById(postId)를 써도 되지만 위의 메서드에서 객체가 있는지 확인 했고, 있다면 이미 메모리에 객체가 로드 됐으므로 delete(postEntity)를 사용했음
+    }
+
     // <------------------------ Common method part ------------------------>
+    // <------------ For Error Handling ------------>
+    private PostEntity findPostInDataBaseByPostId(Integer postId) {
+        Optional<PostEntity> tempPostEntity = postRepository.findByPostId(postId);  // 존재하는지 체크하기 위해 Optional 객체로 생성
+        if (!tempPostEntity.isPresent()) throw new NoMatchingResourceException("No Content");
+
+        return tempPostEntity.get();   // Optional 객체가 존재한다면 get() 메서드로 실제 엔티티 받기
+    }
+
 
 }
