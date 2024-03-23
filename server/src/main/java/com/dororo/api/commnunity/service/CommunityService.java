@@ -10,7 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +36,15 @@ public class CommunityService {
     }
 
     // <------------------------ GET part ------------------------>
+    public List<PostDetailsDto> postList() {
+        List<PostEntity> userPostListEntity = postRepository.findByUserId("temp");
+        List<PostDetailsDto> postDetailsDtoList = userPostListEntity.stream()    // DB에서 꺼낸 Entity에 대해 stream을 이용,
+                .map(m -> modelMapper.map(m, PostDetailsDto.class)) // Entity -> Dto 변환
+                .collect(Collectors.toList());
+
+        return postDetailsDtoList;
+    }
+
     public PostDetailsDto postDetails(Integer postId) {
         Optional<PostEntity> tempPostEntity = postRepository.findByPostId(postId);  // 존재하는지 체크하기 위해 Optional 객체로 생성
         if (!tempPostEntity.isPresent()) throw new NoMatchingResourceException("No Content");

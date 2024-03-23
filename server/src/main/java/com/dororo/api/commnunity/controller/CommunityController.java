@@ -45,7 +45,7 @@ public class CommunityController {
     })
     @GetMapping("")
     public ResponseEntity postList(@PathVariable Integer postId) {
-        List<PostDetailsDto> postDetailsDtoList = null;
+        List<PostDetailsDto> postDetailsDtoList = communityService.postList();
 
         return new ResponseEntity(postDetailsDtoList, HttpStatus.OK);
     }
