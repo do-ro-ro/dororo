@@ -38,7 +38,7 @@ public class CommunityService {
 
     // <------------------------ GET part ------------------------>
     public List<PostDetailsDto> postList() {
-        List<PostEntity> userPostListEntity = postRepository.findByUserId("temp");
+        List<PostEntity> userPostListEntity = postRepository.findAll();
         List<PostDetailsDto> postDetailsDtoList = userPostListEntity.stream()    // DB에서 꺼낸 Entity에 대해 stream을 이용,
                 .map(m -> modelMapper.map(m, PostDetailsDto.class)) // Entity -> Dto 변환
                 .collect(Collectors.toList());
