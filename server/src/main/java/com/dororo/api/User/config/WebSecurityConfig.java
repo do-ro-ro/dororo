@@ -48,8 +48,9 @@ public class WebSecurityConfig {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			)
 			.authorizeHttpRequests(request -> request
-				.requestMatchers("/","/index.html", "/api/auth/**","/oauth2/**").permitAll()
-				.requestMatchers("/api/docs", "/api/swagger-ui/**", "/v3/api-docs/**").permitAll()	// swagger에 대해 토큰 없이 요청해도 확인할 수 있도록 하는 설정
+//				.requestMatchers("/","/index.html", "/api/auth/**","/oauth2/**").permitAll()
+//				.requestMatchers("/api/docs", "/api/swagger-ui/**", "/v3/api-docs/**").permitAll()	// swagger에 대해 토큰 없이 요청해도 확인할 수 있도록 하는 설정
+				.requestMatchers("/**").permitAll()
 				.requestMatchers("/api/users/**").hasRole("USER")
 				.requestMatchers("/api/maps/**").hasRole("USER")
 				.requestMatchers("/api/map-posts/**").hasRole("USER")
@@ -60,9 +61,6 @@ public class WebSecurityConfig {
 				.redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
 				.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
 				.successHandler(oAuth2SuccessHandler)
-			)
-			.exceptionHandling(exceptionHandling -> exceptionHandling
-				.authenticationEntryPoint(new FailedAuthenticationEntryPoint())
 			)
 			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -79,26 +77,9 @@ public class WebSecurityConfig {
 		corsConfiguration.addAllowedHeader("*");
 		corsConfiguration.setAllowCredentials(true);	// 응답에 Access-Control-Allow-Credentials 헤더를 true로 설정
 
-		/*
-		CorsConfiguration corsConfiguration = new CorsConfiguration();
-		corsConfiguration.addAllowedOrigin("*");
-		corsConfiguration.addAllowedMethod("*");
-		corsConfiguration.addAllowedHeader("*");
-		*/
-
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", corsConfiguration);
 
 		return source;
-	}
-}
-class FailedAuthenticationEntryPoint implements AuthenticationEntryPoint {
-
-	@Override
-	public void commence(HttpServletRequest request, HttpServletResponse response,
-		AuthenticationException authException) throws IOException, ServletException {
-		response.setContentType("application/json");
-		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-		response.getWriter().write("{\"code\": \"NP\", \"message\": \"No Permission.\"}");
 	}
 }
