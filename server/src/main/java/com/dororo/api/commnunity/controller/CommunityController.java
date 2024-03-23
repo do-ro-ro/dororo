@@ -4,6 +4,7 @@ import com.dororo.api.commnunity.dto.request.AddPostDto;
 import com.dororo.api.commnunity.dto.response.PostDetailsDto;
 import com.dororo.api.commnunity.service.CommunityService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "Community", description = "커뮤니티 기능의 API 명세")
 @RestController
@@ -35,6 +38,18 @@ public class CommunityController {
     }
 
     // <-------------------- GET part -------------------->
+    @Operation(summary = "커뮤니티 map post 전체 조회 요청", description = "커뮤니티에 등록된 map post의 전체 조회를 수행하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "코스 전체 조회 성공",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = PostDetailsDto.class)))),
+    })
+    @GetMapping("")
+    public ResponseEntity postList(@PathVariable Integer postId) {
+        List<PostDetailsDto> postDetailsDtoList = null;
+
+        return new ResponseEntity(postDetailsDtoList, HttpStatus.OK);
+    }
+
     @Operation(summary = "커뮤니티 map post 상세 조회 요청", description = "커뮤니티에 등록된 map post의 상세 조회를 수행하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "코스 상세 조회 성공",
