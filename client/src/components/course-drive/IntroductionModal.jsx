@@ -1,6 +1,7 @@
 import { Box, Button, Modal, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import SampleCourseImg from "../../assets/sample_course_img.png";
+import IntroductionStepper from "./IntroductionStepper";
 
 const style = {
     position: "absolute",
@@ -40,6 +41,7 @@ function IntroductionModal() {
                             justifyContent={"center"}
                         >
                             <img width={"200rem"} src={SampleCourseImg} />
+                            <IntroductionStepper />
                             <Typography sx={{ mt: 2 }}>기능 설명</Typography>
                         </Box>
                     </Box>
