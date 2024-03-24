@@ -1,8 +1,5 @@
 package com.dororo.api.User.dto.Response;
 
-import java.sql.Timestamp;
-
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
