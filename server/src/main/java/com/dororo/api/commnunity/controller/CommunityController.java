@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,8 +68,9 @@ public class CommunityController {
                     })),
     })
     @GetMapping("")
-    public ResponseEntity postList() {
-        List<PostDetailsDto> postDetailsDtoList = communityService.postList();
+    public ResponseEntity postList(@Parameter(name = "option",
+            description = "조회의 옵션(전체 조회 시 그냥 /map-posts 로 요청, 내가 쓴 게시글의 경우 /map-posts?option=mine 으로 요청", in = ParameterIn.QUERY) @RequestParam(required = false) String option) {
+        List<PostDetailsDto> postDetailsDtoList = communityService.postList(option);
 
         return new ResponseEntity(postDetailsDtoList, HttpStatus.OK);
     }

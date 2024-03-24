@@ -37,8 +37,10 @@ public class CommunityService {
     }
 
     // <------------------------ GET part ------------------------>
-    public List<PostDetailsDto> postList() {
-        List<PostEntity> userPostListEntity = postRepository.findAll();
+    public List<PostDetailsDto> postList(String option) {
+        List<PostEntity> userPostListEntity;
+        if (option == null) userPostListEntity = postRepository.findAll();  // option query 없이 요청이 들어왔을 경우 전체 게시글 조회
+        else userPostListEntity = postRepository.findByUserId("temp"); // option query와 함께 요청이 들어왔을 경우, 사용자 id 기반으로 게시글 조회(아직 엑세스 토큰 도입 안해서 temp로 둠)
         List<PostDetailsDto> postDetailsDtoList = userPostListEntity.stream()    // DB에서 꺼낸 Entity에 대해 stream을 이용,
                 .map(m -> modelMapper.map(m, PostDetailsDto.class)) // Entity -> Dto 변환
                 .collect(Collectors.toList());
