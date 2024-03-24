@@ -1,13 +1,25 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vite + React</title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <!-- .env 파일에 설정한 환경 변수를 자바스크립트로 로드 -->
+        <script type="text/javascript">
+            // const apiKey = "%VITE_TMAP_API_KEY%";
+        </script>
+        <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=%VITE_KAKAOMAP_API_KEY%&libraries=services"></script>
+        <!-- Tmap API 스크립트 -->
+        <script
+            type="text/javascript"
+            src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=%VITE_TMAP_API_KEY%"
+        ></script>
+
+        <script type="module" src="/src/main.jsx"></script>
+    </body>
 </html>
