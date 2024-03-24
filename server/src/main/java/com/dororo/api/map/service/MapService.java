@@ -36,4 +36,12 @@ public class MapService {
         }
         return DetailMapResponseDto.fromEntity(mapEntity);
     }
- }
+
+    public void deleteMapById(Integer mapId) {
+        //mapId 가 DB에 없을때
+        if (!mapRepository.existsById(mapId)) {
+            throw new EntityNotFoundException("Map not found with id: " + mapId);
+        }
+        mapRepository.deleteById(mapId); // 맵 삭제
+    }
+}

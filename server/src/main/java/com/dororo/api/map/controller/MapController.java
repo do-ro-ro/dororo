@@ -30,35 +30,40 @@ public class MapController {
 
     //맵 상세조회
     @GetMapping("/maps/{mapId}")
-    public ResponseEntity getMapdetails(@PathVariable Integer mapId){
+    public ResponseEntity getMapdetails(@PathVariable Integer mapId) {
         DetailMapResponseDto detailMapResponseDto = mapService.getMapById(mapId);
         return ResponseEntity.ok(detailMapResponseDto);
     }
 
     //맵 생성
     @PostMapping("/maps")
-    public ResponseEntity addMap(@RequestBody AddMapRequestDto addMapRequestDto){
+    public ResponseEntity addMap(@RequestBody AddMapRequestDto addMapRequestDto) {
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
     //맵 저장
     @PostMapping("/maps/save")
-    public ResponseEntity saveMap(){
+    public ResponseEntity saveMap() {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     //맵 수정 (주행여부 갱신)
     @DeleteMapping("/maps/{mapId}")
-    public ResponseEntity deleteMap(@PathVariable Integer mapId){
+    public ResponseEntity deleteMap(@PathVariable Integer mapId) {
         return ResponseEntity.ok(HttpStatus.OK);
+
+
     }
+
     //맵 삭제
     @PutMapping("/maps/{mapId}")
-    public ResponseEntity updateMap(@PathVariable Integer mapId){
-        return ResponseEntity.ok(HttpStatus.OK);
+    public ResponseEntity updateMap(@PathVariable Integer mapId) {
+        mapService.deleteMapById(mapId);
+
+        return ResponseEntity.ok().build();
+
     }
-
-
 
 
 }
