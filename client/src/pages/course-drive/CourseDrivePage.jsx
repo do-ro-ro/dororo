@@ -6,6 +6,7 @@ import ServerTest from "../../components/course-drive/ServerTest";
 import Topbar from "../../components/topbar/Topbar";
 import { Button, Stack, Typography } from "@mui/material";
 import Map from "../recommend-course/Map";
+import IntroductionModal from "../../components/course-drive/IntroductionModal";
 
 function CourseDrivePage() {
     const [lat, setLat] = useState(35.309216);
@@ -27,6 +28,7 @@ function CourseDrivePage() {
     // console.log(fillterList);
     return (
         <>
+            <IntroductionModal />
             <div className="relative">
                 {/* <RealTimeCurrentLocation setLat={setLat} setLon={setLng} /> */}
                 {/* <ServerTest setcoolList={setcoolList} /> */}
