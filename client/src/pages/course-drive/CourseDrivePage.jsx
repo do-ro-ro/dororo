@@ -5,6 +5,7 @@ import StopOver from "../../components/course-drive/StopOver";
 import ServerTest from "../../components/course-drive/ServerTest";
 import Topbar from "../../components/topbar/Topbar";
 import { Button, Stack, Typography } from "@mui/material";
+import Map from "../recommend-course/Map";
 
 function CourseDrivePage() {
     const [lat, setLat] = useState(35.309216);
@@ -31,7 +32,7 @@ function CourseDrivePage() {
                 {/* <ServerTest setcoolList={setcoolList} /> */}
                 {/* <Map lat={lat} lon={lon} /> */}
                 <Topbar>코스 이름</Topbar>
-                <StopOver
+                {/* <StopOver
                     lat={lat}
                     lng={lng}
                     coolList={coolList}
@@ -39,7 +40,9 @@ function CourseDrivePage() {
                     setFillterList={setFillterList}
                     setTime={setTime}
                     setKm={setKm}
-                />
+                /> */}
+                {/* UI 테스트용 임시 맵 */}
+                <Map lat={lat} lon={lng} />
                 <div className="fixed z-50 bottom-2 inset-x-0">
                     <Stack alignItems={"center"}>
                         {!isDriving ? (
