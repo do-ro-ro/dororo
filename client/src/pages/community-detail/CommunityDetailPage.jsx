@@ -15,6 +15,7 @@ import { Bookmark, BookmarkBorder, Image } from "@mui/icons-material";
 import SampleCourseImg from "../../assets/sample_course_img.png";
 import { useState } from "react";
 import EditArticleModal from "../../components/community-detail/EditArticleModal";
+import DeleteDialog from "../../components/community-detail/DeleteDialog";
 
 const DummyCourse = {
     post_id: 0,
@@ -76,14 +77,7 @@ function CommunityDetailPage() {
                     {DummyCourse.user_id === DummyUser.user_id ? (
                         <Stack direction={"row"} alignItems={"center"}>
                             <EditArticleModal />
-                            <Button
-                                variant="contained"
-                                color="error"
-                                size="small"
-                                sx={{ height: "3vh", width: "4vw", mx: 0.3 }}
-                            >
-                                삭제
-                            </Button>
+                            <DeleteDialog variant={"post"} />
                         </Stack>
                     ) : null}
                 </Stack>
