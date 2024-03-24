@@ -13,6 +13,7 @@ import DriveIcon from "../../assets/drive_icon.png";
 import Map from "../recommend-course/Map";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DeleteDialog from "../../components/community-detail/DeleteDialog";
 
 const DummyMap = {
     map_id: 0,
@@ -44,13 +45,7 @@ function CourseDetailPage() {
                             <Typography variant="h5">
                                 {DummyMap.map_name}
                             </Typography>
-                            <Button
-                                variant="contained"
-                                color="error"
-                                sx={{ height: "3vh" }}
-                            >
-                                삭제
-                            </Button>
+                            <DeleteDialog />
                         </Stack>
                         <Stack
                             direction={"row"}

@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 
 function DeleteDialog(props) {
+    const [variant, ...rest] = props;
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -21,7 +22,12 @@ function DeleteDialog(props) {
 
     return (
         <>
-            <Button variant="contained" color="error" sx={{ height: "3vh" }}>
+            <Button
+                variant="contained"
+                color="error"
+                sx={{ height: "3vh" }}
+                onClick={handleClickOpen}
+            >
                 삭제
             </Button>
             <Dialog
@@ -31,19 +37,22 @@ function DeleteDialog(props) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Use Google's location service?"}
+                    정말로 삭제하시겠습니까?
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Let Google help apps determine location. This means
-                        sending anonymous location data to Google, even when no
-                        apps are running.
+                        삭제한 후에는 취소할 수 없습니다.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Disagree</Button>
-                    <Button onClick={handleClose} autoFocus>
-                        Agree
+                    <Button onClick={handleClose}>취소</Button>
+                    <Button
+                        onClick={handleClose}
+                        variant="contained"
+                        color="error"
+                        autoFocus
+                    >
+                        삭제
                     </Button>
                 </DialogActions>
             </Dialog>
