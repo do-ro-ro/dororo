@@ -55,13 +55,13 @@ public class CommunityController {
     // <-------------------- POST part -------------------->
 
     // <-------------------- GET part -------------------->
-    @Operation(summary = "커뮤니티 map post 전체 조회 요청", description = "커뮤니티에 등록된 map post의 전체 조회를 수행하는 API입니다.")
+    @Operation(summary = "커뮤니티 map post 전체 조회, 내가 쓴 게시글 조회 요청", description = "커뮤니티에 등록된 map post의 전체 조회, 내가 쓴 게시글 조회를 수행하는 API입니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "코스 전체 조회 성공",
+            @ApiResponse(responseCode = "200", description = "코스 전체 조회 or 내가 쓴 게시글 조회 성공",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = PostDetailsDto.class)), examples = {
                             @ExampleObject(
-                                    name = "Post 전체 조회 body",
-                                    summary = "Post 전체 조회 body의 예시",
+                                    name = "Post 전체 or 내가 쓴 게시글 조회 body",
+                                    summary = "Post 전체 or 내가 쓴 게시글 조회 body의 예시",
                                     value = "[{\"postId\": 1, \"mapId\": 1, \"mapImage\": \"https://~~~/temp.png\", \"userName\": \"김영후\", \"createdAt\": \"YYYY-MM-DD hh:mm:ss.000000\", \"scrapCount\": 0, " +
                                             "\"postTitle\": \"게시글 1\", \"postContent\": \"게시글 1의 내용\", \"mapRouteAxis\": \"아직 잘 모름\"}]"
                             )
