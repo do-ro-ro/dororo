@@ -45,7 +45,7 @@ function CourseDetailPage() {
                             <Typography variant="h5">
                                 {DummyMap.map_name}
                             </Typography>
-                            <DeleteDialog />
+                            <DeleteDialog variant={"course"} />
                         </Stack>
                         <Stack
                             direction={"row"}

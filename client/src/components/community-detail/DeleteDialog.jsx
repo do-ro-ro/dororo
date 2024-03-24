@@ -9,7 +9,7 @@ import {
 import { useState } from "react";
 
 function DeleteDialog(props) {
-    const [variant, ...rest] = props;
+    const { variant, ...rest } = props;
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -37,7 +37,8 @@ function DeleteDialog(props) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    정말로 삭제하시겠습니까?
+                    정말로 {variant === "post" ? "게시물을 " : "코스를 "}
+                    삭제하시겠습니까?
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
