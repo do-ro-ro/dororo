@@ -30,6 +30,7 @@ const SimpleMap = ({
     }, [coolList]);
 
     const initTmap = () => {
+        console.log("test");
         if (map !== null) {
             return;
         }
