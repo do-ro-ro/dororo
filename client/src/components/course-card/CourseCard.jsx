@@ -10,6 +10,8 @@ function CourseCard(props) {
     const handleNavigate = (postId) => {
         if (variant === "post") {
             navigate(`${postId}`);
+        } else if (variant === "my_post") {
+            navigate(`/main/community/${postId}`);
         } else {
             navigate(`/course/${postId}`);
         }

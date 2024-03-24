@@ -73,10 +73,10 @@ const DummyUser = {
 function MyPage() {
     return (
         <>
-            <Box>
+            <Box pb="10vh">
                 <Topbar>마이페이지</Topbar>
 
-                <Stack mx={4} mt={2}>
+                <Stack mx={4} mt={2} height={"90vh"}>
                     <Paper>
                         <Stack
                             direction={"row"}
@@ -126,6 +126,29 @@ function MyPage() {
                                         key={course.post_id}
                                         postId={course.post_id}
                                         variant={"course"}
+                                    >
+                                        {course.post_title}
+                                    </CourseCard>
+                                );
+                            }
+                        })}
+                    </Stack>
+                    <Stack
+                        sx={{ my: 2 }}
+                        direction={"row"}
+                        justifyContent={"space-between"}
+                        alignItems={"center"}
+                    >
+                        <Typography>내가 추천한 코스</Typography>
+                    </Stack>
+                    <Stack direction={"row"}>
+                        {DummyCourseList.map((course) => {
+                            if (course.user_id !== DummyUser.user_id) {
+                                return (
+                                    <CourseCard
+                                        key={course.post_id}
+                                        postId={course.post_id}
+                                        variant={"my_post"}
                                     >
                                         {course.post_title}
                                     </CourseCard>
