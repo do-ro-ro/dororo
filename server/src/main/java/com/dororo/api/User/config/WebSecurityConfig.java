@@ -1,7 +1,5 @@
 package com.dororo.api.User.config;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,9 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -22,9 +18,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.dororo.api.User.filter.JwtAuthenticationFilter;
 import com.dororo.api.User.handler.OAuth2SuccessHandler;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Configurable
@@ -49,6 +42,7 @@ public class WebSecurityConfig {
 			)
 			.authorizeHttpRequests(request -> request
 				.requestMatchers("/","/index.html", "/api/auth/**","/oauth2/**").permitAll()
+				.requestMatchers("/api/api-docs/**", "/api/docs", "/api/swagger-ui/**").permitAll()	// swagger에 대해 토큰 없이 요청해도 확인할 수 있도록 하는 설정
 				.requestMatchers("/api/users/**").hasRole("USER")
 				.requestMatchers("/api/maps/**").hasRole("USER")
 				.requestMatchers("/api/map-posts/**").hasRole("USER")
@@ -60,9 +54,6 @@ public class WebSecurityConfig {
 				.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
 				.successHandler(oAuth2SuccessHandler)
 			)
-			.exceptionHandling(exceptionHandling -> exceptionHandling
-				.authenticationEntryPoint(new FailedAuthenticationEntryPoint())
-			)
 			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return httpSecurity.build();
@@ -72,30 +63,15 @@ public class WebSecurityConfig {
 	protected CorsConfigurationSource corsConfigurationSource() {
 
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
-		corsConfiguration.addAllowedOrigin("*");
+		corsConfiguration.addAllowedOrigin("http://localhost:3000");
+		corsConfiguration.addAllowedOrigin("https://j10e202.p.ssafy.io");
 		corsConfiguration.addAllowedMethod("*");
 		corsConfiguration.addAllowedHeader("*");
-
-		/*
-		CorsConfiguration corsConfiguration = new CorsConfiguration();
-		corsConfiguration.addAllowedOrigin("*");
-		corsConfiguration.addAllowedMethod("*");
-		corsConfiguration.addAllowedHeader("*");
-		*/
+		corsConfiguration.setAllowCredentials(true);	// 응답에 Access-Control-Allow-Credentials 헤더를 true로 설정
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", corsConfiguration);
 
 		return source;
-	}
-}
-class FailedAuthenticationEntryPoint implements AuthenticationEntryPoint {
-
-	@Override
-	public void commence(HttpServletRequest request, HttpServletResponse response,
-		AuthenticationException authException) throws IOException, ServletException {
-		response.setContentType("application/json");
-		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-		response.getWriter().write("{\"code\": \"NP\", \"message\": \"No Permission.\"}");
 	}
 }
