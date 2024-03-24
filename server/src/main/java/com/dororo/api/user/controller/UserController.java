@@ -1,4 +1,4 @@
-package com.dororo.api.User.controller;
+package com.dororo.api.user.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dororo.api.User.dto.Request.UpdateProfileRequestDto;
-import com.dororo.api.User.service.UserService;
+import com.dororo.api.user.dto.Request.UpdateProfileRequestDto;
+import com.dororo.api.user.service.UserService;
 import com.dororo.api.db.entity.UserEntity;
 
 import lombok.RequiredArgsConstructor;

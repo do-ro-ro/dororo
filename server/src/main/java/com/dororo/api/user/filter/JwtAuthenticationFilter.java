@@ -1,4 +1,4 @@
-package com.dororo.api.User.filter;
+package com.dororo.api.user.filter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.dororo.api.User.provider.JwtProvider;
+import com.dororo.api.user.provider.JwtProvider;
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.UserRepository;
 

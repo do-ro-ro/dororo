@@ -1,4 +1,4 @@
-package com.dororo.api.User.service;
+package com.dororo.api.user.service;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.dororo.api.User.dto.Response.CustomOAuth2User;
+import com.dororo.api.user.dto.Response.CustomOAuth2User;
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.UserRepository;
 

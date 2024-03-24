@@ -1,4 +1,4 @@
-package com.dororo.api.User.dto.Response;
+package com.dororo.api.user.dto.Response;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
