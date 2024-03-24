@@ -68,8 +68,8 @@ public class CommunityController {
                     })),
     })
     @GetMapping("")
-    public ResponseEntity postList(@Parameter(name = "option",
-            description = "조회의 옵션(전체 조회 시 그냥 /map-posts 로 요청, 내가 쓴 게시글의 경우 /map-posts?option=mine 으로 요청", in = ParameterIn.QUERY) @RequestParam(required = false) String option) {
+    public ResponseEntity postList(@Parameter(name = "option", description = "조회의 옵션(전체 조회 시 그냥 /map-posts 로 요청, 내가 쓴 게시글의 경우 /map-posts?option=mine 으로 요청", in = ParameterIn.QUERY)
+                                       @RequestParam(required = false) String option) {
         List<PostDetailsDto> postDetailsDtoList = communityService.postList(option);
 
         return new ResponseEntity(postDetailsDtoList, HttpStatus.OK);
