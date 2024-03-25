@@ -1,8 +1,9 @@
-package com.dororo.api.User.filter;
+package com.dororo.api.user.filter;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.dororo.api.User.provider.JwtProvider;
+import com.dororo.api.user.provider.JwtProvider;
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.UserRepository;
 
@@ -36,26 +37,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		FilterChain filterChain) throws ServletException, IOException {
 		try {
 			String token = parseBearerToken(request);
+			System.out.println("토큰 :" + token);
 			if(token == null){
 				filterChain.doFilter(request, response);
 				return;
 			}
 
-			String userId = jwtProvider.validate(token);
-			if(userId == null){
+			String userUniqueId = jwtProvider.validate(token);
+			if(userUniqueId == null){
 				filterChain.doFilter(request, response);
 				return;
 			}
 
-			UserEntity userEntity = userRepository.findByUserId(Integer.valueOf(userId));
-			String role = userEntity.getRole(); //role : ROLE_USER
+			Optional<UserEntity> userEntity = userRepository.findByUniqueId(userUniqueId);
+			String role = userEntity.get().getRole(); //role : ROLE_USER
 
 			List<GrantedAuthority> authorities = new ArrayList<>();
 			authorities.add(new SimpleGrantedAuthority(role));
 
 			SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
 			AbstractAuthenticationToken authenticationToken =
-				new UsernamePasswordAuthenticationToken(userId, null, authorities);
+				new UsernamePasswordAuthenticationToken(userUniqueId, null, authorities);
 			authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
 			securityContext.setAuthentication(authenticationToken);
@@ -74,10 +76,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		boolean hasAuthorization = StringUtils.hasText(authorization);
 		if (!hasAuthorization) return null;
 
-		boolean isBearer = authorization.startsWith("Bearer ");
-		if(!isBearer) return null;
+		// boolean isBearer = authorization.startsWith("Bearer ");
+		// if(!isBearer) return null;
 
-		String token = authorization.substring(7);
-		return token;
+		//String token = authorization.substring(7);
+		return authorization;
 	}
 }
