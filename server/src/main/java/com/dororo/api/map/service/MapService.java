@@ -44,4 +44,11 @@ public class MapService {
         }
         mapRepository.deleteById(mapId); // 맵 삭제
     }
+
+    public void updateMapCompletion(Integer mapId, Boolean mapCompletion) {
+        MapEntity mapEntity = mapRepository.findById(mapId)
+                .orElseThrow(() -> new EntityNotFoundException("Map not found with id: " + mapId));
+        mapEntity.setMapCompletion(mapCompletion);
+        mapRepository.save(mapEntity); // 변경된 엔티티 저장
+    }
 }

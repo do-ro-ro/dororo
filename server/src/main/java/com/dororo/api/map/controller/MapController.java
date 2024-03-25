@@ -45,24 +45,23 @@ public class MapController {
     //맵 저장
     @PostMapping("/maps/save")
     public ResponseEntity saveMap() {
+
         return ResponseEntity.ok(HttpStatus.OK);
-    }
-
-    //맵 수정 (주행여부 갱신)
-    @DeleteMapping("/maps/{mapId}")
-    public ResponseEntity deleteMap(@PathVariable Integer mapId) {
-        return ResponseEntity.ok(HttpStatus.OK);
-
-
     }
 
     //맵 삭제
-    @PutMapping("/maps/{mapId}")
-    public ResponseEntity updateMap(@PathVariable Integer mapId) {
+    @DeleteMapping("/maps/{mapId}")
+    public ResponseEntity deleteMap(@PathVariable Integer mapId) {
         mapService.deleteMapById(mapId);
-
         return ResponseEntity.ok().build();
+    }
 
+
+    //맵 수정 (주행여부 갱신)
+    @PatchMapping("/maps/{mapId}")
+    public ResponseEntity updateMap(@PathVariable Integer mapId ,  @RequestParam("map-completion") Boolean mapCompletion) {
+        mapService.updateMapCompletion(mapId, mapCompletion);
+        return ResponseEntity.ok().build(); // 업데이트 성공 응답
     }
 
 
