@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState, useEffect } from "react";
 
 const RealTimeCurrentLocation = ({ setLat, setLon }) => {
     const [location, setLocation] = useState();
@@ -19,10 +18,10 @@ const RealTimeCurrentLocation = ({ setLat, setLon }) => {
                     },
                     (error) => {
                         setError(error.message);
-                    }
+                    },
                 );
             } else {
-                setError('Geolocation is not supported by this browser.');
+                setError("Geolocation is not supported by this browser.");
             }
         };
 
@@ -33,16 +32,15 @@ const RealTimeCurrentLocation = ({ setLat, setLon }) => {
                 navigator.geolocation.clearWatch(watchId);
             }
         };
-
     }, [setLat, setLon]);
 
     return (
         <div>
             {location ? (
                 <div>
-                    <p>현재 위치:</p>
-                    <p>위도: {location.latitude}</p>
-                    <p>경도: {location.longitude}</p>
+                    {/* <p>현재 위치:</p> */}
+                    {/* <p>위도: {location.latitude}</p> */}
+                    {/* <p>경도: {location.longitude}</p> */}
                 </div>
             ) : error ? (
                 <p>{error}</p>
