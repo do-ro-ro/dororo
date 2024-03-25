@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +33,8 @@ public class CommunityController {
     
     private final CommunityService communityService;
 
+
+    // <-------------------- POST part -------------------->
     @Operation(summary = "커뮤니티 map post 생성 요청", description = "코스 공유를 했을 때 동작을 수행하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "코스 공유 성공",
@@ -52,7 +53,25 @@ public class CommunityController {
 
         return new ResponseEntity(EntityModel.of(savedPost, linkTo(methodOn(CommunityController.class).postDetails(savedPost.getPostId())).withRel("postDetails")), HttpStatus.CREATED);
     }
-    // <-------------------- POST part -------------------->
+
+    @Operation(summary = "커뮤니티 map post 스크랩 요청", description = "코스 스크랩을 했을 때 동작을 수행하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "코스 스크랩 성공",
+                    content = @Content(examples = {
+                            @ExampleObject(
+                                    name = "Post 스크랩 반환 body",
+                                    summary = "Post 생성 반환 body의 예시(게시글 스크랩의 경우 마이 페이지에 map으로 저장됨)",
+                                    value = "{\"id\": 1, \"_links\": {\"mapDetails\": {\"href\": \"https://j10e202.p.ssafy.io/api/maps/1\"}}}"
+                            )
+                    }
+                    ))
+    })
+    @PostMapping("/{postId}/scrap")
+    public ResponseEntity scrapPost() {
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
     // <-------------------- GET part -------------------->
     @Operation(summary = "커뮤니티 map post 전체 조회, 내가 쓴 게시글 조회 요청", description = "커뮤니티에 등록된 map post의 전체 조회, 내가 쓴 게시글 조회를 수행하는 API입니다.")
@@ -95,6 +114,7 @@ public class CommunityController {
 
         return new ResponseEntity(postDetailsDto, HttpStatus.OK);
     }
+
 
     // <-------------------- DELETE part -------------------->
     @Operation(summary = "커뮤니티 map post 삭제 요청", description = "커뮤니티에 등록된 map post의 삭제를 수행하는 API입니다.")
