@@ -1,5 +1,7 @@
 import { BorderColor } from "@mui/icons-material";
 import {
+    Avatar,
+    Badge,
     Box,
     Button,
     IconButton,
@@ -7,9 +9,11 @@ import {
     Stack,
     TextField,
     Typography,
+    styled,
 } from "@mui/material";
 import { useState } from "react";
 import BasicProfile from "../../assets/user_profile_basic.png";
+import CameraButton from "../../assets/camera_btn.png";
 
 const DummyUser = {
     user_id: 1,
@@ -28,6 +32,13 @@ const style = {
     boxShadow: 24,
     p: 4,
 };
+
+const SmallAvatar = styled(Avatar)(({ theme }) => ({
+    width: 22,
+    height: 22,
+    border: `2px solid ${theme.palette.background.paper}`,
+    backgroundColor: "white",
+}));
 
 function EditProfileModal() {
     const [open, setOpen] = useState(false);
@@ -50,8 +61,27 @@ function EditProfileModal() {
                         justifyContent={"center"}
                         sx={{ mb: 4 }}
                     >
-                        <img src={BasicProfile} width={"60vw"} />
+                        {/* <img src={BasicProfile} width={"60vw"} /> */}
                         {/* 나중에 Avatar로 바꿔주고, 파일 불러오기 버튼도 넣어야 함. */}
+                        <Badge
+                            overlap="circular"
+                            anchorOrigin={{
+                                vertical: "bottom",
+                                horizontal: "right",
+                            }}
+                            badgeContent={
+                                <SmallAvatar
+                                    alt="camera_btn"
+                                    src={CameraButton}
+                                />
+                            }
+                        >
+                            <Avatar
+                                alt="profile"
+                                src={DummyUser.profile_image}
+                                sx={{ width: "4rem", height: "4rem" }}
+                            />
+                        </Badge>
                     </Box>
                     <Typography
                         id="modal-modal-title"
