@@ -4,14 +4,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import org.apache.catalina.User;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.dororo.api.user.dto.Response.CustomOAuth2User;
+import com.dororo.api.user.dto.response.CustomOAuth2User;
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.UserRepository;
 
@@ -31,16 +33,16 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 		String uniqueId = responseMap.get("id").substring(0,14);
 		String name = responseMap.get("name");
 
-		UserEntity user = userRepository.findByUniqueId(uniqueId);
-		if(user!=null)
+		Optional<UserEntity> user = userRepository.findByUniqueId(uniqueId);
+		if(user.isPresent())
 			return new CustomOAuth2User(uniqueId);
 
 		String nickname = randomNickname(); //닉네임
-		user = userRepository.findByNickname(nickname); //닉네임 중복 검사
+		Optional<UserEntity> duplicatedNickname = userRepository.findByNickname(nickname); //닉네임 중복 검사
 
-		while(user!=null){ //닉네임 새로 발급
+		while(duplicatedNickname.isPresent()){ //닉네임 새로 발급
 			nickname = randomNickname();
-			user = userRepository.findByNickname(nickname);
+			duplicatedNickname = userRepository.findByNickname(nickname);
 		}
 
 		String profileImage = "0322이미지 경로"; //프로필이미지

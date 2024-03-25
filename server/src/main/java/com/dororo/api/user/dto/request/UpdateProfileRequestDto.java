@@ -1,4 +1,4 @@
-package com.dororo.api.user.dto.Request;
+package com.dororo.api.user.dto.request;
 
 import lombok.Getter;
 
