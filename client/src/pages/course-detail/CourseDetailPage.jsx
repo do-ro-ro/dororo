@@ -40,7 +40,7 @@ function CourseDetailPage() {
     return (
         <>
             <div className="relative">
-                <Topbar>코스 조회하기</Topbar>
+                <Topbar isBackButton={true}>코스 조회하기</Topbar>
                 <Paper>
                     <Stack>
                         <Stack

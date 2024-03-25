@@ -4,5 +4,9 @@
 
 html,
 body {
+    -ms-overflow-style: none;
     @apply min-h-screen;
+}
+body::-webkit-scrollbar {
+    display: none;
 }

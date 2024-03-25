@@ -102,7 +102,7 @@ function CommunityListPage() {
                 <Topbar>커뮤니티</Topbar>
 
                 <Stack mx={4} mt={2}>
-                    <Typography sx={{ my: 2 }}>
+                    <Typography variant="h6" sx={{ my: 2 }}>
                         실시간 인기 코스 Top 3
                     </Typography>
                     <Stack direction={"row"}>
@@ -124,7 +124,7 @@ function CommunityListPage() {
                         justifyContent={"space-between"}
                         alignItems={"center"}
                     >
-                        <Typography>코스 보기</Typography>
+                        <Typography variant="h6">코스 보기</Typography>
                         <Box>
                             <Button
                                 variant={isActivated ? "contained" : "text"}

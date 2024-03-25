@@ -95,7 +95,9 @@ function MyPage() {
                             <EditProfileModal />
                         </Stack>
                     </Paper>
-                    <Typography sx={{ my: 2 }}>내가 추천받은 코스</Typography>
+                    <Typography variant="h6" sx={{ my: 2 }}>
+                        내가 추천받은 코스
+                    </Typography>
                     <Stack direction={"row"}>
                         {DummyCourseList.map((course) => {
                             if (course.user_id === DummyUser.user_id) {
@@ -116,7 +118,7 @@ function MyPage() {
                         justifyContent={"space-between"}
                         alignItems={"center"}
                     >
-                        <Typography>내가 스크랩한 코스</Typography>
+                        <Typography variant="h6">내가 스크랩한 코스</Typography>
                     </Stack>
                     <Stack direction={"row"}>
                         {DummyCourseList.map((course) => {
@@ -139,7 +141,7 @@ function MyPage() {
                         justifyContent={"space-between"}
                         alignItems={"center"}
                     >
-                        <Typography>내가 추천한 코스</Typography>
+                        <Typography variant="h6">내가 추천한 코스</Typography>
                     </Stack>
                     <Stack direction={"row"}>
                         {DummyCourseList.map((course) => {
