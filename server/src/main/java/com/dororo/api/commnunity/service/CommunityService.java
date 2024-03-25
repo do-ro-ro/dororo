@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,6 +20,7 @@ public class CommunityService {
 
     private final ModelMapper modelMapper;    // Entity -> Dto 간 변환에 사용
     private final PostRepository postRepository;
+
 
     // <------------------------ POST part ------------------------>
     public PostEntity addPost(AddPostDto addPostDto) {
@@ -34,6 +34,13 @@ public class CommunityService {
         PostEntity savedPost = postRepository.save(postEntity);
 
         return savedPost;
+    }
+
+    public void scrapPost(Integer postId) {
+        PostEntity postEntity = findPostInDataBaseByPostId(postId);
+        MapEntity mapEntity = postEntity.getMapId();
+
+
     }
 
     // <------------------------ GET part ------------------------>
