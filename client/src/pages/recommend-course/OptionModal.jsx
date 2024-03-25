@@ -1,4 +1,5 @@
 import React from "react";
+import NowLocation from "./NowLocation";
 
 import {
     Modal,
@@ -398,6 +399,9 @@ const OptionModal = ({ open, closeModal, setOption, option }) => {
                 </Box>
                 {/* 확인 버튼을 누르면 axios post로 option을 보내고 코스옵션
                 기본으로 되돌리는 함수 정의하기 */}
+                <Box>
+                    <NowLocation />
+                </Box>
                 <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
                     <Button variant="contained">확인</Button>
 
