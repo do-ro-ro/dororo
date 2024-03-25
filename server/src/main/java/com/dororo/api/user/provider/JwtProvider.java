@@ -37,7 +37,7 @@ public class JwtProvider {
 			subject = Jwts.parserBuilder()
 				.setSigningKey(key)
 				.build()
-				.parseClaimsJwt(jwt)
+				.parseClaimsJws(jwt)
 				.getBody()
 				.getSubject();
 		} catch (Exception exception) {
@@ -45,6 +45,6 @@ public class JwtProvider {
 			return null;
 		}
 
-		return "";
+		return subject;
 	}
 }

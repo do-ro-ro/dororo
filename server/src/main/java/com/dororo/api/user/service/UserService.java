@@ -3,7 +3,7 @@ package com.dororo.api.user.service;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-import com.dororo.api.user.dto.Request.UpdateProfileRequestDto;
+import com.dororo.api.user.dto.request.UpdateProfileRequestDto;
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.UserRepository;
 import com.dororo.api.exception.NoMatchingResourceException;

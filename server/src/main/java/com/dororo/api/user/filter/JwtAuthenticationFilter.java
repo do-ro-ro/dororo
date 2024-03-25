@@ -37,18 +37,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		FilterChain filterChain) throws ServletException, IOException {
 		try {
 			String token = parseBearerToken(request);
+			System.out.println("토큰 :" + token);
 			if(token == null){
 				filterChain.doFilter(request, response);
 				return;
 			}
 
-			String userId = jwtProvider.validate(token);
-			if(userId == null){
+			String userUniqueId = jwtProvider.validate(token);
+			if(userUniqueId == null){
 				filterChain.doFilter(request, response);
 				return;
 			}
 
-			Optional<UserEntity> userEntity = userRepository.findByUserId(Integer.valueOf(userId));
+			Optional<UserEntity> userEntity = userRepository.findByUniqueId(userUniqueId);
 			String role = userEntity.get().getRole(); //role : ROLE_USER
 
 			List<GrantedAuthority> authorities = new ArrayList<>();
@@ -56,7 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 			SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
 			AbstractAuthenticationToken authenticationToken =
-				new UsernamePasswordAuthenticationToken(userId, null, authorities);
+				new UsernamePasswordAuthenticationToken(userUniqueId, null, authorities);
 			authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
 			securityContext.setAuthentication(authenticationToken);
@@ -75,10 +76,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		boolean hasAuthorization = StringUtils.hasText(authorization);
 		if (!hasAuthorization) return null;
 
-		boolean isBearer = authorization.startsWith("Bearer ");
-		if(!isBearer) return null;
+		// boolean isBearer = authorization.startsWith("Bearer ");
+		// if(!isBearer) return null;
 
-		String token = authorization.substring(7);
-		return token;
+		//String token = authorization.substring(7);
+		return authorization;
 	}
 }
