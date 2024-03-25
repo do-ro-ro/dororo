@@ -1,11 +1,12 @@
 package com.dororo.api.utils.s3;
 
 import com.amazonaws.AmazonServiceException;
+
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,13 +18,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class S3Uploader {
 
-    @Autowired  // 이 부분은 밑의 bucket 필드가 Value를 통해 값을 주입 받았으므로, 생성자를 쓰기 보다는 얘만 Autowired를 통해 의존성 주입함
-    private AmazonS3Client amazonS3Client;
+    private final AmazonS3Client amazonS3Client;
     @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+    private final String bucket;
 
     public String uploadFileToS3(MultipartFile multipartFile, String filePath) {
         File uploadFile;
