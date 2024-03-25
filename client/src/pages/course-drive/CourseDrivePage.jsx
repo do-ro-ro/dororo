@@ -9,8 +9,8 @@ import Map from "../recommend-course/Map";
 import IntroductionModal from "../../components/course-drive/IntroductionModal";
 
 function CourseDrivePage() {
-    const [lat, setLat] = useState(35.309216);
-    const [lng, setLng] = useState(129.0633216);
+    const [lat, setLat] = useState(35.09504003528538);
+    const [lng, setLng] = useState(128.90489491914798);
     const [coolList, setcoolList] = useState([{}]);
     const [fillterList, setFillterList] = useState([{}]);
     const [time, setTime] = useState(0);
@@ -30,11 +30,11 @@ function CourseDrivePage() {
         <>
             <IntroductionModal />
             <div className="relative">
-                {/* <RealTimeCurrentLocation setLat={setLat} setLon={setLng} /> */}
-                {/* <ServerTest setcoolList={setcoolList} /> */}
+                <RealTimeCurrentLocation setLat={setLat} setLon={setLng} />
+                <ServerTest setcoolList={setcoolList} />
                 {/* <Map lat={lat} lon={lon} /> */}
                 <Topbar>코스 이름</Topbar>
-                {/* <StopOver
+                <StopOver
                     lat={lat}
                     lng={lng}
                     coolList={coolList}
@@ -42,9 +42,9 @@ function CourseDrivePage() {
                     setFillterList={setFillterList}
                     setTime={setTime}
                     setKm={setKm}
-                /> */}
+                />
                 {/* UI 테스트용 임시 맵 */}
-                <Map lat={lat} lon={lng} />
+                {/* <Map lat={lat} lon={lng} /> */}
                 <div className="fixed z-50 bottom-2 inset-x-0">
                     <Stack alignItems={"center"}>
                         {!isDriving ? (
