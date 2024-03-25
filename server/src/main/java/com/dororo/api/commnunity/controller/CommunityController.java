@@ -67,7 +67,8 @@ public class CommunityController {
                     ))
     })
     @PostMapping("/{postId}/scrap")
-    public ResponseEntity scrapPost() {
+    public ResponseEntity scrapPost(@Parameter(in = ParameterIn.PATH) @PathVariable Integer postId) {
+        communityService.scrapPost(postId);
 
         return new ResponseEntity(HttpStatus.OK);
     }

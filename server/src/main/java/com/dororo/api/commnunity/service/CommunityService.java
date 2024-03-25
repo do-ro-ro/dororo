@@ -4,6 +4,7 @@ import com.dororo.api.commnunity.dto.request.AddPostDto;
 import com.dororo.api.commnunity.dto.response.PostDetailsDto;
 import com.dororo.api.db.entity.MapEntity;
 import com.dororo.api.db.entity.PostEntity;
+import com.dororo.api.db.repository.MapRepository;
 import com.dororo.api.db.repository.PostRepository;
 import com.dororo.api.exception.NoMatchingResourceException;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class CommunityService {
 
     private final ModelMapper modelMapper;    // Entity -> Dto 간 변환에 사용
     private final PostRepository postRepository;
+    private final MapRepository mapRepository;
 
 
     // <------------------------ POST part ------------------------>
@@ -85,6 +87,8 @@ public class CommunityService {
         scrapMapEntity.setMapType(MapEntity.Maptype.SCRAP); // 스크랩한 맵임을 타입으로 명시
         scrapMapEntity.setMapDistance(originMapEntity.getMapDistance());
         scrapMapEntity.setMapCompletion(false); // 맵 생성과 같으므로 주행 여부는 false로
+
+        mapRepository.save(scrapMapEntity);
     }
 
 }
