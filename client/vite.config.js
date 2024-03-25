@@ -13,16 +13,18 @@ export default defineConfig({
                 name: "도로로",
                 short_name: "도로로",
                 theme_color: "#6386BE",
+                background_color: "#6386BE",
                 icons: [
                     {
-                        src: "./public/favicon-196x196.png",
+                        src: "./public/maskable_icon_x192.png",
                         type: "image/png",
-                        sizes: "196x196",
+                        sizes: "192x192",
                     },
                     {
-                        src: "./public/mstile-310x310.png",
+                        src: "./public/maskable_icon_x512.png",
                         type: "image/png",
-                        sizes: "310x310",
+                        sizes: "512x512",
+                        purpose: "maskable",
                     },
                 ],
             },
