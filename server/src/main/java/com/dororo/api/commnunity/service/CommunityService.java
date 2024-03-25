@@ -38,9 +38,8 @@ public class CommunityService {
 
     public void scrapPost(Integer postId) {
         PostEntity postEntity = findPostInDataBaseByPostId(postId);
-        MapEntity mapEntity = postEntity.getMapId();
-
-
+        MapEntity originMapEntity = postEntity.getMapId();
+        makeScrapMap(originMapEntity);  // 우선은 setter를 이용한 메서드로 새로운 맵 저장 함수 구현한 것을 사용함
     }
 
     // <------------------------ GET part ------------------------>
@@ -77,5 +76,15 @@ public class CommunityService {
         return tempPostEntity.get();   // Optional 객체가 존재한다면 get() 메서드로 실제 엔티티 받기
     }
 
+    // <------------ For Readability ------------>
+    private void makeScrapMap(MapEntity originMapEntity) {   // 스크랩하여 유저에게 맵을 저장하는 함수, 일단 MapEntity 저장 방식이 Setter이므로 여기서도 Setter로 하지만, 바뀌면 좋을 듯
+        MapEntity scrapMapEntity = new MapEntity();
+        scrapMapEntity.setUserId(originMapEntity.getUserId());
+        scrapMapEntity.setMapName(originMapEntity.getMapName());
+        scrapMapEntity.setMapRouteAxis(originMapEntity.getMapRouteAxis());
+        scrapMapEntity.setMapType(MapEntity.Maptype.SCRAP); // 스크랩한 맵임을 타입으로 명시
+        scrapMapEntity.setMapDistance(originMapEntity.getMapDistance());
+        scrapMapEntity.setMapCompletion(false); // 맵 생성과 같으므로 주행 여부는 false로
+    }
 
 }
