@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -48,18 +50,18 @@ public class S3Uploader {
         return amazonS3Client.getUrl(bucket, fileName).toString();  // 업로드 경로 반환
     }
 
-    public void deleteS3(String filePath) throws Exception {    // S3에 있는 파일 삭제하는 함수, filePath:
-        try{
-            String key = filePath.substring(56); // 폴더/파일.확장자
-            try {
-                amazonS3Client.deleteObject(bucket, key);
-            } catch (AmazonServiceException e) {
-                log.info(e.getErrorMessage());
-            }
-        } catch (Exception exception) {
-            log.info(exception.getMessage());
+    public void deleteS3(String filePath) throws Exception {    // S3에 있는 파일 삭제하는 함수
+        try {
+            URI uri = new URI(filePath); // 파일 경로를 URI 객체로 변환
+            String path = uri.getPath(); // URI의 path 부분을 가져옴
+            String key = path.substring(1); // 맨 앞의 '/'를 제거하여 실제 S3 키를 추출
+            amazonS3Client.deleteObject(bucket, key);
+            log.info("[S3Uploader] : S3에 있는 파일 삭제");
+        } catch (URISyntaxException e) {
+            log.error("URI syntax exception: " + e.getMessage());
+        } catch (AmazonServiceException e) {
+            log.info(e.getErrorMessage());
         }
-        log.info("[S3Uploader] : S3에 있는 파일 삭제");
     }
 
     private void removeNewFile(File targetFile) {   // 로컬에 저장된 파일 지우는 함수, targetFile : 저장될 파일
