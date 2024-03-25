@@ -91,6 +91,7 @@ function CourseDetailPage() {
                                 disabled={
                                     DummyMap.map_completion ? false : true
                                 }
+                                onClick={() => navigate("custom")}
                             >
                                 코스 수정
                             </Button>
