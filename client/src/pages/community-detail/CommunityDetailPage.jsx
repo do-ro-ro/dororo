@@ -53,7 +53,7 @@ function CommunityDetailPage() {
     return (
         <>
             <Box>
-                <Topbar>커뮤니티</Topbar>
+                <Topbar isBackButton={true}>커뮤니티</Topbar>
                 <Stack
                     m={2}
                     direction={"row"}
