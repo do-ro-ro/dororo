@@ -1,4 +1,4 @@
-package com.dororo.api.User.config;
+package com.dororo.api.user.config;
 
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
@@ -15,8 +15,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.dororo.api.User.filter.JwtAuthenticationFilter;
-import com.dororo.api.User.handler.OAuth2SuccessHandler;
+import com.dororo.api.user.filter.JwtAuthenticationFilter;
+import com.dororo.api.user.handler.OAuth2SuccessHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -41,7 +41,7 @@ public class WebSecurityConfig {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			)
 			.authorizeHttpRequests(request -> request
-				.requestMatchers("/","/index.html", "/api/auth/**","/oauth2/**").permitAll()
+				.requestMatchers("/","/index.html","/api/auth/**","/oauth2/**").permitAll()
 				.requestMatchers("/api/api-docs/**", "/api/docs", "/api/swagger-ui/**").permitAll()	// swagger에 대해 토큰 없이 요청해도 확인할 수 있도록 하는 설정
 				.requestMatchers("/api/users/**").hasRole("USER")
 				.requestMatchers("/api/maps/**").hasRole("USER")

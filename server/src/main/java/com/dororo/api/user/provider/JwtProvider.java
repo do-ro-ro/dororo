@@ -1,4 +1,4 @@
-package com.dororo.api.User.provider;
+package com.dororo.api.user.provider;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -37,7 +37,7 @@ public class JwtProvider {
 			subject = Jwts.parserBuilder()
 				.setSigningKey(key)
 				.build()
-				.parseClaimsJwt(jwt)
+				.parseClaimsJws(jwt)
 				.getBody()
 				.getSubject();
 		} catch (Exception exception) {
@@ -45,6 +45,6 @@ public class JwtProvider {
 			return null;
 		}
 
-		return "";
+		return subject;
 	}
 }

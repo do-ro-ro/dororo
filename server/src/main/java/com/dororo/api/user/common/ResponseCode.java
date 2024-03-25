@@ -1,4 +1,4 @@
-package com.dororo.api.User.common;
+package com.dororo.api.user.common;
 
 public interface ResponseCode {
 	String SUCCESS = "SU";
