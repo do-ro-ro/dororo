@@ -33,6 +33,8 @@ public class CommunityController {
     
     private final CommunityService communityService;
 
+
+    // <-------------------- POST part -------------------->
     @Operation(summary = "커뮤니티 map post 생성 요청", description = "코스 공유를 했을 때 동작을 수행하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "코스 공유 성공",
@@ -51,24 +53,44 @@ public class CommunityController {
 
         return new ResponseEntity(EntityModel.of(savedPost, linkTo(methodOn(CommunityController.class).postDetails(savedPost.getPostId())).withRel("postDetails")), HttpStatus.CREATED);
     }
-    // <-------------------- POST part -------------------->
+
+    @Operation(summary = "커뮤니티 map post 스크랩 요청", description = "코스 스크랩을 했을 때 동작을 수행하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "코스 스크랩 성공",
+                    content = @Content(examples = {
+                            @ExampleObject(
+                                    name = "Post 스크랩 반환 body",
+                                    summary = "Post 생성 반환 body의 예시(게시글 스크랩의 경우 마이 페이지에 map으로 저장됨)",
+                                    value = "{\"id\": 1, \"_links\": {\"mapDetails\": {\"href\": \"https://j10e202.p.ssafy.io/api/maps/1\"}}}"
+                            )
+                    }
+                    ))
+    })
+    @PostMapping("/{postId}/scrap")
+    public ResponseEntity scrapPost(@Parameter(in = ParameterIn.PATH) @PathVariable Integer postId) {
+        communityService.scrapPost(postId);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
     // <-------------------- GET part -------------------->
-    @Operation(summary = "커뮤니티 map post 전체 조회 요청", description = "커뮤니티에 등록된 map post의 전체 조회를 수행하는 API입니다.")
+    @Operation(summary = "커뮤니티 map post 전체 조회, 내가 쓴 게시글 조회 요청", description = "커뮤니티에 등록된 map post의 전체 조회, 내가 쓴 게시글 조회를 수행하는 API입니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "코스 전체 조회 성공",
+            @ApiResponse(responseCode = "200", description = "코스 전체 조회 or 내가 쓴 게시글 조회 성공",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = PostDetailsDto.class)), examples = {
                             @ExampleObject(
-                                    name = "Post 전체 조회 body",
-                                    summary = "Post 전체 조회 body의 예시",
+                                    name = "Post 전체 or 내가 쓴 게시글 조회 body",
+                                    summary = "Post 전체 or 내가 쓴 게시글 조회 body의 예시",
                                     value = "[{\"postId\": 1, \"mapId\": 1, \"mapImage\": \"https://~~~/temp.png\", \"userName\": \"김영후\", \"createdAt\": \"YYYY-MM-DD hh:mm:ss.000000\", \"scrapCount\": 0, " +
                                             "\"postTitle\": \"게시글 1\", \"postContent\": \"게시글 1의 내용\", \"mapRouteAxis\": \"아직 잘 모름\"}]"
                             )
                     })),
     })
     @GetMapping("")
-    public ResponseEntity postList() {
-        List<PostDetailsDto> postDetailsDtoList = communityService.postList();
+    public ResponseEntity postList(@Parameter(name = "option", description = "조회의 옵션(전체 조회 시 그냥 /map-posts 로 요청, 내가 쓴 게시글의 경우 /map-posts?option=mine 으로 요청", in = ParameterIn.QUERY)
+                                       @RequestParam(required = false) String option) {
+        List<PostDetailsDto> postDetailsDtoList = communityService.postList(option);
 
         return new ResponseEntity(postDetailsDtoList, HttpStatus.OK);
     }
@@ -93,6 +115,7 @@ public class CommunityController {
 
         return new ResponseEntity(postDetailsDto, HttpStatus.OK);
     }
+
 
     // <-------------------- DELETE part -------------------->
     @Operation(summary = "커뮤니티 map post 삭제 요청", description = "커뮤니티에 등록된 map post의 삭제를 수행하는 API입니다.")

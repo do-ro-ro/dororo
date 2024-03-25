@@ -23,6 +23,8 @@ public class PostEntity {
 	@JoinColumn(name = "mapId", nullable = false)
 	private MapEntity mapId;
 	@Column(nullable = false)
+	private String writerUniqueId;	// Users(UserEntity) 테이블의 uniqueId, 외래키는 설정 안해줌
+	@Column(nullable = false)
 	private String postTitle;
 	@Column(nullable = false)
 	private String postContent;
