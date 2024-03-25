@@ -1,4 +1,4 @@
-package com.dororo.api.User.common;
+package com.dororo.api.user.common;
 
 public interface ResponseMessage {
 	String SUCCESS = "Success.";

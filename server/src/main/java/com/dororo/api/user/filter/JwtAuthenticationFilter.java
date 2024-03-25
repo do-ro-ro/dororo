@@ -1,8 +1,9 @@
-package com.dororo.api.User.filter;
+package com.dororo.api.user.filter;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.dororo.api.User.provider.JwtProvider;
+import com.dororo.api.user.provider.JwtProvider;
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.UserRepository;
 
@@ -47,8 +48,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				return;
 			}
 
-			UserEntity userEntity = userRepository.findByUserId(Integer.valueOf(userId));
-			String role = userEntity.getRole(); //role : ROLE_USER
+			Optional<UserEntity> userEntity = userRepository.findByUserId(Integer.valueOf(userId));
+			String role = userEntity.get().getRole(); //role : ROLE_USER
 
 			List<GrantedAuthority> authorities = new ArrayList<>();
 			authorities.add(new SimpleGrantedAuthority(role));

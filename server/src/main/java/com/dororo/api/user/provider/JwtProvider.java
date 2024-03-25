@@ -1,4 +1,4 @@
-package com.dororo.api.User.provider;
+package com.dororo.api.user.provider;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
