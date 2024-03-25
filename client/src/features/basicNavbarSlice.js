@@ -9,9 +9,12 @@ export const basicNavbarSlice = createSlice({
         changeValue: (state, action) => {
             state.value = action.payload;
         },
+        setValue: (state, action) => {
+            state.value = action.payload;
+        },
     },
 });
 
-export const { changeValue } = basicNavbarSlice.actions;
+export const { changeValue, setValue } = basicNavbarSlice.actions;
 
 export default basicNavbarSlice.reducer;
