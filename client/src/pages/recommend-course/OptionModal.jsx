@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import NowLocation from "./NowLocation";
 
 import {
@@ -34,6 +34,8 @@ const style = {
 };
 
 const OptionModal = ({ open, closeModal, setOption, option }) => {
+    const [lat, setLat] = useState(35.09504003528538);
+    const [lon, setLon] = useState(128.90489491914798);
     const handleMethodChange = (e) => {
         setOption({ ...option, method: e.target.value });
         console.log(option);
@@ -400,7 +402,7 @@ const OptionModal = ({ open, closeModal, setOption, option }) => {
                 {/* 확인 버튼을 누르면 axios post로 option을 보내고 코스옵션
                 기본으로 되돌리는 함수 정의하기 */}
                 <Box>
-                    <NowLocation />
+                    <NowLocation setLat={setLat} setLon={setLon} />
                 </Box>
                 <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
                     <Button variant="contained">확인</Button>
