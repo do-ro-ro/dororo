@@ -1,7 +1,8 @@
 import { Box, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import startPin from "../../assets/start_pin.png";
-import endPin from "../../assets/end_pin.png";
+import startPin from "../../assets/map_marker_start.png";
+import endPin from "../../assets/map_marker_end.png";
+import waypointPin from "../../assets/waypoint_yet.png";
 
 function Map({ course, lat, lng }) {
     const [map, setMap] = useState(null);
@@ -66,16 +67,16 @@ function Map({ course, lat, lng }) {
         ];
 
         // 각 웨이포인트에 마커 찍어주기
-        waypoints.forEach((waypoint) => {
-            const marker = new window.Tmapv2.Marker({
-                position: new window.Tmapv2.LatLng(waypoint.lat, waypoint.lng),
-                icon: waypoint.icon,
-                iconSize: new window.Tmapv2.Size(24, 38),
-                map: newMap,
-                draggable: true,
-            });
-            setResultMarkerArr((prev) => [...prev, marker]);
-        });
+        // waypoints.forEach((waypoint) => {
+        //     const marker = new window.Tmapv2.Marker({
+        //         position: new window.Tmapv2.LatLng(waypoint.lat, waypoint.lng),
+        //         icon: waypointPin,
+        //         iconSize: new window.Tmapv2.Size(24, 24),
+        //         map: newMap,
+        //         draggable: true,
+        //     });
+        //     setResultMarkerArr((prev) => [...prev, marker]);
+        // });
 
         //
         const postRouteSequential30 = async () => {
@@ -198,15 +199,14 @@ function Map({ course, lat, lng }) {
                             if (properties.pointType === "S") {
                                 // 시작점이면
                                 markerImg = startPin;
-                                size = new window.Tmapv2.Size(24, 38);
+                                size = new window.Tmapv2.Size(48, 76);
                             } else if (properties.pointType === "E") {
                                 // 종착점이면
                                 markerImg = endPin;
-                                size = new window.Tmapv2.Size(24, 38);
+                                size = new window.Tmapv2.Size(48, 76);
                             } else {
                                 // 거쳐가는 점이면
-                                markerImg =
-                                    "http://topopen.tmap.co.kr/imgs/point.png";
+                                markerImg = waypointPin;
                                 size = new window.Tmapv2.Size(24, 24);
                                 draggable = true;
                             }
