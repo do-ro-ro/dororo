@@ -10,6 +10,9 @@ export default defineConfig({
             registerType: "autoUpdate",
             devOptions: { enabled: true },
             manifest: {
+                name: "도로로",
+                short_name: "도로로",
+                theme_color: "#6386BE",
                 icons: [
                     {
                         src: "./public/favicon-196x196.png",
