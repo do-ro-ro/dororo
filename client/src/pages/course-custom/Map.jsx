@@ -139,24 +139,63 @@ function Map({ course, lat, lng }) {
                             path: drawInfoArr,
                             strokeColor: "#6386BE",
                             strokeWeight: 15,
+                            strokeOpacity: 100,
                             map: map,
-                            // draggable: true, //드래그 여부
+                            draggable: true, //드래그 여부
+                            direction: true,
+                            directionColor: "white",
                         });
 
-                        polyline.addListener(
-                            "touch",
-                            function () {
-                                if (this.isEditing()) {
-                                    this.endEdit();
-                                } else {
-                                    this.startEdit();
-                                }
-                            },
-                            polyline,
-                        );
+                        // polyline.addListener(
+                        //     "click",
+                        //     function () {
+                        //         if (this.isEditing()) {
+                        //             this.endEdit();
+                        //         } else {
+                        //             this.startEdit();
+                        //         }
+                        //     },
+                        //     polyline,
+                        // );
                         // console.log(polyline);
 
-                        setResultInfoArr((prev) => [...prev, polyline]);
+                        // 터치 이벤트 추가
+                        let isDragging = false;
+                        let touchStartPos = null;
+
+                        polyline.addListener("touchstart", function (e) {
+                            isDragging = true;
+                            touchStartPos = e.latLng;
+                        });
+
+                        polyline.addListener("touchmove", function (e) {
+                            if (isDragging) {
+                                const newLatLng = e.latLng;
+                                const deltaX =
+                                    newLatLng.lng() - touchStartPos.lng();
+                                const deltaY =
+                                    newLatLng.lat() - touchStartPos.lat();
+
+                                // 폴리라인 이동
+                                const newCoords = drawInfoArr.map((coord) => {
+                                    return new window.Tmapv2.LatLng(
+                                        coord.lat() + deltaY,
+                                        coord.lng() + deltaX,
+                                    );
+                                });
+
+                                polyline.setPath(newCoords);
+                                touchStartPos = newLatLng; // 이동한 위치로 업데이트
+                            }
+                        });
+
+                        polyline.addListener("touchend", function () {
+                            isDragging = false;
+                            touchStartPos = null;
+                        });
+
+                        // setResultInfoArr((prev) => [...prev, polyline]);
+                        // console.log(resultInfoArr);
                     } else {
                         // type이 Point(노드)일 경우
                         let markerImg = "";
@@ -166,11 +205,11 @@ function Map({ course, lat, lng }) {
                         if (properties.pointType === "S") {
                             // 시작점이면
                             markerImg = startPin;
-                            size = new window.Tmapv2.Size(48, 76);
+                            size = new window.Tmapv2.Size(24, 38);
                         } else if (properties.pointType === "E") {
                             // 종착점이면
                             markerImg = endPin;
-                            size = new window.Tmapv2.Size(48, 76);
+                            size = new window.Tmapv2.Size(24, 38);
                         } else {
                             // 거쳐가는 점이면
                             markerImg = waypointPin;
