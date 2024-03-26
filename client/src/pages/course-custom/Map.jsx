@@ -140,11 +140,11 @@ function Map({ course, lat, lng }) {
                             strokeColor: "#6386BE",
                             strokeWeight: 15,
                             map: map,
-                            draggable: true, //드래그 여부
+                            // draggable: true, //드래그 여부
                         });
 
                         polyline.addListener(
-                            "click",
+                            "touch",
                             function () {
                                 if (this.isEditing()) {
                                     this.endEdit();
