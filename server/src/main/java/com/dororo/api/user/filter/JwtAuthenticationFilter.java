@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		FilterChain filterChain) throws ServletException, IOException {
 		try {
 			String token = parseBearerToken(request);
-			System.out.println("토큰 :" + token);
+			//System.out.println("Token: "+token);
 			if(token == null){
 				filterChain.doFilter(request, response);
 				return;
@@ -71,15 +71,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private String parseBearerToken(HttpServletRequest request) {
 
-		String authorization = request.getHeader("Authorization");
+		/*String accessToken = request.getParameter("Authorization");
+		System.out.println("access: "+accessToken);
 
-		boolean hasAuthorization = StringUtils.hasText(authorization);
-		if (!hasAuthorization) return null;
+		boolean hasAccessToken = StringUtils.hasText(accessToken);
+		if (!hasAccessToken) return null;
 
-		// boolean isBearer = authorization.startsWith("Bearer ");
-		// if(!isBearer) return null;
+		boolean isAccessToken = accessToken.startsWith("access=");
+		if(!isAccessToken) return null;*/
 
-		//String token = authorization.substring(7);
-		return authorization;
+		//String token = accessToken.substring(7);
+		//return token;
+
+		String accessToken = request.getHeader("access");
+		System.out.println("access: " + accessToken);
+
+		boolean hasAccessToken = StringUtils.hasText(accessToken);
+		if (!hasAccessToken) {
+			return null;
+		}
+
+		return accessToken;
 	}
 }
