@@ -44,8 +44,8 @@ public class CommunityController {
                                             summary = "Post 생성 반환 body의 예시",
                                             value = "{\"id\": 1, \"postTitle\": \"새로운 포스트\", \"_links\": {\"postDetails\": {\"href\": \"https://j10e202.p.ssafy.io/api/map-posts/1\"}}}"
                                     )
-                            }
-                    ))
+                    })
+            )
     })
     @PostMapping("")
     public ResponseEntity addPost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
@@ -66,7 +66,15 @@ public class CommunityController {
 //                            )
 //                    })
             ),
-            @ApiResponse(responseCode = "404", description = "요청 받은 post의 ID로 게시글 조회 불가")
+            @ApiResponse(responseCode = "404", description = "요청 받은 post의 ID로 게시글 조회 불가",
+                    content = @Content(examples = {
+                            @ExampleObject(
+                                name = "Not Found",
+                                summary = "요청 받은 ID에 해당하는 데이터가 없음",
+                                value = "No matching content with requested post ID"
+                            )
+                    })
+            )
     })
     @PostMapping("/{postId}/scrap")
     public ResponseEntity scrapPost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
@@ -88,7 +96,8 @@ public class CommunityController {
                                     value = "[{\"postId\": 1, \"mapId\": 1, \"mapImage\": \"https://~~~/temp.png\", \"userName\": \"김영후\", \"createdAt\": \"YYYY-MM-DD hh:mm:ss.000000\", \"scrapCount\": 0, " +
                                             "\"postTitle\": \"게시글 1\", \"postContent\": \"게시글 1의 내용\", \"mapRouteAxis\": \"아직 잘 모름\"}]"
                             )
-                    })),
+                    })
+            ),
     })
     @GetMapping("")
     public ResponseEntity postList(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
@@ -109,8 +118,17 @@ public class CommunityController {
                                             "\"userName\": \"김영후\", \"createdAt\": \"YYYY-MM-DD hh:mm:ss.000000\", \"scrapCount\": 0," +
                                             " \"postTitle\": \"게시글 1\", \"postContent\": \"게시글 1의 내용\", \"mapRouteAxis\": \"아직 잘 모름\"}"
                             )
-                    })),
-            @ApiResponse(responseCode = "404", description = "요청 받은 post의 ID로 게시글 조회 불가")
+                    })
+            ),
+            @ApiResponse(responseCode = "404", description = "요청 받은 post의 ID로 게시글 조회 불가",
+                    content = @Content(examples = {
+                        @ExampleObject(
+                            name = "Not Found",
+                            summary = "요청 받은 ID에 해당하는 데이터가 없음",
+                            value = "No matching content with requested post ID"
+                        )
+                    })
+            )
     })
     @GetMapping("/{postId}")
     public ResponseEntity postDetails(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
@@ -124,14 +142,22 @@ public class CommunityController {
     // <-------------------- DELETE part -------------------->
     @Operation(summary = "커뮤니티 map post 삭제 요청", description = "커뮤니티에 등록된 map post의 삭제를 수행하는 API입니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "코스 삭제 성공", content = @Content(examples = {
-                    @ExampleObject(
+            @ApiResponse(responseCode = "200", description = "코스 삭제 성공",
+                    content = @Content(examples = {
+                        @ExampleObject(
                             name = "Post 삭제 body",
                             summary = "Post 삭제 body의 예시",
                             value = " "
+                        )
+                    })
+            ),
+            @ApiResponse(responseCode = "404", description = "요청 받은 post의 ID로 게시글 조회 불가", content = @Content(examples = {
+                    @ExampleObject(
+                            name = "Not Found",
+                            summary = "요청 받은 ID에 해당하는 데이터가 없음",
+                            value = "No matching content with requested post ID"
                     )
-            })),
-            @ApiResponse(responseCode = "404", description = "요청 받은 post의 ID로 게시글 조회 불가")
+            }))
     })
     @DeleteMapping("/{postId}")
     public ResponseEntity deletePost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
