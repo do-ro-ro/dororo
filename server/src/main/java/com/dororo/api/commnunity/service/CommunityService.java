@@ -53,8 +53,8 @@ public class CommunityService {
     }
 
     // <------------------------ GET part ------------------------>
-    public List<PostDetailsDto> postList(String option) {
-        String userUniqueId = "Get Unique ID at JWT";   // 아직 엑세스 토큰 도입 안해서 이렇게 둠
+    public List<PostDetailsDto> postList(String access, String option) {
+        String userUniqueId = getUserUniqueIdFromAccess(access);   // 아직 엑세스 토큰 도입 안해서 이렇게 둠
         List<PostEntity> userPostEntityList = new ArrayList<>();
         if (option == null) userPostEntityList = postRepository.findAll();  // option query 없이 요청이 들어왔을 경우 전체 게시글 조회
         else if (option.equals("popular")) userPostEntityList = postRepository.findTop3ByOrderByScrapCount();   // 스크랩 수 기반 TOP3 게시글 조회
