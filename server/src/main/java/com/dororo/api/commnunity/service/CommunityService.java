@@ -29,7 +29,7 @@ public class CommunityService {
     public PostEntity addPost(AddPostDto addPostDto) {
         Integer mapId = addPostDto.getMapId();  // 참조하는 맵의 ID
         PostEntity postEntity = PostEntity.builder()
-                .mapId(new MapEntity()) // MapRepository 메서드 선언 전 임시 처리
+                .mapId(mapRepository.findByMapId(mapId))    // 참조하는 맵 가져옴
                 .postTitle(addPostDto.getPostTitle())
                 .postContent(addPostDto.getPostContent())
                 .reviewRef(addPostDto.getReviewRef())
