@@ -13,6 +13,8 @@ import MyPage from "./pages/my-page/MyPage";
 import { ThemeProvider, createTheme } from "@mui/material";
 import MainPage from "./components/navbar/MainPage";
 
+import DriveTest from "./components/course-drive/DriveTest/DriveTest";
+
 const colorTheme = createTheme({
     palette: {
         primary: {
@@ -61,7 +63,7 @@ function App() {
                         />
                         <Route
                             path="/course/:courseId/drive"
-                            element={<CourseDrivePage />}
+                            element={<DriveTest />}
                         />
                     </Routes>
                 </Suspense>
