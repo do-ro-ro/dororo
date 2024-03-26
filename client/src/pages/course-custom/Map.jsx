@@ -7,10 +7,25 @@ import waypointPin from "../../assets/waypoint_yet.png";
 function Map({ course, lat, lng }) {
     const [map, setMap] = useState(null);
     const [markers, setMarkers] = useState([]);
+
+    // polyline을 그리기 위한 path(꼭지점) 좌표를 저장하는 리스트
     const [courseLine, setCourseLine] = useState([]);
+
     const [resultMarkerArr, setResultMarkerArr] = useState([]);
     const [resultInfoArr, setResultInfoArr] = useState([]);
+
+    // viaPoint 설정을 위한 filteredCourse
     const [filteredCourse, setFilteredCourse] = useState([]);
+
+    // 실행취소 기능 구현을 위한 상태와 함수
+    const [isPolylineEditing, setIsPolylineEditing] = useState(false);
+    const [polyline, setPolyline] = useState(null);
+    const handleUndo = () => {
+        if (isPolylineEditing) {
+            polyline.endEdit(); // 드래그 상태 종료
+            setIsPolylineEditing(false); // 드래그 상태를 false로 업데이트
+        }
+    };
 
     const startPoint = course[0];
     const endPoint = course[course.length - 1];
@@ -125,11 +140,25 @@ function Map({ course, lat, lng }) {
                                     new window.Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
                                         latlng,
                                     );
-                                // console.log(convertPoint);
-                                setCourseLine((prev) => [
-                                    ...prev,
-                                    convertPoint,
-                                ]);
+                                console.log(filteredCourse);
+                                console.log(convertPoint);
+                                if (
+                                    filteredCourse.some(
+                                        (point) =>
+                                            point.lat === convertPoint._lat &&
+                                            point.lng === convertPoint._lng,
+                                    )
+                                ) {
+                                    // filteredCourse 리스트에 포함되어 있으면 courseLine 상태 업데이트
+                                    setCourseLine((prev) => [
+                                        ...prev,
+                                        convertPoint,
+                                    ]);
+                                }
+                                // setCourseLine((prev) => [
+                                //     ...prev,
+                                //     convertPoint,
+                                // ]);
 
                                 return new window.Tmapv2.LatLng(
                                     convertPoint._lat,
@@ -206,7 +235,7 @@ function Map({ course, lat, lng }) {
     useEffect(() => {
         console.log(courseLine); // courseLine이 변경될 때 로그를 출력
         if (courseLine.length > 0) {
-            const polyline = new window.Tmapv2.Polyline({
+            const newPolyline = new window.Tmapv2.Polyline({
                 path: courseLine,
                 strokeColor: "#6386BE",
                 strokeWeight: 8,
@@ -217,25 +246,26 @@ function Map({ course, lat, lng }) {
                 directionColor: "white",
             });
 
-            polyline.addListener(
+            newPolyline.addListener(
                 "click",
                 function () {
                     if (this.isEditing()) {
                         this.endEdit();
+                        setIsPolylineEditing(false);
                     } else {
                         this.startEdit();
+                        setIsPolylineEditing(true);
                     }
                 },
-                polyline,
+                newPolyline,
             );
         }
-
-        // 새로운 폴리라인 생성 등의 로직을 추가할 수 있습니다.
     }, [courseLine]);
 
     return (
         <>
             <Box>
+                <Button onClick={handleUndo}>실행 취소</Button>
                 <div id="map_div">
                     <Box position={"fixed"}>
                         <Button>수정 완료</Button>
