@@ -17,40 +17,41 @@ import java.util.List;
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
+@RequestMapping("/api/maps")
 public class MapController {
     @Autowired
     private MapService mapService;
 
     //맵 전체 조회(map-type별로)
-    @GetMapping("/maps")
+    @GetMapping("")
     public ResponseEntity getAllMaps(@RequestParam("map-type") MapEntity.Maptype maptype) {
         List<MapResponseDto> maps = mapService.getAllMaps(maptype);
         return ResponseEntity.ok(maps);
     }
 
     //맵 상세조회
-    @GetMapping("/maps/{mapId}")
+    @GetMapping("/{mapId}")
     public ResponseEntity getMapdetails(@PathVariable Integer mapId) {
         DetailMapResponseDto detailMapResponseDto = mapService.getMapById(mapId);
         return ResponseEntity.ok(detailMapResponseDto);
     }
 
     //맵 생성
-    @PostMapping("/maps")
+    @PostMapping("")
     public ResponseEntity addMap(@RequestBody AddMapRequestDto addMapRequestDto) {
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     //맵 저장
-    @PostMapping("/maps/save")
+    @PostMapping("/save")
     public ResponseEntity saveMap() {
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     //맵 삭제
-    @DeleteMapping("/maps/{mapId}")
+    @DeleteMapping("/{mapId}")
     public ResponseEntity deleteMap(@PathVariable Integer mapId) {
         mapService.deleteMapById(mapId);
         return ResponseEntity.ok().build();
@@ -58,7 +59,7 @@ public class MapController {
 
 
     //맵 수정 (주행여부 갱신)
-    @PatchMapping("/maps/{mapId}")
+    @PatchMapping("/{mapId}")
     public ResponseEntity updateMap(@PathVariable Integer mapId ,  @RequestParam("map-completion") Boolean mapCompletion) {
         mapService.updateMapCompletion(mapId, mapCompletion);
         return ResponseEntity.ok().build(); // 업데이트 성공 응답
