@@ -4,6 +4,7 @@ import Map from "./Map";
 import { useState } from "react";
 import FooterBar from "./FooterBar";
 import { getCourse } from "../../apis/tmap/getCourse";
+import Topbar from "../../components/topbar/Topbar";
 
 function CourseCustomPage() {
     const dummyMap = { map_name: "테스트코스" };
@@ -19,15 +20,7 @@ function CourseCustomPage() {
     ];
     return (
         <>
-            <Box
-                bgcolor={"white"}
-                border={"grey"}
-                boxShadow="2px"
-                textAlign={"center"}
-                py="2vh"
-            >
-                {dummyMap.map_name} 수정하기
-            </Box>
+            <Topbar>{dummyMap.map_name} 수정하기</Topbar>
             <Map course={course} lat={lat} lng={lng} />
             <Box position={"absolute"} bottom={"20vw"} mb={20}>
                 <Drawer />
