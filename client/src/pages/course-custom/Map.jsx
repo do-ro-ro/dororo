@@ -33,55 +33,8 @@ function Map({ course, lat, lng }) {
         });
 
         setMap(newMap);
-
-        // postRouteSequential30();
-
-        // 출발점 마커 설정
-        // const marker_s = new window.Tmapv2.Marker({
-        //     position: new window.Tmapv2.LatLng(startPoint.lat, startPoint.lng),
-        //     icon: startPin,
-        //     iconSize: new window.Tmapv2.Size(24, 38),
-        //     map: newMap,
-        // });
-        // setResultMarkerArr((prev) => [...prev, marker_s]);
-
-        //종착점 마커 설정
-        // const marker_e = new window.Tmapv2.Marker({
-        //     position: new window.Tmapv2.LatLng(endPoint.lat, endPoint.lng),
-        //     icon: endPin,
-        //     iconSize: new window.Tmapv2.Size(24, 38),
-        //     map: newMap,
-        // });
-        // setResultMarkerArr((prev) => [...prev, marker_e]);
-
-        // 경유지 설정
-        // const waypoints = [
-        //     {
-        //         lat: course[1].lat,
-        //         lng: course[1].lng,
-        //         icon: "/upload/tmap/marker/pin_b_m_1.png",
-        //     },
-        //     {
-        //         lat: course[2].lat,
-        //         lng: course[1].lng,
-        //         icon: "/upload/tmap/marker/pin_b_m_2.png",
-        //     },
-        // ];
-
-        // 각 웨이포인트에 마커 찍어주기
-        // waypoints.forEach((waypoint) => {
-        //     const marker = new window.Tmapv2.Marker({
-        //         position: new window.Tmapv2.LatLng(waypoint.lat, waypoint.lng),
-        //         icon: waypointPin,
-        //         iconSize: new window.Tmapv2.Size(24, 24),
-        //         map: newMap,
-        //         draggable: true,
-        //     });
-        //     setResultMarkerArr((prev) => [...prev, marker]);
-        // });
-
-        //
     };
+
     const postRouteSequential30 = async () => {
         const searchOption = "2";
 
@@ -187,7 +140,20 @@ function Map({ course, lat, lng }) {
                             strokeColor: "#6386BE",
                             strokeWeight: 15,
                             map: map,
+                            draggable: true, //드래그 여부
                         });
+
+                        polyline.addListener(
+                            "click",
+                            function () {
+                                if (this.isEditing()) {
+                                    this.endEdit();
+                                } else {
+                                    this.startEdit();
+                                }
+                            },
+                            polyline,
+                        );
                         // console.log(polyline);
 
                         setResultInfoArr((prev) => [...prev, polyline]);
