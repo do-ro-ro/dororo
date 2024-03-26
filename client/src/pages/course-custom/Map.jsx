@@ -7,12 +7,18 @@ import waypointPin from "../../assets/waypoint_yet.png";
 function Map({ course, lat, lng }) {
     const [map, setMap] = useState(null);
     const [markers, setMarkers] = useState([]);
-    const [courseLine, setCourseLine] = useState(null);
+    const [courseLine, setCourseLine] = useState([]);
     const [resultMarkerArr, setResultMarkerArr] = useState([]);
     const [resultInfoArr, setResultInfoArr] = useState([]);
+    const [filteredCourse, setFilteredCourse] = useState([]);
 
     const startPoint = course[0];
     const endPoint = course[course.length - 1];
+    useEffect(() => {
+        if (course.length > 1) {
+            setFilteredCourse(course.slice(1, course.length - 1));
+        }
+    }, [course]);
 
     // 지도 시작점을 위한 센터 포인트 정의
     const centerPoint = {
@@ -55,20 +61,12 @@ function Map({ course, lat, lng }) {
             endY: `${endPoint.lat}`,
             // endX: "128.862074",
             // endY: "35.089101",
-            viaPoints: [
-                {
-                    viaPointId: "test01",
-                    viaPointName: "name01",
-                    viaX: "128.859205",
-                    viaY: "35.093515",
-                },
-                {
-                    viaPointId: "test02",
-                    viaPointName: "name02",
-                    viaX: "128.859254",
-                    viaY: "35.08902",
-                },
-            ],
+            viaPoints: filteredCourse.map((point) => ({
+                viaPointId: `test${filteredCourse.indexOf(point) + 1}`,
+                viaPointName: `name${filteredCourse.indexOf(point) + 1}`,
+                viaX: `${point.lng}`,
+                viaY: `${point.lat}`,
+            })),
             reqCoordType: "WGS84GEO",
             resCoordType: "EPSG3857",
             searchOption: searchOption,
@@ -91,7 +89,7 @@ function Map({ course, lat, lng }) {
 
                 // 경유지 위치 정보들이 담겨 있는 배열
                 const resultFeatures = data.features;
-                console.log(resultFeatures);
+                // console.log(resultFeatures);
 
                 const tDistance =
                     "총 거리 : " +
@@ -128,6 +126,11 @@ function Map({ course, lat, lng }) {
                                         latlng,
                                     );
                                 // console.log(convertPoint);
+                                setCourseLine((prev) => [
+                                    ...prev,
+                                    convertPoint,
+                                ]);
+
                                 return new window.Tmapv2.LatLng(
                                     convertPoint._lat,
                                     convertPoint._lng,
@@ -135,68 +138,9 @@ function Map({ course, lat, lng }) {
                             },
                         );
 
-                        const polyline = new window.Tmapv2.Polyline({
-                            path: drawInfoArr,
-                            strokeColor: "#6386BE",
-                            strokeWeight: 15,
-                            strokeOpacity: 100,
-                            map: map,
-                            draggable: true, //드래그 여부
-                            direction: true,
-                            directionColor: "white",
-                        });
-
-                        // polyline.addListener(
-                        //     "click",
-                        //     function () {
-                        //         if (this.isEditing()) {
-                        //             this.endEdit();
-                        //         } else {
-                        //             this.startEdit();
-                        //         }
-                        //     },
-                        //     polyline,
-                        // );
-                        // console.log(polyline);
-
-                        // 터치 이벤트 추가
-                        let isDragging = false;
-                        let touchStartPos = null;
-
-                        polyline.addListener("touchstart", function (e) {
-                            isDragging = true;
-                            touchStartPos = e.latLng;
-                        });
-
-                        polyline.addListener("touchmove", function (e) {
-                            if (isDragging) {
-                                const newLatLng = e.latLng;
-                                const deltaX =
-                                    newLatLng.lng() - touchStartPos.lng();
-                                const deltaY =
-                                    newLatLng.lat() - touchStartPos.lat();
-
-                                // 폴리라인 이동
-                                const newCoords = drawInfoArr.map((coord) => {
-                                    return new window.Tmapv2.LatLng(
-                                        coord.lat() + deltaY,
-                                        coord.lng() + deltaX,
-                                    );
-                                });
-
-                                polyline.setPath(newCoords);
-                                touchStartPos = newLatLng; // 이동한 위치로 업데이트
-                            }
-                        });
-
-                        polyline.addListener("touchend", function () {
-                            isDragging = false;
-                            touchStartPos = null;
-                        });
-
                         // setResultInfoArr((prev) => [...prev, polyline]);
-                        // console.log(resultInfoArr);
-                    } else {
+                    }
+                    if (geometry.type !== "LineString") {
                         // type이 Point(노드)일 경우
                         let markerImg = "";
                         let size = "";
@@ -255,8 +199,39 @@ function Map({ course, lat, lng }) {
     useEffect(() => {
         if (map !== null) {
             postRouteSequential30();
+            // console.log(courseLine);
         }
     }, [map]);
+
+    useEffect(() => {
+        console.log(courseLine); // courseLine이 변경될 때 로그를 출력
+        if (courseLine.length > 0) {
+            const polyline = new window.Tmapv2.Polyline({
+                path: courseLine,
+                strokeColor: "#6386BE",
+                strokeWeight: 8,
+                strokeOpacity: 100,
+                map: map,
+                draggable: true, //드래그 여부
+                direction: true,
+                directionColor: "white",
+            });
+
+            polyline.addListener(
+                "click",
+                function () {
+                    if (this.isEditing()) {
+                        this.endEdit();
+                    } else {
+                        this.startEdit();
+                    }
+                },
+                polyline,
+            );
+        }
+
+        // 새로운 폴리라인 생성 등의 로직을 추가할 수 있습니다.
+    }, [courseLine]);
 
     return (
         <>
