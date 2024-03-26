@@ -50,8 +50,8 @@ public class CommunityService {
         String userUniqueId = "Get Unique ID at JWT";   // 아직 엑세스 토큰 도입 안해서 이렇게 둠
         List<PostEntity> userPostEntityList = new ArrayList<>();
         if (option == null) userPostEntityList = postRepository.findAll();  // option query 없이 요청이 들어왔을 경우 전체 게시글 조회
-        else if (option.equals("mine")) userPostEntityList = postRepository.findByWriterUniqueId(userUniqueId); // option query와 함께 요청이 들어왔을 경우, 사용자 unique id 기반으로 게시글 조회
         else if (option.equals("popular")) userPostEntityList = postRepository.findTop3ByOrderByScrapCount();   // 스크랩 수 기반 TOP3 게시글 조회
+        else if (option.equals("mine")) userPostEntityList = postRepository.findByWriterUniqueId(userUniqueId); // option query와 함께 요청이 들어왔을 경우, 사용자 unique id 기반으로 게시글 조회
         List<PostDetailsDto> postDetailsDtoList = userPostEntityList.stream()    // DB에서 꺼낸 Entity에 대해 stream을 이용,
                 .map(m -> modelMapper.map(m, PostDetailsDto.class)) // Entity -> Dto 변환
                 .collect(Collectors.toList());
