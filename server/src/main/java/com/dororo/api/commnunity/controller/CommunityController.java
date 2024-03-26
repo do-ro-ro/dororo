@@ -65,7 +65,8 @@ public class CommunityController {
 //                                    value = "{\"id\": 1, \"_links\": {\"mapDetails\": {\"href\": \"https://j10e202.p.ssafy.io/api/maps/1\"}}}"
 //                            )
 //                    })
-            )
+            ),
+            @ApiResponse(responseCode = "404", description = "요청 받은 post의 ID로 게시글 조회 불가")
     })
     @PostMapping("/{postId}/scrap")
     public ResponseEntity scrapPost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
@@ -109,7 +110,7 @@ public class CommunityController {
                                             " \"postTitle\": \"게시글 1\", \"postContent\": \"게시글 1의 내용\", \"mapRouteAxis\": \"아직 잘 모름\"}"
                             )
                     })),
-            @ApiResponse(responseCode = "401", description = "요청 받은 post의 ID로 게시글 조회 불가")
+            @ApiResponse(responseCode = "404", description = "요청 받은 post의 ID로 게시글 조회 불가")
     })
     @GetMapping("/{postId}")
     public ResponseEntity postDetails(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
@@ -129,7 +130,8 @@ public class CommunityController {
                             summary = "Post 삭제 body의 예시",
                             value = " "
                     )
-            }))
+            })),
+            @ApiResponse(responseCode = "404", description = "요청 받은 post의 ID로 게시글 조회 불가")
     })
     @DeleteMapping("/{postId}")
     public ResponseEntity deletePost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
