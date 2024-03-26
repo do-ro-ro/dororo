@@ -26,10 +26,12 @@ public class CommunityService {
 
 
     // <------------------------ POST part ------------------------>
-    public PostEntity addPost(AddPostDto addPostDto) {
+    public PostEntity addPost(String access, AddPostDto addPostDto) {
         Integer mapId = addPostDto.getMapId();  // 참조하는 맵의 ID
+        String writerUniqueId = "Get Unique ID at JWT";
         PostEntity postEntity = PostEntity.builder()
                 .mapId(mapRepository.findByMapId(mapId))    // 참조하는 맵 가져옴
+                .writerUniqueId(writerUniqueId)
                 .postTitle(addPostDto.getPostTitle())
                 .postContent(addPostDto.getPostContent())
                 .reviewRef(addPostDto.getReviewRef())

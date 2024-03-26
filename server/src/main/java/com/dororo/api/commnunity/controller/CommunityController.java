@@ -48,8 +48,9 @@ public class CommunityController {
                     ))
     })
     @PostMapping("")
-    public ResponseEntity addPost(@RequestBody AddPostDto addPostDto) {
-        PostEntity savedPost = communityService.addPost(addPostDto);
+    public ResponseEntity addPost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
+                                      @RequestBody AddPostDto addPostDto) {
+        PostEntity savedPost = communityService.addPost(access, addPostDto);
 
         return new ResponseEntity(EntityModel.of(savedPost, linkTo(methodOn(CommunityController.class).postDetails(savedPost.getPostId())).withRel("postDetails")), HttpStatus.CREATED);
     }
