@@ -49,7 +49,7 @@ public class CommunityController {
     })
     @PostMapping("")
     public ResponseEntity addPost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
-                                      @RequestBody AddPostDto addPostDto) {
+                                  @RequestBody AddPostDto addPostDto) {
         PostEntity savedPost = communityService.addPost(access, addPostDto);
 
         return new ResponseEntity(EntityModel.of(savedPost, linkTo(methodOn(CommunityController.class).postDetails(savedPost.getPostId())).withRel("postDetails")), HttpStatus.CREATED);
@@ -68,7 +68,8 @@ public class CommunityController {
                     ))
     })
     @PostMapping("/{postId}/scrap")
-    public ResponseEntity scrapPost(@Parameter(in = ParameterIn.PATH) @PathVariable Integer postId) {
+    public ResponseEntity scrapPost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
+                                    @Parameter(in = ParameterIn.PATH) @PathVariable Integer postId) {
         communityService.scrapPost(postId);
 
         return new ResponseEntity(HttpStatus.OK);
@@ -89,8 +90,8 @@ public class CommunityController {
                     })),
     })
     @GetMapping("")
-    public ResponseEntity postList(@Parameter(name = "option", description = "조회의 옵션(전체 조회 시 그냥 /map-posts 로 요청, option = { mine | popular }", in = ParameterIn.QUERY)
-                                       @RequestParam(required = false) String option) {
+    public ResponseEntity postList(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
+                                   @Parameter(name = "option", description = "조회의 옵션(전체 조회 시 그냥 /map-posts 로 요청, option = { mine | popular }", in = ParameterIn.QUERY) @RequestParam(required = false) String option) {
         List<PostDetailsDto> postDetailsDtoList = communityService.postList(option);
 
         return new ResponseEntity(postDetailsDtoList, HttpStatus.OK);
@@ -111,7 +112,8 @@ public class CommunityController {
             @ApiResponse(responseCode = "401", description = "요청 받은 post의 ID로 게시글 조회 불가")
     })
     @GetMapping("/{postId}")
-    public ResponseEntity postDetails(@Parameter(in = ParameterIn.PATH) @PathVariable Integer postId) {
+    public ResponseEntity postDetails(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
+                                      @Parameter(in = ParameterIn.PATH) @PathVariable Integer postId) {
         PostDetailsDto postDetailsDto = communityService.postDetails(postId);
 
         return new ResponseEntity(postDetailsDto, HttpStatus.OK);
@@ -130,7 +132,8 @@ public class CommunityController {
             }))
     })
     @DeleteMapping("/{postId}")
-    public ResponseEntity deletePost(@Parameter(in = ParameterIn.PATH) @PathVariable Integer postId) {
+    public ResponseEntity deletePost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
+                                     @Parameter(in = ParameterIn.PATH) @PathVariable Integer postId) {
         communityService.deletePost(postId);
 
         return new ResponseEntity(HttpStatus.OK);
