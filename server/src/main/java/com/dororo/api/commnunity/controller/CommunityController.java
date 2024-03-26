@@ -52,27 +52,27 @@ public class CommunityController {
                                   @RequestBody AddPostDto addPostDto) {
         PostEntity savedPost = communityService.addPost(access, addPostDto);
 
-        return new ResponseEntity(EntityModel.of(savedPost, linkTo(methodOn(CommunityController.class).postDetails(savedPost.getPostId())).withRel("postDetails")), HttpStatus.CREATED);
+        return new ResponseEntity(EntityModel.of(savedPost, linkTo(methodOn(CommunityController.class).postDetails(access, savedPost.getPostId())).withRel("postDetails")), HttpStatus.CREATED);
     }
 
     @Operation(summary = "커뮤니티 map post 스크랩 요청", description = "코스 스크랩을 했을 때 동작을 수행하는 API입니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "코스 스크랩 성공",
-                    content = @Content(examples = {
-                            @ExampleObject(
-                                    name = "Post 스크랩 반환 body",
-                                    summary = "Post 생성 반환 body의 예시(게시글 스크랩의 경우 마이 페이지에 map으로 저장됨)",
-                                    value = "{\"id\": 1, \"_links\": {\"mapDetails\": {\"href\": \"https://j10e202.p.ssafy.io/api/maps/1\"}}}"
-                            )
-                    }
-                    ))
+            @ApiResponse(responseCode = "201", description = "코스 스크랩 성공"
+//                    content = @Content(examples = {
+//                            @ExampleObject(
+//                                    name = "Post 스크랩 반환 body",
+//                                    summary = "Post 생성 반환 body의 예시(게시글 스크랩의 경우 마이 페이지에 map으로 저장됨)",
+//                                    value = "{\"id\": 1, \"_links\": {\"mapDetails\": {\"href\": \"https://j10e202.p.ssafy.io/api/maps/1\"}}}"
+//                            )
+//                    })
+            )
     })
     @PostMapping("/{postId}/scrap")
     public ResponseEntity scrapPost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
                                     @Parameter(in = ParameterIn.PATH) @PathVariable Integer postId) {
-        communityService.scrapPost(postId);
+        communityService.scrapPost(access, postId);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
 

@@ -4,8 +4,10 @@ import com.dororo.api.commnunity.dto.request.AddPostDto;
 import com.dororo.api.commnunity.dto.response.PostDetailsDto;
 import com.dororo.api.db.entity.MapEntity;
 import com.dororo.api.db.entity.PostEntity;
+import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.MapRepository;
 import com.dororo.api.db.repository.PostRepository;
+import com.dororo.api.db.repository.UserRepository;
 import com.dororo.api.exception.NoMatchingResourceException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class CommunityService {
 
     private final ModelMapper modelMapper;    // Entity -> Dto 간 변환에 사용
+    private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final MapRepository mapRepository;
 
@@ -28,7 +31,7 @@ public class CommunityService {
     // <------------------------ POST part ------------------------>
     public PostEntity addPost(String access, AddPostDto addPostDto) {
         Integer mapId = addPostDto.getMapId();  // 참조하는 맵의 ID
-        String writerUniqueId = "Get Unique ID at JWT";
+        String writerUniqueId = getUserUniqueIdFromAccess(access);
         PostEntity postEntity = PostEntity.builder()
                 .mapId(mapRepository.findByMapId(mapId))    // 참조하는 맵 가져옴
                 .writerUniqueId(writerUniqueId)
@@ -41,10 +44,12 @@ public class CommunityService {
         return savedPost;
     }
 
-    public void scrapPost(Integer postId) {
+    public void scrapPost(String access, Integer postId) {
+        String userUniqueId = getUserUniqueIdFromAccess(access);    // 스크랩한 유저의 unique ID
         PostEntity postEntity = findPostInDataBaseByPostId(postId);
         MapEntity originMapEntity = postEntity.getMapId();
-        makeScrapMap(originMapEntity);  // 우선은 setter를 이용한 메서드로 새로운 맵 저장 함수 구현한 것을 사용함
+
+        makeScrapMap(userUniqueId, originMapEntity);  // 우선은 setter를 이용한 메서드로 새로운 맵 저장 함수 구현한 것을 사용함
     }
 
     // <------------------------ GET part ------------------------>
@@ -83,9 +88,15 @@ public class CommunityService {
     }
 
     // <------------ For Readability ------------>
-    private void makeScrapMap(MapEntity originMapEntity) {   // 스크랩하여 유저에게 맵을 저장하는 함수, 일단 MapEntity 저장 방식이 Setter이므로 여기서도 Setter로 하지만, 바뀌면 좋을 듯
+    private String getUserUniqueIdFromAccess(String access) {
+        return "Get Unique ID from jwt";
+    }
+
+    private void makeScrapMap(String userUniqueId, MapEntity originMapEntity) {   // 스크랩하여 유저에게 맵을 저장하는 함수, 일단 MapEntity 저장 방식이 Setter이므로 여기서도 Setter로 하지만, 바뀌면 좋을 듯
+        Optional<UserEntity> userEntity = userRepository.findByUniqueId(userUniqueId);
+
         MapEntity scrapMapEntity = new MapEntity();
-        scrapMapEntity.setUserId(originMapEntity.getUserId());
+        scrapMapEntity.setUserId(userEntity.get());
         scrapMapEntity.setMapName(originMapEntity.getMapName());
         scrapMapEntity.setMapRouteAxis(originMapEntity.getMapRouteAxis());
         scrapMapEntity.setMapType(MapEntity.Maptype.SCRAP); // 스크랩한 맵임을 타입으로 명시
