@@ -56,9 +56,8 @@ public class WebSecurityConfig {
 				.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
 				.successHandler(oAuth2SuccessHandler)
 			)
-			.addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class)
-			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
+			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
 		return httpSecurity.build();
 	}
 
