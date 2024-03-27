@@ -6,11 +6,13 @@ import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.MapRepository;
 import com.dororo.api.db.repository.UserRepository;
 import com.dororo.api.map.dto.*;
+import com.dororo.api.utils.auth.AuthUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ public class MapService {
     private MapRepository mapRepository;
     @Autowired
     private GeometryFactory geometryFactory;
+    @Autowired
+    private AuthUtils authUtils;
 
     //좌표 -> LineString변환
     public LineString convertToLineString(List<LatitudeLongitude> latLngList) {
@@ -39,11 +43,13 @@ public class MapService {
         return geometryFactory.createLineString(coordinates);
     }
 
-    public List<MapResponseDto> getAllMaps(MapEntity.Maptype maptype, String token) {
+    public List<MapResponseDto> getAllMaps(MapEntity.Maptype maptype, String access) {
 
-
+        UserEntity userEntity = authUtils.getUserEntityFromAccess(access);
+        Integer userId = userEntity.getUserId();
         // mapRepository에서 maptype에 해당하는 MapEntity 리스트를 가져오기
-        List<MapEntity> maps = mapRepository.findByMapType(maptype);
+        List<MapEntity> maps = mapRepository.findByUserIdAndMapType(userId,maptype);
+
         // 가져온 MapEntity 리스트를 MapResponseDto 리스트로 변환
         List<MapResponseDto> mapResponseDtos = maps.stream()
                 .map(mapEntity -> MapResponseDto.fromEntity(mapEntity))
@@ -62,10 +68,15 @@ public class MapService {
         return DetailMapResponseDto.fromEntity(mapEntity);
     }
 
-    public void deleteMapById(Integer mapId) {
-        //mapId 가 DB에 없을때
-        if (!mapRepository.existsById(mapId)) {
-            throw new EntityNotFoundException("Map not found with id: " + mapId);
+    public void deleteMapById(Integer mapId,String access) {
+        UserEntity userEntity = authUtils.getUserEntityFromAccess(access);
+        Integer userId = userEntity.getUserId();
+
+        MapEntity mapEntity = mapRepository.findById(mapId)
+                .orElseThrow(() -> new EntityNotFoundException("Map not found with id: " + mapId));
+        // 맵의 소유자가 현재 로그인한 사용자인지 확인.
+        if (!mapEntity.getUserId().getUserId().equals(userId)) {
+            throw new AccessDeniedException("User does not have permission to delete this map.");
         }
         mapRepository.deleteById(mapId); // 맵 삭제
     }
@@ -86,9 +97,10 @@ public class MapService {
         return createdMapList;
     }
 
-    public void saveMap(AddMapRequestDto addMapRequestDto) {
-        // 엔티티 변환 로직
-        Optional<UserEntity> userEntity = userRepository.findByUserId(1);
+    public void saveMap(AddMapRequestDto addMapRequestDto,String access) {
+        //로그인 한 유저 정보
+        UserEntity userEntity = authUtils.getUserEntityFromAccess(access);
+       // 엔티티 변환 로직
         MapEntity mapEntity = new MapEntity();
         mapEntity.setOriginMapRouteAxis(convertToLineString(addMapRequestDto.getMapRouteAxis()));
         mapEntity.setMapDistance(addMapRequestDto.getMapDistance());
@@ -97,7 +109,7 @@ public class MapService {
         mapEntity.setMapImage(addMapRequestDto.getMapImage());
         mapEntity.setOriginalMapId(0);
         mapEntity.setMapCompletion(false);
-        mapEntity.setUserId(userEntity.get());
+        mapEntity.setUserId(userEntity);
         // 데이터베이스 저장
         mapRepository.save(mapEntity);
     }

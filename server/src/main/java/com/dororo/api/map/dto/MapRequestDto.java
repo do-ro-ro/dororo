@@ -10,6 +10,8 @@ import org.locationtech.jts.geom.LineString;
 
 import java.util.List;
 
+import static com.dororo.api.convert.ConvertUtils.convertToLineString;
+
 
 @Getter
 @Setter
@@ -29,14 +31,7 @@ public class MapRequestDto {
 
     private static final GeometryFactory geometryFactory = new GeometryFactory();
 
-    // 위도와 경도 리스트를 LineString으로 변환
-    private LineString convertToLineString(List<LatitudeLongitude> latLngList) {
-        Coordinate[] coordinates = latLngList.stream()
-                .map(latLng -> new Coordinate(latLng.getLongitude(), latLng.getLatitude()))
-                .toArray(Coordinate[]::new);
 
-        return geometryFactory.createLineString(coordinates);
-    }
 
 
 

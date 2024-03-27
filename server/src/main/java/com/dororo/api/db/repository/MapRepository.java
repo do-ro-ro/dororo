@@ -12,4 +12,7 @@ public interface MapRepository extends JpaRepository<MapEntity, Integer> {
     List<MapEntity> findByMapType(MapEntity.Maptype mapType);
 
     MapEntity findByMapId(Integer mapId);
+    List<MapEntity> findByUserIdAndMapType(Integer userId, MapEntity.Maptype mapType);
+
+    Object getUserId();
 }

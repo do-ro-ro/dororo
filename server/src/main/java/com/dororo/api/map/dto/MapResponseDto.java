@@ -9,6 +9,9 @@ import org.locationtech.jts.geom.LineString;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.dororo.api.convert.ConvertUtils.convertFromLineString;
+
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,23 +29,13 @@ public class MapResponseDto {
     private Boolean mapCompletion;
 
 
-    // LineString을 LatitudeLongitude 리스트로 변환하는 유틸리티 메소드
-    private static List<LatitudeLongitude> convertLineStringToList(LineString lineString) {
-        List<LatitudeLongitude> latLngList = new ArrayList<>();
-        if (lineString != null) {
-            for (Coordinate coord : lineString.getCoordinates()) {
-                latLngList.add(new LatitudeLongitude(coord.y, coord.x)); // y가 위도, x가 경도
-            }
-        }
-        return latLngList;
-    }
 
     public static MapResponseDto fromEntity(MapEntity entity) {
         return MapResponseDto.builder()
                 .mapId(entity.getMapId())
                 .mapName(entity.getMapName())
                 .mapImage(entity.getMapImage())
-                .mapRouteAxis(convertLineStringToList(entity.getOriginMapRouteAxis()))
+                .mapRouteAxis(convertFromLineString(entity.getOriginMapRouteAxis()))
                 .mapType(entity.getMapType())
                 .mapDistance(entity.getMapDistance())
                 .originalMapId(entity.getOriginalMapId())
