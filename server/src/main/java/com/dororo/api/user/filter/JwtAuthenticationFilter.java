@@ -37,21 +37,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
-		if(request.getRequestURI().equals("/") || request.getRequestURI().equals("/index.html") ||
-			request.getRequestURI().equals("/api/auth/**") || request.getRequestURI().equals("/oauth2/**") ||
-			request.getRequestURI().equals("/api/api-docs/**") || request.getRequestURI().equals("/api/docs") ||
-			request.getRequestURI().equals("/api/swagger-ui/**")){
+		if (request.getRequestURI().startsWith("/api/swagger-ui") || request.getRequestURI().equals("/") ||
+			request.getRequestURI().equals("/index.html") ||
+			request.getRequestURI().startsWith("/api/auth") || request.getRequestURI().startsWith("/oauth2") ||
+			request.getRequestURI().startsWith("/api/api-docs") || request.getRequestURI().equals("/api/docs")
+		) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 		try {
 			String accessToken = parseAccessToken(request);
-			if(accessToken == null){// 액세스 토큰 없음
+			if (accessToken == null) {// 액세스 토큰 없음
 				throw new NoTokenInHeaderException();
 			}
 
 			String userUniqueId = jwtProvider.validate(accessToken);
-			if(userUniqueId == null){// 액세스 유효하지 않거나 기간 만료
+			if (userUniqueId == null) {// 액세스 유효하지 않거나 기간 만료
 				throw new RefreshRequiredException();
 			}
 
