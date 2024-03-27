@@ -1,6 +1,7 @@
 import { Modal, Box, Typography, Button } from "@mui/material";
 
 import { useEffect } from "react";
+import CourseDetailInfo from "./CourseDetailInfo";
 
 const style = {
     position: "absolute",
@@ -27,8 +28,12 @@ const CourseDetailModal = ({ open, closeModal, locations }) => {
                         component="h1"
                         sx={{ fontWeight: 700, mb: 3 }}
                     >
-                        경유지 상세
+                        경유지 상세 정보
                     </Typography>
+
+                    <Box>
+                        <CourseDetailInfo locations={locations} />
+                    </Box>
 
                     <Box
                         sx={{
