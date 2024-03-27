@@ -99,6 +99,7 @@ public class CommunityService {
         scrapMapEntity.setMapName(originMapEntity.getMapName());
         scrapMapEntity.setMapImage(originMapEntity.getMapImage());
         scrapMapEntity.setOriginMapRouteAxis(originMapEntity.getOriginMapRouteAxis());
+        scrapMapEntity.setConvertedRouteAxis(originMapEntity.getConvertedRouteAxis());
         scrapMapEntity.setMapType(MapEntity.Maptype.SCRAP); // 스크랩한 맵임을 타입으로 명시
         scrapMapEntity.setMapDistance(originMapEntity.getMapDistance());
         scrapMapEntity.setOriginalMapId(originMapEntity.getMapId());
