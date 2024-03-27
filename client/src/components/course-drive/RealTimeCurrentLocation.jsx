@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 
-const RealTimeCurrentLocation = ({ setLat, setLon }) => {
+const RealTimeCurrentLocation = ({ setLat, setLng }) => {
     const [location, setLocation] = useState();
     const [error, setError] = useState();
-
-    useEffect(() => {
+    const options = {
+        enableHighAccuracy: false,
+        maximumAge: 0,
+        timeout: Infinity,
+    };
+    출처: //7942yongdae.tistory.com/150 [개발자 일지:티스토리]
+    https: useEffect(() => {
         let watchId = null;
 
         const getLocation = () => {
@@ -14,11 +19,12 @@ const RealTimeCurrentLocation = ({ setLat, setLon }) => {
                         const { latitude, longitude } = position.coords;
                         setLocation({ latitude, longitude });
                         setLat(latitude);
-                        setLon(longitude);
+                        setLng(longitude);
                     },
                     (error) => {
                         setError(error.message);
                     },
+                    options,
                 );
             } else {
                 setError("Geolocation is not supported by this browser.");
@@ -32,7 +38,7 @@ const RealTimeCurrentLocation = ({ setLat, setLon }) => {
                 navigator.geolocation.clearWatch(watchId);
             }
         };
-    }, [setLat, setLon]);
+    }, [setLat, setLng]);
 
     return (
         <div>
