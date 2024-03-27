@@ -46,13 +46,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		}
 		try {
 			String accessToken = parseAccessToken(request);
-			System.out.println("token : "+accessToken);
 			if(accessToken == null){// 액세스 토큰 없음
 				throw new NoTokenInHeaderException();
 			}
 
 			String userUniqueId = jwtProvider.validate(accessToken);
-			if(userUniqueId == null){// 액세스 토큰 만료
+			if(userUniqueId == null){// 액세스 유효하지 않거나 기간 만료
 				throw new RefreshRequiredException();
 			}
 
@@ -85,4 +84,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			return null;
 
 		return accessToken;
-	}}
+	}
+}
