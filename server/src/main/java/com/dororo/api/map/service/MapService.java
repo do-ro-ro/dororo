@@ -39,10 +39,11 @@ public class MapService {
         return geometryFactory.createLineString(coordinates);
     }
 
-    public List<MapResponseDto> getAllMaps(MapEntity.Maptype maptype) {
+    public List<MapResponseDto> getAllMaps(MapEntity.Maptype maptype, String token) {
+
+
         // mapRepository에서 maptype에 해당하는 MapEntity 리스트를 가져오기
         List<MapEntity> maps = mapRepository.findByMapType(maptype);
-
         // 가져온 MapEntity 리스트를 MapResponseDto 리스트로 변환
         List<MapResponseDto> mapResponseDtos = maps.stream()
                 .map(mapEntity -> MapResponseDto.fromEntity(mapEntity))

@@ -19,8 +19,9 @@ public class MapController {
 
     //맵 전체 조회(map-type별로)
     @GetMapping("")
-    public ResponseEntity getAllMaps(@RequestParam("map-type") MapEntity.Maptype maptype) {
-        List<MapResponseDto> maps = mapService.getAllMaps(maptype);
+    public ResponseEntity getAllMaps(@RequestParam("map-type") MapEntity.Maptype maptype ,
+                                     @RequestHeader("access") String token) {
+        List<MapResponseDto> maps = mapService.getAllMaps(maptype,token);
         return ResponseEntity.ok(maps);
     }
 
