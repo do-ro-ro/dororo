@@ -3,8 +3,20 @@ import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import { Box, Typography } from "@mui/material";
+import { useState } from "react";
+import CourseSelectModal from "./CourseSelectModal";
 
 const BottomNav = ({ handlePrev, handleNext }) => {
+    const [showCourseSelectModal, setShowCourseSelectModal] = useState(false);
+
+    const openCourseSelectModal = () => {
+        setShowCourseSelectModal(true);
+    };
+
+    const closeCourseSelectModal = () => {
+        setShowCourseSelectModal(false);
+    };
+
     return (
         <Box
             sx={{
@@ -32,7 +44,9 @@ const BottomNav = ({ handlePrev, handleNext }) => {
                 <UndoIcon sx={{ fontSize: "5vh", color: "#6386BE" }} />
                 <Typography variant="caption">이전 코스 보기</Typography>
             </Box>
+
             <Box
+                onClick={openCourseSelectModal}
                 sx={{
                     display: "flex",
                     flexDirection: "column",
@@ -42,6 +56,7 @@ const BottomNav = ({ handlePrev, handleNext }) => {
                 <DirectionsCarIcon sx={{ fontSize: "6vh", color: "#6386BE" }} />
                 <Typography variant="caption">코스 선택</Typography>
             </Box>
+
             <Box
                 sx={{
                     display: "flex",
@@ -53,6 +68,15 @@ const BottomNav = ({ handlePrev, handleNext }) => {
                 <RedoIcon sx={{ fontSize: "5vh", color: "#6386BE" }} />
                 <Typography variant="caption">다음 코스 보기</Typography>
             </Box>
+
+            <div>
+                {showCourseSelectModal && (
+                    <CourseSelectModal
+                        open={showCourseSelectModal}
+                        closeModal={closeCourseSelectModal}
+                    />
+                )}
+            </div>
         </Box>
     );
 };

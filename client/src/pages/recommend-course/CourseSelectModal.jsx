@@ -1,8 +1,5 @@
 import { Modal, Box, Typography, Button } from "@mui/material";
 
-import { useEffect } from "react";
-import CourseDetailInfo from "./CourseDetailInfo";
-
 const style = {
     position: "absolute",
     top: "50%",
@@ -15,10 +12,7 @@ const style = {
     p: 4,
 };
 
-const CourseDetailModal = ({ open, closeModal, locations }) => {
-    useEffect(() => {
-        console.log(locations);
-    }, [locations]);
+const CourseSelectModal = ({ open, closeModal }) => {
     return (
         <>
             <Modal open={open} onClose={closeModal}>
@@ -27,9 +21,11 @@ const CourseDetailModal = ({ open, closeModal, locations }) => {
                         variant="h5"
                         component="h1"
                         sx={{ fontWeight: 700, mb: 3 }}
-                    >
-                        저장하기
-                    </Typography>
+                    ></Typography>
+
+                    <Box>
+                        <CourseDetailInfo locations={locations} />
+                    </Box>
 
                     <Box
                         sx={{
@@ -47,16 +43,6 @@ const CourseDetailModal = ({ open, closeModal, locations }) => {
                                 px: 3, // 좌우 패딩 (horizontal padding)을 늘립니다.
                             }}
                         >
-                            저장
-                        </Button>
-                        <Button
-                            variant="contained"
-                            sx={{
-                                fontSize: "1rem",
-                                py: 1.5, // 상하 패딩 (vertical padding)을 늘립니다.
-                                px: 3, // 좌우 패딩 (horizontal padding)을 늘립니다.
-                            }}
-                        >
                             닫기
                         </Button>
                     </Box>
@@ -66,4 +52,4 @@ const CourseDetailModal = ({ open, closeModal, locations }) => {
     );
 };
 
-export default CourseDetailModal;
+export default CourseSelectModal;
