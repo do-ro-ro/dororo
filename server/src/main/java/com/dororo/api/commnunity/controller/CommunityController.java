@@ -45,7 +45,11 @@ public class CommunityController {
                                             value = "{\"id\": 1, \"postTitle\": \"새로운 포스트\", \"_links\": {\"postDetails\": {\"href\": \"https://j10e202.p.ssafy.io/api/map-posts/1\"}}}"
                                     )
                     })
-            )
+            ),
+            @ApiResponse(responseCode = "400", description = "요청에 필요한 헤더(액세스 토큰)가 없음",
+                    content = @Content(schema = @Schema(example = "No token in header."))),
+            @ApiResponse(responseCode = "401", description = "액세스 토큰 만료 or 형식 안맞음",
+                    content = @Content(schema = @Schema(example = "Get new AccessToken")))
     })
     @PostMapping("")
     public ResponseEntity addPost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
@@ -66,6 +70,10 @@ public class CommunityController {
 //                            )
 //                    })
             ),
+            @ApiResponse(responseCode = "400", description = "요청에 필요한 헤더(액세스 토큰)가 없음",
+                    content = @Content(schema = @Schema(example = "No token in header."))),
+            @ApiResponse(responseCode = "401", description = "액세스 토큰 만료 or 형식 안맞음",
+                    content = @Content(schema = @Schema(example = "Get new AccessToken"))),
             @ApiResponse(responseCode = "404", description = "요청 받은 post의 ID로 게시글 조회 불가",
                     content = @Content(examples = {
                             @ExampleObject(
@@ -98,6 +106,10 @@ public class CommunityController {
                             )
                     })
             ),
+            @ApiResponse(responseCode = "400", description = "요청에 필요한 헤더(액세스 토큰)가 없음",
+                    content = @Content(schema = @Schema(example = "No token in header."))),
+            @ApiResponse(responseCode = "401", description = "액세스 토큰 만료 or 형식 안맞음",
+                    content = @Content(schema = @Schema(example = "Get new AccessToken")))
     })
     @GetMapping("")
     public ResponseEntity postList(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
@@ -120,6 +132,10 @@ public class CommunityController {
                             )
                     })
             ),
+            @ApiResponse(responseCode = "400", description = "요청에 필요한 헤더(액세스 토큰)가 없음",
+                    content = @Content(schema = @Schema(example = "No token in header."))),
+            @ApiResponse(responseCode = "401", description = "액세스 토큰 만료 or 형식 안맞음",
+                    content = @Content(schema = @Schema(example = "Get new AccessToken"))),
             @ApiResponse(responseCode = "404", description = "요청 받은 post의 ID로 게시글 조회 불가",
                     content = @Content(examples = {
                         @ExampleObject(
@@ -151,6 +167,10 @@ public class CommunityController {
                         )
                     })
             ),
+            @ApiResponse(responseCode = "400", description = "요청에 필요한 헤더(액세스 토큰)가 없음",
+                    content = @Content(schema = @Schema(example = "No token in header."))),
+            @ApiResponse(responseCode = "401", description = "액세스 토큰 만료 or 형식 안맞음",
+                    content = @Content(schema = @Schema(example = "Get new AccessToken"))),
             @ApiResponse(responseCode = "404", description = "요청 받은 post의 ID로 게시글 조회 불가", content = @Content(examples = {
                     @ExampleObject(
                             name = "Not Found",
