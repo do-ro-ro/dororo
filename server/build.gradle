@@ -12,12 +12,6 @@ java {
     sourceCompatibility = '17'
 }
 
-tasks.withType(JavaCompile) {
-    options.compilerArgs += ['-parameters']
-    sourceCompatibility = '17'
-    targetCompatibility = '17'
-}
-
 repositories {
     mavenCentral()
 }

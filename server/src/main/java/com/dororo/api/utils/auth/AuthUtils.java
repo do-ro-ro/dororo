@@ -13,7 +13,6 @@ public class AuthUtils {
 
     public String getUserUniqueIdFromAccess(String access) {
         String userUniqueId = jwtProvider.getTokenSubject(access);
-        System.out.println(userUniqueId);
 
         return userUniqueId;
     }
