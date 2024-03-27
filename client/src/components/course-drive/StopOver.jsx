@@ -26,7 +26,6 @@ const StopOver = ({
     }, [coolList]);
 
     const initTmap = () => {
-        // console.log("test");
         if (map !== null) {
             return;
         }
@@ -34,8 +33,8 @@ const StopOver = ({
 
         map = new window.Tmapv2.Map("map_div", {
             center: new window.Tmapv2.LatLng(lat, lng),
-            width: "100%",
-            height: "100vh",
+            width: "50%",
+            height: "50vh",
             zoom: 16,
             zoomControl: true,
             scrollwheel: true,
@@ -46,7 +45,7 @@ const StopOver = ({
         const marker_s = new window.Tmapv2.Marker({
             position: new window.Tmapv2.LatLng(
                 coolList[0].lat,
-                coolList[0].lon,
+                coolList[0].lng,
             ),
             icon: "/upload/tmap/marker/pin_r_m_s.png",
             iconSize: new window.Tmapv2.Size(24, 38),
@@ -57,7 +56,7 @@ const StopOver = ({
         const marker_e = new window.Tmapv2.Marker({
             position: new window.Tmapv2.LatLng(
                 coolList[coolList.length - 1].lat,
-                coolList[coolList.length - 1].lon,
+                coolList[coolList.length - 1].lng,
             ),
             icon: "/upload/tmap/marker/pin_r_m_e.png",
             iconSize: new window.Tmapv2.Size(24, 38),
@@ -67,7 +66,7 @@ const StopOver = ({
 
         const waypoints = fillterList.map((point, index) => ({
             lat: point.lat,
-            lng: point.lon,
+            lng: point.lng,
             icon: `/upload/tmap/marker/pin_b_m_${index + 1}.png`,
         }));
 
@@ -91,16 +90,16 @@ const StopOver = ({
 
         const param = {
             startName: "출발지",
-            startX: coolList[0].lon.toString(),
+            startX: coolList[0].lng.toString(),
             startY: coolList[0].lat.toString(),
             startTime: "201708081103",
             endName: "도착지",
-            endX: coolList[coolList.length - 1].lon.toString(),
+            endX: coolList[coolList.length - 1].lng.toString(),
             endY: coolList[coolList.length - 1].lat.toString(),
             viaPoints: fillterList.map((point) => ({
                 viaPointId: `test${fillterList.indexOf(point) + 1}`,
                 viaPointName: `name${fillterList.indexOf(point) + 1}`,
-                viaX: point.lon.toString(),
+                viaX: point.lng.toString(),
                 viaY: point.lat.toString(),
             })),
             reqCoordType: "WGS84GEO",
@@ -156,8 +155,11 @@ const StopOver = ({
 
                         const polyline = new window.Tmapv2.Polyline({
                             path: drawInfoArr,
-                            strokeColor: "#FF0000",
-                            strokeWeight: 6,
+                            strokeColor: "#6386BE",
+                            strokeWeight: 8,
+                            strokeOpacity: 100,
+                            direction: true,
+                            directionColor: "white",
                             map: map,
                         });
 
