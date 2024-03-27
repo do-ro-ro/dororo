@@ -1,6 +1,19 @@
 import { Box, Typography, Button } from "@mui/material";
 
-const CourseInfo = ({ courseInfo, currentIndex }) => {
+import { useState } from "react";
+import CourseDetailModal from "./CourseDetailModal";
+
+const CourseInfo = ({ courseInfo, currentIndex, locations }) => {
+    const [showCourseDetailModal, setShowCourseDetailModal] = useState(false);
+
+    const openCourseDetailModal = () => {
+        setShowCourseDetailModal(true);
+    };
+
+    const closeCourseDetailModal = () => {
+        setShowCourseDetailModal(false);
+    };
+
     return (
         <>
             <Box
@@ -65,11 +78,23 @@ const CourseInfo = ({ courseInfo, currentIndex }) => {
                         </Box>
                     </Box>
                     <Box>
-                        <Button variant="contained" sx={{ fontWeight: "bold" }}>
+                        <Button
+                            variant="contained"
+                            onClick={openCourseDetailModal}
+                            sx={{ fontWeight: "bold" }}
+                        >
                             경유지 상세
                         </Button>
                     </Box>
                 </Box>
+
+                {showCourseDetailModal && (
+                    <CourseDetailModal
+                        open={showCourseDetailModal}
+                        closeModal={closeCourseDetailModal}
+                        locations={locations}
+                    />
+                )}
             </Box>
         </>
     );
