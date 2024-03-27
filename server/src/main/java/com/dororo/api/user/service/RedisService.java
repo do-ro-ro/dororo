@@ -39,6 +39,6 @@ public class RedisService {
 
 	public void setStringValue(String token, String data, Long expirationTime) {
 		ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
-		stringValueOperations.set(token, data, (int) (expirationTime / 1), TimeUnit.MILLISECONDS);
+		stringValueOperations.set(token, data, expirationTime, TimeUnit.MILLISECONDS);
 	}
 }

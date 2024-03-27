@@ -37,9 +37,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
+		if(request.getRequestURI().equals("/") || request.getRequestURI().equals("/index.html") ||
+			request.getRequestURI().equals("/api/auth/**") || request.getRequestURI().equals("/oauth2/**") ||
+			request.getRequestURI().equals("/api/api-docs/**") || request.getRequestURI().equals("/api/docs") ||
+			request.getRequestURI().equals("/api/swagger-ui/**")){
+			filterChain.doFilter(request, response);
+			return;
+		}
 		try {
 			String accessToken = parseAccessToken(request);
-
+			System.out.println("token : "+accessToken);
 			if(accessToken == null){// 액세스 토큰 없음
 				throw new NoTokenInHeaderException();
 			}
@@ -72,7 +79,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private String parseAccessToken(HttpServletRequest request) {
 
 		String accessToken = request.getHeader("access");
-		//System.out.println("access: " + accessToken);
 
 		boolean hasAccessToken = StringUtils.hasText(accessToken);
 		if (!hasAccessToken)
