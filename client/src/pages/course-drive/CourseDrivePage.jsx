@@ -5,7 +5,7 @@ import StopOver from "../../components/course-drive/StopOver";
 import ServerTest from "../../components/course-drive/ServerTest";
 import Topbar from "../../components/topbar/Topbar";
 import { Button, Stack, Typography } from "@mui/material";
-import Map from "../recommend-course/Map";
+import Map from "../main-page/Map";
 import IntroductionModal from "../../components/course-drive/IntroductionModal";
 
 function CourseDrivePage() {
