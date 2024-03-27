@@ -86,7 +86,7 @@ public class CommunityController {
     })
     @PostMapping("/{postId}/scrap")
     public ResponseEntity scrapPost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
-                                    @Parameter(in = ParameterIn.PATH) @PathVariable Integer postId) {
+                                    @Parameter(in = ParameterIn.PATH) @PathVariable(name = "postId") Integer postId) {
         communityService.scrapPost(access, postId);
 
         return new ResponseEntity(HttpStatus.CREATED);
@@ -148,7 +148,7 @@ public class CommunityController {
     })
     @GetMapping("/{postId}")
     public ResponseEntity postDetails(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
-                                      @Parameter(in = ParameterIn.PATH) @PathVariable Integer postId) {
+                                      @Parameter(in = ParameterIn.PATH) @PathVariable(name = "postId") Integer postId) {
         PostDetailsDto postDetailsDto = communityService.postDetails(postId);
 
         return new ResponseEntity(postDetailsDto, HttpStatus.OK);
@@ -181,7 +181,7 @@ public class CommunityController {
     })
     @DeleteMapping("/{postId}")
     public ResponseEntity deletePost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
-                                     @Parameter(in = ParameterIn.PATH) @PathVariable Integer postId) {
+                                     @Parameter(in = ParameterIn.PATH) @PathVariable(name = "postId") Integer postId) {
         communityService.deletePost(postId);
 
         return new ResponseEntity(HttpStatus.OK);
