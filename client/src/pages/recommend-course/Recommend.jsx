@@ -338,6 +338,7 @@ const Recommend = ({ locations, currentIndex }) => {
             <CourseInfo
                 courseInfo={courseInfo}
                 currentIndex={currentIndex}
+                locations={locations}
             ></CourseInfo>
 
             <div id="map_wrap" className="map_wrap">
