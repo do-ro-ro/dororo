@@ -1,18 +1,24 @@
 package com.dororo.api.convert;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LatitudeLongitude {
     private double latitude;
     private double longitude;
 
-    public LatitudeLongitude(double latitude, double longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
 
+//    @JsonCreator
+//    public LatitudeLongitude(@JsonProperty("lat") double latitude,
+//                             @JsonProperty("lng") double longitude) {
+//        this.latitude = latitude;
+//        this.longitude = longitude;
+//    }
 
 }

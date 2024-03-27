@@ -32,7 +32,9 @@ public class MapEntity {
     private Maptype mapType = Maptype.DEFAULT;
     @Column(nullable = false)
     private Float mapDistance;
+    //default = 0 , 원본 맵 삭제 시 -1
     @Column(nullable = false)
+    @ColumnDefault("0")
     private Integer originalMapId;
     @Column(nullable = false) @ColumnDefault("false")
     private Boolean mapCompletion;
