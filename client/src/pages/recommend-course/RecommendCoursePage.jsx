@@ -34,7 +34,10 @@ function RecommendedCoursePage() {
         <div>
             <Topbar>추천 코스 안내</Topbar>
             {locations.length > 0 && (
-                <Recommend locations={locations[currentIndex]}></Recommend>
+                <Recommend
+                    locations={locations[currentIndex]}
+                    currentIndex={currentIndex}
+                ></Recommend>
             )}
             <button onClick={handlePrev}>이전</button>
             <button onClick={handleNext}>다음</button>

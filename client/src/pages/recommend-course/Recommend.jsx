@@ -4,8 +4,9 @@ import RoadViewModal from "./RoadViewModal";
 import startpin from "../../assets/start_pin.png";
 import endpin from "../../assets/end_pin.png";
 import waypin from "../../assets/waypoint_yet.png";
+import CourseInfo from "./CourseInfo";
 
-const Recommend = ({ locations }) => {
+const Recommend = ({ locations, currentIndex }) => {
     let [map, setMap] = useState(null);
     const [resultMarkerArr, setResultMarkerArr] = useState([]);
     const [resultInfoArr, setResultInfoArr] = useState([]);
@@ -13,6 +14,10 @@ const Recommend = ({ locations }) => {
     const [currentLocation, setCurrentLocation] = useState({
         lat: null,
         lon: null,
+    });
+    const [courseInfo, setCourseInfo] = useState({
+        distance: "",
+        time: "",
     });
 
     const openRoadViewModal = (lat, lon) => {
@@ -195,7 +200,7 @@ const Recommend = ({ locations }) => {
     };
 
     const headers = {
-        appKey: "1oIZuAm6qNlT8ZDL2Q7k76BmyT1rFa31RoeQLSqh",
+        appKey: "Kh0PlfvZvH8zcvcN9OrAX4hBB99NjFyZ1E1SZlWP",
         "Content-Type": "application/json",
     };
 
@@ -240,18 +245,13 @@ const Recommend = ({ locations }) => {
                 const resultData = data.properties;
                 const resultFeatures = data.features;
 
-                const tDistance =
-                    "총 거리 : " +
-                    (resultData.totalDistance / 1000).toFixed(1) +
-                    "km,  ";
-                const tTime =
-                    "총 시간 : " +
-                    (resultData.totalTime / 60).toFixed(0) +
-                    "분,  ";
-                const tFare = "총 요금 : " + resultData.totalFare + "원";
+                const tDistance = (resultData.totalDistance / 1000).toFixed(1);
 
-                document.getElementById("result").innerText =
-                    tDistance + tTime + tFare;
+                const tTime = (resultData.totalTime / 60).toFixed(0);
+                setCourseInfo({
+                    distance: `${tDistance}km`,
+                    time: `${tTime}분`,
+                });
 
                 // if (resultInfoArr.length > 0) {
                 //     resultInfoArr.forEach((info) => info.setMap(null));
@@ -334,7 +334,10 @@ const Recommend = ({ locations }) => {
 
     return (
         <div>
-            <p id="result"></p>
+            <CourseInfo
+                courseInfo={courseInfo}
+                currentIndex={currentIndex}
+            ></CourseInfo>
 
             <div id="map_wrap" className="map_wrap">
                 <div id="map_div"></div>
