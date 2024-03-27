@@ -41,4 +41,9 @@ public class RedisService {
 		ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
 		stringValueOperations.set(token, data, expirationTime, TimeUnit.MILLISECONDS);
 	}
+
+	public void deleteKey(String refreshToken) {
+		ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
+		stringValueOperations.getAndDelete(refreshToken);
+	}
 }

@@ -7,9 +7,15 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import com.dororo.api.user.dto.response.RefreshTokenResponseDto;
+import com.dororo.api.user.service.RedisService;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -17,6 +23,9 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtProvider {
+
+	private RedisService redisService;
+
 	@Value("${secret-key}")
 	private String secretKey;
 	public static final long ACCESS_TOKEN_EXPIRE_TIME = 1 * 60 * 60 * 1000L; //액세스 토큰 1시간
@@ -63,5 +72,20 @@ public class JwtProvider {
 		}
 
 		return subject;
+	}
+
+	public RefreshTokenResponseDto validateRefreshToken(String refreshToken) {
+
+		List<String> findInfo = redisService.getListValue(refreshToken);
+		if(findInfo.get(0) == null) { //redis에 사용자 없는 경우
+			return new RefreshTokenResponseDto("No accessToken", "No refreshToken", false);
+		}
+		if(validate(refreshToken)!=null){
+			String newAccessToken = createAccessToken(findInfo.get(0));
+			String newRefreshToken = createRefreshToken();
+
+			return new RefreshTokenResponseDto(newAccessToken, newRefreshToken, true);
+		}
+		return new RefreshTokenResponseDto("No accessToken", "No refreshToken", false);
 	}
 }
