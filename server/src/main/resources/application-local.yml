@@ -18,7 +18,7 @@ spring :
             user-name-attribute: response
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/dororo_test
+    url: jdbc:postgresql://localhost:5432/test315
     username: postgres
     password: ssafy
 

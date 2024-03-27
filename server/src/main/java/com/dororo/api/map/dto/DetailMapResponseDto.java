@@ -3,6 +3,8 @@ package com.dororo.api.map.dto;
 import com.dororo.api.convert.LatitudeLongitude;
 import com.dororo.api.db.entity.MapEntity;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.locationtech.jts.geom.LineString;
 
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Builder
+@Getter
+@Setter
 public class DetailMapResponseDto {
 
     private Integer mapId;

@@ -2,19 +2,14 @@ package com.dororo.api.map.controller;
 
 
 import com.dororo.api.db.entity.MapEntity;
-import com.dororo.api.map.dto.AddMapRequestDto;
-import com.dororo.api.map.dto.DetailMapResponseDto;
-import com.dororo.api.map.dto.MapResponseDto;
+import com.dororo.api.map.dto.*;
 import com.dororo.api.map.service.MapService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 @RequestMapping("/api/maps")
@@ -31,28 +26,38 @@ public class MapController {
 
     //맵 상세조회
     @GetMapping("/{mapId}")
-    public ResponseEntity getMapdetails(@PathVariable Integer mapId) {
+    public ResponseEntity getMapdetails(@PathVariable(name="mapId") Integer mapId) {
         DetailMapResponseDto detailMapResponseDto = mapService.getMapById(mapId);
-        return ResponseEntity.ok(detailMapResponseDto);
+        System.out.println("디테일 mapId :" + mapId);
+        // return ResponseEntity.ok(detailMapResponseDto);
+        return new ResponseEntity(detailMapResponseDto, HttpStatus.OK);
     }
 
     //맵 생성
     @PostMapping("")
-    public ResponseEntity addMap(@RequestBody AddMapRequestDto addMapRequestDto) {
+    public ResponseEntity createMap(@RequestBody CreateMapRequestDto createMapRequestDto) {
+        List<CreateMapResponseDto>  createMapList =  mapService.createMap(createMapRequestDto);
 
-        return ResponseEntity.ok(HttpStatus.OK);
+        return new ResponseEntity(createMapList, HttpStatus.CREATED);
     }
 
     //맵 저장
     @PostMapping("/save")
-    public ResponseEntity saveMap() {
+    public ResponseEntity saveMap(@RequestBody AddMapRequestDto addMapRequestDto) {
+        // DTO 검증 로직 << ? 이런것도 필요한가 예외처리 빼기.
+        if (addMapRequestDto.getMapRouteAxis().isEmpty() || addMapRequestDto.getMapDistance() <= 0) {
+            return ResponseEntity.badRequest().body("Invalid map data");
+        }
 
-        return ResponseEntity.ok(HttpStatus.OK);
+        mapService.saveMap(addMapRequestDto);
+
+        // 응답 반환
+        return ResponseEntity.ok().body("Map saved successfully");
     }
 
     //맵 삭제
     @DeleteMapping("/{mapId}")
-    public ResponseEntity deleteMap(@PathVariable Integer mapId) {
+    public ResponseEntity deleteMap(@PathVariable(name = "mapId") Integer mapId) {
         mapService.deleteMapById(mapId);
         return ResponseEntity.ok().build();
     }
@@ -60,8 +65,8 @@ public class MapController {
 
     //맵 수정 (주행여부 갱신)
     @PatchMapping("/{mapId}")
-    public ResponseEntity updateMap(@PathVariable Integer mapId ,  @RequestParam("map-completion") Boolean mapCompletion) {
-        mapService.updateMapCompletion(mapId, mapCompletion);
+    public ResponseEntity updateMap(@PathVariable(name = "mapId") Integer mapId ,@RequestBody UpdateRequestDto updateRequestDto) {
+        mapService.updateMapCompletion(mapId,updateRequestDto);
         return ResponseEntity.ok().build(); // 업데이트 성공 응답
     }
 
