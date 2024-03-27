@@ -1,6 +1,9 @@
 package com.dororo.api.exception.advice;
 
 import com.dororo.api.exception.NoMatchingResourceException;
+import com.dororo.api.exception.NoTokenInHeaderException;
+import com.dororo.api.exception.RefreshRequiredException;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -15,6 +18,14 @@ public class ControllerAdvice {
     }
 
     // <------------------------ Auth part ------------------------>
+
+    public ResponseEntity noTokenInHeaderException(NoTokenInHeaderException e) {
+        return new ResponseEntity(e.getMessage(), e.getHttpStatus());
+    }
+
+    public ResponseEntity refreshRequiredException(RefreshRequiredException e) {
+        return new ResponseEntity(e.getMessage(), e.getHttpStatus());
+    }
     // <------------------------ Map part ------------------------>
     // <------------------------ Community part ------------------------>
 

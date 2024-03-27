@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.dororo.api.exception.NoTokenInHeaderException;
+import com.dororo.api.exception.RefreshRequiredException;
 import com.dororo.api.user.provider.JwtProvider;
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.UserRepository;
@@ -36,17 +38,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
 		try {
-			String token = parseBearerToken(request);
+			String token = parseAccessToken(request);
 
-			if(token == null){
-				filterChain.doFilter(request, response);
-				return;
+			if(token == null){// 토큰 없음
+				throw new NoTokenInHeaderException("No accessToken");
 			}
 
 			String userUniqueId = jwtProvider.validate(token);
-			if(userUniqueId == null){
-				filterChain.doFilter(request, response);
-				return;
+			if(userUniqueId == null){// 토큰 만료
+				throw new RefreshRequiredException();
 			}
 
 			Optional<UserEntity> userEntity = userRepository.findByUniqueId(userUniqueId);
@@ -69,30 +69,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 
-	private String parseBearerToken(HttpServletRequest request) {
-
-		/*
-		String accessToken = request.getParameter("Authorization");
-		System.out.println("access: "+accessToken);
-
-		boolean hasAccessToken = StringUtils.hasText(accessToken);
-		if (!hasAccessToken) return null;
-
-		boolean isAccessToken = accessToken.startsWith("access=");
-		if(!isAccessToken) return null;
-		*/
-
-		//String token = accessToken.substring(7);
-		//return token;
+	private String parseAccessToken(HttpServletRequest request) {
 
 		String accessToken = request.getHeader("access");
-		System.out.println("access: " + accessToken);
+		//System.out.println("access: " + accessToken);
 
 		boolean hasAccessToken = StringUtils.hasText(accessToken);
-		if (!hasAccessToken) {
+		if (!hasAccessToken)
 			return null;
-		}
 
 		return accessToken;
-	}
-}
+	}}
