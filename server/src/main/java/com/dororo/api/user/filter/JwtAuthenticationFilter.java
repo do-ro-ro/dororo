@@ -22,6 +22,9 @@ import com.dororo.api.user.provider.JwtProvider;
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.UserRepository;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,13 +49,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		}
 		try {
 			String accessToken = parseAccessToken(request);
-			System.out.println("token : "+accessToken);
 			if(accessToken == null){// 액세스 토큰 없음
 				throw new NoTokenInHeaderException();
 			}
 
 			String userUniqueId = jwtProvider.validate(accessToken);
-			if(userUniqueId == null){// 액세스 토큰 만료
+			if(userUniqueId == null){// 액세스 유효하지 않거나 기간 만료
 				throw new RefreshRequiredException();
 			}
 
@@ -85,4 +87,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			return null;
 
 		return accessToken;
-	}}
+	}
+}
