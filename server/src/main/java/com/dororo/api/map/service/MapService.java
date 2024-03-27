@@ -90,7 +90,7 @@ public class MapService {
         // 엔티티 변환 로직
         Optional<UserEntity> userEntity = userRepository.findByUserId(1);
         MapEntity mapEntity = new MapEntity();
-        mapEntity.setMapRouteAxis(convertToLineString(addMapRequestDto.getMapRouteAxis()));
+        mapEntity.setOriginMapRouteAxis(convertToLineString(addMapRequestDto.getMapRouteAxis()));
         mapEntity.setMapDistance(addMapRequestDto.getMapDistance());
         mapEntity.setMapName(addMapRequestDto.getMapName());
         mapEntity.setMapType(addMapRequestDto.getMapType());

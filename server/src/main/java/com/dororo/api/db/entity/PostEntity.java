@@ -23,6 +23,8 @@ public class PostEntity {
 	@JoinColumn(name = "mapId", nullable = false)
 	private MapEntity mapId;
 	@Column(nullable = false)
+	private String writerUniqueId;	// Users(UserEntity) 테이블의 uniqueId, 외래키는 설정 안해줌
+	@Column(nullable = false)
 	private String postTitle;
 	@Column(nullable = false)
 	private String postContent;
@@ -36,8 +38,9 @@ public class PostEntity {
 	private String reviewRef;
 
 	@Builder
-	public PostEntity(MapEntity mapId, String postTitle, String postContent, String reviewRef) {
+	public PostEntity(MapEntity mapId, String writerUniqueId, String postTitle, String postContent, String reviewRef) {
 		this.mapId = mapId;
+		this.writerUniqueId = writerUniqueId;
 		this.postTitle = postTitle;
 		this.postContent = postContent;
 		this.scrapCount = 0;

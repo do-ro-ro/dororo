@@ -44,7 +44,7 @@ public class MapRequestDto {
         MapEntity mapEntity = new MapEntity();
         mapEntity.setMapName(mapRequestDto.getMapName());
         mapEntity.setMapImage(mapRequestDto.getMapImage());
-        mapEntity.setMapRouteAxis(convertToLineString(mapRequestDto.getMapRouteAxis()));
+        mapEntity.setOriginMapRouteAxis(convertToLineString(mapRequestDto.getMapRouteAxis()));
         mapEntity.setMapType(mapRequestDto.getMapType());
         mapEntity.setMapDistance(mapRequestDto.getMapDistance());
         mapEntity.setOriginalMapId(mapRequestDto.getOriginalMapId());
