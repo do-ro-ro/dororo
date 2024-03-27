@@ -50,6 +50,8 @@ public class CommunityService {
     public void scrapPost(String access, Integer postId) {
         String userUniqueId = authUtils.getUserUniqueIdFromAccess(access);    // 스크랩한 유저의 unique ID
         PostEntity postEntity = findPostInDataBaseByPostId(postId);
+        postEntity.addScrapCount(); // 스크랩 수 1 증가
+        postRepository.save(postEntity);    // 증가한 스크랩 수를 db에 저장
         MapEntity originMapEntity = postEntity.getMapId();
 
         makeScrapMap(userUniqueId, originMapEntity);  // 우선은 setter를 이용한 메서드로 새로운 맵 저장 함수 구현한 것을 사용함

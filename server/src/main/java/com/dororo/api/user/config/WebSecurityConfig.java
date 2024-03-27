@@ -65,7 +65,8 @@ public class WebSecurityConfig {
 	protected CorsConfigurationSource corsConfigurationSource() {
 
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
-		corsConfiguration.addAllowedOrigin("http://localhost:3000");
+		corsConfiguration.addAllowedOrigin("http://localhost:3000");	// CRA로 빌드한 리액트 프로젝트
+		corsConfiguration.addAllowedOrigin("http://localhost:5173");	// vite로 빌드한 리액트 프로젝트
 		corsConfiguration.addAllowedOrigin("https://j10e202.p.ssafy.io");
 		corsConfiguration.addAllowedMethod("*");
 		corsConfiguration.addAllowedHeader("*");

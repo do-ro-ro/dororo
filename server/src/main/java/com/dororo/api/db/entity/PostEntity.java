@@ -59,4 +59,8 @@ public class PostEntity {
 		this.updatedAt = new Timestamp(System.currentTimeMillis());
 	}
 
+	public void addScrapCount() {	// 스크랩 수 올려주는 함수
+		this.scrapCount += 1;
+	}
+
 }
