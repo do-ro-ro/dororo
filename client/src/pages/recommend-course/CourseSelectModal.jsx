@@ -21,11 +21,10 @@ const CourseSelectModal = ({ open, closeModal }) => {
                         variant="h5"
                         component="h1"
                         sx={{ fontWeight: 700, mb: 3 }}
-                    ></Typography>
-
-                    <Box>
-                        <CourseDetailInfo locations={locations} />
-                    </Box>
+                    >
+                        {" "}
+                        저장하기
+                    </Typography>
 
                     <Box
                         sx={{
@@ -36,11 +35,20 @@ const CourseSelectModal = ({ open, closeModal }) => {
                     >
                         <Button
                             variant="contained"
+                            sx={{
+                                fontSize: "1rem",
+                                mr: 1,
+                            }}
+                        >
+                            저장
+                        </Button>
+
+                        <Button
+                            variant="contained"
                             onClick={closeModal}
                             sx={{
                                 fontSize: "1rem",
-                                py: 1.5, // 상하 패딩 (vertical padding)을 늘립니다.
-                                px: 3, // 좌우 패딩 (horizontal padding)을 늘립니다.
+                                ml: 1,
                             }}
                         >
                             닫기
