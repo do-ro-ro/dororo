@@ -9,6 +9,8 @@ import com.dororo.api.db.repository.MapRepository;
 import com.dororo.api.db.repository.PostRepository;
 import com.dororo.api.db.repository.UserRepository;
 import com.dororo.api.exception.NoMatchingResourceException;
+import com.dororo.api.user.provider.JwtProvider;
+import com.dororo.api.utils.auth.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -27,11 +29,13 @@ public class CommunityService {
     private final PostRepository postRepository;
     private final MapRepository mapRepository;
 
+    private final AuthUtils authUtils;
+
 
     // <------------------------ POST part ------------------------>
     public PostEntity addPost(String access, AddPostDto addPostDto) {
         Integer mapId = addPostDto.getMapId();  // 참조하는 맵의 ID
-        String writerUniqueId = getUserUniqueIdFromAccess(access);
+        String writerUniqueId = authUtils.getUserUniqueIdFromAccess(access);
         PostEntity postEntity = PostEntity.builder()
                 .mapId(mapRepository.findByMapId(mapId))    // 참조하는 맵 가져옴
                 .writerUniqueId(writerUniqueId)
@@ -45,7 +49,7 @@ public class CommunityService {
     }
 
     public void scrapPost(String access, Integer postId) {
-        String userUniqueId = getUserUniqueIdFromAccess(access);    // 스크랩한 유저의 unique ID
+        String userUniqueId = authUtils.getUserUniqueIdFromAccess(access);    // 스크랩한 유저의 unique ID
         PostEntity postEntity = findPostInDataBaseByPostId(postId);
         MapEntity originMapEntity = postEntity.getMapId();
 
@@ -54,7 +58,7 @@ public class CommunityService {
 
     // <------------------------ GET part ------------------------>
     public List<PostDetailsDto> postList(String access, String option) {
-        String userUniqueId = getUserUniqueIdFromAccess(access);   // 아직 엑세스 토큰 도입 안해서 이렇게 둠
+        String userUniqueId = authUtils.getUserUniqueIdFromAccess(access);   // 아직 엑세스 토큰 도입 안해서 이렇게 둠
         List<PostEntity> userPostEntityList = new ArrayList<>();
         if (option == null) userPostEntityList = postRepository.findAll();  // option query 없이 요청이 들어왔을 경우 전체 게시글 조회
         else if (option.equals("popular")) userPostEntityList = postRepository.findTop3ByOrderByScrapCount();   // 스크랩 수 기반 TOP3 게시글 조회
@@ -88,10 +92,6 @@ public class CommunityService {
     }
 
     // <------------ For Readability ------------>
-    private String getUserUniqueIdFromAccess(String access) {
-        return "Get Unique ID from jwt";
-    }
-
     private void makeScrapMap(String userUniqueId, MapEntity originMapEntity) {   // 스크랩하여 유저에게 맵을 저장하는 함수, 일단 MapEntity 저장 방식이 Setter이므로 여기서도 Setter로 하지만, 바뀌면 좋을 듯
         Optional<UserEntity> userEntity = userRepository.findByUniqueId(userUniqueId);
 
