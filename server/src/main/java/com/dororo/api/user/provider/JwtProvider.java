@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import com.dororo.api.user.dto.response.RefreshTokenResponseDto;
 import com.dororo.api.user.service.RedisService;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -71,6 +73,10 @@ public class JwtProvider {
 			return null;
 		}
 
+		if(!Jwts.parser().setSigningKey(key).parseClaimsJws(jwt)
+			.getBody().getExpiration().before(new Date()))
+			return null;
+
 		return subject;
 	}
 
@@ -87,5 +93,21 @@ public class JwtProvider {
 			return new RefreshTokenResponseDto(newAccessToken, newRefreshToken, true);
 		}
 		return new RefreshTokenResponseDto("No accessToken", "No refreshToken", false);
+	}
+
+	public String getTokenSubject(String token) {
+		try {
+			return Jwts.parser()
+				.setSigningKey(secretKey)
+				.parseClaimsJws(token)
+				.getBody()
+				.getSubject();
+		} catch (ExpiredJwtException e){
+			e.printStackTrace();
+			return "Expired token";
+		} catch (JwtException e) {
+			e.printStackTrace();
+			return "Invalid token";
+		}
 	}
 }
