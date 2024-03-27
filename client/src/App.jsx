@@ -6,12 +6,14 @@ import LandingPage from "./pages/landing-page/LandingPage";
 import RecommendedCoursePage from "./pages/recommend-course/RecommendCoursePage";
 import CourseDetailPage from "./pages/course-detail/CourseDetailPage";
 import CourseCustomPage from "./pages/course-custom/CourseCustomPage";
-import CourseDrivePage from "./pages/course-drive/CourseDrivePage";
+// import CourseDrivePage from "./pages/course-drive/CourseDrivePage";
 import CommunityListPage from "./pages/community-list/CommunityListPage";
 import CommunityDetailPage from "./pages/community-detail/CommunityDetailPage";
 import MyPage from "./pages/my-page/MyPage";
 import { ThemeProvider, createTheme } from "@mui/material";
 import MainPage from "./components/navbar/MainPage";
+
+import DriveTest from "./components/course-drive/DriveTest/DriveTest";
 
 const colorTheme = createTheme({
     palette: {
@@ -61,7 +63,7 @@ function App() {
                         />
                         <Route
                             path="/course/:courseId/drive"
-                            element={<CourseDrivePage />}
+                            element={<DriveTest />}
                         />
                     </Routes>
                 </Suspense>
