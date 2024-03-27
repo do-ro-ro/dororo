@@ -35,10 +35,7 @@ function App() {
                         <Route path={"/main/*"} element={<MainPage />}>
                             {/* /main으로 접근했을 때 자동으로 /recommend로 리다이렉트 */}
                             <Route path="" element={<Main />} />
-                            <Route
-                                path="recommend"
-                                element={<RecommendedCoursePage />}
-                            />
+
                             <Route
                                 path="community"
                                 element={<CommunityListPage />}
@@ -49,7 +46,10 @@ function App() {
                             />
                             <Route path="myPage/:userId" element={<MyPage />} />
                         </Route>
-
+                        <Route
+                            path="/recommend"
+                            element={<RecommendedCoursePage />}
+                        />
                         <Route
                             // path={`/course/:courseId/*`} 이게 나중에 쓸 것. 아래는 임시
                             path="/course/:courseId"
