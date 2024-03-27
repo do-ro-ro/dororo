@@ -28,7 +28,7 @@ const CourseDetailModal = ({ open, closeModal, locations }) => {
                         component="h1"
                         sx={{ fontWeight: 700, mb: 3 }}
                     >
-                        경유지 상세 정보
+                        경유지 상세
                     </Typography>
 
                     <Box>
@@ -47,8 +47,6 @@ const CourseDetailModal = ({ open, closeModal, locations }) => {
                             onClick={closeModal}
                             sx={{
                                 fontSize: "1rem",
-                                py: 1.5, // 상하 패딩 (vertical padding)을 늘립니다.
-                                px: 3, // 좌우 패딩 (horizontal padding)을 늘립니다.
                             }}
                         >
                             닫기
