@@ -12,6 +12,7 @@ import CommunityDetailPage from "./pages/community-detail/CommunityDetailPage";
 import MyPage from "./pages/my-page/MyPage";
 import { ThemeProvider, createTheme } from "@mui/material";
 import MainPage from "./components/navbar/MainPage";
+import Main from "./pages/main-page/Main";
 
 const colorTheme = createTheme({
     palette: {
@@ -31,14 +32,8 @@ function App() {
                         <Route path="/" element={<LandingPage />} />
                         <Route path={"/main/*"} element={<MainPage />}>
                             {/* /main으로 접근했을 때 자동으로 /recommend로 리다이렉트 */}
-                            <Route
-                                path=""
-                                element={<Navigate to="recommend" />}
-                            />
-                            <Route
-                                path="recommend"
-                                element={<RecommendedCoursePage />}
-                            />
+                            <Route path="" element={<Main />} />
+
                             <Route
                                 path="community"
                                 element={<CommunityListPage />}
@@ -49,7 +44,10 @@ function App() {
                             />
                             <Route path="myPage/:userId" element={<MyPage />} />
                         </Route>
-
+                        <Route
+                            path="/recommend"
+                            element={<RecommendedCoursePage />}
+                        />
                         <Route
                             // path={`/course/:courseId/*`} 이게 나중에 쓸 것. 아래는 임시
                             path="/course/:courseId"
