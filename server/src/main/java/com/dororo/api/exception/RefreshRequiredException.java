@@ -4,6 +4,6 @@ import org.springframework.http.HttpStatus;
 
 public class RefreshRequiredException extends DororoRuntimeException {
 	public RefreshRequiredException() {
-		super("Get new refreshToken", HttpStatus.UNAUTHORIZED);
+		super("Get new AccessToken", HttpStatus.UNAUTHORIZED);
 	}
 }

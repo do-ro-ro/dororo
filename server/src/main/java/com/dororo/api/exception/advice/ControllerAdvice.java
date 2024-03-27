@@ -18,11 +18,12 @@ public class ControllerAdvice {
     }
 
     // <------------------------ Auth part ------------------------>
-
+    @ExceptionHandler(value = NoTokenInHeaderException.class)
     public ResponseEntity noTokenInHeaderException(NoTokenInHeaderException e) {
         return new ResponseEntity(e.getMessage(), e.getHttpStatus());
     }
 
+    @ExceptionHandler(value = RefreshRequiredException.class)
     public ResponseEntity refreshRequiredException(RefreshRequiredException e) {
         return new ResponseEntity(e.getMessage(), e.getHttpStatus());
     }

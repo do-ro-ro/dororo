@@ -38,14 +38,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
 		try {
-			String token = parseAccessToken(request);
+			String accessToken = parseAccessToken(request);
 
-			if(token == null){// 토큰 없음
-				throw new NoTokenInHeaderException("No accessToken");
+			if(accessToken == null){// 액세스 토큰 없음
+				throw new NoTokenInHeaderException();
 			}
 
-			String userUniqueId = jwtProvider.validate(token);
-			if(userUniqueId == null){// 토큰 만료
+			String userUniqueId = jwtProvider.validate(accessToken);
+			if(userUniqueId == null){// 액세스 토큰 만료
 				throw new RefreshRequiredException();
 			}
 
