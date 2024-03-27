@@ -27,7 +27,9 @@ public class MapEntity {
     @Column(nullable = false) @ColumnDefault("''")  // 이미지 없을 경우 빈 스트링으로
     private String mapImage;
     @Column(nullable = false, columnDefinition = "geometry(LineString, 4326)")
-    private LineString mapRouteAxis;
+    private LineString originMapRouteAxis;    // 원본 좌표
+    @Column(nullable = false, columnDefinition = "geometry(LineString, 4326)")
+    private LineString convertedRouteAxis;  // 변환된 좌표
     @Column(nullable = false) @Enumerated(EnumType.STRING)
     private Maptype mapType = Maptype.DEFAULT;
     @Column(nullable = false)
