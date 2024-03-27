@@ -74,6 +74,8 @@ function CourseDrivePage() {
                             </Button>
                         )}
                     </Stack>
+                    <div>{lat}</div>
+                    <div>{lng}</div>
                 </div>
                 {/* <div>거리 : {km} km</div>
                 <div>시간 : {time} 분</div> */}

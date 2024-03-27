@@ -3,8 +3,13 @@ import React, { useState, useEffect } from "react";
 const RealTimeCurrentLocation = ({ setLat, setLng }) => {
     const [location, setLocation] = useState();
     const [error, setError] = useState();
-
-    useEffect(() => {
+    const options = {
+        enableHighAccuracy: false,
+        maximumAge: 0,
+        timeout: Infinity,
+    };
+    출처: //7942yongdae.tistory.com/150 [개발자 일지:티스토리]
+    https: useEffect(() => {
         let watchId = null;
 
         const getLocation = () => {
@@ -19,6 +24,7 @@ const RealTimeCurrentLocation = ({ setLat, setLng }) => {
                     (error) => {
                         setError(error.message);
                     },
+                    options,
                 );
             } else {
                 setError("Geolocation is not supported by this browser.");

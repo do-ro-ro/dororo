@@ -33,8 +33,8 @@ const StopOver = ({
 
         map = new window.Tmapv2.Map("map_div", {
             center: new window.Tmapv2.LatLng(lat, lng),
-            width: "100%",
-            height: "100vh",
+            width: "50%",
+            height: "50vh",
             zoom: 16,
             zoomControl: true,
             scrollwheel: true,
