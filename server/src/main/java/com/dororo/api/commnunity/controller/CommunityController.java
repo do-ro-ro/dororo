@@ -113,7 +113,7 @@ public class CommunityController {
     })
     @GetMapping("")
     public ResponseEntity postList(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
-                                   @Parameter(name = "option", description = "조회의 옵션(전체 조회 시 그냥 /map-posts 로 요청, option = { mine | popular }", in = ParameterIn.QUERY) @RequestParam(required = false) String option) {
+                                   @Parameter(name = "option", description = "조회의 옵션(전체 조회 시 그냥 /map-posts 로 요청, option = { mine | popular }", in = ParameterIn.QUERY) @RequestParam(name = "option", required = false) String option) {
         List<PostDetailsDto> postDetailsDtoList = communityService.postList(access, option);
 
         return new ResponseEntity(postDetailsDtoList, HttpStatus.OK);

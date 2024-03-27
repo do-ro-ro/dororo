@@ -73,7 +73,7 @@ public class JwtProvider {
 			return null;
 		}
 
-		if(!Jwts.parser().setSigningKey(key).parseClaimsJws(jwt)
+		if(Jwts.parser().setSigningKey(key).parseClaimsJws(jwt)
 			.getBody().getExpiration().before(new Date()))
 			return null;
 
@@ -96,9 +96,10 @@ public class JwtProvider {
 	}
 
 	public String getTokenSubject(String token) {
+		Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 		try {
 			return Jwts.parser()
-				.setSigningKey(secretKey)
+				.setSigningKey(key)
 				.parseClaimsJws(token)
 				.getBody()
 				.getSubject();
