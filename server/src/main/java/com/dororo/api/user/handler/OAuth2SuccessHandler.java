@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.dororo.api.user.dto.response.CustomOAuth2User;
 import com.dororo.api.user.provider.JwtProvider;
+import com.dororo.api.user.service.RedisService;
 
 import jakarta.servlet.ServletException;
 
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
 	private final JwtProvider jwtProvider;
+	private final RedisService redisService;
 
 	@Override
 	public void onAuthenticationSuccess(
@@ -30,8 +32,12 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 		CustomOAuth2User oAuth2User = (CustomOAuth2User)authentication.getPrincipal();
 		String uniqueId = oAuth2User.getName();
-		String token = jwtProvider.create(uniqueId);
+		String accessToken = jwtProvider.createAccessToken(uniqueId);
+		String refreshToken = jwtProvider.createRefreshToken();
 
-		response.sendRedirect("http://localhost:3000/auth/oauth-response/"+token+"/3600");
+		redisService.setStringValue(refreshToken, uniqueId, jwtProvider.REFRESH_TOKEN_EXPIRE_TIME);
+		response.sendRedirect("http://localhost:3000/auth/oauth-response?"
+			+"access="+accessToken+"&"
+			+"refresh="+refreshToken);
 	}
 }

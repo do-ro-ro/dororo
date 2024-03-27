@@ -16,6 +16,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.dororo.api.user.filter.JwtAuthenticationFilter;
+import com.dororo.api.user.filter.JwtExceptionFilter;
 import com.dororo.api.user.handler.OAuth2SuccessHandler;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+	private final JwtExceptionFilter jwtExceptionFilter;
 	private final DefaultOAuth2UserService oAuth2UserService;
 	private final OAuth2SuccessHandler oAuth2SuccessHandler;
 	@Bean
@@ -54,8 +56,8 @@ public class WebSecurityConfig {
 				.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
 				.successHandler(oAuth2SuccessHandler)
 			)
-			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
+			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
 		return httpSecurity.build();
 	}
 

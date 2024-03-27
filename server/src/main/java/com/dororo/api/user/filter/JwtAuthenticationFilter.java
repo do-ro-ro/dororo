@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.dororo.api.exception.NoTokenInHeaderException;
+import com.dororo.api.exception.RefreshRequiredException;
 import com.dororo.api.user.provider.JwtProvider;
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.UserRepository;
@@ -35,18 +37,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
+		if(request.getRequestURI().equals("/") || request.getRequestURI().equals("/index.html") ||
+			request.getRequestURI().equals("/api/auth/**") || request.getRequestURI().equals("/oauth2/**") ||
+			request.getRequestURI().equals("/api/api-docs/**") || request.getRequestURI().equals("/api/docs") ||
+			request.getRequestURI().equals("/api/swagger-ui/**")){
+			filterChain.doFilter(request, response);
+			return;
+		}
 		try {
-			String token = parseBearerToken(request);
-			System.out.println("토큰 :" + token);
-			if(token == null){
-				filterChain.doFilter(request, response);
-				return;
+			String accessToken = parseAccessToken(request);
+			System.out.println("token : "+accessToken);
+			if(accessToken == null){// 액세스 토큰 없음
+				throw new NoTokenInHeaderException();
 			}
 
-			String userUniqueId = jwtProvider.validate(token);
-			if(userUniqueId == null){
-				filterChain.doFilter(request, response);
-				return;
+			String userUniqueId = jwtProvider.validate(accessToken);
+			if(userUniqueId == null){// 액세스 토큰 만료
+				throw new RefreshRequiredException();
 			}
 
 			Optional<UserEntity> userEntity = userRepository.findByUniqueId(userUniqueId);
@@ -69,17 +76,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 
-	private String parseBearerToken(HttpServletRequest request) {
+	private String parseAccessToken(HttpServletRequest request) {
 
-		String authorization = request.getHeader("Authorization");
+		String accessToken = request.getHeader("access");
 
-		boolean hasAuthorization = StringUtils.hasText(authorization);
-		if (!hasAuthorization) return null;
+		boolean hasAccessToken = StringUtils.hasText(accessToken);
+		if (!hasAccessToken)
+			return null;
 
-		// boolean isBearer = authorization.startsWith("Bearer ");
-		// if(!isBearer) return null;
-
-		//String token = authorization.substring(7);
-		return authorization;
-	}
-}
+		return accessToken;
+	}}
