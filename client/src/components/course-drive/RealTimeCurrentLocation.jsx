@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const RealTimeCurrentLocation = ({ setLat, setLon }) => {
+const RealTimeCurrentLocation = ({ setLat, setLng }) => {
     const [location, setLocation] = useState();
     const [error, setError] = useState();
 
@@ -14,7 +14,7 @@ const RealTimeCurrentLocation = ({ setLat, setLon }) => {
                         const { latitude, longitude } = position.coords;
                         setLocation({ latitude, longitude });
                         setLat(latitude);
-                        setLon(longitude);
+                        setLng(longitude);
                     },
                     (error) => {
                         setError(error.message);
@@ -32,7 +32,7 @@ const RealTimeCurrentLocation = ({ setLat, setLon }) => {
                 navigator.geolocation.clearWatch(watchId);
             }
         };
-    }, [setLat, setLon]);
+    }, [setLat, setLng]);
 
     return (
         <div>

@@ -30,7 +30,7 @@ function CourseDrivePage() {
         <>
             <IntroductionModal />
             <div className="relative">
-                <RealTimeCurrentLocation setLat={setLat} setLon={setLng} />
+                <RealTimeCurrentLocation setLat={setLat} setLng={setLng} />
                 <ServerTest setcoolList={setcoolList} />
                 {/* <Map lat={lat} lon={lon} /> */}
                 <Topbar>코스 이름</Topbar>
