@@ -200,7 +200,7 @@ const Recommend = ({ locations, currentIndex }) => {
     };
 
     const headers = {
-        appKey: "Kh0PlfvZvH8zcvcN9OrAX4hBB99NjFyZ1E1SZlWP",
+        appKey: "9HZ42peAS298sFouPX3oN5yCj2KQUJEa9a3SLlSM",
         "Content-Type": "application/json",
     };
 
