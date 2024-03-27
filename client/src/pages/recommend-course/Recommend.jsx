@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import RoadViewModal from "./RoadViewModal";
+import startpin from "../../assets/start_pin.png";
+import endpin from "../../assets/end_pin.png";
+import waypin from "../../assets/waypoint_yet.png";
 
 const Recommend = ({ locations }) => {
     let [map, setMap] = useState(null);
@@ -62,7 +65,7 @@ const Recommend = ({ locations }) => {
                 locations.lat[0],
                 locations.lon[0],
             ),
-            icon: "/start_pin.png", // 시작점 아이콘
+            icon: startpin, // 시작점 아이콘
             iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
@@ -80,7 +83,7 @@ const Recommend = ({ locations }) => {
                 locations.lat[endMarkerIndex],
                 locations.lon[endMarkerIndex],
             ),
-            icon: "/start_pin.png", // 끝점 아이콘으로 수정
+            icon: endpin, // 끝점 아이콘으로 수정
             iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
@@ -104,8 +107,8 @@ const Recommend = ({ locations }) => {
                     locations.lat[i],
                     locations.lon[i],
                 ),
-                icon: "/start_pin.png", // 경유지 아이콘
-                iconSize: new window.Tmapv2.Size(24, 38),
+                icon: waypin, // 경유지 아이콘
+                iconSize: new window.Tmapv2.Size(24, 24),
                 map: map,
             });
             setResultMarkerArr((prev) => [...prev, waypointMarker]);
@@ -138,7 +141,7 @@ const Recommend = ({ locations }) => {
                 locations.lat[0],
                 locations.lon[0],
             ),
-            icon: "/start_pin.png",
+            icon: startpin,
             iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
@@ -154,7 +157,7 @@ const Recommend = ({ locations }) => {
                 locations.lat[endMarkerIndex],
                 locations.lon[endMarkerIndex],
             ),
-            icon: "/start_pin.png",
+            icon: endpin,
             iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
@@ -176,8 +179,8 @@ const Recommend = ({ locations }) => {
                     locations.lat[i],
                     locations.lon[i],
                 ),
-                icon: "/start_pin.png",
-                iconSize: new window.Tmapv2.Size(24, 38),
+                icon: waypin,
+                iconSize: new window.Tmapv2.Size(24, 24),
                 map: map,
             });
             setResultMarkerArr((prev) => [...prev, waypointMarker]);
