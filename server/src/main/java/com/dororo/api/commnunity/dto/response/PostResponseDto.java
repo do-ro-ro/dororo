@@ -2,12 +2,10 @@ package com.dororo.api.commnunity.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.sql.Timestamp;
 
 @Getter
-@Setter
 public abstract class PostResponseDto { // post의 response에서 공통으로 반환하는 값들을 선언한 추상 클래스
 
     protected Integer postId;
