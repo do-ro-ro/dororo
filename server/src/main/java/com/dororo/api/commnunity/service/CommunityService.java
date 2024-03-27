@@ -9,7 +9,6 @@ import com.dororo.api.db.repository.MapRepository;
 import com.dororo.api.db.repository.PostRepository;
 import com.dororo.api.db.repository.UserRepository;
 import com.dororo.api.exception.NoMatchingResourceException;
-import com.dororo.api.user.provider.JwtProvider;
 import com.dororo.api.utils.auth.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -98,7 +97,7 @@ public class CommunityService {
         MapEntity scrapMapEntity = new MapEntity();
         scrapMapEntity.setUserId(userEntity.get());
         scrapMapEntity.setMapName(originMapEntity.getMapName());
-        scrapMapEntity.setMapRouteAxis(originMapEntity.getMapRouteAxis());
+        scrapMapEntity.setOriginMapRouteAxis(originMapEntity.getOriginMapRouteAxis());
         scrapMapEntity.setMapType(MapEntity.Maptype.SCRAP); // 스크랩한 맵임을 타입으로 명시
         scrapMapEntity.setMapDistance(originMapEntity.getMapDistance());
         scrapMapEntity.setMapCompletion(false); // 맵 생성과 같으므로 주행 여부는 false로

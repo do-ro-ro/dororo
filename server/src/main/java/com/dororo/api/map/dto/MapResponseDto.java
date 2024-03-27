@@ -3,7 +3,6 @@ package com.dororo.api.map.dto;
 import com.dororo.api.convert.LatitudeLongitude;
 import com.dororo.api.db.entity.MapEntity;
 import lombok.*;
-import org.apache.coyote.Response;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
 
@@ -43,7 +42,7 @@ public class MapResponseDto {
                 .mapId(entity.getMapId())
                 .mapName(entity.getMapName())
                 .mapImage(entity.getMapImage())
-                .mapRouteAxis(convertLineStringToList(entity.getMapRouteAxis()))
+                .mapRouteAxis(convertLineStringToList(entity.getOriginMapRouteAxis()))
                 .mapType(entity.getMapType())
                 .mapDistance(entity.getMapDistance())
                 .originalMapId(entity.getOriginalMapId())
