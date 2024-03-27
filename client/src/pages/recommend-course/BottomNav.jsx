@@ -6,7 +6,7 @@ import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import CourseSelectModal from "./CourseSelectModal";
 
-const BottomNav = ({ handlePrev, handleNext }) => {
+const BottomNav = ({ handlePrev, handleNext, currentIndex, locations }) => {
     const [showCourseSelectModal, setShowCourseSelectModal] = useState(false);
 
     const openCourseSelectModal = () => {
@@ -16,6 +16,10 @@ const BottomNav = ({ handlePrev, handleNext }) => {
     const closeCourseSelectModal = () => {
         setShowCourseSelectModal(false);
     };
+    // "이전 코스 보기"와 "다음 코스 보기" 아이콘의 색상을 조건에 따라 결정
+    const prevIconColor = currentIndex === 0 ? "#9e9e9e" : "#6386BE";
+    const nextIconColor =
+        currentIndex === locations.length - 1 ? "#9e9e9e" : "#6386BE";
 
     return (
         <Box
@@ -39,9 +43,9 @@ const BottomNav = ({ handlePrev, handleNext }) => {
                     flexDirection: "column",
                     alignItems: "center",
                 }}
-                onClick={handlePrev}
+                onClick={currentIndex > 0 ? handlePrev : null} // currentIndex가 0보다 클 때만 이전 코스 보기 활성화
             >
-                <UndoIcon sx={{ fontSize: "5vh", color: "#6386BE" }} />
+                <UndoIcon sx={{ fontSize: "5vh", color: prevIconColor }} />
                 <Typography variant="caption">이전 코스 보기</Typography>
             </Box>
 
@@ -63,9 +67,11 @@ const BottomNav = ({ handlePrev, handleNext }) => {
                     flexDirection: "column",
                     alignItems: "center",
                 }}
-                onClick={handleNext}
+                onClick={
+                    currentIndex < locations.length - 1 ? handleNext : null
+                } // currentIndex가 locations.length - 1보다 작을 때만 다음 코스 보기 활성화
             >
-                <RedoIcon sx={{ fontSize: "5vh", color: "#6386BE" }} />
+                <RedoIcon sx={{ fontSize: "5vh", color: nextIconColor }} />
                 <Typography variant="caption">다음 코스 보기</Typography>
             </Box>
 

@@ -37,6 +37,8 @@ function RecommendedCoursePage() {
             <BottomNav
                 handlePrev={handlePrev}
                 handleNext={handleNext}
+                currentIndex={currentIndex}
+                locations={locations}
             ></BottomNav>
             {locations.length > 0 && (
                 <Recommend
