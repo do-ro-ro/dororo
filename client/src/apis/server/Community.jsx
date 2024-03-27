@@ -1,41 +1,5 @@
 import { axiosInstance } from "../../utils/axios/AxiosInstance";
 
-// post 샘플
-const createChallenge = async ({
-    groupId,
-    duration,
-    initialMoney,
-    savedMoney,
-    savedPeriod,
-}) => {
-    const body = {
-        groupId: groupId,
-        duration: duration,
-        initialMoney: initialMoney,
-        savedMoney: savedMoney,
-        savedPeriod: savedPeriod,
-    };
-    try {
-        const response = await axiosInstance.post("/v1/challenge/create", body);
-        if (response.status === 200) return response.data;
-        // console.log(response.status);
-    } catch (error) {
-        console.log(body);
-    }
-};
-
-// get 샘플
-const getChallengeRanking = async (challengeId) => {
-    try {
-        const response = await axiosInstance.get(
-            `/v1/challenge/${challengeId}/ranking`,
-        );
-        if (response.status === 200) {
-            return response.data;
-        }
-    } catch (error) {}
-};
-
 // 커뮤니티 map 게시글 전체 or 필터링 조회
 const getMapPostsList = async () => {
     try {
@@ -43,7 +7,9 @@ const getMapPostsList = async () => {
         if (response.status === 200) {
             return response.data;
         }
-    } catch (error) {}
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 // 커뮤니티 map 게시글 상세 조회
@@ -53,7 +19,9 @@ const getMapPosts = async (postId) => {
         if (response.status === 200) {
             return response.data;
         }
-    } catch (error) {}
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 // 커뮤니티 게시글 생성
@@ -66,9 +34,41 @@ const createMapPosts = async ({ postTitle, postContent, reviewRef }) => {
     };
     try {
         const response = await axiosInstance.post("/map-posts", body);
-        if (response.status === 200) return response.data;
+        if (response.status === 201) return response.data;
         // console.log(response.status);
     } catch (error) {
         console.log(body);
     }
+};
+
+// 커뮤니티 게시글 삭제
+const deleteMapPosts = async (postId) => {
+    try {
+        const response = await axiosInstance.delete(`/map-posts/${postId}`);
+        if (response.status === 200) {
+            console.log("게시글 삭제 완료");
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// mapPost 스크랩하기
+const scrapMapPosts = async (postId) => {
+    try {
+        const response = await axiosInstance.post(`/map-posts/${postId}`);
+        if (response.status === 201) {
+            return response.data;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export {
+    getMapPostsList,
+    getMapPosts,
+    createMapPosts,
+    deleteMapPosts,
+    scrapMapPosts,
 };
