@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import Map from "./Map";
 import CurrentLocation from "./CurrentLocation";
-import Search from "./Search";
-import RecommendButton from "./RecommendButton";
+import Search from "../main-page/Search";
+import RecommendButton from "../main-page/RecommendButton";
 import OptionModal from "./OptionModal";
 
 function RecommendedCoursePage() {
