@@ -14,7 +14,7 @@ public abstract class PostResponseDto { // post의 response에서 공통으로 �
     protected Integer postId;
     
     @Schema(description = "Post의 원본 맵 ID, 스크랩 기능에 필요함")
-    protected MapEntity mapId;
+    protected Integer mapId;
     @Schema(description = "S3 버킷에 저장된 맵 이미지의 주소")
     protected String mapImage;
     protected String userName;    // 게시글 작성자 명

@@ -14,6 +14,5 @@ public class PostDetailsDto extends PostResponseDto {
 
     private String postTitle;
     private String postContent;
-    private LineString mapRouteAxis;    // 지도에 표출할 경로
 
 }
