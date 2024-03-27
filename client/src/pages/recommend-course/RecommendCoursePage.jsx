@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Topbar from "../../components/topbar/Topbar";
 import Recommend from "./Recommend";
+import BottomNav from "./BottomNav";
 
 function RecommendedCoursePage() {
     const [locations, setLocation] = useState([]);
@@ -33,14 +34,16 @@ function RecommendedCoursePage() {
     return (
         <div>
             <Topbar>추천 코스 안내</Topbar>
+            <BottomNav
+                handlePrev={handlePrev}
+                handleNext={handleNext}
+            ></BottomNav>
             {locations.length > 0 && (
                 <Recommend
                     locations={locations[currentIndex]}
                     currentIndex={currentIndex}
                 ></Recommend>
             )}
-            <button onClick={handlePrev}>이전</button>
-            <button onClick={handleNext}>다음</button>
         </div>
     );
 }

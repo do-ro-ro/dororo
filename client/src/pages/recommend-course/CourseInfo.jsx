@@ -10,6 +10,8 @@ const CourseInfo = ({ courseInfo, currentIndex }) => {
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
+                    position: "relative",
+                    zIndex: 1000,
                 }}
             >
                 <Box

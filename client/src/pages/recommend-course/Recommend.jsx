@@ -132,7 +132,7 @@ const Recommend = ({ locations, currentIndex }) => {
         map = new window.Tmapv2.Map("map_div", {
             center: new window.Tmapv2.LatLng(center.lat, center.lon),
             width: "100%",
-            height: "400px",
+            height: "100vh",
             zoom: 15,
             zoomControl: true,
             scrollwheel: true,
@@ -334,6 +334,7 @@ const Recommend = ({ locations, currentIndex }) => {
 
     return (
         <div>
+            {/* CourseInfo redux 사용해서 전역으로 빼야함  그리고 CourseInfo RecommendCoursePage에 놔둬야 에러 해결 가능 */}
             <CourseInfo
                 courseInfo={courseInfo}
                 currentIndex={currentIndex}
