@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: "https://i10e105.p.ssafy.io/api",
+    baseURL: "https://j10e202.p.ssafy.io/api",
     timeout: 5000, // 일단 타임아웃 5초로
     withCredentials: true,
     // headers: {'our-server-token': 'not-yet'} // 우리 서버 아직 토큰 헤더 이름 안나옴...

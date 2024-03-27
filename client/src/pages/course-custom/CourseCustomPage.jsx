@@ -3,7 +3,7 @@ import Drawer from "./Drawer";
 import Map from "./Map";
 import { useState } from "react";
 import FooterBar from "./FooterBar";
-import { getCourse } from "../../apis/tmap/getCourse";
+// import { getCourse } from "../../apis/tmap/getCourse";
 import Topbar from "../../components/topbar/Topbar";
 
 function CourseCustomPage() {
