@@ -16,7 +16,8 @@ import java.util.stream.Stream;
 public class CreateMapResponseDto {
 
     //경로 <위도,경도> 리스트
-    private List<LatitudeLongitude> mapRouteAxis;
+    private List<LatitudeLongitude> originMapRouteAxis;
+    private List<LatitudeLongitude> convertedMapRouteAxis;
     //맵의 길이
     private float mapDistance;
 

@@ -23,7 +23,8 @@ public class MapRequestDto {
     private String mapName;
     private String mapImage;
     //받을때는 위도 경도 로 받기.
-    private List<LatitudeLongitude> mapRouteAxis;
+    private List<LatitudeLongitude> originMapRouteAxis;
+    private List<LatitudeLongitude> convertedMapRouteAxis;
     private MapEntity.Maptype mapType;
     private float mapDistance;
     private Integer originalMapId;
@@ -39,7 +40,8 @@ public class MapRequestDto {
         MapEntity mapEntity = new MapEntity();
         mapEntity.setMapName(mapRequestDto.getMapName());
         mapEntity.setMapImage(mapRequestDto.getMapImage());
-        mapEntity.setOriginMapRouteAxis(convertToLineString(mapRequestDto.getMapRouteAxis()));
+        mapEntity.setOriginMapRouteAxis(convertToLineString(mapRequestDto.getOriginMapRouteAxis()));
+        mapEntity.setConvertedMapRouteAxis(convertToLineString(mapRequestDto.getConvertedMapRouteAxis()));
         mapEntity.setMapType(mapRequestDto.getMapType());
         mapEntity.setMapDistance(mapRequestDto.getMapDistance());
         mapEntity.setOriginalMapId(mapRequestDto.getOriginalMapId());

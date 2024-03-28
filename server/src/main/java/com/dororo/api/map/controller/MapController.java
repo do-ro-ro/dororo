@@ -46,14 +46,7 @@ public class MapController {
     @PostMapping("/save")
     public ResponseEntity saveMap(@RequestBody AddMapRequestDto addMapRequestDto,
                                   @RequestHeader("access") String access) {
-        // DTO 검증 로직 << ? 이런것도 필요한가 예외처리 빼기.
-        if (addMapRequestDto.getMapRouteAxis().isEmpty() || addMapRequestDto.getMapDistance() <= 0) {
-            return ResponseEntity.badRequest().body("Invalid map data");
-        }
-
         mapService.saveMap(addMapRequestDto,access);
-
-        // 응답 반환
         return ResponseEntity.ok().body("Map saved successfully");
     }
 

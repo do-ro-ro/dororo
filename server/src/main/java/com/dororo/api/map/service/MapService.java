@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.dororo.api.convert.ConvertUtils.convertToLineString;
+
 @Service
 public class MapService {
 
@@ -28,27 +30,16 @@ public class MapService {
     @Autowired
     private MapRepository mapRepository;
     @Autowired
-    private GeometryFactory geometryFactory;
-    @Autowired
     private AuthUtils authUtils;
 
-    //좌표 -> LineString변환
-    public LineString convertToLineString(List<LatitudeLongitude> latLngList) {
-        Coordinate[] coordinates = new Coordinate[latLngList.size()];
 
-        for (int i = 0; i < latLngList.size(); i++) {
-            LatitudeLongitude latLng = latLngList.get(i);
-            coordinates[i] = new Coordinate(latLng.getLongitude(), latLng.getLatitude());
-        }
-        return geometryFactory.createLineString(coordinates);
-    }
 
     public List<MapResponseDto> getAllMaps(MapEntity.Maptype maptype, String access) {
 
         UserEntity userEntity = authUtils.getUserEntityFromAccess(access);
-        Integer userId = userEntity.getUserId();
+
         // mapRepository에서 maptype에 해당하는 MapEntity 리스트를 가져오기
-        List<MapEntity> maps = mapRepository.findByUserIdAndMapType(userId,maptype);
+        List<MapEntity> maps = mapRepository.findByUserIdAndMapType(userEntity,maptype);
 
         // 가져온 MapEntity 리스트를 MapResponseDto 리스트로 변환
         List<MapResponseDto> mapResponseDtos = maps.stream()
@@ -102,7 +93,8 @@ public class MapService {
         UserEntity userEntity = authUtils.getUserEntityFromAccess(access);
        // 엔티티 변환 로직
         MapEntity mapEntity = new MapEntity();
-        mapEntity.setOriginMapRouteAxis(convertToLineString(addMapRequestDto.getMapRouteAxis()));
+        mapEntity.setOriginMapRouteAxis(convertToLineString(addMapRequestDto.getOriginMapRouteAxis()));
+        mapEntity.setConvertedMapRouteAxis(convertToLineString(addMapRequestDto.getConvertedMapRouteAxis()));
         mapEntity.setMapDistance(addMapRequestDto.getMapDistance());
         mapEntity.setMapName(addMapRequestDto.getMapName());
         mapEntity.setMapType(addMapRequestDto.getMapType());

@@ -19,7 +19,8 @@ import java.util.stream.Stream;
 
 public class AddMapRequestDto {
 
-    private List<LatitudeLongitude> mapRouteAxis;
+    private List<LatitudeLongitude> originMapRouteAxis;
+    private List<LatitudeLongitude> convertedMapRouteAxis;
     private float mapDistance;
     private String mapName;
     private String mapImage;

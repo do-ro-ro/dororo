@@ -22,7 +22,8 @@ public class MapResponseDto {
     private Integer mapId;
     private String mapName;
     private String mapImage;
-    private List<LatitudeLongitude> mapRouteAxis;
+    private List<LatitudeLongitude> originMapRouteAxis;
+    private List<LatitudeLongitude> convertedMapRouteAxis;
     private MapEntity.Maptype mapType;
     private Float mapDistance;
     private Integer originalMapId;
@@ -35,7 +36,8 @@ public class MapResponseDto {
                 .mapId(entity.getMapId())
                 .mapName(entity.getMapName())
                 .mapImage(entity.getMapImage())
-                .mapRouteAxis(convertFromLineString(entity.getOriginMapRouteAxis()))
+                .originMapRouteAxis(convertFromLineString(entity.getOriginMapRouteAxis()))
+                .convertedMapRouteAxis(convertFromLineString(entity.getConvertedMapRouteAxis()))
                 .mapType(entity.getMapType())
                 .mapDistance(entity.getMapDistance())
                 .originalMapId(entity.getOriginalMapId())
