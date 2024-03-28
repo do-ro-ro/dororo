@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.user.dto.request.UpdateProfileRequestDto;
+import com.dororo.api.user.dto.response.GetProfileResponseDto;
 import com.dororo.api.user.service.UserService;
 
 @RestController
@@ -23,5 +24,10 @@ public class UserController {
 		return new ResponseEntity(user, HttpStatus.OK);
 	}
 
-
+	@GetMapping("/profile")
+	public ResponseEntity getUserProfile(@RequestHeader String access) {
+		GetProfileResponseDto user = userService.getUserProfile(access);
+		System.out.println(user);
+		return new ResponseEntity(user, HttpStatus.OK);
+	}
 }
