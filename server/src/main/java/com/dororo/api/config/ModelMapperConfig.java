@@ -21,7 +21,7 @@ public class ModelMapperConfig {
             @Override
             protected void configure() {
                 map().setMapId(source.getMapId().getMapId()); // MapEntity의 mapId를 추출하여 설정
-                map().setUserName(source.getMapId().getUserId().getName());
+                map().setUserNickName(source.getMapId().getUserId().getNickname());
             }
         });
 
