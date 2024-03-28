@@ -90,6 +90,10 @@ public class CommunityService {
         postRepository.delete(postEntity);  // deleteById(postId)를 써도 되지만 위의 메서드에서 객체가 있는지 확인 했고, 있다면 이미 메모리에 객체가 로드 됐으므로 delete(postEntity)를 사용했음
     }
 
+    public void cancelScrapPost(String access, Integer postId) {
+
+    }
+
     // <------------------------ Common method part ------------------------>
     // <------------ For Error Handling ------------>
     private PostEntity findPostInDataBaseByPostId(Integer postId) {
