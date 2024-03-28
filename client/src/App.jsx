@@ -13,6 +13,7 @@ import MyPage from "./pages/my-page/MyPage";
 import { ThemeProvider, createTheme } from "@mui/material";
 import MainPage from "./components/navbar/MainPage";
 import Main from "./pages/main-page/Main";
+import OauthPage from "./pages/oauth-page/OauthPage";
 
 const colorTheme = createTheme({
     palette: {
@@ -60,6 +61,10 @@ function App() {
                         <Route
                             path="/course/:courseId/drive"
                             element={<CourseDrivePage />}
+                        />
+                        <Route
+                            path="/auth/oauth-response"
+                            element={<OauthPage />}
                         />
                     </Routes>
                 </Suspense>
