@@ -24,7 +24,7 @@ const CourseInfo = ({ courseInfo, currentIndex, locations }) => {
                     flexDirection: "column",
                     justifyContent: "center",
                     position: "relative",
-                    zIndex: 1000,
+                    zIndex: 2,
                 }}
             >
                 <Box

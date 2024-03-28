@@ -75,14 +75,12 @@ const BottomNav = ({ handlePrev, handleNext, currentIndex, locations }) => {
                 <Typography variant="caption">다음 코스 보기</Typography>
             </Box>
 
-            <div>
-                {showCourseSelectModal && (
-                    <CourseSelectModal
-                        open={showCourseSelectModal}
-                        closeModal={closeCourseSelectModal}
-                    />
-                )}
-            </div>
+            {showCourseSelectModal && (
+                <CourseSelectModal
+                    open={showCourseSelectModal}
+                    closeModal={closeCourseSelectModal}
+                />
+            )}
         </Box>
     );
 };
