@@ -20,6 +20,21 @@ function Map({ course, lat, lng }) {
     // 실행취소 기능 구현을 위한 상태와 함수
     const [isPolylineEditing, setIsPolylineEditing] = useState(false);
     const [polyline, setPolyline] = useState(null);
+    if (polyline) {
+        polyline.addListener(
+            "click",
+            function () {
+                if (this.isEditing()) {
+                    this.endEdit();
+                    setIsPolylineEditing(false);
+                } else {
+                    this.startEdit();
+                    setIsPolylineEditing(true);
+                }
+            },
+            polyline,
+        );
+    }
     const handleUndo = () => {
         if (isPolylineEditing) {
             polyline.endEdit(); // 드래그 상태 종료
@@ -97,7 +112,7 @@ function Map({ course, lat, lng }) {
         )
             .then((response) => response.json())
             .then((data) => {
-                // console.log("호출 완료!");
+                console.log("호출 완료!");
                 // console.log(data);
                 // 총 거리, 시간, 요금이 담겨있는 데이터
                 const resultData = data.properties;
@@ -140,25 +155,11 @@ function Map({ course, lat, lng }) {
                                     new window.Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
                                         latlng,
                                     );
-                                console.log(filteredCourse);
-                                console.log(convertPoint);
-                                if (
-                                    filteredCourse.some(
-                                        (point) =>
-                                            point.lat === convertPoint._lat &&
-                                            point.lng === convertPoint._lng,
-                                    )
-                                ) {
-                                    // filteredCourse 리스트에 포함되어 있으면 courseLine 상태 업데이트
-                                    setCourseLine((prev) => [
-                                        ...prev,
-                                        convertPoint,
-                                    ]);
-                                }
-                                // setCourseLine((prev) => [
-                                //     ...prev,
-                                //     convertPoint,
-                                // ]);
+
+                                setCourseLine((prev) => [
+                                    ...prev,
+                                    convertPoint,
+                                ]);
 
                                 return new window.Tmapv2.LatLng(
                                     convertPoint._lat,
@@ -166,8 +167,6 @@ function Map({ course, lat, lng }) {
                                 );
                             },
                         );
-
-                        // setResultInfoArr((prev) => [...prev, polyline]);
                     }
                     if (geometry.type !== "LineString") {
                         // type이 Point(노드)일 경우
@@ -245,20 +244,7 @@ function Map({ course, lat, lng }) {
                 direction: true,
                 directionColor: "white",
             });
-
-            newPolyline.addListener(
-                "click",
-                function () {
-                    if (this.isEditing()) {
-                        this.endEdit();
-                        setIsPolylineEditing(false);
-                    } else {
-                        this.startEdit();
-                        setIsPolylineEditing(true);
-                    }
-                },
-                newPolyline,
-            );
+            setPolyline(newPolyline);
         }
     }, [courseLine]);
 
