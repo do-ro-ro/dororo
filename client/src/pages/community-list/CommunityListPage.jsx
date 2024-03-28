@@ -132,7 +132,11 @@ function CommunityListPage() {
                                                       direction={"row"}
                                                       sx={{ mt: 1 }}
                                                   >
-                                                      <Bookmark color="primary" />
+                                                      {course.isScraped ? (
+                                                          <Bookmark color="primary" />
+                                                      ) : (
+                                                          <BookmarkBorder color="primary" />
+                                                      )}
                                                       <Typography color="primary">
                                                           {course.scrapCount}
                                                       </Typography>
