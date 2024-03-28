@@ -20,8 +20,10 @@ import LocationTest10 from "../../components/course-drive/location-test/Location
 
 import MapTest from "../../components/course-drive/location-test/MapTest";
 import MapTest2 from "../../components/course-drive/location-test/MapTes2";
+import MapTest3 from "../../components/course-drive/location-test/MapTest3";
 
 import WatchPosition1 from "../../components/course-drive/watchposition/WatchPosiiton1";
+import GoogleLocation from "../../components/course-drive/location-test/GoogleLocation";
 
 function CourseDrivePage() {
     // 35.095737617642946, 128.84941070168463
@@ -64,6 +66,9 @@ function CourseDrivePage() {
 
     const [watchLat1, setWatchLat1] = useState(35.095737617642946);
     const [watchLng1, setWatchLng1] = useState(128.84941070168463);
+
+    const [googleLat, setGoogleLat] = useState(35.095737617642946);
+    const [googleLng, setGoogleLng] = useState(128.84941070168463);
 
     // 운행 시작 전 시작점 도달 여부 확인하는 상태
     // if 현재 위치 좌표 === StartPoint 노드 좌표 => setOnStartPoint(true)
@@ -124,12 +129,17 @@ function CourseDrivePage() {
                     setWatchLat1={setWatchLat1}
                     setWatchLng1={setWatchLng1}
                 />
+                <GoogleLocation
+                    setGoogleLat={setGoogleLat}
+                    setGoogleLng={setGoogleLng}
+                />
                 {/* <RealTimeCurrentLocation setLat={setLat} setLng={setLng} /> */}
                 {/* <ServerTest setcoolList={setcoolList} /> */}
                 {/* <Map lat={lat} lon={lon} /> */}
                 <Topbar>코스 이름</Topbar>
-                <MapTest lat={lat} lng={lng} />
+                {/* <MapTest lat={lat} lng={lng} /> */}
                 <MapTest2 watchLat1={watchLat1} watchLng1={watchLng1} />
+                <MapTest3 googleLat={googleLat} googleLng={googleLng} />
                 {/* <StopOver
                     lat={lat}
                     lng={lng}
