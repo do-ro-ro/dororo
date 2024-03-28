@@ -96,7 +96,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
 	public RefreshTokenResponseDto getNewToken(String refreshToken) {
 		RefreshTokenResponseDto refreshResult = jwtProvider.validateRefreshToken(refreshToken);
-		if (refreshResult.getIsSuccess()) {
+		if (refreshResult.isSuccess()) {
 			List<String> getRefreshToken = redisService.getListValue(refreshToken);
 			redisService.deleteKey(refreshToken);
 			redisService.setStringValue(refreshResult.getRefreshToken(), getRefreshToken.get(0), jwtProvider.REFRESH_TOKEN_EXPIRE_TIME);

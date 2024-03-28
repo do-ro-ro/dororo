@@ -15,4 +15,10 @@ public class CreateMapRequestDto {
     private int uTurn;
     private float mapDistance;
     private LatitudeLongitude startPoint;
+
+
+
+
+
+
 }

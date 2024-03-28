@@ -2,14 +2,13 @@ package com.dororo.api.utils.auth;
 
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.UserRepository;
+import com.dororo.api.user.provider.JwtProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
-
-import com.dororo.api.auth.provider.JwtProvider;
 
 @Component
 @AllArgsConstructor
