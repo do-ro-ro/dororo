@@ -1,9 +1,9 @@
 package com.dororo.api.utils.auth;
 
-import com.dororo.api.db.repository.UserRepository;
-import com.dororo.api.user.provider.JwtProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import com.dororo.api.auth.provider.JwtProvider;
 
 @Component
 @AllArgsConstructor
