@@ -1,22 +1,21 @@
 package com.dororo.api.map.service;
 
-import com.dororo.api.convert.LatitudeLongitude;
 import com.dororo.api.db.entity.MapEntity;
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.MapRepository;
 import com.dororo.api.db.repository.UserRepository;
 import com.dororo.api.map.dto.*;
+import com.dororo.api.utils.auth.AuthUtils;
 import jakarta.persistence.EntityNotFoundException;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.dororo.api.convert.ConvertUtils.convertToLineString;
 
 @Service
 public class MapService {
@@ -26,28 +25,26 @@ public class MapService {
     @Autowired
     private MapRepository mapRepository;
     @Autowired
-    private GeometryFactory geometryFactory;
+    private AuthUtils authUtils;
 
-    //좌표 -> LineString변환
-    public LineString convertToLineString(List<LatitudeLongitude> latLngList) {
-        Coordinate[] coordinates = new Coordinate[latLngList.size()];
 
-        for (int i = 0; i < latLngList.size(); i++) {
-            LatitudeLongitude latLng = latLngList.get(i);
-            coordinates[i] = new Coordinate(latLng.getLongitude(), latLng.getLatitude());
-        }
-        return geometryFactory.createLineString(coordinates);
-    }
 
-    public List<MapResponseDto> getAllMaps(MapEntity.Maptype maptype) {
+    public List<MapResponseDto> getAllMaps(MapEntity.Maptype maptype, String access) {
+
+        System.out.println("로그인 한 유저 찾으러간다~~");
+        UserEntity userEntity = authUtils.getUserEntityFromAccess(access);
+        System.out.println("유저찾았다");
+
+        System.out.println("맵 찾으러 간다~");
         // mapRepository에서 maptype에 해당하는 MapEntity 리스트를 가져오기
-        List<MapEntity> maps = mapRepository.findByMapType(maptype);
-
+        List<MapEntity> maps = mapRepository.findByUserIdAndMapType(userEntity,maptype);
+        System.out.println("찾았다.");
         // 가져온 MapEntity 리스트를 MapResponseDto 리스트로 변환
         List<MapResponseDto> mapResponseDtos = maps.stream()
                 .map(mapEntity -> MapResponseDto.fromEntity(mapEntity))
                 .collect(Collectors.toList());
 
+        System.out.println("반환한다~");
         return mapResponseDtos;
     }
 
@@ -61,10 +58,15 @@ public class MapService {
         return DetailMapResponseDto.fromEntity(mapEntity);
     }
 
-    public void deleteMapById(Integer mapId) {
-        //mapId 가 DB에 없을때
-        if (!mapRepository.existsById(mapId)) {
-            throw new EntityNotFoundException("Map not found with id: " + mapId);
+    public void deleteMapById(Integer mapId,String access) {
+        UserEntity userEntity = authUtils.getUserEntityFromAccess(access);
+        Integer userId = userEntity.getUserId();
+
+        MapEntity mapEntity = mapRepository.findById(mapId)
+                .orElseThrow(() -> new EntityNotFoundException("Map not found with id: " + mapId));
+        // 맵의 소유자가 현재 로그인한 사용자인지 확인.
+        if (!mapEntity.getUserId().getUserId().equals(userId)) {
+            throw new AccessDeniedException("User does not have permission to delete this map.");
         }
         mapRepository.deleteById(mapId); // 맵 삭제
     }
@@ -85,18 +87,22 @@ public class MapService {
         return createdMapList;
     }
 
-    public void saveMap(AddMapRequestDto addMapRequestDto) {
-        // 엔티티 변환 로직
-        Optional<UserEntity> userEntity = userRepository.findByUserId(1);
+    public void saveMap(AddMapRequestDto addMapRequestDto,String access) {
+        //로그인 한 유저 정보
+        UserEntity userEntity = authUtils.getUserEntityFromAccess(access);
+       // 엔티티 변환 로직
+        System.out.println("save 에서 addMapRequestDto.getOriginMapRouteAxis() : "+ addMapRequestDto.getOriginMapRouteAxis());
+        System.out.println("convertToLineString(addMapRequestDto.getOriginMapRouteAxis()) : " + convertToLineString(addMapRequestDto.getOriginMapRouteAxis()));
         MapEntity mapEntity = new MapEntity();
-        mapEntity.setOriginMapRouteAxis(convertToLineString(addMapRequestDto.getMapRouteAxis()));
+        mapEntity.setOriginMapRouteAxis(convertToLineString(addMapRequestDto.getOriginMapRouteAxis()));
+        mapEntity.setConvertedRouteAxis(convertToLineString(addMapRequestDto.getConvertedRouteAxis()));
         mapEntity.setMapDistance(addMapRequestDto.getMapDistance());
         mapEntity.setMapName(addMapRequestDto.getMapName());
         mapEntity.setMapType(addMapRequestDto.getMapType());
         mapEntity.setMapImage(addMapRequestDto.getMapImage());
         mapEntity.setOriginalMapId(0);
         mapEntity.setMapCompletion(false);
-        mapEntity.setUserId(userEntity.get());
+        mapEntity.setUserId(userEntity);
         // 데이터베이스 저장
         mapRepository.save(mapEntity);
     }

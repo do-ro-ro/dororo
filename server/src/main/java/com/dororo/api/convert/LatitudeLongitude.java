@@ -10,8 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LatitudeLongitude {
-    private double latitude;
-    private double longitude;
+    private double lat;
+    private double lng;
 
 
 //    @JsonCreator
