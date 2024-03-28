@@ -1,5 +1,7 @@
 package com.dororo.api.map.dto;
 
+import com.dororo.api.convert.LatitudeLongitude;
+
 import lombok.*;
 
 @Getter
@@ -14,9 +16,5 @@ public class CreateMapRequestDto {
     private int uTurn;
     private float mapDistance;
 
-
-
-
-
-
+    private LatitudeLongitude startPoint;
 }
