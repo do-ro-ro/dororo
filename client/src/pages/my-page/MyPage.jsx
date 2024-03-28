@@ -146,11 +146,14 @@ function MyPage() {
                             />
                         </Stack>
                     </Paper>
-                    <Typography variant="h6" sx={{ my: 2 }}>
-                        내가 추천받은 코스
-                    </Typography>
+                    <Stack direction={"row"} justifyContent={"space-between"}>
+                        <Typography variant="h6" sx={{ my: 2 }}>
+                            내가 추천받은 코스
+                        </Typography>
+                        <Button>모두 보기</Button>
+                    </Stack>
                     <Stack direction={"row"}>
-                        {currentUserCourses?.map((course) => {
+                        {currentUserCourses?.slice(0, 3).map((course) => {
                             if (course.mapType !== "SCRAP") {
                                 return (
                                     <CourseCard
@@ -194,7 +197,7 @@ function MyPage() {
                         justifyContent={"space-between"}
                         alignItems={"center"}
                     >
-                        <Typography variant="h6">내가 추천한 코스</Typography>
+                        <Typography variant="h6">내가 공유한 코스</Typography>
                     </Stack>
                     <Stack direction={"row"}>
                         {currentMapPostsList?.map((course) => {
