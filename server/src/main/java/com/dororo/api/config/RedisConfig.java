@@ -1,4 +1,4 @@
-package com.dororo.api.user.config;
+package com.dororo.api.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

@@ -19,8 +19,10 @@ public class MapController {
 
     //맵 전체 조회(map-type별로)
     @GetMapping("")
-    public ResponseEntity getAllMaps(@RequestParam("map-type") MapEntity.Maptype maptype) {
-        List<MapResponseDto> maps = mapService.getAllMaps(maptype);
+    public ResponseEntity getAllMaps(@RequestParam("map-type") MapEntity.Maptype maptype ,
+                                     @RequestHeader("access") String access) {
+        System.out.println("전체 조회 컨트롤러 호출");
+        List<MapResponseDto> maps = mapService.getAllMaps(maptype,access);
         return ResponseEntity.ok(maps);
     }
 
@@ -43,22 +45,17 @@ public class MapController {
 
     //맵 저장
     @PostMapping("/save")
-    public ResponseEntity saveMap(@RequestBody AddMapRequestDto addMapRequestDto) {
-        // DTO 검증 로직 << ? 이런것도 필요한가 예외처리 빼기.
-        if (addMapRequestDto.getMapRouteAxis().isEmpty() || addMapRequestDto.getMapDistance() <= 0) {
-            return ResponseEntity.badRequest().body("Invalid map data");
-        }
-
-        mapService.saveMap(addMapRequestDto);
-
-        // 응답 반환
+    public ResponseEntity saveMap(@RequestBody AddMapRequestDto addMapRequestDto,
+                                  @RequestHeader("access") String access) {
+        mapService.saveMap(addMapRequestDto,access);
         return ResponseEntity.ok().body("Map saved successfully");
     }
 
     //맵 삭제
     @DeleteMapping("/{mapId}")
-    public ResponseEntity deleteMap(@PathVariable(name = "mapId") Integer mapId) {
-        mapService.deleteMapById(mapId);
+    public ResponseEntity deleteMap(@PathVariable(name = "mapId") Integer mapId,
+                                    @RequestHeader("access") String access) {
+        mapService.deleteMapById(mapId,access);
         return ResponseEntity.ok().build();
     }
 

@@ -1,21 +1,15 @@
-package com.dororo.api.user.provider;
+package com.dororo.api.auth.provider;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.dororo.api.user.dto.response.RefreshTokenResponseDto;
-import com.dororo.api.user.service.RedisService;
+import com.dororo.api.auth.dto.response.RefreshTokenResponseDto;
+import com.dororo.api.redis.RedisService;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -30,7 +24,7 @@ public class JwtProvider {
 
 	@Value("${secret-key}")
 	private String secretKey;
-	public static final long ACCESS_TOKEN_EXPIRE_TIME = 1 * 60 * 60 * 1000L; //액세스 토큰 1시간
+	public static final long ACCESS_TOKEN_EXPIRE_TIME = 60 * 60 * 1000L; //액세스 토큰 1시간
 	public static final long REFRESH_TOKEN_EXPIRE_TIME = 28 * 24 * 60 * 60 * 1000L;  // 리프레시 토큰 4주
 	public String createAccessToken (String userId) { // 로그인 시 토큰 발급
 		Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)); //시크릿 키 만들기

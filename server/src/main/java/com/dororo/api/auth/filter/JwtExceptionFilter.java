@@ -1,4 +1,4 @@
-package com.dororo.api.user.filter;
+package com.dororo.api.auth.filter;
 
 import java.io.IOException;
 

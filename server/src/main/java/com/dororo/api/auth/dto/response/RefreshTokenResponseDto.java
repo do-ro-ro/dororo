@@ -1,4 +1,4 @@
-package com.dororo.api.user.dto.response;
+package com.dororo.api.auth.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class RefreshTokenResponseDto {
 	private String accessToken;
 	private String refreshToken;
-	private boolean success;
+	private Boolean isSuccess;
 }
