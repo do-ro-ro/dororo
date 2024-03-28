@@ -14,11 +14,4 @@ public class LatitudeLongitude {
     private double lng;
 
 
-//    @JsonCreator
-//    public LatitudeLongitude(@JsonProperty("lat") double latitude,
-//                             @JsonProperty("lng") double longitude) {
-//        this.latitude = latitude;
-//        this.longitude = longitude;
-//    }
-
 }
