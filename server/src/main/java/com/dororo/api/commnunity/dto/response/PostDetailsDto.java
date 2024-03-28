@@ -12,6 +12,7 @@ import org.locationtech.jts.geom.LineString;
 @Setter
 public class PostDetailsDto extends PostResponseDto {
 
+    private String userProfileImage;    // 유저의 프로필사진
     private String postTitle;
     private String postContent;
 

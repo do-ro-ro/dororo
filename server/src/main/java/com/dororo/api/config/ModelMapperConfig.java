@@ -22,6 +22,7 @@ public class ModelMapperConfig {
             protected void configure() {
                 map().setMapId(source.getMapId().getMapId()); // MapEntity의 mapId를 추출하여 설정
                 map().setUserNickName(source.getMapId().getUserId().getNickname());
+                map().setUserProfileImage(source.getMapId().getUserId().getProfileImage());
             }
         });
 
