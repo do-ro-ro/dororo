@@ -19,44 +19,51 @@ import LocationTest9 from "../../components/course-drive/location-test/LocationT
 import LocationTest10 from "../../components/course-drive/location-test/LocationTest10";
 
 import MapTest from "../../components/course-drive/location-test/MapTest";
+import MapTest2 from "../../components/course-drive/location-test/MapTes2";
+
+import WatchPosition1 from "../../components/course-drive/watchposition/WatchPosiiton1";
 
 function CourseDrivePage() {
-    const [lat, setLat] = useState(35.09504003528538);
+    // 35.095737617642946, 128.84941070168463
+    const [lat, setLat] = useState(35.095737617642946);
     const [lng, setLng] = useState(128.90489491914798);
     const [coolList, setcoolList] = useState([{}]);
     const [fillterList, setFillterList] = useState([{}]);
     const [time, setTime] = useState(0);
     const [km, setKm] = useState(0);
 
-    const [lat1, setLat1] = useState(35.09504003528538);
-    const [lng1, setLng1] = useState(128.90489491914798);
+    const [lat1, setLat1] = useState(35.095737617642946);
+    const [lng1, setLng1] = useState(128.84941070168463);
 
-    const [lat2, setLat2] = useState(35.09504003528538);
-    const [lng2, setLng2] = useState(128.90489491914798);
+    const [lat2, setLat2] = useState(35.095737617642946);
+    const [lng2, setLng2] = useState(128.84941070168463);
 
-    const [lat3, setLat3] = useState(35.09504003528538);
-    const [lng3, setLng3] = useState(128.90489491914798);
+    const [lat3, setLat3] = useState(35.095737617642946);
+    const [lng3, setLng3] = useState(128.84941070168463);
 
-    const [lat4, setLat4] = useState(35.09504003528538);
-    const [lng4, setLng4] = useState(128.90489491914798);
+    const [lat4, setLat4] = useState(35.095737617642946);
+    const [lng4, setLng4] = useState(128.84941070168463);
 
-    const [lat5, setLat5] = useState(35.09504003528538);
-    const [lng5, setLng5] = useState(128.90489491914798);
+    const [lat5, setLat5] = useState(35.095737617642946);
+    const [lng5, setLng5] = useState(128.84941070168463);
 
-    const [lat6, setLat6] = useState(35.09504003528538);
-    const [lng6, setLng6] = useState(128.90489491914798);
+    const [lat6, setLat6] = useState(35.095737617642946);
+    const [lng6, setLng6] = useState(128.84941070168463);
 
-    const [lat7, setLat7] = useState(35.09504003528538);
-    const [lng7, setLng7] = useState(128.90489491914798);
+    const [lat7, setLat7] = useState(35.095737617642946);
+    const [lng7, setLng7] = useState(128.84941070168463);
 
-    const [lat8, setLat8] = useState(35.09504003528538);
-    const [lng8, setLng8] = useState(128.90489491914798);
+    const [lat8, setLat8] = useState(35.095737617642946);
+    const [lng8, setLng8] = useState(128.84941070168463);
 
-    const [lat9, setLat9] = useState(35.09504003528538);
-    const [lng9, setLng9] = useState(128.90489491914798);
+    const [lat9, setLat9] = useState(35.095737617642946);
+    const [lng9, setLng9] = useState(128.84941070168463);
 
-    const [lat10, setLat10] = useState(35.09504003528538);
-    const [lng10, setLng10] = useState(128.90489491914798);
+    const [lat10, setLat10] = useState(35.095737617642946);
+    const [lng10, setLng10] = useState(128.84941070168463);
+
+    const [watchLat1, setWatchLat1] = useState(35.095737617642946);
+    const [watchLng1, setWatchLng1] = useState(128.84941070168463);
 
     // 운행 시작 전 시작점 도달 여부 확인하는 상태
     // if 현재 위치 좌표 === StartPoint 노드 좌표 => setOnStartPoint(true)
@@ -113,11 +120,16 @@ function CourseDrivePage() {
                 <LocationTest8 setLat8={setLat8} setLng8={setLng8} />
                 <LocationTest9 setLat9={setLat9} setLng9={setLng9} />
                 <LocationTest10 setLat10={setLat10} setLng10={setLng10} />
+                <WatchPosition1
+                    setWatchLat1={setWatchLat1}
+                    setWatchLng1={setWatchLng1}
+                />
                 {/* <RealTimeCurrentLocation setLat={setLat} setLng={setLng} /> */}
                 {/* <ServerTest setcoolList={setcoolList} /> */}
                 {/* <Map lat={lat} lon={lon} /> */}
                 <Topbar>코스 이름</Topbar>
                 <MapTest lat={lat} lng={lng} />
+                <MapTest2 watchLat1={watchLat1} watchLng1={watchLng1} />
                 {/* <StopOver
                     lat={lat}
                     lng={lng}
