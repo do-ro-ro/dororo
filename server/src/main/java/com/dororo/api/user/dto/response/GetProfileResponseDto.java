@@ -1,9 +1,11 @@
 package com.dororo.api.user.dto.response;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@Getter
 public class GetProfileResponseDto {
 	private String name;
 	private String profileImage;
