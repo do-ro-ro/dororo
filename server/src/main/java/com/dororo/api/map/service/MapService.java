@@ -35,7 +35,7 @@ public class MapService {
         List<MapEntity> maps;
         if(maptype == null){
             // mapRepository에서 maptype에 해당하는 MapEntity 리스트를 가져오기
-             maps= mapRepository.findAll(userEntity);
+             maps= mapRepository.findAllByUserId(userEntity);
         }
         else{
             // mapRepository에서 maptype에 해당하는 MapEntity 리스트를 가져오기
