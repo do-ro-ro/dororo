@@ -65,6 +65,8 @@ function CommunityListPage() {
                         postId={course.postId}
                         key={course.postId}
                         variant={"post"}
+                        mapImage={course.mapImage}
+                        userName={course.userName}
                     >
                         {course.postTitle}
                     </CourseCard>
@@ -89,6 +91,8 @@ function CommunityListPage() {
                                     key={course.postId}
                                     postId={course.postId}
                                     variant={"post"}
+                                    mapImage={course.mapImage}
+                                    userName={course.userName}
                                 >
                                     {course.postTitle}
                                 </CourseCard>

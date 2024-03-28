@@ -13,9 +13,10 @@ import Topbar from "../../components/topbar/Topbar";
 import BasicProfile from "../../assets/user_profile_basic.png";
 import { Bookmark, BookmarkBorder, Image } from "@mui/icons-material";
 import SampleCourseImg from "../../assets/sample_course_img.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditArticleModal from "../../components/community-detail/EditArticleModal";
 import DeleteDialog from "../../components/community-detail/DeleteDialog";
+import { getMapPosts } from "../../apis/server/Community";
 
 const DummyCourse = {
     post_id: 0,
@@ -35,8 +36,28 @@ const DummyUser = {
 
 function CommunityDetailPage() {
     const { postId } = useParams();
+    const [currentMapPosts, setCurrentMapPosts] = useState(null);
+
     const [isScrapped, setIsScrapped] = useState(false);
     const [scrapCount, setScrapCount] = useState(DummyCourse.scrap_count);
+
+    useEffect(() => {
+        console.log(postId);
+        const fetchData = async () => {
+            try {
+                const response = await getMapPosts(postId);
+                const updatedMapPosts = response;
+                // console.log(response);
+                setCurrentMapPosts(updatedMapPosts);
+                console.log(updatedMapPosts);
+                console.log(currentMapPosts);
+            } catch (error) {
+                console.error("게시글 리스트 불러오기 실패", error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     // snack바 상태 관리
     const [scrapSnackbarOpen, setScrapSnackbarOpen] = useState(false);

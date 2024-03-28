@@ -39,7 +39,7 @@ function App() {
                                 element={<CommunityListPage />}
                             />
                             <Route
-                                path="community/:articleId"
+                                path="community/:postId"
                                 element={<CommunityDetailPage />}
                             />
                             <Route path="myPage/:userId" element={<MyPage />} />
