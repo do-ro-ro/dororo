@@ -25,7 +25,7 @@ public class AuthController {
 	public ResponseEntity signInWithExpiredAccessToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
 
 		RefreshTokenResponseDto refreshResult = oAuth2UserService.getNewToken(refreshTokenRequestDto.getRefreshToken());
-		if (refreshResult.isSuccess()) { //리프레시 토큰이 유효한 경우
+		if (refreshResult.getIsSuccess()) { //리프레시 토큰이 유효한 경우
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.set("access", refreshResult.getAccessToken());
 			responseHeaders.set("refresh", refreshResult.getRefreshToken());
