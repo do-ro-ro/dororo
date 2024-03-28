@@ -31,20 +31,22 @@ public class MapService {
 
     public List<MapResponseDto> getAllMaps(MapEntity.Maptype maptype, String access) {
 
-        System.out.println("로그인 한 유저 찾으러간다~~");
         UserEntity userEntity = authUtils.getUserEntityFromAccess(access);
-        System.out.println("유저찾았다");
+        List<MapEntity> maps;
+        if(maptype == null){
+            // mapRepository에서 maptype에 해당하는 MapEntity 리스트를 가져오기
+             maps= mapRepository.findAllByUserId(userEntity);
+        }
+        else{
+            // mapRepository에서 maptype에 해당하는 MapEntity 리스트를 가져오기
+            maps = mapRepository.findByUserIdAndMapType(userEntity,maptype);
+        }
 
-        System.out.println("맵 찾으러 간다~");
-        // mapRepository에서 maptype에 해당하는 MapEntity 리스트를 가져오기
-        List<MapEntity> maps = mapRepository.findByUserIdAndMapType(userEntity,maptype);
-        System.out.println("찾았다.");
         // 가져온 MapEntity 리스트를 MapResponseDto 리스트로 변환
         List<MapResponseDto> mapResponseDtos = maps.stream()
                 .map(mapEntity -> MapResponseDto.fromEntity(mapEntity))
                 .collect(Collectors.toList());
 
-        System.out.println("반환한다~");
         return mapResponseDtos;
     }
 
