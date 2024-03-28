@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import me_pointer from "../../assets/me_pointer.png";
 
 const StopOver = ({
     lat,
@@ -12,6 +13,7 @@ const StopOver = ({
     let [map, setMap] = useState(null);
     const [resultMarkerArr, setResultMarkerArr] = useState([]);
     const [resultInfoArr, setResultInfoArr] = useState([]);
+    const [currentLocationMarker, setCurrentLocationMarker] = useState(null); // 추가: 현재 위치 마커
 
     useEffect(() => {
         if (coolList.length > 2) {
@@ -24,6 +26,25 @@ const StopOver = ({
             setFillterList(coolList.slice(1, coolList.length - 1));
         }
     }, [coolList]);
+
+    useEffect(() => {
+        // 추가: 현재 위치 마커 설정
+        if (map && lat && lng) {
+            // 기존의 현재 위치 마커가 존재하면 제거
+            if (currentLocationMarker) {
+                currentLocationMarker.setMap(null);
+            }
+            // 새로운 현재 위치 마커 생성 및 설정
+            const marker = new window.Tmapv2.Marker({
+                position: new window.Tmapv2.LatLng(lat, lng),
+                icon: me_pointer, // 사용할 아이콘의 URL로 교체
+                iconSize: new window.Tmapv2.Size(24, 24), // 아이콘 크기 조정
+                map: map,
+            });
+            setCurrentLocationMarker(marker);
+            setResultMarkerArr((prev) => [...prev, marker]);
+        }
+    }, [map, lat, lng]);
 
     const initTmap = () => {
         if (map !== null) {
