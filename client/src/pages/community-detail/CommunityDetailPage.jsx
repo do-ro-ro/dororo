@@ -27,13 +27,6 @@ const DummyCourse = {
     user_id: 1,
 };
 
-const DummyUser = {
-    user_id: 1,
-    name: "김싸피",
-    nickname: "녹산동레이서",
-    profile_image: BasicProfile,
-};
-
 function CommunityDetailPage() {
     const { postId } = useParams();
     const [currentMapPosts, setCurrentMapPosts] = useState(null);
@@ -50,6 +43,7 @@ function CommunityDetailPage() {
                 // console.log(response);
                 setCurrentMapPosts(updatedMapPosts);
                 setScrapCount(updatedMapPosts.scrapCount);
+                setIsScrapped(updatedMapPosts.isScraped);
                 // console.log(updatedMapPosts);
                 // console.log(currentMapPosts);
             } catch (error) {
@@ -90,19 +84,22 @@ function CommunityDetailPage() {
                         </Typography>
                         <Stack direction={"row"}>
                             <Avatar
-                                src={BasicProfile}
+                                src={
+                                    currentMapPosts?.profileImage ||
+                                    "https://ssafy-dororo.s3.ap-northeast-2.amazonaws.com/user/blank-profile.png"
+                                }
                                 sx={{ width: 24, height: 24, mr: 1 }}
                             >
                                 김
                             </Avatar>
                             <Typography>
                                 {currentMapPosts
-                                    ? currentMapPosts.userName
+                                    ? currentMapPosts.userNickName
                                     : "닉네임을 불러오는 중입니다."}
                             </Typography>
                         </Stack>
                     </Box>
-                    {DummyCourse.user_id === DummyUser.user_id ? (
+                    {currentMapPosts && currentMapPosts?.isMine === true ? (
                         <Stack direction={"row"} alignItems={"center"}>
                             <EditArticleModal />
                             <DeleteDialog variant={"post"} />

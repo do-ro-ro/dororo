@@ -65,7 +65,6 @@ function CommunityListPage() {
                                     postId={course.postId}
                                     variant={"post"}
                                     mapImage={course.mapImage}
-                                    userName={course.userName}
                                 >
                                     {course.postTitle}
                                 </CourseCard>
@@ -121,11 +120,11 @@ function CommunityListPage() {
                                                   />
                                               </Box>
                                               <Stack>
-                                                  <Typography>
+                                                  <Typography variant="subtitle1">
                                                       {course.postTitle}
                                                   </Typography>
-                                                  <Typography>
-                                                      {course.userName}
+                                                  <Typography variant="subtitle2">
+                                                      {course.userNickName}
                                                   </Typography>
                                                   <Stack
                                                       direction={"row"}
