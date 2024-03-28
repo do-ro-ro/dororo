@@ -1,6 +1,5 @@
 package com.dororo.api.utils.auth;
 
-
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.UserRepository;
 import lombok.AllArgsConstructor;
