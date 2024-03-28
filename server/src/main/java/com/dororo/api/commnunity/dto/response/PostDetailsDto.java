@@ -15,5 +15,7 @@ public class PostDetailsDto extends PostResponseDto {
     private String userProfileImage;    // 유저의 프로필사진
     private String postTitle;
     private String postContent;
+    private Boolean isMine;   // 작성자 본인인지 여부
+    private Boolean isScraped;    // 게시글 스크랩 여부
 
 }
