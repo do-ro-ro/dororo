@@ -57,9 +57,24 @@ const deleteMapPosts = async (postId) => {
 // mapPost 스크랩하기
 const scrapMapPosts = async (postId) => {
     try {
-        const response = await axiosInstance.post(`/map-posts/${postId}`);
+        const response = await axiosInstance.post(`/map-posts/${postId}/scrap`);
         if (response.status === 201) {
-            return response.data;
+            console.log("스크랩 성공!");
+            return response.status;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const cancelScrapMapPosts = async (postId) => {
+    try {
+        const response = await axiosInstance.delete(
+            `/map-posts/${postId}/scrap`,
+        );
+        if (response.status === 200) {
+            console.log("스크랩 취소!");
+            return response.status;
         }
     } catch (error) {
         console.log(error);
@@ -72,4 +87,5 @@ export {
     createMapPosts,
     deleteMapPosts,
     scrapMapPosts,
+    cancelScrapMapPosts,
 };

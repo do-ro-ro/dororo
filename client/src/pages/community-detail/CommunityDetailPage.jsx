@@ -16,16 +16,11 @@ import SampleCourseImg from "../../assets/sample_course_img.png";
 import { useEffect, useState } from "react";
 import EditArticleModal from "../../components/community-detail/EditArticleModal";
 import DeleteDialog from "../../components/community-detail/DeleteDialog";
-import { getMapPosts } from "../../apis/server/Community";
-
-const DummyCourse = {
-    post_id: 0,
-    post_title: "코스 샘플 1",
-    post_content: "내용",
-    updated_at: "2024-03-21",
-    scrap_count: 10,
-    user_id: 1,
-};
+import {
+    cancelScrapMapPosts,
+    getMapPosts,
+    scrapMapPosts,
+} from "../../apis/server/Community";
 
 function CommunityDetailPage() {
     const { postId } = useParams();
@@ -121,6 +116,7 @@ function CommunityDetailPage() {
                         <IconButton
                             size={"large"}
                             onClick={() => {
+                                scrapMapPosts(postId);
                                 setIsScrapped(true);
                                 setScrapCount(scrapCount + 1);
                                 setScrapSnackbarOpen(true);
@@ -132,6 +128,7 @@ function CommunityDetailPage() {
                         <IconButton
                             size={"large"}
                             onClick={() => {
+                                cancelScrapMapPosts(postId);
                                 setIsScrapped(false);
                                 setScrapCount(scrapCount - 1);
                                 setScrapSnackbarOpen(true);
