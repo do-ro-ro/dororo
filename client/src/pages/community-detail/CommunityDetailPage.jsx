@@ -13,30 +13,41 @@ import Topbar from "../../components/topbar/Topbar";
 import BasicProfile from "../../assets/user_profile_basic.png";
 import { Bookmark, BookmarkBorder, Image } from "@mui/icons-material";
 import SampleCourseImg from "../../assets/sample_course_img.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditArticleModal from "../../components/community-detail/EditArticleModal";
 import DeleteDialog from "../../components/community-detail/DeleteDialog";
-
-const DummyCourse = {
-    post_id: 0,
-    post_title: "코스 샘플 1",
-    post_content: "내용",
-    updated_at: "2024-03-21",
-    scrap_count: 10,
-    user_id: 1,
-};
-
-const DummyUser = {
-    user_id: 1,
-    name: "김싸피",
-    nickname: "녹산동레이서",
-    profile_image: BasicProfile,
-};
+import {
+    cancelScrapMapPosts,
+    getMapPosts,
+    scrapMapPosts,
+} from "../../apis/server/Community";
 
 function CommunityDetailPage() {
     const { postId } = useParams();
+    const [currentMapPosts, setCurrentMapPosts] = useState(null);
+
     const [isScrapped, setIsScrapped] = useState(false);
-    const [scrapCount, setScrapCount] = useState(DummyCourse.scrap_count);
+    const [scrapCount, setScrapCount] = useState(0);
+
+    useEffect(() => {
+        console.log(postId);
+        const fetchData = async () => {
+            try {
+                const response = await getMapPosts(postId);
+                const updatedMapPosts = response;
+                // console.log(response);
+                setCurrentMapPosts(updatedMapPosts);
+                setScrapCount(updatedMapPosts.scrapCount);
+                setIsScrapped(updatedMapPosts.isScraped);
+                // console.log(updatedMapPosts);
+                // console.log(currentMapPosts);
+            } catch (error) {
+                console.error("게시글 리스트 불러오기 실패", error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     // snack바 상태 관리
     const [scrapSnackbarOpen, setScrapSnackbarOpen] = useState(false);
@@ -62,28 +73,42 @@ function CommunityDetailPage() {
                 >
                     <Box>
                         <Typography variant="h5">
-                            {DummyCourse.post_title}
+                            {currentMapPosts
+                                ? currentMapPosts.postTitle
+                                : "게시글을 불러오는 중입니다."}
                         </Typography>
                         <Stack direction={"row"}>
                             <Avatar
-                                src={BasicProfile}
+                                src={
+                                    currentMapPosts?.profileImage ||
+                                    "https://ssafy-dororo.s3.ap-northeast-2.amazonaws.com/user/blank-profile.png"
+                                }
                                 sx={{ width: 24, height: 24, mr: 1 }}
                             >
                                 김
                             </Avatar>
-                            <Typography>{DummyUser.nickname}</Typography>
+                            <Typography>
+                                {currentMapPosts
+                                    ? currentMapPosts.userNickName
+                                    : "닉네임을 불러오는 중입니다."}
+                            </Typography>
                         </Stack>
                     </Box>
-                    {DummyCourse.user_id === DummyUser.user_id ? (
+                    {currentMapPosts && currentMapPosts?.isMine === true ? (
                         <Stack direction={"row"} alignItems={"center"}>
-                            <EditArticleModal />
+                            {/* <EditArticleModal
+                                currentMapPosts={currentMapPosts}
+                            /> */}
                             <DeleteDialog variant={"post"} />
                         </Stack>
                     ) : null}
                 </Stack>
                 <Box>
                     {/* 나중에 지도 넣어줄 영역 */}
-                    <img width={"100%"} src={SampleCourseImg} />
+                    <img
+                        width={"100%"}
+                        src={currentMapPosts ? currentMapPosts.mapImage : ""}
+                    />
                 </Box>
 
                 <Box m={2}>
@@ -91,6 +116,7 @@ function CommunityDetailPage() {
                         <IconButton
                             size={"large"}
                             onClick={() => {
+                                scrapMapPosts(postId);
                                 setIsScrapped(true);
                                 setScrapCount(scrapCount + 1);
                                 setScrapSnackbarOpen(true);
@@ -102,6 +128,7 @@ function CommunityDetailPage() {
                         <IconButton
                             size={"large"}
                             onClick={() => {
+                                cancelScrapMapPosts(postId);
                                 setIsScrapped(false);
                                 setScrapCount(scrapCount - 1);
                                 setScrapSnackbarOpen(true);
@@ -114,7 +141,11 @@ function CommunityDetailPage() {
                     <Typography fontWeight={"700"} sx={{ my: 1 }}>
                         스크랩 {scrapCount}개
                     </Typography>
-                    <Typography>{DummyCourse.post_content}</Typography>
+                    <Typography>
+                        {currentMapPosts
+                            ? currentMapPosts.postContent
+                            : "게시글을 불러오는 중입니다."}
+                    </Typography>
                 </Box>
             </Box>
             <Snackbar

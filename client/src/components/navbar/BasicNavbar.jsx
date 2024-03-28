@@ -42,7 +42,7 @@ function BasicNavbar() {
                                 navigate("/main");
                                 break;
                             case 2:
-                                navigate("/main/myPage/123"); // 예시 userId
+                                navigate("/main/myPage"); // 예시 userId
                                 break;
                             default:
                                 navigate("/main");

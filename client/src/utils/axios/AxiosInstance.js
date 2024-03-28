@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: "https://i10e105.p.ssafy.io/api",
+    baseURL: "https://j10e202.p.ssafy.io/api",
     timeout: 5000, // 일단 타임아웃 5초로
     withCredentials: true,
     // headers: {'our-server-token': 'not-yet'} // 우리 서버 아직 토큰 헤더 이름 안나옴...
@@ -10,9 +10,13 @@ const axiosInstance = axios.create({
 // 이렇게 설정해두면 aixos 요청을 할때마다 header에 accesToken이 자동적으로 담겨서 요청이 됨
 axiosInstance.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem("accessToken");
+        // const token = localStorage.getItem("accessToken");
+
+        // 로그인 구현 전 테스트 위한 token 직접 입력
+        const token =
+            "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5OHc4Z3hxVGtpV3BRXyIsImlhdCI6MTcxMTMzNzMwMSwiZXhwIjoxNzE0MDE1NzAxfQ.IMVHPA7WjwqlgOyMXf2HpW03DuHOC3FZD1F_EtmP2P8";
         if (token) {
-            config.headers["Authorization"] = `Bearer ${token}`;
+            config.headers["access"] = `${token}`;
         }
 
         return config;
@@ -32,22 +36,24 @@ axiosInstance.interceptors.response.use(
         const originalRequest = error.config;
         if (error.response.status === 403 && !originalRequest._retry) {
             originalRequest._retry = true; // 재시도 표시
-            const refreshToken = localStorage.getItem("refreshToken");
+            // 리프레시 토큰
+            // const refresh = localStorage.getItem("refresh");
+            const refresh =
+                "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5OHc4Z3hxVGtpV3BRXyIsImlhdCI6MTcxMTMzNzMwMSwiZXhwIjoxNzE0MDE1NzAxfQ.IMVHPA7WjwqlgOyMXf2HpW03DuHOC3FZD1F_EtmP2P8";
 
             // refreshToken으로 새 accessToken 요청
             try {
                 const response = await axios.post(
-                    "https://i10e105.p.ssafy.io/api/v1/auth/refresh-token",
+                    "https://j10e202.p.ssafy.io/api/auth/refresh",
                     {
-                        refreshToken,
+                        refresh,
                     },
                 );
-                const { accessToken } = response.data;
-                localStorage.setItem("accessToken", accessToken);
+                // 엑세스 토큰
+                const { access } = response.data;
+                localStorage.setItem("access", access);
                 // 원래 요청에 새 토큰 설정하고 재시도
-                axios.defaults.headers.common[
-                    "Authorization"
-                ] = `Bearer ${accessToken}`;
+                axios.defaults.headers.common["access"] = `${access}`;
                 return axiosInstance(originalRequest);
             } catch (refreshError) {
                 console.error("Unable to refresh token:", refreshError);
