@@ -39,13 +39,13 @@ function BasicNavbar() {
                                 navigate("/main/community");
                                 break;
                             case 1:
-                                navigate("/main/recommend");
+                                navigate("/main");
                                 break;
                             case 2:
                                 navigate("/main/myPage/123"); // 예시 userId
                                 break;
                             default:
-                                navigate("/main/recommend");
+                                navigate("/main");
                                 break;
                         }
                     }}

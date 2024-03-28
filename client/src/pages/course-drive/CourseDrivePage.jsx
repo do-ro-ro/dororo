@@ -5,7 +5,7 @@ import StopOver from "../../components/course-drive/StopOver";
 import ServerTest from "../../components/course-drive/ServerTest";
 import Topbar from "../../components/topbar/Topbar";
 import { Button, Stack, Typography } from "@mui/material";
-import Map from "../recommend-course/Map";
+import Map from "../main-page/Map";
 import IntroductionModal from "../../components/course-drive/IntroductionModal";
 
 function CourseDrivePage() {
@@ -30,7 +30,7 @@ function CourseDrivePage() {
         <>
             <IntroductionModal />
             <div className="relative">
-                <RealTimeCurrentLocation setLat={setLat} setLon={setLng} />
+                <RealTimeCurrentLocation setLat={setLat} setLng={setLng} />
                 <ServerTest setcoolList={setcoolList} />
                 {/* <Map lat={lat} lon={lon} /> */}
                 <Topbar>코스 이름</Topbar>
@@ -74,6 +74,8 @@ function CourseDrivePage() {
                             </Button>
                         )}
                     </Stack>
+                    <div>{lat}</div>
+                    <div>{lng}</div>
                 </div>
                 {/* <div>거리 : {km} km</div>
                 <div>시간 : {time} 분</div> */}

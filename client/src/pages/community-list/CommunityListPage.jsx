@@ -1,7 +1,8 @@
 import { Box, Button, ButtonGroup, Stack, Typography } from "@mui/material";
 import Topbar from "../../components/topbar/Topbar";
 import CourseCard from "../../components/course-card/CourseCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getMapPostsList } from "../../apis/server/Community";
 // import { useNavigate } from "react-router-dom";
 
 const DummyCourseList = [
@@ -50,6 +51,25 @@ const DummyCourseList = [
 ];
 
 function CommunityListPage() {
+    // 게시글 리스트 상태
+    const [currentMapPostsList, setCurrentMapPostsList] = useState([]);
+
+    // 컴포넌트 불러올 때 API 호출할 useEffect
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getMapPostsList();
+                const updatedMapPostsList = response.data;
+                console.log(response);
+                setCurrentMapPostsList(updatedMapPostsList);
+            } catch (error) {
+                console.error("게시글 리스트 불러오기 실패", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     // Top3 코스
     const top3Courses = [...DummyCourseList]
         .sort((a, b) => b.scrap_count - a.scrap_count)

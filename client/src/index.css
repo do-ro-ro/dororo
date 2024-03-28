@@ -5,6 +5,7 @@
 html,
 body {
     -ms-overflow-style: none;
+    overscroll-behavior-y: contain;
     @apply min-h-screen;
 }
 body::-webkit-scrollbar {

@@ -10,7 +10,7 @@ import Topbar from "../../components/topbar/Topbar";
 import { Cancel, CheckCircle } from "@mui/icons-material";
 import SampleCourseImg from "../../assets/sample_course_img.png";
 import DriveIcon from "../../assets/drive_icon.png";
-import Map from "../recommend-course/Map";
+import Map from "../main-page/Map";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DeleteDialog from "../../components/community-detail/DeleteDialog";
