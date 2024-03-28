@@ -4,6 +4,7 @@ import CourseCard from "../../components/course-card/CourseCard";
 import { useEffect, useState } from "react";
 import { getMapPostsList } from "../../apis/server/Community";
 import { Bookmark, BookmarkBorder } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 
 function CommunityListPage() {
@@ -44,6 +45,8 @@ function CommunityListPage() {
     const popularCourses = currentMapPostsList.sort(
         (a, b) => b.scrapCount - a.scrapCount,
     );
+
+    const navigate = useNavigate();
 
     return (
         <>
@@ -106,6 +109,9 @@ function CommunityListPage() {
                                               borderBottom: 1,
                                               borderBottomColor: "lightgray",
                                           }}
+                                          onClick={() =>
+                                              navigate(`${course.postId}`)
+                                          }
                                       >
                                           <Stack direction={"row"}>
                                               <Box sx={{ mr: 2 }}>
@@ -125,7 +131,7 @@ function CommunityListPage() {
                                                       direction={"row"}
                                                       sx={{ mt: 1 }}
                                                   >
-                                                      <BookmarkBorder color="primary" />
+                                                      <Bookmark color="primary" />
                                                       <Typography color="primary">
                                                           {course.scrapCount}
                                                       </Typography>
