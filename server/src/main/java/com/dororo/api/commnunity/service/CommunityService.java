@@ -50,6 +50,8 @@ public class CommunityService {
     public void scrapPost(String access, Integer postId) {
         String userUniqueId = authUtils.getUserUniqueIdFromAccess(access);    // 스크랩한 유저의 unique ID
         PostEntity postEntity = findPostInDataBaseByPostId(postId);
+        postEntity.addScrapCount(); // 스크랩 수 1 증가
+        postRepository.save(postEntity);    // 증가한 스크랩 수를 db에 저장
         MapEntity originMapEntity = postEntity.getMapId();
 
         makeScrapMap(userUniqueId, originMapEntity);  // 우선은 setter를 이용한 메서드로 새로운 맵 저장 함수 구현한 것을 사용함
@@ -97,9 +99,12 @@ public class CommunityService {
         MapEntity scrapMapEntity = new MapEntity();
         scrapMapEntity.setUserId(userEntity.get());
         scrapMapEntity.setMapName(originMapEntity.getMapName());
+        scrapMapEntity.setMapImage(originMapEntity.getMapImage());
         scrapMapEntity.setOriginMapRouteAxis(originMapEntity.getOriginMapRouteAxis());
+        scrapMapEntity.setConvertedRouteAxis(originMapEntity.getConvertedRouteAxis());
         scrapMapEntity.setMapType(MapEntity.Maptype.SCRAP); // 스크랩한 맵임을 타입으로 명시
         scrapMapEntity.setMapDistance(originMapEntity.getMapDistance());
+        scrapMapEntity.setOriginalMapId(originMapEntity.getMapId());
         scrapMapEntity.setMapCompletion(false); // 맵 생성과 같으므로 주행 여부는 false로
 
         mapRepository.save(scrapMapEntity);
