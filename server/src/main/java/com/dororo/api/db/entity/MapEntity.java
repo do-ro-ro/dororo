@@ -29,7 +29,7 @@ public class MapEntity {
     @Column(nullable = false, columnDefinition = "geometry(LineString, 4326)")
     private LineString originMapRouteAxis;    // 원본 좌표
     @Column(nullable = false, columnDefinition = "geometry(LineString, 4326)")
-    private LineString convertedMapRouteAxis;  // 변환된 좌표
+    private LineString convertedRouteAxis;  // 변환된 좌표
     @Column(nullable = false) @Enumerated(EnumType.STRING)
     private Maptype mapType = Maptype.DEFAULT;
     @Column(nullable = false)

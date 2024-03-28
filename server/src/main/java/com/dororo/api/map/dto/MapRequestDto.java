@@ -4,9 +4,7 @@ package com.dororo.api.map.dto;
 import com.dororo.api.convert.LatitudeLongitude;
 import com.dororo.api.db.entity.MapEntity;
 import lombok.*;
-import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
 
 import java.util.List;
 
@@ -24,7 +22,7 @@ public class MapRequestDto {
     private String mapImage;
     //받을때는 위도 경도 로 받기.
     private List<LatitudeLongitude> originMapRouteAxis;
-    private List<LatitudeLongitude> convertedMapRouteAxis;
+    private List<LatitudeLongitude> convertedRouteAxis;
     private MapEntity.Maptype mapType;
     private float mapDistance;
     private Integer originalMapId;
@@ -41,7 +39,7 @@ public class MapRequestDto {
         mapEntity.setMapName(mapRequestDto.getMapName());
         mapEntity.setMapImage(mapRequestDto.getMapImage());
         mapEntity.setOriginMapRouteAxis(convertToLineString(mapRequestDto.getOriginMapRouteAxis()));
-        mapEntity.setConvertedMapRouteAxis(convertToLineString(mapRequestDto.getConvertedMapRouteAxis()));
+        mapEntity.setConvertedRouteAxis(convertToLineString(mapRequestDto.getConvertedRouteAxis()));
         mapEntity.setMapType(mapRequestDto.getMapType());
         mapEntity.setMapDistance(mapRequestDto.getMapDistance());
         mapEntity.setOriginalMapId(mapRequestDto.getOriginalMapId());

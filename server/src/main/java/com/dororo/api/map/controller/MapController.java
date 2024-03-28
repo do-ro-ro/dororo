@@ -21,6 +21,7 @@ public class MapController {
     @GetMapping("")
     public ResponseEntity getAllMaps(@RequestParam("map-type") MapEntity.Maptype maptype ,
                                      @RequestHeader("access") String access) {
+        System.out.println("전체 조회 컨트롤러 호출");
         List<MapResponseDto> maps = mapService.getAllMaps(maptype,access);
         return ResponseEntity.ok(maps);
     }

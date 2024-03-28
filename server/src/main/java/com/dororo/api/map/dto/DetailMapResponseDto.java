@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.dororo.api.convert.ConvertUtils.convertFromLineString;
 
@@ -23,7 +21,7 @@ public class DetailMapResponseDto {
     // LineString을 더 친숙한 형식으로 변환해야 할 수 있습니다.
     //private LineString mapRouteAxis;
     private List<LatitudeLongitude> originMapRouteAxis;
-    private List<LatitudeLongitude> convertedMapRouteAxis;
+    private List<LatitudeLongitude> convertedRouteAxis;
     private MapEntity.Maptype mapType;
     private Float mapDistance;
     private Integer originalMapId;
@@ -38,7 +36,7 @@ public class DetailMapResponseDto {
                 .mapName(entity.getMapName())
                 .mapImage(entity.getMapImage())
                 .originMapRouteAxis(convertFromLineString(entity.getOriginMapRouteAxis()))
-                .convertedMapRouteAxis(convertFromLineString(entity.getConvertedMapRouteAxis()))
+                .convertedRouteAxis(convertFromLineString(entity.getConvertedRouteAxis()))
                 .mapType(entity.getMapType())
                 .mapDistance(entity.getMapDistance())
                 .originalMapId(entity.getOriginalMapId())
