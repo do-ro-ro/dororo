@@ -201,7 +201,7 @@ public class CommunityController {
                                     @Parameter(in = ParameterIn.PATH) @PathVariable(name = "postId") Integer postId) {
         communityService.cancelScrapPost(access, postId);
 
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }

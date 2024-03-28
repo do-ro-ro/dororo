@@ -59,8 +59,11 @@ public class PostEntity {
 		this.updatedAt = new Timestamp(System.currentTimeMillis());
 	}
 
-	public void addScrapCount() {	// 스크랩 수 올려주는 함수
-		this.scrapCount += 1;
+	public void modifyScrapCount(String mode) {
+		if (mode.equals("PLUS")) this.scrapCount += 1;
+		else {
+			if (this.scrapCount > 0) this.scrapCount -= 1;	// 스크랩 수가 0이하일 때 혹시 모를 스크랩 카운트 음수화 방지
+		}
 	}
 
 }
