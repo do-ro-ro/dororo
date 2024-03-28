@@ -17,8 +17,8 @@ function CommunityListPage() {
                 const updatedMapPostsList = response;
                 // console.log(response);
                 setCurrentMapPostsList(updatedMapPostsList);
-                console.log(updatedMapPostsList);
-                console.log(currentMapPostsList);
+                // console.log(updatedMapPostsList);
+                // console.log(currentMapPostsList);
             } catch (error) {
                 console.error("게시글 리스트 불러오기 실패", error);
             }

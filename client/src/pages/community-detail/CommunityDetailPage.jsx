@@ -39,7 +39,7 @@ function CommunityDetailPage() {
     const [currentMapPosts, setCurrentMapPosts] = useState(null);
 
     const [isScrapped, setIsScrapped] = useState(false);
-    const [scrapCount, setScrapCount] = useState(DummyCourse.scrap_count);
+    const [scrapCount, setScrapCount] = useState(0);
 
     useEffect(() => {
         console.log(postId);
@@ -49,8 +49,9 @@ function CommunityDetailPage() {
                 const updatedMapPosts = response;
                 // console.log(response);
                 setCurrentMapPosts(updatedMapPosts);
-                console.log(updatedMapPosts);
-                console.log(currentMapPosts);
+                setScrapCount(updatedMapPosts.scrapCount);
+                // console.log(updatedMapPosts);
+                // console.log(currentMapPosts);
             } catch (error) {
                 console.error("게시글 리스트 불러오기 실패", error);
             }
@@ -83,7 +84,9 @@ function CommunityDetailPage() {
                 >
                     <Box>
                         <Typography variant="h5">
-                            {DummyCourse.post_title}
+                            {currentMapPosts
+                                ? currentMapPosts.postTitle
+                                : "게시글을 불러오는 중입니다."}
                         </Typography>
                         <Stack direction={"row"}>
                             <Avatar
@@ -92,7 +95,11 @@ function CommunityDetailPage() {
                             >
                                 김
                             </Avatar>
-                            <Typography>{DummyUser.nickname}</Typography>
+                            <Typography>
+                                {currentMapPosts
+                                    ? currentMapPosts.userName
+                                    : "닉네임을 불러오는 중입니다."}
+                            </Typography>
                         </Stack>
                     </Box>
                     {DummyCourse.user_id === DummyUser.user_id ? (
@@ -104,7 +111,10 @@ function CommunityDetailPage() {
                 </Stack>
                 <Box>
                     {/* 나중에 지도 넣어줄 영역 */}
-                    <img width={"100%"} src={SampleCourseImg} />
+                    <img
+                        width={"100%"}
+                        src={currentMapPosts ? currentMapPosts.mapImage : ""}
+                    />
                 </Box>
 
                 <Box m={2}>
@@ -135,7 +145,11 @@ function CommunityDetailPage() {
                     <Typography fontWeight={"700"} sx={{ my: 1 }}>
                         스크랩 {scrapCount}개
                     </Typography>
-                    <Typography>{DummyCourse.post_content}</Typography>
+                    <Typography>
+                        {currentMapPosts
+                            ? currentMapPosts.postContent
+                            : "게시글을 불러오는 중입니다."}
+                    </Typography>
                 </Box>
             </Box>
             <Snackbar
