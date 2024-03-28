@@ -11,10 +11,11 @@ import { Cancel, CheckCircle } from "@mui/icons-material";
 import SampleCourseImg from "../../assets/sample_course_img.png";
 import DriveIcon from "../../assets/drive_icon.png";
 import Map from "../main-page/Map";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import DeleteDialog from "../../components/community-detail/DeleteDialog";
 import ShareModal from "../../components/course-detail/ShareModal";
+import { getMapDetail } from "../../apis/server/Map";
 
 const DummyMap = {
     map_id: 0,
@@ -27,9 +28,12 @@ const DummyMap = {
 };
 
 function CourseDetailPage() {
+    const { courseId } = useParams();
     const [lat, setLat] = useState(37.5652045);
-    const [lon, setLon] = useState(126.98702028);
+    const [lng, setLng] = useState(126.98702028);
     const [openShareModal, setOpenShareModal] = useState(false);
+
+    const [currentCourse, setCurrentCourse] = useState(null);
 
     const handleShareModal = () => {
         setOpenShareModal(true);
@@ -37,6 +41,24 @@ function CourseDetailPage() {
     };
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getMapDetail(courseId);
+                const updatedCourse = response;
+                console.log(response);
+                setCurrentCourse(updatedCourse);
+                // console.log(updatedMapPosts);
+                // console.log(currentMapPosts);
+            } catch (error) {
+                console.error("코스 정보 불러오기 실패", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     return (
         <>
             <div className="relative">
@@ -50,7 +72,7 @@ function CourseDetailPage() {
                             sx={{ p: 2 }}
                         >
                             <Typography variant="h5">
-                                {DummyMap.map_name}
+                                {currentCourse?.mapName}
                             </Typography>
                             <DeleteDialog variant={"course"} />
                         </Stack>
@@ -62,12 +84,12 @@ function CourseDetailPage() {
                             <Stack alignItems={"center"}>
                                 <Typography>주행 거리</Typography>
                                 <Typography variant="h5">
-                                    {DummyMap.map_distance}
+                                    {currentCourse?.mapDistance}km
                                 </Typography>
                             </Stack>
                             <Stack alignItems={"center"}>
                                 <Typography>주행 여부</Typography>
-                                {DummyMap.map_completion ? (
+                                {currentCourse?.mapCompletion ? (
                                     <CheckCircle
                                         sx={{ width: "20vw", height: "5vh" }}
                                         color="success"
@@ -89,7 +111,7 @@ function CourseDetailPage() {
                                 variant="contained"
                                 sx={{}}
                                 disabled={
-                                    DummyMap.map_completion ? false : true
+                                    currentCourse?.mapCompletion ? false : true
                                 }
                                 onClick={() => navigate("custom")}
                             >
@@ -99,7 +121,7 @@ function CourseDetailPage() {
                                 variant="contained"
                                 sx={{ ml: 1 }}
                                 disabled={
-                                    DummyMap.map_completion ? false : true
+                                    currentCourse?.mapCompletion ? false : true
                                 }
                                 onClick={handleShareModal}
                             >
@@ -111,7 +133,7 @@ function CourseDetailPage() {
                             />
                         </Stack>
                     </div>
-                    <Map lat={lat} lon={lon} />
+                    <Map lat={lat} lon={lng} />
                 </div>
                 <div className="fixed z-50 bottom-2 inset-x-0">
                     <Stack alignItems={"center"}>
