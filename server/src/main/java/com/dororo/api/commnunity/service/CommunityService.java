@@ -90,7 +90,7 @@ public class CommunityService {
         postDetailsDto.setIsMine(userUniqueId.equals(postEntity.getWriterUniqueId())); // 유저가 작성한 게시글인지 여부
         postDetailsDto.setIsScraped(getScrapedMapEntity(userEntity, postEntity).isPresent());  // 유저가 해당 게시글을 스크랩 했는지 여부
 
-        return modelMapper.map(postEntity, PostDetailsDto.class);
+        return postDetailsDto;
     }
 
     // <------------------------ DELETE part ------------------------>
