@@ -111,7 +111,9 @@ function MyPage() {
                                         : "유저 정보를 불러오고 있습니다"}
                                 </Typography>
                             </Stack>
-                            <EditProfileModal />
+                            <EditProfileModal
+                                currentUserInfo={currentUserInfo}
+                            />
                         </Stack>
                     </Paper>
                     <Typography variant="h6" sx={{ my: 2 }}>
