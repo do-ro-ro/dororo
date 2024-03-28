@@ -18,10 +18,10 @@ function MainPage() {
             case `/main/community/${postId}`:
                 dispatch(setValue(0));
                 break;
-            case "/main/recommend":
+            case "/main":
                 dispatch(setValue(1));
                 break;
-            case `/main/myPage/123`: // 예시 userId
+            case `/main/myPage`: // 예시 userId
                 dispatch(setValue(2));
                 break;
         }
