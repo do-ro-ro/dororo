@@ -151,7 +151,6 @@ const Search = ({ setLat, setLon }) => {
                                 }}
                             />
                         </Paper>
-                        <div style={{ marginTop: "75px" }}></div>
 
                         {/* <button type="submit">검색하기</button> */}
                     </form>
