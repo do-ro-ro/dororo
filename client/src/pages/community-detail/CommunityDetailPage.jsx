@@ -101,7 +101,9 @@ function CommunityDetailPage() {
                     </Box>
                     {currentMapPosts && currentMapPosts?.isMine === true ? (
                         <Stack direction={"row"} alignItems={"center"}>
-                            <EditArticleModal />
+                            {/* <EditArticleModal
+                                currentMapPosts={currentMapPosts}
+                            /> */}
                             <DeleteDialog variant={"post"} />
                         </Stack>
                     ) : null}
