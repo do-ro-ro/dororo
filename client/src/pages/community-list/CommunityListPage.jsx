@@ -3,6 +3,7 @@ import Topbar from "../../components/topbar/Topbar";
 import CourseCard from "../../components/course-card/CourseCard";
 import { useEffect, useState } from "react";
 import { getMapPostsList } from "../../apis/server/Community";
+import { Bookmark, BookmarkBorder } from "@mui/icons-material";
 // import { useNavigate } from "react-router-dom";
 
 function CommunityListPage() {
@@ -17,7 +18,7 @@ function CommunityListPage() {
                 const updatedMapPostsList = response;
                 // console.log(response);
                 setCurrentMapPostsList(updatedMapPostsList);
-                // console.log(updatedMapPostsList);
+                console.log(updatedMapPostsList);
                 // console.log(currentMapPostsList);
             } catch (error) {
                 console.error("게시글 리스트 불러오기 실패", error);
@@ -54,30 +55,9 @@ function CommunityListPage() {
         }, []);
     };
 
-    // 줄 단위로 CourseCard 요소를 생성하는 함수
-    const renderCourseCardRows = () => {
-        const coursesToDisplay = isActivated ? sortLatest : popularCourses;
-        const chunkedCourses = chunkArray(coursesToDisplay, 3); // 3개씩 묶기
-        return chunkedCourses.map((chunk, index) => (
-            <Stack key={index} direction="row">
-                {chunk.map((course) => (
-                    <CourseCard
-                        postId={course.postId}
-                        key={course.postId}
-                        variant={"post"}
-                        mapImage={course.mapImage}
-                        userName={course.userName}
-                    >
-                        {course.postTitle}
-                    </CourseCard>
-                ))}
-            </Stack>
-        ));
-    };
-
     return (
         <>
-            <Box>
+            <Box pb={"10vh"}>
                 <Topbar>커뮤니티</Topbar>
 
                 <Stack mx={4} mt={2}>
@@ -123,7 +103,59 @@ function CommunityListPage() {
                             </Button>
                         </Box>
                     </Stack>
-                    <Stack direction="column">{renderCourseCardRows()}</Stack>
+                    {/* <Stack direction="column">{renderCourseCardRows()}</Stack> */}
+                    <Stack>
+                        {currentMapPostsList
+                            ? currentMapPostsList.map((course) => {
+                                  return (
+                                      <Box
+                                          key={course.postId}
+                                          sx={{
+                                              pt: 3,
+                                              height: "8rem",
+                                              borderBottom: 1,
+                                              borderBottomColor: "lightgray",
+                                          }}
+                                      >
+                                          <Stack direction={"row"}>
+                                              <Box sx={{ mr: 2 }}>
+                                                  <img
+                                                      src={course.mapImage}
+                                                      width={"100vw"}
+                                                  />
+                                              </Box>
+                                              <Stack>
+                                                  <Typography>
+                                                      {course.postTitle}
+                                                  </Typography>
+                                                  <Typography>
+                                                      {course.userName}
+                                                  </Typography>
+                                                  <Stack
+                                                      direction={"row"}
+                                                      sx={{ mt: 1 }}
+                                                  >
+                                                      <BookmarkBorder color="primary" />
+                                                      <Typography color="primary">
+                                                          {course.scrapCount}
+                                                      </Typography>
+                                                  </Stack>
+                                              </Stack>
+                                          </Stack>
+                                      </Box>
+                                      //   <CourseCard
+                                      //       key={course.postId}
+                                      //       postId={course.postId}
+                                      //       variant={"post"}
+                                      //       mapImage={course.mapImage}
+                                      //       userName={course.userName}
+                                      //   >
+                                      //       {course.postTitle}
+                                      //   </CourseCard>
+                                  );
+                              })
+                            : "게시글을 불러오고 있습니다"}
+                    </Stack>
                 </Stack>
             </Box>
         </>
