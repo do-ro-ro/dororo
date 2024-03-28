@@ -28,17 +28,19 @@ public class MapController {
 
     //맵 상세조회
     @GetMapping("/{mapId}")
-    public ResponseEntity getMapdetails(@PathVariable(name="mapId") Integer mapId) {
-        DetailMapResponseDto detailMapResponseDto = mapService.getMapById(mapId);
+    public ResponseEntity getMapdetails(@PathVariable(name="mapId") Integer mapId,
+                                        @RequestHeader("access") String access) {
+        DetailMapResponseDto detailMapResponseDto = mapService.getMapById(mapId,access);
         System.out.println("디테일 mapId :" + mapId);
-        // return ResponseEntity.ok(detailMapResponseDto);
+
         return new ResponseEntity(detailMapResponseDto, HttpStatus.OK);
     }
 
     //맵 생성
     @PostMapping("")
-    public ResponseEntity createMap(@RequestBody CreateMapRequestDto createMapRequestDto) {
-        List<CreateMapResponseDto>  createMapList =  mapService.createMap(createMapRequestDto);
+    public ResponseEntity createMap(@RequestBody CreateMapRequestDto createMapRequestDto,
+                                    @RequestHeader("access") String access) {
+        List<CreateMapResponseDto>  createMapList =  mapService.createMap(createMapRequestDto,access);
 
         return new ResponseEntity(createMapList, HttpStatus.CREATED);
     }
@@ -62,8 +64,10 @@ public class MapController {
 
     //맵 수정 (주행여부 갱신)
     @PatchMapping("/{mapId}")
-    public ResponseEntity updateMap(@PathVariable(name = "mapId") Integer mapId ,@RequestBody UpdateRequestDto updateRequestDto) {
-        mapService.updateMapCompletion(mapId,updateRequestDto);
+    public ResponseEntity updateMap(@PathVariable(name = "mapId") Integer mapId ,
+                                    @RequestBody UpdateRequestDto updateRequestDto,
+                                    @RequestHeader("access") String access) {
+        mapService.updateMapCompletion(mapId,updateRequestDto,access);
         return ResponseEntity.ok().build(); // 업데이트 성공 응답
     }
 
