@@ -46,6 +46,8 @@ function CommunityListPage() {
         (a, b) => b.scrapCount - a.scrapCount,
     );
 
+    const coursesToDisplay = isActivated ? sortLatest : popularCourses;
+
     const navigate = useNavigate();
 
     return (
@@ -98,7 +100,7 @@ function CommunityListPage() {
                     {/* <Stack direction="column">{renderCourseCardRows()}</Stack> */}
                     <Stack>
                         {currentMapPostsList
-                            ? currentMapPostsList.map((course) => {
+                            ? coursesToDisplay.map((course) => {
                                   return (
                                       <Box
                                           key={course.postId}
