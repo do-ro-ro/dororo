@@ -11,6 +11,8 @@ import CourseCard from "../../components/course-card/CourseCard";
 import BasicProfile from "../../assets/user_profile_basic.png";
 import { BorderColor, Edit } from "@mui/icons-material";
 import EditProfileModal from "../../components/my-page/EditProfileModal";
+import { useEffect, useState } from "react";
+import { getUserInfo } from "../../apis/server/User";
 
 const DummyCourseList = [
     {
@@ -71,6 +73,21 @@ const DummyUser = {
 };
 
 function MyPage() {
+    const [currentUserInfo, setCurrentUserInfo] = useState(null);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await getUserInfo();
+                const updatedUserInfo = response;
+                setCurrentUserInfo(updatedUserInfo);
+                // console.log(updatedUserInfo);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchUserData();
+    }, []);
     return (
         <>
             <Box pb="10vh">
@@ -89,7 +106,9 @@ function MyPage() {
                                 </Box>
 
                                 <Typography>
-                                    안녕하세요, {DummyUser.nickname}님!
+                                    {currentUserInfo
+                                        ? `안녕하세요, ${currentUserInfo.nickname}님!`
+                                        : "유저 정보를 불러오고 있습니다"}
                                 </Typography>
                             </Stack>
                             <EditProfileModal />

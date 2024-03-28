@@ -3,7 +3,7 @@ import { axiosInstance } from "../../utils/axios/AxiosInstance";
 // 유저 프로필 조회
 const getUserInfo = async () => {
     try {
-        const response = axiosInstance.get("/users/profile");
+        const response = await axiosInstance.get("/users/profile");
         if (response.status === 200) {
             return response.data;
         }

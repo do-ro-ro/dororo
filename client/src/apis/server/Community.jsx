@@ -16,6 +16,7 @@ const getMapPostsList = async () => {
 const getMapPosts = async (postId) => {
     try {
         const response = await axiosInstance.get(`/map-posts/${postId}`);
+        console.log(response);
         if (response.status === 200) {
             return response.data;
         }
