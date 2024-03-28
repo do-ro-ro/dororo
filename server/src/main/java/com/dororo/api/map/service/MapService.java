@@ -1,6 +1,7 @@
 package com.dororo.api.map.service;
 
 import com.dororo.api.convert.LatitudeLongitude;
+import com.dororo.api.db.entity.LinkEntity;
 import com.dororo.api.db.entity.MapEntity;
 import com.dororo.api.db.entity.NodeEntity;
 import com.dororo.api.db.entity.UserEntity;
@@ -87,9 +88,12 @@ public class MapService {
     public List<CreateMapResponseDto> createMap(CreateMapRequestDto createMapRequestDto,String access) {
         //받은 addMapRequestDto 를 바탕으로 맵을 생성
         //알고 영역? => 나중에 클래스로 가져오기
-        String result = mapAlgorithm.getStartNode(createMapRequestDto.getStartPoint());
 
-        List<CreateMapResponseDto> createdMapList = new ArrayList<>();
+        String startNode = mapAlgorithm.getStartNode(createMapRequestDto.getStartPoint());
+        mapAlgorithm.getLinks(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
+
+        List<CreateMapResponseDto> createdMapList = mapAlgorithm.getMap(startNode,createMapRequestDto);
+
         return createdMapList;
     }
 
