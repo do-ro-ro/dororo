@@ -16,7 +16,7 @@ axiosInstance.interceptors.request.use(
         const token =
             "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5OHc4Z3hxVGtpV3BRXyIsImlhdCI6MTcxMTMzNzMwMSwiZXhwIjoxNzE0MDE1NzAxfQ.IMVHPA7WjwqlgOyMXf2HpW03DuHOC3FZD1F_EtmP2P8";
         if (token) {
-            config.headers["Authorization"] = `Bearer ${token}`;
+            config.headers["access"] = `${token}`;
         }
 
         return config;
@@ -37,12 +37,14 @@ axiosInstance.interceptors.response.use(
         if (error.response.status === 403 && !originalRequest._retry) {
             originalRequest._retry = true; // 재시도 표시
             // 리프레시 토큰
-            const refresh = localStorage.getItem("refreshToken");
+            // const refresh = localStorage.getItem("refresh");
+            const refresh =
+                "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5OHc4Z3hxVGtpV3BRXyIsImlhdCI6MTcxMTMzNzMwMSwiZXhwIjoxNzE0MDE1NzAxfQ.IMVHPA7WjwqlgOyMXf2HpW03DuHOC3FZD1F_EtmP2P8";
 
             // refreshToken으로 새 accessToken 요청
             try {
                 const response = await axios.post(
-                    "https://i10e105.p.ssafy.io/api/v1/auth/refresh-token",
+                    "https://j10e202.p.ssafy.io/api/auth/refresh",
                     {
                         refresh,
                     },
@@ -51,9 +53,7 @@ axiosInstance.interceptors.response.use(
                 const { access } = response.data;
                 localStorage.setItem("access", access);
                 // 원래 요청에 새 토큰 설정하고 재시도
-                axios.defaults.headers.common[
-                    "Authorization"
-                ] = `Bearer ${access}`;
+                axios.defaults.headers.common["access"] = `${access}`;
                 return axiosInstance(originalRequest);
             } catch (refreshError) {
                 console.error("Unable to refresh token:", refreshError);
