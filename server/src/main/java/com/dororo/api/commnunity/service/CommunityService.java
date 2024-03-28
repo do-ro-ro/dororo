@@ -59,13 +59,20 @@ public class CommunityService {
 
     // <------------------------ GET part ------------------------>
     public List<PostDetailsDto> postList(String access, String option) {
-        String userUniqueId = authUtils.getUserUniqueIdFromAccess(access);   // 아직 엑세스 토큰 도입 안해서 이렇게 둠
+        UserEntity userEntity = authUtils.getUserEntityFromAccess(access);
+        String userUniqueId = userEntity.getUniqueId();
         List<PostEntity> userPostEntityList = new ArrayList<>();
         if (option == null) userPostEntityList = postRepository.findAll();  // option query 없이 요청이 들어왔을 경우 전체 게시글 조회
         else if (option.equals("popular")) userPostEntityList = postRepository.findTop3ByOrderByScrapCount();   // 스크랩 수 기반 TOP3 게시글 조회
         else if (option.equals("mine")) userPostEntityList = postRepository.findByWriterUniqueId(userUniqueId); // option query와 함께 요청이 들어왔을 경우, 사용자 unique id 기반으로 게시글 조회
         List<PostDetailsDto> postDetailsDtoList = userPostEntityList.stream()    // DB에서 꺼낸 Entity에 대해 stream을 이용,
-                .map(m -> modelMapper.map(m, PostDetailsDto.class)) // Entity -> Dto 변환
+                .map(m -> {
+                    PostDetailsDto postDetailsDto = modelMapper.map(m, PostDetailsDto.class);
+                    postDetailsDto.setIsMine(userUniqueId.equals(m.getWriterUniqueId())); // 유저가 작성한 게시글인지 여부
+                    postDetailsDto.setIsScraped(checkIsScraped(userEntity, m));  // 유저가 해당 게시글을 스크랩 했는지 여부
+
+                    return postDetailsDto;
+                }) // Entity -> Dto 변환
                 .collect(Collectors.toList());
 
         return postDetailsDtoList;
@@ -93,6 +100,13 @@ public class CommunityService {
     }
 
     // <------------ For Readability ------------>
+    private Boolean checkIsScraped(UserEntity userId, PostEntity postEntity) {
+        MapEntity mapEntity = postEntity.getMapId();
+        Optional<MapEntity> scrapedMapEntity = mapRepository.findByUserIdAndOriginalMapId(userId, mapEntity.getMapId());
+
+        return scrapedMapEntity.isPresent();  // 조회되는 맵 있으면 true 리턴
+    }
+
     private void makeScrapMap(String userUniqueId, MapEntity originMapEntity) {   // 스크랩하여 유저에게 맵을 저장하는 함수, 일단 MapEntity 저장 방식이 Setter이므로 여기서도 Setter로 하지만, 바뀌면 좋을 듯
         Optional<UserEntity> userEntity = userRepository.findByUniqueId(userUniqueId);
 
