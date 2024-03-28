@@ -1,21 +1,15 @@
-package com.dororo.api.user.provider;
+package com.dororo.api.auth.provider;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.dororo.api.user.dto.response.RefreshTokenResponseDto;
-import com.dororo.api.user.service.RedisService;
+import com.dororo.api.auth.dto.response.RefreshTokenResponseDto;
+import com.dororo.api.redis.RedisService;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;

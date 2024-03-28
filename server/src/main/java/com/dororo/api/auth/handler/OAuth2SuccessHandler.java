@@ -1,4 +1,4 @@
-package com.dororo.api.user.handler;
+package com.dororo.api.auth.handler;
 
 import java.io.IOException;
 
@@ -6,9 +6,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.dororo.api.user.dto.response.CustomOAuth2User;
-import com.dororo.api.user.provider.JwtProvider;
-import com.dororo.api.user.service.RedisService;
+import com.dororo.api.auth.dto.response.CustomOAuth2User;
+import com.dororo.api.auth.provider.JwtProvider;
+import com.dororo.api.redis.RedisService;
 
 import jakarta.servlet.ServletException;
 

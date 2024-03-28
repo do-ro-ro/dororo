@@ -1,4 +1,4 @@
-package com.dororo.api.user.dto.response;
+package com.dororo.api.auth.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

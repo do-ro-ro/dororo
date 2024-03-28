@@ -1,4 +1,4 @@
-package com.dororo.api.user.service;
+package com.dororo.api.redis;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.dororo.api.user.service;
+package com.dororo.api.auth.service;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,11 +12,12 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.dororo.api.user.dto.response.CustomOAuth2User;
+import com.dororo.api.auth.dto.response.CustomOAuth2User;
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.UserRepository;
-import com.dororo.api.user.dto.response.RefreshTokenResponseDto;
-import com.dororo.api.user.provider.JwtProvider;
+import com.dororo.api.auth.dto.response.RefreshTokenResponseDto;
+import com.dororo.api.auth.provider.JwtProvider;
+import com.dororo.api.redis.RedisService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -93,11 +94,12 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 		return sb.toString();
 	}
 
-	public RefreshTokenResponseDto getNewToken(String refreshToken, String uniqueId) {
+	public RefreshTokenResponseDto getNewToken(String refreshToken) {
 		RefreshTokenResponseDto refreshResult = jwtProvider.validateRefreshToken(refreshToken);
 		if (refreshResult.isSuccess()) {
+			List<String> getRefreshToken = redisService.getListValue(refreshToken);
 			redisService.deleteKey(refreshToken);
-			redisService.setStringValue(refreshResult.getRefreshToken(), uniqueId,jwtProvider.REFRESH_TOKEN_EXPIRE_TIME);
+			redisService.setStringValue(refreshResult.getRefreshToken(), getRefreshToken.get(0), jwtProvider.REFRESH_TOKEN_EXPIRE_TIME);
 		}
 		return refreshResult;
 	}
