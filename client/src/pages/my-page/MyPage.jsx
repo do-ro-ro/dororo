@@ -1,4 +1,5 @@
 import {
+    Avatar,
     Box,
     Button,
     IconButton,
@@ -16,68 +17,16 @@ import { getUserInfo } from "../../apis/server/User";
 import { getMapsList } from "../../apis/server/Map";
 import { getMapPostsList } from "../../apis/server/Community";
 
-const DummyCourseList = [
-    {
-        post_id: 0,
-        post_title: "코스 샘플 1",
-        post_content: "내용",
-        updated_at: "2024-03-21",
-        scrap_count: 10,
-        user_id: 1,
-    },
-    {
-        post_id: 1,
-        post_title: "코스 샘플 2",
-        post_content: "내용",
-        updated_at: "2024-03-20",
-        scrap_count: 14,
-        user_id: 10,
-    },
-    {
-        post_id: 2,
-        post_title: "코스 샘플 3",
-        post_content: "내용",
-        updated_at: "2024-03-19",
-        scrap_count: 100,
-        user_id: 1,
-    },
-    {
-        post_id: 3,
-        post_title: "코스 샘플 4",
-        post_content: "내용",
-        updated_at: "2024-03-18",
-        scrap_count: 30,
-        user_id: 11,
-    },
-    {
-        post_id: 4,
-        post_title: "코스 샘플 5",
-        post_content: "내용",
-        updated_at: "2024-03-17",
-        scrap_count: 50,
-        user_id: 1,
-    },
-    {
-        post_id: 5,
-        post_title: "코스 샘플 6",
-        post_content: "내용",
-        updated_at: "2024-03-16",
-        scrap_count: 20,
-        user_id: 14,
-    },
-];
-
-const DummyUser = {
-    user_id: 1,
-    name: "김싸피",
-    nickname: "녹산동레이서",
-    profile_image: BasicProfile,
-};
-
 function MyPage() {
     const [currentUserInfo, setCurrentUserInfo] = useState(null);
     const [currentUserCourses, setCurrentUserCourses] = useState(null);
     const [currentMapPostsList, setCurrentMapPostsList] = useState([]);
+
+    const profileImage =
+        currentUserInfo?.profileImage ||
+        "https://ssafy-dororo.s3.ap-northeast-2.amazonaws.com/user/blank-profile.png";
+
+    const [imgSrc, setImgSrc] = useState(profileImage);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -120,9 +69,8 @@ function MyPage() {
     }, []);
     return (
         <>
+            <Topbar>마이페이지</Topbar>
             <Box pb="10vh">
-                <Topbar>마이페이지</Topbar>
-
                 <Stack mx={4} mt={2} height={"90vh"}>
                     <Paper>
                         <Stack
@@ -132,7 +80,14 @@ function MyPage() {
                         >
                             <Stack direction={"row"} alignItems={"center"}>
                                 <Box sx={{ mr: 2 }}>
-                                    <img width={"30vw"} src={BasicProfile} />
+                                    <Avatar
+                                        alt="profile"
+                                        src={imgSrc}
+                                        sx={{
+                                            width: "2.5rem",
+                                            height: "2.5rem",
+                                        }}
+                                    />
                                 </Box>
 
                                 <Typography>
