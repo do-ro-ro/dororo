@@ -45,16 +45,6 @@ function CommunityListPage() {
         (a, b) => b.scrapCount - a.scrapCount,
     );
 
-    // 가로로 3개씩 줄을 나누는 함수
-    const chunkArray = (arr, size) => {
-        return arr.reduce((acc, _, i) => {
-            if (i % size === 0) {
-                acc.push(arr.slice(i, i + size));
-            }
-            return acc;
-        }, []);
-    };
-
     return (
         <>
             <Box pb={"10vh"}>

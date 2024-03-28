@@ -1,9 +1,15 @@
 import { axiosInstance } from "../../utils/axios/AxiosInstance";
 
 // 맵 리스트 조회
-const getMapsList = async () => {
+const getMapsList = async (option) => {
     try {
-        const response = axiosInstance.get("/maps");
+        let response = null;
+        // 옵션값이 없으면 전체 조회
+        if (!option) {
+            response = axiosInstance.get("/maps");
+        } else if (option === "scrapped") {
+            response = axiosInstance.get("/maps?map-type=SCRAP");
+        }
         if (response.status === 200) {
             return response.data;
         }
