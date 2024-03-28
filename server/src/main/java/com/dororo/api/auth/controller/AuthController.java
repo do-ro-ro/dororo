@@ -1,4 +1,4 @@
-package com.dororo.api.user.controller;
+package com.dororo.api.auth.controller;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dororo.api.user.dto.request.RefreshTokenRequestDto;
-import com.dororo.api.user.dto.response.RefreshTokenResponseDto;
-import com.dororo.api.user.service.OAuth2UserService;
+import com.dororo.api.auth.dto.request.RefreshTokenRequestDto;
+import com.dororo.api.auth.dto.response.RefreshTokenResponseDto;
+import com.dororo.api.auth.service.OAuth2UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +24,7 @@ public class AuthController {
 	@PostMapping("/refresh")
 	public ResponseEntity signInWithExpiredAccessToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
 
-		RefreshTokenResponseDto refreshResult = oAuth2UserService.getNewToken(refreshTokenRequestDto.getRefreshToken(), refreshTokenRequestDto.getUniqueId());
+		RefreshTokenResponseDto refreshResult = oAuth2UserService.getNewToken(refreshTokenRequestDto.getRefreshToken());
 		if (refreshResult.isSuccess()) { //리프레시 토큰이 유효한 경우
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.set("access", refreshResult.getAccessToken());

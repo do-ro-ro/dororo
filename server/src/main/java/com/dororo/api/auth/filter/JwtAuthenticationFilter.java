@@ -1,4 +1,4 @@
-package com.dororo.api.user.filter;
+package com.dororo.api.auth.filter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.dororo.api.exception.NoTokenInHeaderException;
 import com.dororo.api.exception.RefreshRequiredException;
-import com.dororo.api.user.provider.JwtProvider;
+import com.dororo.api.auth.provider.JwtProvider;
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.UserRepository;
 
