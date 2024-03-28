@@ -81,8 +81,14 @@ public class CommunityService {
         return postDetailsDtoList;
     }
 
-    public PostDetailsDto postDetails(Integer postId) {
+    public PostDetailsDto postDetails(String access, Integer postId) {
+        UserEntity userEntity = authUtils.getUserEntityFromAccess(access);
+        String userUniqueId = userEntity.getUniqueId();
+
         PostEntity postEntity = findPostInDataBaseByPostId(postId);
+        PostDetailsDto postDetailsDto = modelMapper.map(postEntity, PostDetailsDto.class);
+        postDetailsDto.setIsMine(userUniqueId.equals(postEntity.getWriterUniqueId())); // 유저가 작성한 게시글인지 여부
+        postDetailsDto.setIsScraped(getScrapedMapEntity(userEntity, postEntity).isPresent());  // 유저가 해당 게시글을 스크랩 했는지 여부
 
         return modelMapper.map(postEntity, PostDetailsDto.class);
     }

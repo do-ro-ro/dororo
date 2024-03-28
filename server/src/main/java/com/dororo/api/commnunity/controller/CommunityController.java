@@ -141,7 +141,7 @@ public class CommunityController {
     @GetMapping("/{postId}")
     public ResponseEntity postDetails(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
                                       @Parameter(in = ParameterIn.PATH) @PathVariable(name = "postId") Integer postId) {
-        PostDetailsDto postDetailsDto = communityService.postDetails(postId);
+        PostDetailsDto postDetailsDto = communityService.postDetails(access, postId);
 
         return new ResponseEntity(postDetailsDto, HttpStatus.OK);
     }
