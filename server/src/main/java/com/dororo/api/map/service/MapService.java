@@ -48,7 +48,7 @@ public class MapService {
         return mapResponseDtos;
     }
 
-    public DetailMapResponseDto getMapById(Integer mapId) {
+    public DetailMapResponseDto getMapById(Integer mapId,String access) {
         MapEntity mapEntity = mapRepository.findByMapId(mapId);
         if (mapEntity == null) {
             System.out.println("ID에 맞는 데이터가 없음!!!");
@@ -71,7 +71,7 @@ public class MapService {
         mapRepository.deleteById(mapId); // 맵 삭제
     }
 
-    public void updateMapCompletion(Integer mapId, UpdateRequestDto updateRequestDto) {
+    public void updateMapCompletion(Integer mapId, UpdateRequestDto updateRequestDto,String access) {
         MapEntity mapEntity = mapRepository.findById(mapId)
                 .orElseThrow(() -> new EntityNotFoundException("Map not found with id: " + mapId));
         System.out.println(updateRequestDto.getMapCompletion());
@@ -79,7 +79,7 @@ public class MapService {
         mapRepository.save(mapEntity); // 변경된 엔티티 저장
     }
 
-    public List<CreateMapResponseDto> createMap(CreateMapRequestDto createMapRequestDto) {
+    public List<CreateMapResponseDto> createMap(CreateMapRequestDto createMapRequestDto,String access) {
         //받은 addMapRequestDto 를 바탕으로 맵을 생성
         //알고 영역? => 나중에 클래스로 가져오기
 
