@@ -13,6 +13,8 @@ import { BorderColor, Edit } from "@mui/icons-material";
 import EditProfileModal from "../../components/my-page/EditProfileModal";
 import { useEffect, useState } from "react";
 import { getUserInfo } from "../../apis/server/User";
+import { getMapsList } from "../../apis/server/Map";
+import { getMapPostsList } from "../../apis/server/Community";
 
 const DummyCourseList = [
     {
@@ -74,6 +76,8 @@ const DummyUser = {
 
 function MyPage() {
     const [currentUserInfo, setCurrentUserInfo] = useState(null);
+    const [currentUserCourses, setCurrentUserCourses] = useState(null);
+    const [currentMapPostsList, setCurrentMapPostsList] = useState([]);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -86,7 +90,33 @@ function MyPage() {
                 console.log(error);
             }
         };
+
+        const fetchUserCourse = async () => {
+            try {
+                const response = await getMapsList();
+                const updatedUserCourses = response;
+                // console.log(updatedUserCourses);
+                setCurrentUserCourses(updatedUserCourses);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        const fetchPostsData = async () => {
+            try {
+                const response = await getMapPostsList();
+                const updatedMapPostsList = response;
+                // console.log(response);
+                setCurrentMapPostsList(updatedMapPostsList);
+                console.log(updatedMapPostsList);
+                // console.log(currentMapPostsList);
+            } catch (error) {
+                console.error("게시글 리스트 불러오기 실패", error);
+            }
+        };
         fetchUserData();
+        fetchUserCourse();
+        fetchPostsData();
     }, []);
     return (
         <>
@@ -120,14 +150,15 @@ function MyPage() {
                         내가 추천받은 코스
                     </Typography>
                     <Stack direction={"row"}>
-                        {DummyCourseList.map((course) => {
-                            if (course.user_id === DummyUser.user_id) {
+                        {currentUserCourses?.map((course) => {
+                            if (course.mapType !== "SCRAP") {
                                 return (
                                     <CourseCard
-                                        key={course.post_id}
-                                        postId={course.post_id}
+                                        key={course.mapId}
+                                        postId={course.mapId}
+                                        mapImage={course.mapImage}
                                     >
-                                        {course.post_title}
+                                        {course.mapName}
                                     </CourseCard>
                                 );
                             }
@@ -142,15 +173,16 @@ function MyPage() {
                         <Typography variant="h6">내가 스크랩한 코스</Typography>
                     </Stack>
                     <Stack direction={"row"}>
-                        {DummyCourseList.map((course) => {
-                            if (course.user_id !== DummyUser.user_id) {
+                        {currentUserCourses?.map((course) => {
+                            if (course.mapType === "SCRAP") {
                                 return (
                                     <CourseCard
-                                        key={course.post_id}
-                                        postId={course.post_id}
+                                        key={course.mapId}
+                                        postId={course.mapId}
                                         variant={"course"}
+                                        mapImage={course.mapImage}
                                     >
-                                        {course.post_title}
+                                        {course.mapName}
                                     </CourseCard>
                                 );
                             }
@@ -165,15 +197,16 @@ function MyPage() {
                         <Typography variant="h6">내가 추천한 코스</Typography>
                     </Stack>
                     <Stack direction={"row"}>
-                        {DummyCourseList.map((course) => {
-                            if (course.user_id !== DummyUser.user_id) {
+                        {currentMapPostsList?.map((course) => {
+                            if (course.isMine) {
                                 return (
                                     <CourseCard
-                                        key={course.post_id}
-                                        postId={course.post_id}
+                                        key={course.postId}
+                                        postId={course.postId}
                                         variant={"my_post"}
+                                        mapImage={course.mapImage}
                                     >
-                                        {course.post_title}
+                                        {course.postTitle}
                                     </CourseCard>
                                 );
                             }
