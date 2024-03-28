@@ -1,5 +1,17 @@
 import { axiosInstance } from "../../utils/axios/AxiosInstance";
 
+// 유저 프로필 조회
+const getUserInfo = async () => {
+    try {
+        const response = axiosInstance.get("/users/profile");
+        if (response.status === 200) {
+            return response.data;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 // 유저 프로필 수정
 const editUserInfo = async ({ userId, nickname, profileImage }) => {
     const body = {
@@ -13,4 +25,4 @@ const editUserInfo = async ({ userId, nickname, profileImage }) => {
     }
 };
 
-export { editUserInfo };
+export { getUserInfo, editUserInfo };
