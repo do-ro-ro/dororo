@@ -17,7 +17,7 @@ public abstract class PostResponseDto { // post의 response에서 공통으로 �
     protected Integer mapId;
     @Schema(description = "S3 버킷에 저장된 맵 이미지의 주소")
     protected String mapImage;
-    protected String userName;    // 게시글 작성자 명
+    protected String userNickName;    // 게시글 작성자 닉네임
     protected Timestamp createdAt;    // 최신 순 정렬에 사용
     protected int scrapCount; // 인기 순 정렬에 사용
 
