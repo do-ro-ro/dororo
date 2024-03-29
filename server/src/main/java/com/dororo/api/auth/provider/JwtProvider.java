@@ -24,7 +24,7 @@ public class JwtProvider {
 
 	@Value("${secret-key}")
 	private String secretKey;
-	public static final long ACCESS_TOKEN_EXPIRE_TIME = 60 * 60 * 1000L; //액세스 토큰 1시간
+	public static final long ACCESS_TOKEN_EXPIRE_TIME = 28 * 24 * 60 * 60 * 1000L; //액세스 토큰 임시로 4주
 	public static final long REFRESH_TOKEN_EXPIRE_TIME = 28 * 24 * 60 * 60 * 1000L;  // 리프레시 토큰 4주
 	public String createAccessToken (String userId) { // 로그인 시 토큰 발급
 		Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)); //시크릿 키 만들기
