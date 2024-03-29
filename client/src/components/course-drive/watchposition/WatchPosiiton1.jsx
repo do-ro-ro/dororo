@@ -7,6 +7,9 @@ function WatchPosiiton1({ setWatchLat1, setWatchLng1 }) {
 
     useEffect(() => {
         if (navigator.geolocation) {
+            const options = {
+                enableHighAccuracy: true, // enableHighAccuracy 옵션을 활성화합니다.
+            };
             const watchId = navigator.geolocation.watchPosition(
                 (position) => {
                     setLatitude(position.coords.latitude);
@@ -19,6 +22,7 @@ function WatchPosiiton1({ setWatchLat1, setWatchLng1 }) {
                 (error) => {
                     setError(error.message);
                 },
+                options, // 옵션을 watchPosition() 메서드에 전달합니다.
             );
 
             return () => {

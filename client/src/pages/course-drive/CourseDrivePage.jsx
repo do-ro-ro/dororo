@@ -137,9 +137,10 @@ function CourseDrivePage() {
                 {/* <ServerTest setcoolList={setcoolList} /> */}
                 {/* <Map lat={lat} lon={lon} /> */}
                 <Topbar>코스 이름</Topbar>
-                {/* <MapTest lat={lat} lng={lng} /> */}
+
                 <MapTest2 watchLat1={watchLat1} watchLng1={watchLng1} />
                 <MapTest3 googleLat={googleLat} googleLng={googleLng} />
+                <MapTest lat={lat} lng={lng} />
                 {/* <StopOver
                     lat={lat}
                     lng={lng}
