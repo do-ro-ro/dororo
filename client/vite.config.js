@@ -39,6 +39,25 @@ export default defineConfig({
                         purpose: "any",
                     },
                 ],
+                workbox: {
+                    runtimeCaching: [
+                        {
+                            // API 요청에 대한 네트워크 우선 전략
+                            urlPattern: new RegExp("^/api"),
+                            handler: "NetworkFirst",
+                        },
+                        {
+                            // OAuth2 요청에 대한 네트워크 우선 전략
+                            urlPattern: new RegExp("^/oauth2"),
+                            handler: "NetworkFirst",
+                        },
+                        {
+                            // API 문서 요청에 대한 네트워크 우선 전략
+                            urlPattern: new RegExp("^/api-docs"),
+                            handler: "NetworkFirst",
+                        },
+                    ],
+                },
             },
         }),
     ],
