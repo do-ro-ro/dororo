@@ -7,10 +7,12 @@ import com.dororo.api.db.repository.MapRepository;
 import com.dororo.api.db.repository.UserRepository;
 import com.dororo.api.map.dto.*;
 import com.dororo.api.utils.auth.AuthUtils;
+import com.dororo.api.utils.s3.S3Uploader;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +30,8 @@ public class MapService {
     private MapRepository mapRepository;
     @Autowired
     private AuthUtils authUtils;
-
+    @Autowired
+    private S3Uploader s3Uploader;
 
 
     public List<MapResponseDto> getAllMaps(MapEntity.Maptype maptype, String access) {
@@ -148,19 +151,27 @@ public class MapService {
 
         return mapList;
     }
-    public void saveMap(AddMapRequestDto addMapRequestDto,String access) {
+    public void saveMap(AddMapRequestDto addMapRequestDto, String access, MultipartFile mapImage) {
+
         //로그인 한 유저 정보
         UserEntity userEntity = authUtils.getUserEntityFromAccess(access);
-       // 엔티티 변환 로직
-        System.out.println("save 에서 addMapRequestDto.getOriginMapRouteAxis() : "+ addMapRequestDto.getOriginMapRouteAxis());
-        System.out.println("convertToLineString(addMapRequestDto.getOriginMapRouteAxis()) : " + convertToLineString(addMapRequestDto.getOriginMapRouteAxis()));
+        String imageURL ;
+        if(mapImage != null) {
+
+             imageURL = s3Uploader.uploadFileToS3(mapImage, "mapImage");
+
+        } else {
+             imageURL = " ";
+        }
+
+        // 엔티티 변환 로직
         MapEntity mapEntity = new MapEntity();
         mapEntity.setOriginMapRouteAxis(convertToLineString(addMapRequestDto.getOriginMapRouteAxis()));
         mapEntity.setConvertedRouteAxis(convertToLineString(addMapRequestDto.getConvertedRouteAxis()));
         mapEntity.setMapDistance(addMapRequestDto.getMapDistance());
         mapEntity.setMapName(addMapRequestDto.getMapName());
         mapEntity.setMapType(addMapRequestDto.getMapType());
-        mapEntity.setMapImage(addMapRequestDto.getMapImage());
+        mapEntity.setMapImage(imageURL);
         mapEntity.setOriginalMapId(0);
         mapEntity.setMapCompletion(false);
         mapEntity.setUserId(userEntity);
