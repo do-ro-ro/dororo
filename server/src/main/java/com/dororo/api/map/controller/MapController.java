@@ -36,7 +36,7 @@ public class MapController {
         return new ResponseEntity(detailMapResponseDto, HttpStatus.OK);
     }
 
-    //맵 생성
+    //맵 생성(샘플)
     @PostMapping("")
     public ResponseEntity createMap(@RequestBody CreateMapRequestDto createMapRequestDto,
                                     @RequestHeader("access") String access) {
@@ -44,7 +44,14 @@ public class MapController {
 
         return new ResponseEntity(createMapList, HttpStatus.CREATED);
     }
-
+// 찐 맵 생성
+//    @PostMapping("")
+//    public ResponseEntity createMap(@RequestBody CreateMapRequestDto createMapRequestDto,
+//                                    @RequestHeader("access") String access) {
+//        List<CreateMapResponseDto>  createMapList =  mapService.createMapSample(createMapRequestDto,access);
+//
+//        return new ResponseEntity(createMapList, HttpStatus.CREATED);
+//    }
     //맵 저장
     @PostMapping("/save")
     public ResponseEntity saveMap(@RequestBody AddMapRequestDto addMapRequestDto,
