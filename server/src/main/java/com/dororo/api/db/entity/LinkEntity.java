@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
 import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -14,6 +16,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @Setter
 @Table(name = "links")	// schema 설정 따로 x, public schema 내에 생성됨.
+@ToString
 public class LinkEntity {
 
 	@Id
