@@ -12,6 +12,7 @@ const OauthPage = () => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const accessToken = urlParams.get("access");
+        console.log(accessToken);
         const refreshToken = urlParams.get("refresh");
 
         if (accessToken && refreshToken) {
@@ -31,10 +32,10 @@ const OauthPage = () => {
         }
     }, []);
 
-    useEffect(() => {
-        if (user) navigate("/main");
-        else navigate("/");
-    }, [user, navigate]);
+    // useEffect(() => {
+    //     if (user) navigate("/main");
+    //     else navigate("/");
+    // }, [user, navigate]);
 
     return <div>Oauth Redirect Page</div>;
 };
