@@ -83,7 +83,15 @@ define(["./workbox-b5f7729d"], function (workbox) {
      */
 
     workbox.cleanupOutdatedCaches();
-
+    // Setup a network first strategy for API calls
+    workbox.routing.registerRoute(
+        ({ url }) =>
+            url.pathname.startsWith("/api") ||
+            url.pathname.startsWith("/oauth2") ||
+            url.pathname.startsWith("/api-docs"),
+        new workbox.strategies.NetworkOnly(), // This could be NetworkFirst if you want to use the cache as a fallback
+    );
+    workbox.precacheAndRoute([], {});
     workbox.registerRoute(
         new workbox.NavigationRoute(
             workbox.createHandlerBoundToURL("index.html"),
