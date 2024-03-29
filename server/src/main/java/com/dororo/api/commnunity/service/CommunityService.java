@@ -30,6 +30,9 @@ public class CommunityService {
 
     private final AuthUtils authUtils;
 
+    private final String SCRAP_PLUS = "PLUS";
+    private final String SCRAP_MINUS = "MINUS";
+
 
     // <------------------------ POST part ------------------------>
     public PostEntity addPost(String access, AddPostDto addPostDto) {
@@ -50,7 +53,7 @@ public class CommunityService {
     public void scrapPost(String access, Integer postId) {
         String userUniqueId = authUtils.getUserUniqueIdFromAccess(access);    // 스크랩한 유저의 unique ID
         PostEntity postEntity = findPostInDataBaseByPostId(postId);
-        postEntity.addScrapCount(); // 스크랩 수 1 증가
+        postEntity.modifyScrapCount(SCRAP_PLUS); // 스크랩 수 1 증가
         postRepository.save(postEntity);    // 증가한 스크랩 수를 db에 저장
         MapEntity originMapEntity = postEntity.getMapId();
 
@@ -69,7 +72,7 @@ public class CommunityService {
                 .map(m -> {
                     PostDetailsDto postDetailsDto = modelMapper.map(m, PostDetailsDto.class);
                     postDetailsDto.setIsMine(userUniqueId.equals(m.getWriterUniqueId())); // 유저가 작성한 게시글인지 여부
-                    postDetailsDto.setIsScraped(checkIsScraped(userEntity, m));  // 유저가 해당 게시글을 스크랩 했는지 여부
+                    postDetailsDto.setIsScraped(getScrapedMapEntity(userEntity, m).isPresent());  // 유저가 해당 게시글을 스크랩 했는지 여부
 
                     return postDetailsDto;
                 }) // Entity -> Dto 변환
@@ -78,16 +81,32 @@ public class CommunityService {
         return postDetailsDtoList;
     }
 
-    public PostDetailsDto postDetails(Integer postId) {
-        PostEntity postEntity = findPostInDataBaseByPostId(postId);
+    public PostDetailsDto postDetails(String access, Integer postId) {
+        UserEntity userEntity = authUtils.getUserEntityFromAccess(access);
+        String userUniqueId = userEntity.getUniqueId();
 
-        return modelMapper.map(postEntity, PostDetailsDto.class);
+        PostEntity postEntity = findPostInDataBaseByPostId(postId);
+        PostDetailsDto postDetailsDto = modelMapper.map(postEntity, PostDetailsDto.class);
+        postDetailsDto.setIsMine(userUniqueId.equals(postEntity.getWriterUniqueId())); // 유저가 작성한 게시글인지 여부
+        postDetailsDto.setIsScraped(getScrapedMapEntity(userEntity, postEntity).isPresent());  // 유저가 해당 게시글을 스크랩 했는지 여부
+
+        return postDetailsDto;
     }
 
     // <------------------------ DELETE part ------------------------>
     public void deletePost(Integer postId) {
         PostEntity postEntity = findPostInDataBaseByPostId(postId);
         postRepository.delete(postEntity);  // deleteById(postId)를 써도 되지만 위의 메서드에서 객체가 있는지 확인 했고, 있다면 이미 메모리에 객체가 로드 됐으므로 delete(postEntity)를 사용했음
+    }
+
+    public void cancelScrapPost(String access, Integer postId) {
+        UserEntity userEntity = authUtils.getUserEntityFromAccess(access);
+        PostEntity postEntity = findPostInDataBaseByPostId(postId);
+        Optional<MapEntity> scrapedMapEntity = getScrapedMapEntity(userEntity, postEntity); // postEntity의 mapId를 original mapId로 가지는 맵 조회
+        if (scrapedMapEntity.isPresent()) mapRepository.delete(scrapedMapEntity.get());    // 스크랩한 맵 존재하는지 확인, 존재 시 삭제
+
+        postEntity.modifyScrapCount(SCRAP_MINUS);   // 스크랩 수 조정
+        postRepository.save(postEntity);
     }
 
     // <------------------------ Common method part ------------------------>
@@ -100,11 +119,10 @@ public class CommunityService {
     }
 
     // <------------ For Readability ------------>
-    private Boolean checkIsScraped(UserEntity userId, PostEntity postEntity) {
+    private Optional<MapEntity> getScrapedMapEntity(UserEntity userId, PostEntity postEntity) {
         MapEntity mapEntity = postEntity.getMapId();
-        Optional<MapEntity> scrapedMapEntity = mapRepository.findByUserIdAndOriginalMapId(userId, mapEntity.getMapId());
 
-        return scrapedMapEntity.isPresent();  // 조회되는 맵 있으면 true 리턴
+        return mapRepository.findByUserIdAndOriginalMapId(userId, mapEntity.getMapId());  // Optional 객체 리턴
     }
 
     private void makeScrapMap(String userUniqueId, MapEntity originMapEntity) {   // 스크랩하여 유저에게 맵을 저장하는 함수, 일단 MapEntity 저장 방식이 Setter이므로 여기서도 Setter로 하지만, 바뀌면 좋을 듯

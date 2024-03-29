@@ -26,6 +26,7 @@ class PostGresObject():
             # self.db.commit()
         except Exception as e:
             print(f"An error occurred: {e}")
+            print(args)
             self.db.rollback()
             # 오류 발생 시 롤백
 

@@ -36,7 +36,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		String refreshToken = jwtProvider.createRefreshToken();
 
 		redisService.setStringValue(refreshToken, uniqueId, jwtProvider.REFRESH_TOKEN_EXPIRE_TIME);
-		response.sendRedirect("http://localhost:3000/auth/oauth-response?"
+		response.sendRedirect("http://localhost:8080/auth/oauth-response?"
 			+"access="+accessToken+"&"
 			+"refresh="+refreshToken);
 	}

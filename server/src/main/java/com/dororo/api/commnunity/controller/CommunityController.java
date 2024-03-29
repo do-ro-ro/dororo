@@ -61,15 +61,7 @@ public class CommunityController {
 
     @Operation(summary = "커뮤니티 map post 스크랩 요청", description = "코스 스크랩을 했을 때 동작을 수행하는 API입니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "코스 스크랩 성공"
-//                    content = @Content(examples = {
-//                            @ExampleObject(
-//                                    name = "Post 스크랩 반환 body",
-//                                    summary = "Post 생성 반환 body의 예시(게시글 스크랩의 경우 마이 페이지에 map으로 저장됨)",
-//                                    value = "{\"id\": 1, \"_links\": {\"mapDetails\": {\"href\": \"https://j10e202.p.ssafy.io/api/maps/1\"}}}"
-//                            )
-//                    })
-            ),
+            @ApiResponse(responseCode = "201", description = "코스 스크랩 성공"),
             @ApiResponse(responseCode = "400", description = "요청에 필요한 헤더(액세스 토큰)가 없음",
                     content = @Content(schema = @Schema(example = "No token in header."))),
             @ApiResponse(responseCode = "401", description = "액세스 토큰 만료 or 형식 안맞음",
@@ -149,7 +141,7 @@ public class CommunityController {
     @GetMapping("/{postId}")
     public ResponseEntity postDetails(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
                                       @Parameter(in = ParameterIn.PATH) @PathVariable(name = "postId") Integer postId) {
-        PostDetailsDto postDetailsDto = communityService.postDetails(postId);
+        PostDetailsDto postDetailsDto = communityService.postDetails(access, postId);
 
         return new ResponseEntity(postDetailsDto, HttpStatus.OK);
     }
@@ -183,6 +175,31 @@ public class CommunityController {
     public ResponseEntity deletePost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
                                      @Parameter(in = ParameterIn.PATH) @PathVariable(name = "postId") Integer postId) {
         communityService.deletePost(postId);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @Operation(summary = "커뮤니티 map post 스크랩 취소 요청", description = "코스 스크랩 취소를 했을 때 동작을 수행하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "코스 스크랩 취소 성공"),
+            @ApiResponse(responseCode = "400", description = "요청에 필요한 헤더(액세스 토큰)가 없음",
+                    content = @Content(schema = @Schema(example = "No token in header."))),
+            @ApiResponse(responseCode = "401", description = "액세스 토큰 만료 or 형식 안맞음",
+                    content = @Content(schema = @Schema(example = "Get new AccessToken"))),
+            @ApiResponse(responseCode = "404", description = "요청 받은 post의 ID로 게시글 조회 불가",
+                    content = @Content(examples = {
+                            @ExampleObject(
+                                    name = "Not Found",
+                                    summary = "요청 받은 ID에 해당하는 데이터가 없음",
+                                    value = "No matching content with requested post ID"
+                            )
+                    })
+            )
+    })
+    @DeleteMapping("/{postId}/scrap")
+    public ResponseEntity cancelScrapPost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,
+                                    @Parameter(in = ParameterIn.PATH) @PathVariable(name = "postId") Integer postId) {
+        communityService.cancelScrapPost(access, postId);
 
         return new ResponseEntity(HttpStatus.OK);
     }
