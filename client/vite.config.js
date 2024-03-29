@@ -41,10 +41,11 @@ export default defineConfig({
                 ],
             },
             workbox: {
-                // Workbox 설정으로 캐싱을 비활성화합니다.
-                runtimeCaching: [],
-                skipWaiting: true,
-                clientsClaim: true,
+                navigateFallbackDenylist: [
+                    /^\/api/,
+                    /^\/oauth2/,
+                    /^\/api-docs/,
+                ],
             },
         }),
     ],
