@@ -1,5 +1,37 @@
 import React, { useEffect, useState } from "react";
 import me_pointer from "../../assets/me_pointer.png";
+import start_pointer from "../../assets/map_marker_start.png";
+import end_pointer from "../../assets/map_marker_end.png";
+import waypoint_1 from "../../assets/waypoints_number/waypoint_1.png";
+import waypoint_2 from "../../assets/waypoints_number/waypoint_2.png";
+import waypoint_3 from "../../assets/waypoints_number/waypoint_3.png";
+import waypoint_4 from "../../assets/waypoints_number/waypoint_4.png";
+import waypoint_5 from "../../assets/waypoints_number/waypoint_5.png";
+import waypoint_6 from "../../assets/waypoints_number/waypoint_6.png";
+import waypoint_7 from "../../assets/waypoints_number/waypoint_7.png";
+import waypoint_8 from "../../assets/waypoints_number/waypoint_8.png";
+import waypoint_9 from "../../assets/waypoints_number/waypoint_9.png";
+import waypoint_10 from "../../assets/waypoints_number/waypoint_10.png";
+import waypoint_11 from "../../assets/waypoints_number/waypoint_11.png";
+import waypoint_12 from "../../assets/waypoints_number/waypoint_12.png";
+import waypoint_13 from "../../assets/waypoints_number/waypoint_13.png";
+import waypoint_14 from "../../assets/waypoints_number/waypoint_14.png";
+import waypoint_15 from "../../assets/waypoints_number/waypoint_15.png";
+import waypoint_16 from "../../assets/waypoints_number/waypoint_16.png";
+import waypoint_17 from "../../assets/waypoints_number/waypoint_17.png";
+import waypoint_18 from "../../assets/waypoints_number/waypoint_18.png";
+import waypoint_19 from "../../assets/waypoints_number/waypoint_19.png";
+import waypoint_20 from "../../assets/waypoints_number/waypoint_20.png";
+import waypoint_21 from "../../assets/waypoints_number/waypoint_21.png";
+import waypoint_22 from "../../assets/waypoints_number/waypoint_22.png";
+import waypoint_23 from "../../assets/waypoints_number/waypoint_23.png";
+import waypoint_24 from "../../assets/waypoints_number/waypoint_24.png";
+import waypoint_25 from "../../assets/waypoints_number/waypoint_25.png";
+import waypoint_26 from "../../assets/waypoints_number/waypoint_26.png";
+import waypoint_27 from "../../assets/waypoints_number/waypoint_27.png";
+import waypoint_28 from "../../assets/waypoints_number/waypoint_28.png";
+import waypoint_29 from "../../assets/waypoints_number/waypoint_29.png";
+import waypoint_30 from "../../assets/waypoints_number/waypoint_30.png";
 
 const StopOver = ({
     lat,
@@ -14,6 +46,38 @@ const StopOver = ({
     const [resultMarkerArr, setResultMarkerArr] = useState([]);
     const [resultInfoArr, setResultInfoArr] = useState([]);
     const [currentLocationMarker, setCurrentLocationMarker] = useState(null); // 추가: 현재 위치 마커
+    const points = [
+        waypoint_1,
+        waypoint_2,
+        waypoint_3,
+        waypoint_4,
+        waypoint_5,
+        waypoint_6,
+        waypoint_7,
+        waypoint_8,
+        waypoint_9,
+        waypoint_10,
+        waypoint_11,
+        waypoint_12,
+        waypoint_13,
+        waypoint_14,
+        waypoint_15,
+        waypoint_16,
+        waypoint_17,
+        waypoint_18,
+        waypoint_19,
+        waypoint_20,
+        waypoint_21,
+        waypoint_22,
+        waypoint_23,
+        waypoint_24,
+        waypoint_25,
+        waypoint_26,
+        waypoint_27,
+        waypoint_28,
+        waypoint_29,
+        waypoint_30,
+    ];
 
     useEffect(() => {
         if (coolList.length > 2) {
@@ -68,7 +132,7 @@ const StopOver = ({
                 coolList[0].lat,
                 coolList[0].lng,
             ),
-            icon: "/upload/tmap/marker/pin_r_m_s.png",
+            icon: start_pointer,
             iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
@@ -79,7 +143,7 @@ const StopOver = ({
                 coolList[coolList.length - 1].lat,
                 coolList[coolList.length - 1].lng,
             ),
-            icon: "/upload/tmap/marker/pin_r_m_e.png",
+            icon: end_pointer,
             iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
@@ -88,7 +152,7 @@ const StopOver = ({
         const waypoints = fillterList.map((point, index) => ({
             lat: point.lat,
             lng: point.lng,
-            icon: `/upload/tmap/marker/pin_b_m_${index + 1}.png`,
+            icon: points[index],
         }));
 
         waypoints.forEach((waypoint) => {
