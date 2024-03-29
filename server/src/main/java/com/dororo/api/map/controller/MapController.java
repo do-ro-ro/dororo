@@ -40,7 +40,7 @@ public class MapController {
     @PostMapping("")
     public ResponseEntity createMap(@RequestBody CreateMapRequestDto createMapRequestDto,
                                     @RequestHeader("access") String access) {
-        List<CreateMapResponseDto>  createMapList =  mapService.createMap(createMapRequestDto,access);
+        List<CreateMapResponseDto>  createMapList =  mapService.createMapSample(createMapRequestDto,access);
 
         return new ResponseEntity(createMapList, HttpStatus.CREATED);
     }

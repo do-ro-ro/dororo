@@ -16,16 +16,6 @@ public class CreateMapResponseDto {
     private List<LatitudeLongitude> originMapRouteAxis;
     private List<LatitudeLongitude> convertedRouteAxis;
     //맵의 길이
-    private float mapDistance;
+//    private float mapDistance;
 
-
-//    public static CreateMapResponseDto fromEntity(MapEntity entity) {
-//        List<LatitudeLongitude> routeAxis = Stream.of(entity.getMapRouteAxis().getCoordinates())
-//                .map(coord -> new LatitudeLongitude(coord.y, coord.x)) // y가 위도, x가 경도
-//                .collect(Collectors.toList());
-//        return CreateMapResponseDto.builder()
-//                .mapRouteAxis(routeAxis)
-//                .mapDistance(entity.getMapDistance())
-//                .build();
-//    }
 }
