@@ -44,17 +44,17 @@ export default defineConfig({
                 runtimeCaching: [
                     {
                         // API 요청에 대한 네트워크 우선 전략
-                        urlPattern: new RegExp("^/api"),
+                        urlPattern: /^\/api\/.*/,
                         handler: "NetworkOnly",
                     },
                     {
                         // OAuth2 요청에 대한 네트워크 우선 전략
-                        urlPattern: new RegExp("^/oauth2"),
+                        urlPattern: /^\/oauth2\/.*/,
                         handler: "NetworkOnly",
                     },
                     {
                         // API 문서 요청에 대한 네트워크 우선 전략
-                        urlPattern: new RegExp("^/api-docs"),
+                        urlPattern: /^\/api-docs\/.*/,
                         handler: "NetworkOnly",
                     },
                 ],
