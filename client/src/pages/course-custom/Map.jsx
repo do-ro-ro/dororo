@@ -3,8 +3,12 @@ import React, { useEffect, useState } from "react";
 import startPin from "../../assets/map_marker_start.png";
 import endPin from "../../assets/map_marker_end.png";
 import waypointPin from "../../assets/waypoint_yet.png";
+import { useLocation } from "react-router-dom";
 
 function Map({ course }) {
+    const location = useLocation();
+    const currentCourse = location.state;
+
     const [map, setMap] = useState(null);
     const [markers, setMarkers] = useState([]);
 
@@ -45,13 +49,21 @@ function Map({ course }) {
         }
     };
 
-    const startPoint = course[0];
-    const endPoint = course[course.length - 1];
+    const startPoint = currentCourse?.originMapRouteAxis[0];
+    const endPoint =
+        currentCourse?.originMapRouteAxis[
+            currentCourse.originMapRouteAxis.length - 1
+        ];
     useEffect(() => {
         if (course.length > 1) {
-            setFilteredCourse(course.slice(1, course.length - 1));
+            setFilteredCourse(
+                currentCourse.originMapRouteAxis.slice(
+                    1,
+                    currentCourse.originMapRouteAxis.length - 1,
+                ),
+            );
         }
-    }, [course]);
+    }, [currentCourse]);
 
     // 지도 시작점을 위한 센터 포인트 정의
     const centerPoint = {
@@ -67,7 +79,7 @@ function Map({ course }) {
             // center: new window.Tmapv2.LatLng(lat, lon),
 
             width: "100vw",
-            height: "100vh",
+            height: "80vh",
             zoom: 16,
         });
 
@@ -209,6 +221,8 @@ function Map({ course }) {
                             icon: markerImg,
                             iconSize: size,
                             draggable: draggable,
+                            opacity: 0,
+                            visible: false,
                             map: map,
                         });
 
@@ -221,21 +235,27 @@ function Map({ course }) {
             });
     };
 
+    // 컴포넌트가 랜딩될 때 발생해야 하는 hook
     useEffect(() => {
+        console.log(currentCourse);
+
+        //맵이 없으면 InitMap
         if (map === null) {
             initMap();
         }
+        setCourseLine(currentCourse.convertedRouteAxis);
     }, []);
 
-    useEffect(() => {
-        if (map !== null) {
-            postRouteSequential30();
-            // console.log(courseLine);
-        }
-    }, [map]);
+    // useEffect(() => {
+    //     if (map !== null) {
+    //         postRouteSequential30();
+    //         // console.log(courseLine);
+    //     }
+    // }, [map]);
 
     useEffect(() => {
         console.log(courseLine); // courseLine이 변경될 때 로그를 출력
+        postRouteSequential30;
         if (courseLine.length > 0) {
             const newPolyline = new window.Tmapv2.Polyline({
                 path: courseLine,
