@@ -45,17 +45,17 @@ export default defineConfig({
                     {
                         // API 요청에 대한 네트워크 우선 전략
                         urlPattern: new RegExp("^/api"),
-                        handler: "NetworkFirst",
+                        handler: "NetworkOnly",
                     },
                     {
                         // OAuth2 요청에 대한 네트워크 우선 전략
                         urlPattern: new RegExp("^/oauth2"),
-                        handler: "NetworkFirst",
+                        handler: "NetworkOnly",
                     },
                     {
                         // API 문서 요청에 대한 네트워크 우선 전략
                         urlPattern: new RegExp("^/api-docs"),
-                        handler: "NetworkFirst",
+                        handler: "NetworkOnly",
                     },
                 ],
             },
