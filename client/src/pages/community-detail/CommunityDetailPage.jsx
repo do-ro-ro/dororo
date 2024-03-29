@@ -30,7 +30,7 @@ function CommunityDetailPage() {
     const [scrapCount, setScrapCount] = useState(0);
 
     useEffect(() => {
-        console.log(postId);
+        // console.log(postId);
         const fetchData = async () => {
             try {
                 const response = await getMapPosts(postId);
