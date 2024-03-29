@@ -7,10 +7,7 @@ const LoginButton = () => {
     };
     return (
         <div>
-            <button
-                // 임시 onClick - 메인화면으로 navigate
-                onClick={handleNaverLogin}
-            >
+            <button onClick={handleNaverLogin}>
                 <img src={naverLogin} alt="로고" className="p-20 pt-10" />
             </button>
         </div>
