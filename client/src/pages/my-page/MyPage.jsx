@@ -44,7 +44,7 @@ function MyPage() {
             try {
                 const response = await getMapsList();
                 const updatedUserCourses = response;
-                console.log(updatedUserCourses);
+                // console.log(updatedUserCourses);
                 setCurrentUserCourses(updatedUserCourses);
             } catch (error) {
                 console.log(error);

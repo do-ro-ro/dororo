@@ -5,6 +5,16 @@ import endPin from "../../assets/map_marker_end.png";
 import waypointPin from "../../assets/waypoint_yet.png";
 import { useLocation } from "react-router-dom";
 
+// 커스텀 대안
+
+// drawer 등 각 Marker에 대한 바로가기 버튼 생성 or 직접 선택 가능
+// waypoint 마커를 클릭하면, draggable 활성화.
+// drag가 끝날 때, eventListener를 통해 마커의 getPosition 실행
+// 해당 인덱스의 마커 좌표값 변경, 경유지 코스 API 조회 호출 (Polyline 갱신)
+// 저장 or 나가기 버튼을 통해 코스 형태 결정
+// 저장을 누르면 코스 이름 입력, 저장. (기존 추천 코스 저장 로직과 동일)
+// 나가기를 누르면 navigate(-1)이 아니라, 그냥 해당 mapId 정보로 redirect
+
 function Map({ course }) {
     const location = useLocation();
     const currentCourse = location.state;
@@ -235,27 +245,22 @@ function Map({ course }) {
             });
     };
 
-    // 컴포넌트가 랜딩될 때 발생해야 하는 hook
     useEffect(() => {
         console.log(currentCourse);
-
-        //맵이 없으면 InitMap
         if (map === null) {
             initMap();
         }
-        setCourseLine(currentCourse.convertedRouteAxis);
     }, []);
 
-    // useEffect(() => {
-    //     if (map !== null) {
-    //         postRouteSequential30();
-    //         // console.log(courseLine);
-    //     }
-    // }, [map]);
+    useEffect(() => {
+        if (map !== null) {
+            postRouteSequential30();
+            // console.log(courseLine);
+        }
+    }, [map]);
 
     useEffect(() => {
         console.log(courseLine); // courseLine이 변경될 때 로그를 출력
-        postRouteSequential30;
         if (courseLine.length > 0) {
             const newPolyline = new window.Tmapv2.Polyline({
                 path: courseLine,
