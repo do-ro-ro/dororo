@@ -16,7 +16,16 @@ function Topbar(props) {
 
     return (
         <>
-            <Box sx={{ flexGrow: 1, position: "sticky" }}>
+            <Box
+                sx={{
+                    flexGrow: 1,
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    zIndex: 10,
+                }}
+            >
                 <AppBar position="static" color="inherit">
                     <Container maxWidth="xl">
                         <Toolbar>

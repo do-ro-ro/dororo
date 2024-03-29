@@ -341,8 +341,12 @@ const Recommend = ({ locations, currentIndex }) => {
                 locations={locations}
             ></CourseInfo>
 
-            <div id="map_wrap" className="map_wrap" style={{ zIndex: 1 }}>
-                <div id="map_div"></div>
+            <div
+                id="map_wrap"
+                className="map_wrap"
+                style={{ height: "calc(100vh - 100px)", zIndex: 1 }}
+            >
+                <div id="map_div" style={{ height: "100%" }}></div>
             </div>
 
             <div>
