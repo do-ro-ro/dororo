@@ -4,18 +4,21 @@ import startPin from "../../assets/map_marker_start.png";
 import endPin from "../../assets/map_marker_end.png";
 import waypointPin from "../../assets/waypoint_yet.png";
 
-function Map({ course, lat, lng }) {
+function Map({ course }) {
     const [map, setMap] = useState(null);
     const [markers, setMarkers] = useState([]);
 
-    // polyline을 그리기 위한 path(꼭지점) 좌표를 저장하는 리스트
+    // polyline을 그리기 위한 보정된 path(꼭지점) 좌표를 저장하는 리스트
     const [courseLine, setCourseLine] = useState([]);
+
+    // viaPoint 설정을 위해 첫점과 끝점을 제외한 path 좌표를 저장하는 리스트
+    const [filteredCourse, setFilteredCourse] = useState([]);
+
+    // 지도 위 거점을 찍기 위한 오리지널 노드 좌표를 저장하는 리스트
+    const [courseNode, setCourseNode] = useState([]);
 
     const [resultMarkerArr, setResultMarkerArr] = useState([]);
     const [resultInfoArr, setResultInfoArr] = useState([]);
-
-    // viaPoint 설정을 위한 filteredCourse
-    const [filteredCourse, setFilteredCourse] = useState([]);
 
     // 실행취소 기능 구현을 위한 상태와 함수
     const [isPolylineEditing, setIsPolylineEditing] = useState(false);
