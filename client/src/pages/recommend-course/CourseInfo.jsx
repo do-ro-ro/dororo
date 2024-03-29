@@ -1,4 +1,4 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Paper } from "@mui/material";
 
 import { useState } from "react";
 import CourseDetailModal from "./CourseDetailModal";
@@ -15,16 +15,15 @@ const CourseInfo = ({ courseInfo, currentIndex, locations }) => {
     };
 
     return (
-        <>
+        <Box>
             <Box
                 sx={{
-                    width: "100%",
-                    height: "16vh",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    position: "relative",
-                    zIndex: 2,
+                    position: "absolute",
+                    top: "50px",
+                    left: 0,
+                    right: 0,
+                    zIndex: 5,
+                    backgroundColor: "#FFFFFF",
                 }}
             >
                 <Box
@@ -96,7 +95,7 @@ const CourseInfo = ({ courseInfo, currentIndex, locations }) => {
                     />
                 )}
             </Box>
-        </>
+        </Box>
     );
 };
 

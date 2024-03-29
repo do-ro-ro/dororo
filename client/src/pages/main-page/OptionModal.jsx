@@ -89,8 +89,12 @@ const OptionModal = ({ open, closeModal, setOption, option }) => {
                     >
                         코스에 대한 편도, 왕복을 선택해주세요!
                     </Typography>
-                    <RadioGroup onChange={handleMethodChange} row>
-                        <Box>
+                    <RadioGroup
+                        onChange={handleMethodChange}
+                        row
+                        sx={{ justifyContent: "center" }}
+                    >
+                        <Box sx={{ display: "flex", justifyContent: "center" }}>
                             <FormControlLabel
                                 value="oneway"
                                 label={
@@ -109,10 +113,9 @@ const OptionModal = ({ open, closeModal, setOption, option }) => {
                                 control={<Radio />}
                                 labelPlacement="start"
                             />
-                        </Box>
-                        <Box>
                             <FormControlLabel
                                 value="roundway"
+                                sx={{ mr: 3 }}
                                 label={
                                     <Box
                                         sx={{
