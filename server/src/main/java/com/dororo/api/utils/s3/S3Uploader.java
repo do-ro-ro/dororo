@@ -71,6 +71,7 @@ public class S3Uploader {
 
     private Optional<File> convert(MultipartFile file) throws IOException { // 로컬에 파일 업로드 및 변환하는 함수, file: 업로드 할 파일
         String dirPath = System.getProperty("user.dir") + "/" + file.getOriginalFilename(); // 로컬에서 저장할 파일 경로 : user.dir=현재 디렉토리 기준(우리 서버 기준으로는 .jar이 돌고 있는 /home/ubuntu/cd_server)
+        System.out.println("dirPath : " + dirPath);
         File convertFile = new File(dirPath);
         if (convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {    // FileOutputStream 데이터를 파일에 바이트 스트림으로 저장

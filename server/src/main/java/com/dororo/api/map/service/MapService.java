@@ -158,7 +158,7 @@ public class MapService {
         String imageURL ;
         if(mapImage != null) {
 
-             imageURL = s3Uploader.uploadFileToS3(mapImage, "mapImage");
+             imageURL = s3Uploader.uploadFileToS3(mapImage, "map");
 
         } else {
              imageURL = " ";
