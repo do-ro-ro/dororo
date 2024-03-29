@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -54,9 +55,10 @@ public class MapController {
 //    }
     //맵 저장
     @PostMapping("/save")
-    public ResponseEntity saveMap(@RequestBody AddMapRequestDto addMapRequestDto,
+    public ResponseEntity saveMap(@RequestPart(value= "request") AddMapRequestDto addMapRequestDto,
+                                  @RequestPart(value= "mapImage") MultipartFile mapImage,
                                   @RequestHeader("access") String access) {
-        mapService.saveMap(addMapRequestDto,access);
+        mapService.saveMap(addMapRequestDto,access, mapImage);
         return ResponseEntity.ok().body("Map saved successfully");
     }
 

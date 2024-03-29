@@ -20,7 +20,6 @@ public class AddMapRequestDto {
     private List<LatitudeLongitude> convertedRouteAxis;
     private float mapDistance;
     private String mapName;
-    private String mapImage;
     private MapEntity.Maptype mapType;
 
 }
