@@ -5,25 +5,7 @@ import StopOver from "../../components/course-drive/StopOver";
 import ServerTest from "../../components/course-drive/ServerTest";
 import Topbar from "../../components/topbar/Topbar";
 import { Button, Stack, Typography } from "@mui/material";
-import Map from "../main-page/Map";
 import IntroductionModal from "../../components/course-drive/IntroductionModal";
-import LocationTest1 from "../../components/course-drive/location-test/LocationTest1";
-import LocationTest2 from "../../components/course-drive/location-test/LocationTest2";
-import LocationTest3 from "../../components/course-drive/location-test/LocationTest3";
-import LocationTest4 from "../../components/course-drive/location-test/LocationTest4";
-import LocationTest5 from "../../components/course-drive/location-test/LocationTest5";
-import LocationTest6 from "../../components/course-drive/location-test/LocationTest6";
-import LocationTest7 from "../../components/course-drive/location-test/LocationTest7";
-import LocationTest8 from "../../components/course-drive/location-test/LocationTest8";
-import LocationTest9 from "../../components/course-drive/location-test/LocationTest9";
-import LocationTest10 from "../../components/course-drive/location-test/LocationTest10";
-
-import MapTest from "../../components/course-drive/location-test/MapTest";
-import MapTest2 from "../../components/course-drive/location-test/MapTes2";
-import MapTest3 from "../../components/course-drive/location-test/MapTest3";
-
-import WatchPosition1 from "../../components/course-drive/watchposition/WatchPosiiton1";
-import GoogleLocation from "../../components/course-drive/location-test/GoogleLocation";
 
 function CourseDrivePage() {
     // 35.095737617642946, 128.84941070168463
