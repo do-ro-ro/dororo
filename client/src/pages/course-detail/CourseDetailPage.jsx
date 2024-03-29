@@ -113,7 +113,9 @@ function CourseDetailPage() {
                                 disabled={
                                     currentCourse?.mapCompletion ? false : true
                                 }
-                                onClick={() => navigate("custom")}
+                                onClick={() =>
+                                    navigate("custom", { state: currentCourse })
+                                }
                             >
                                 코스 수정
                             </Button>
