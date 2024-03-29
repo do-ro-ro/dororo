@@ -85,8 +85,8 @@ def get_traffic():   # 교통량은 api를 통해 받아옴
 
 def do_query(param_list: list, query: str):    # POSTGRES_OBJECT를 이용해서 db 데이터 수정하는 로직
     for data in param_list:
-        for linkId in data:
-            POSTGRES_OBJECT.execute(query, linkId)
+        POSTGRES_OBJECT.execute(query, (data, ))
+
             
     # for data in param_list:
     #     link_id = data[0]
