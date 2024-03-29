@@ -1,4 +1,5 @@
 import {
+    Avatar,
     Box,
     Button,
     IconButton,
@@ -16,68 +17,16 @@ import { getUserInfo } from "../../apis/server/User";
 import { getMapsList } from "../../apis/server/Map";
 import { getMapPostsList } from "../../apis/server/Community";
 
-const DummyCourseList = [
-    {
-        post_id: 0,
-        post_title: "코스 샘플 1",
-        post_content: "내용",
-        updated_at: "2024-03-21",
-        scrap_count: 10,
-        user_id: 1,
-    },
-    {
-        post_id: 1,
-        post_title: "코스 샘플 2",
-        post_content: "내용",
-        updated_at: "2024-03-20",
-        scrap_count: 14,
-        user_id: 10,
-    },
-    {
-        post_id: 2,
-        post_title: "코스 샘플 3",
-        post_content: "내용",
-        updated_at: "2024-03-19",
-        scrap_count: 100,
-        user_id: 1,
-    },
-    {
-        post_id: 3,
-        post_title: "코스 샘플 4",
-        post_content: "내용",
-        updated_at: "2024-03-18",
-        scrap_count: 30,
-        user_id: 11,
-    },
-    {
-        post_id: 4,
-        post_title: "코스 샘플 5",
-        post_content: "내용",
-        updated_at: "2024-03-17",
-        scrap_count: 50,
-        user_id: 1,
-    },
-    {
-        post_id: 5,
-        post_title: "코스 샘플 6",
-        post_content: "내용",
-        updated_at: "2024-03-16",
-        scrap_count: 20,
-        user_id: 14,
-    },
-];
-
-const DummyUser = {
-    user_id: 1,
-    name: "김싸피",
-    nickname: "녹산동레이서",
-    profile_image: BasicProfile,
-};
-
 function MyPage() {
     const [currentUserInfo, setCurrentUserInfo] = useState(null);
     const [currentUserCourses, setCurrentUserCourses] = useState(null);
     const [currentMapPostsList, setCurrentMapPostsList] = useState([]);
+
+    const profileImage =
+        currentUserInfo?.profileImage ||
+        "https://ssafy-dororo.s3.ap-northeast-2.amazonaws.com/user/blank-profile.png";
+
+    const [imgSrc, setImgSrc] = useState(profileImage);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -95,7 +44,7 @@ function MyPage() {
             try {
                 const response = await getMapsList();
                 const updatedUserCourses = response;
-                // console.log(updatedUserCourses);
+                console.log(updatedUserCourses);
                 setCurrentUserCourses(updatedUserCourses);
             } catch (error) {
                 console.log(error);
@@ -108,7 +57,7 @@ function MyPage() {
                 const updatedMapPostsList = response;
                 // console.log(response);
                 setCurrentMapPostsList(updatedMapPostsList);
-                console.log(updatedMapPostsList);
+                // console.log(updatedMapPostsList);
                 // console.log(currentMapPostsList);
             } catch (error) {
                 console.error("게시글 리스트 불러오기 실패", error);
@@ -120,9 +69,8 @@ function MyPage() {
     }, []);
     return (
         <>
+            <Topbar>마이페이지</Topbar>
             <Box pb="10vh">
-                <Topbar>마이페이지</Topbar>
-
                 <Stack mx={4} mt={2} height={"90vh"}>
                     <Paper>
                         <Stack
@@ -132,7 +80,14 @@ function MyPage() {
                         >
                             <Stack direction={"row"} alignItems={"center"}>
                                 <Box sx={{ mr: 2 }}>
-                                    <img width={"30vw"} src={BasicProfile} />
+                                    <Avatar
+                                        alt="profile"
+                                        src={imgSrc}
+                                        sx={{
+                                            width: "2.5rem",
+                                            height: "2.5rem",
+                                        }}
+                                    />
                                 </Box>
 
                                 <Typography>
@@ -146,11 +101,14 @@ function MyPage() {
                             />
                         </Stack>
                     </Paper>
-                    <Typography variant="h6" sx={{ my: 2 }}>
-                        내가 추천받은 코스
-                    </Typography>
+                    <Stack direction={"row"} justifyContent={"space-between"}>
+                        <Typography variant="h6" sx={{ my: 2 }}>
+                            내가 추천받은 코스
+                        </Typography>
+                        <Button>모두 보기</Button>
+                    </Stack>
                     <Stack direction={"row"}>
-                        {currentUserCourses?.map((course) => {
+                        {currentUserCourses?.slice(0, 3).map((course) => {
                             if (course.mapType !== "SCRAP") {
                                 return (
                                     <CourseCard
@@ -194,7 +152,7 @@ function MyPage() {
                         justifyContent={"space-between"}
                         alignItems={"center"}
                     >
-                        <Typography variant="h6">내가 추천한 코스</Typography>
+                        <Typography variant="h6">내가 공유한 코스</Typography>
                     </Stack>
                     <Stack direction={"row"}>
                         {currentMapPostsList?.map((course) => {
