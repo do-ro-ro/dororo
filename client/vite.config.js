@@ -12,8 +12,6 @@ export default defineConfig({
                 "maskable_icon_x192.png",
                 "maskable_icon_x512.png",
             ],
-            registerType: "autoUpdate",
-            devOptions: { enabled: true },
             manifest: {
                 name: "도로로",
                 short_name: "도로로",
@@ -37,25 +35,6 @@ export default defineConfig({
                         type: "image/png",
                         sizes: "512x512",
                         purpose: "any",
-                    },
-                ],
-            },
-            workbox: {
-                runtimeCaching: [
-                    {
-                        // API 요청에 대한 네트워크 우선 전략
-                        urlPattern: /^\/api\/.*/,
-                        handler: "NetworkOnly",
-                    },
-                    {
-                        // OAuth2 요청에 대한 네트워크 우선 전략
-                        urlPattern: /^\/oauth2\/.*/,
-                        handler: "NetworkOnly",
-                    },
-                    {
-                        // API 문서 요청에 대한 네트워크 우선 전략
-                        urlPattern: /^\/api-docs\/.*/,
-                        handler: "NetworkOnly",
                     },
                 ],
             },
