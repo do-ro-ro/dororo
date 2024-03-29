@@ -1,67 +1,52 @@
-import { useState } from "react";
-
-import Map from "./Map";
-import CurrentLocation from "./CurrentLocation";
-import Search from "./Search";
-import RecommendButton from "./RecommendButton";
-import OptionModal from "./OptionModal";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Topbar from "../../components/topbar/Topbar";
+import Recommend from "./Recommend";
+import BottomNav from "./BottomNav";
 
 function RecommendedCoursePage() {
-    const [lat, setLat] = useState(37.5652045);
-    const [lon, setLon] = useState(126.98702028);
-    const [timestamp, setTimestamp] = useState();
+    const [locations, setLocation] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
-    const [option, setOption] = useState({
-        method: "",
-        length: 5,
-        left: 1,
-        right: 1,
-        uturn: 1,
-    });
+    useEffect(() => {
+        axios
+            .get(
+                "https://ccd8f72d-f344-4e8d-8ee0-579f9c938880.mock.pstmn.io/maps",
+            )
+            .then((res) => {
+                setLocation(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
 
-    const [showModal, setShowModal] = useState(false);
-
-    const openModal = () => {
-        setShowModal(true);
+    const handlePrev = () => {
+        setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
     };
 
-    const closeModal = () => {
-        setShowModal(false);
-        console.log(option);
+    const handleNext = () => {
+        setCurrentIndex((prevIndex) =>
+            Math.min(prevIndex + 1, locations.length - 1),
+        );
     };
 
     return (
-        <>
-            {/* <div className="relative "> */}
-            <div>
-                <Search setLat={setLat} setLon={setLon}></Search>
-            </div>
-            <div className="relative ">
-                {/* 지도에 대한 컨테이너 */}
-                <Map lat={lat} lon={lon}></Map>
-                <div className="absolute bottom-40 left-1/2 transform -translate-x-1/2 mb-2">
-                    <RecommendButton openModal={openModal}></RecommendButton>
-                </div>
-            </div>
-            <div className="absolute top-24 right-0  m-4">
-                {/* CurrentLocation의 위치를 지정 */}
-                <CurrentLocation
-                    setLat={setLat}
-                    setLon={setLon}
-                    setTimestamp={setTimestamp}
-                ></CurrentLocation>
-            </div>
-            <div>
-                {showModal && (
-                    <OptionModal
-                        open={showModal}
-                        closeModal={closeModal}
-                        setOption={setOption}
-                        option={option}
-                    />
-                )}
-            </div>
-        </>
+        <div>
+            <Topbar>추천 코스 안내</Topbar>
+            <BottomNav
+                handlePrev={handlePrev}
+                handleNext={handleNext}
+                currentIndex={currentIndex}
+                locations={locations}
+            ></BottomNav>
+            {locations.length > 0 && (
+                <Recommend
+                    locations={locations[currentIndex]}
+                    currentIndex={currentIndex}
+                ></Recommend>
+            )}
+        </div>
     );
 }
 

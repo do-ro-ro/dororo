@@ -26,7 +26,7 @@ function Topbar(props) {
                                     color="inherit"
                                     onClick={() => navigate(-1)}
                                 >
-                                    <ArrowBack />
+                                    <ArrowBack color="primary" />
                                 </IconButton>
                             ) : null}
                             <Typography

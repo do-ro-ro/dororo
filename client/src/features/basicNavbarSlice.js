@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const basicNavbarSlice = createSlice({
     name: "basicnavbar",
     initialState: {
-        value: 1,
+        value: null,
     },
     reducers: {
         changeValue: (state, action) => {

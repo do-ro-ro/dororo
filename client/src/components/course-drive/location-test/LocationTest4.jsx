@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const CurrentLocationTest5 = () => {
+const LocationTest4 = ({ setLat4, setLng4 }) => {
     const [location, setLocation] = useState(null);
     const [error, setError] = useState(null);
 
@@ -12,8 +12,10 @@ const CurrentLocationTest5 = () => {
                     (position) => {
                         const { latitude, longitude } = position.coords;
                         setLocation({ latitude, longitude });
-                        console.log(latitude);
-                        console.log(longitude);
+                        setLat4(latitude);
+                        setLng4(longitude);
+                        // console.log(latitude);
+                        // console.log(longitude);
                     },
                     (error) => {
                         setError(error.message);
@@ -25,7 +27,7 @@ const CurrentLocationTest5 = () => {
         };
 
         // 일정 간격으로 위치 정보를 업데이트하려면 아래 주석 해제
-        const locationInterval = setInterval(getLocation, 100);
+        const locationInterval = setInterval(getLocation, 2400);
 
         // 컴포넌트가 언마운트될 때 clearInterval을 호출하여 간격으로 위치 정보를 업데이트하는 것을 중지
         return () => {
@@ -37,19 +39,19 @@ const CurrentLocationTest5 = () => {
 
     return (
         <div>
-            {location ? (
+            {/* {location ? (
                 <div>
-                    {/* <p>현재 위치:</p> */}
-                    {/* <p>위도: {location.latitude}</p> */}
-                    {/* <p>경도: {location.longitude}</p> */}
+                    <p>현재 위치:</p>
+                    <p>위도: {location.latitude}</p>
+                    <p>경도: {location.longitude}</p>
                 </div>
             ) : error ? (
                 <p>{error}</p>
             ) : (
                 <p>위치 정보를 가져오는 중...</p>
-            )}
+            )} */}
         </div>
     );
 };
 
-export default CurrentLocationTest5;
+export default LocationTest4;
