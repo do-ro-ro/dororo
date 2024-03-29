@@ -7,8 +7,8 @@ import RecommendButton from "./RecommendButton";
 import OptionModal from "./OptionModal";
 
 const Main = () => {
-    const [lat, setLat] = useState(37.5652045);
-    const [lon, setLon] = useState(126.98702028);
+    const [lat, setLat] = useState(37.501286);
+    const [lon, setLon] = useState(127.0396029);
     const [timestamp, setTimestamp] = useState();
 
     const [option, setOption] = useState({
