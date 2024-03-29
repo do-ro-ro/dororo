@@ -86,15 +86,20 @@ public class MapService {
     }
 
     public List<CreateMapResponseDto> createMap(CreateMapRequestDto createMapRequestDto,String access) {
-        //받은 addMapRequestDto 를 바탕으로 맵을 생성
-        //알고 영역? => 나중에 클래스로 가져오기
 
-        String startNode = mapAlgorithm.getStartNode(createMapRequestDto.getStartPoint());
+        //시작점에서 가장 가까운 노드 구하기
+        String startNodeId = mapAlgorithm.getStartNode(createMapRequestDto.getStartPoint());
+
+        //반경 내 링크 리스트 구하기
         mapAlgorithm.getLinks(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
 
-        List<CreateMapResponseDto> createdMapList = mapAlgorithm.getMap(startNode,createMapRequestDto);
+        //출발 노드에 연결된 링크 구하기
+        List<LinkEntity> startLinks = mapAlgorithm.getStartLinks(startNodeId);
 
-        return createdMapList;
+        //맵 리스트 받아오기
+        //List<CreateMapResponseDto> createdMapList = mapAlgorithm.getMap(startNodeId, startLinks,createMapRequestDto);
+
+        return null;
     }
 
     public void saveMap(AddMapRequestDto addMapRequestDto,String access) {

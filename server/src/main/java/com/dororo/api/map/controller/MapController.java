@@ -70,6 +70,4 @@ public class MapController {
         mapService.updateMapCompletion(mapId,updateRequestDto,access);
         return ResponseEntity.ok().build(); // 업데이트 성공 응답
     }
-
-
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.dororo.api.convert.LatitudeLongitude;
 import com.dororo.api.db.entity.NodeEntity;
 
 @Repository
@@ -23,6 +24,9 @@ public interface NodeRepository extends JpaRepository<NodeEntity, Integer> {
 		nativeQuery = true)
 	List<NodeEntity> getNodeEntityList(double lng, double lat, float distance);
 
-
-
+	/*@Query(value = "SELECT ST_Y(node_point) AS latitude, ST_X(node_point) AS longitude " +
+		"FROM nodes " +
+		"WHERE node_id = ?1",
+		nativeQuery = true)
+	LatitudeLongitude getNodePoint(String startNodeId);*/
 }

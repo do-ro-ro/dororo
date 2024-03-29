@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import com.dororo.api.db.entity.LinkEntity;
-import com.dororo.api.db.entity.NodeEntity;
 
 @Repository
 public interface LinkRepository extends JpaRepository<LinkEntity, Integer> {
@@ -20,4 +19,9 @@ public interface LinkRepository extends JpaRepository<LinkEntity, Integer> {
 		nativeQuery = true)
 	List<LinkEntity> getLinkEntityList(double lng, double lat, float distance);
 
+	@Query(value = "SELECT * " +
+		"FROM links " +
+		"WHERE f_node_id = ?1",
+		nativeQuery = true)
+	List<LinkEntity> getStartLinks(String startNode);
 }

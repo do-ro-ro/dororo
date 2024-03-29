@@ -1,5 +1,6 @@
 package com.dororo.api.convert;
 
+import jakarta.persistence.NamedNativeQuery;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,4 @@ import lombok.Setter;
 public class LatitudeLongitude {
     private double lat;
     private double lng;
-
-
 }
