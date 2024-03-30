@@ -251,6 +251,9 @@ function Map({ course }) {
             //
             // setCourseLine([]);
             setResultMarkerArr([]);
+
+            // courseNode에 보정전 좌표값 넣어주기
+            setCourseNode(currentCourse?.originMapRouteAxis);
             postRouteSequential30(basicAPIparam);
             // console.log(courseLine);
         }
@@ -274,16 +277,13 @@ function Map({ course }) {
         }
         setCourseLine([]);
 
-        // resultMarkerArr에 결과값이 있으면
-        if (resultMarkerArr?.length > 0) {
+        // 오리지널 값으로 마커 그리기 위해 courseNode에 결과값이 있으면
+        if (courseNode?.length > 0) {
             // 마커 그려주기
-            resultMarkerArr.map((convertPoint) => {
+            courseNode.map((node) => {
                 // console.log(convertPoint);
                 const marker = new window.Tmapv2.Marker({
-                    position: new window.Tmapv2.LatLng(
-                        convertPoint._lat,
-                        convertPoint._lng,
-                    ),
+                    position: new window.Tmapv2.LatLng(node.lat, node.lng),
                     icon: waypointPin,
                     iconSize: new window.Tmapv2.Size(24, 24),
                     draggable: false,
