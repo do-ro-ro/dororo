@@ -7,8 +7,11 @@ import Topbar from "../../components/topbar/Topbar";
 import { Button, Stack, Typography } from "@mui/material";
 import IntroductionModal from "../../components/course-drive/IntroductionModal";
 import { useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function CourseDrivePage() {
+    const navigate = useNavigate();
+    const { courseId } = useParams();
     // 35.095737617642946, 128.84941070168463
     const [lat, setLat] = useState(35.095737617642946);
     const [lng, setLng] = useState(128.90489491914798);
@@ -31,10 +34,10 @@ function CourseDrivePage() {
     // 시작 위치에 도착하면 운행 시작 버튼 활성화
     useEffect(() => {
         if (courseNode.length > 2) {
-            let latPlus = courseNode[0].lat + 0.0003;
-            let latMinus = courseNode[0].lat - 0.0003;
-            let lngPlus = courseNode[0].lng + 0.0004;
-            let lngMinus = courseNode[0].lng - 0.0004;
+            let latPlus = courseNode[0].lat + 1.0003;
+            let latMinus = courseNode[0].lat - 1.0003;
+            let lngPlus = courseNode[0].lng + 1.0004;
+            let lngMinus = courseNode[0].lng - 1.0004;
 
             let targetLat = lat; // 타겟 경도
             let targetLng = lng; // 타겟 위도
@@ -107,6 +110,7 @@ function CourseDrivePage() {
                                 variant="contained"
                                 sx={{ width: "90vw", py: 1 }}
                                 color="error"
+                                onClick={() => navigate(`/course/${courseId}`)}
                             >
                                 <Stack direction={"row"} alignItems={"center"}>
                                     <Typography variant="h4" sx={{ ml: 1 }}>
