@@ -9,15 +9,6 @@ import OptionModal from "./OptionModal";
 const Main = () => {
     const [lat, setLat] = useState(37.501286);
     const [lng, setLng] = useState(127.0396029);
-    const [timestamp, setTimestamp] = useState();
-
-    const [option, setOption] = useState({
-        method: "",
-        length: 5,
-        left: 1,
-        right: 1,
-        uturn: 1,
-    });
 
     const [showModal, setShowModal] = useState(false);
 
@@ -52,8 +43,8 @@ const Main = () => {
                     <OptionModal
                         open={showModal}
                         closeModal={closeModal}
-                        setOption={setOption}
-                        option={option}
+                        lat={lat}
+                        lng={lng}
                     />
                 )}
             </div>

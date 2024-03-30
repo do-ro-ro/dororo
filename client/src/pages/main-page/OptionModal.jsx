@@ -32,16 +32,25 @@ const style = {
     p: 4,
 };
 
-const OptionModal = ({ open, closeModal, setOption, option }) => {
-    const [lat, setLat] = useState(35.09504003528538);
-    const [lon, setLon] = useState(128.90489491914798);
+const OptionModal = ({ open, closeModal, lat, lng }) => {
+    const [option, setOption] = useState({
+        mapDistance: 5,
+        turnLeft: 1,
+        turnRight: 1,
+        uturn: 1,
+        startPoint: {
+            lat: lat,
+            lng: lng,
+        },
+    });
+
     const handleMethodChange = (e) => {
         setOption({ ...option, method: e.target.value });
         console.log(option);
     };
 
     const handleSliderChange = (e) => {
-        setOption({ ...option, length: Math.max(e.target.value, 5) });
+        setOption({ ...option, mapDistance: Math.max(e.target.value, 5) });
     };
 
     const handleDecrease = (direction) => {
@@ -155,8 +164,8 @@ const OptionModal = ({ open, closeModal, setOption, option }) => {
                         <Box sx={{ width: "90%" }}>
                             <Slider
                                 value={
-                                    typeof option.length === "number"
-                                        ? option.length
+                                    typeof option.mapDistance === "number"
+                                        ? option.mapDistance
                                         : 0
                                 }
                                 onChange={handleSliderChange}
@@ -244,18 +253,18 @@ const OptionModal = ({ open, closeModal, setOption, option }) => {
                             >
                                 <Button
                                     sx={{ p: 0, minWidth: "auto" }}
-                                    onClick={() => handleDecrease("left")}
+                                    onClick={() => handleDecrease("turnLeft")}
                                 >
                                     <IndeterminateCheckBoxIcon />
                                 </Button>
                                 <Typography
                                     sx={{ mx: 0.7, fontWeight: "bold" }}
                                 >
-                                    {option.left} {/* 숫자 표시 */}
+                                    {option.turnLeft} {/* 숫자 표시 */}
                                 </Typography>
                                 <Button
                                     sx={{ p: 0, minWidth: "auto" }}
-                                    onClick={() => handleIncrease("left")}
+                                    onClick={() => handleIncrease("turnLeft")}
                                 >
                                     <AddBoxIcon />
                                 </Button>
@@ -313,18 +322,18 @@ const OptionModal = ({ open, closeModal, setOption, option }) => {
                             >
                                 <Button
                                     sx={{ p: 0, minWidth: "auto" }}
-                                    onClick={() => handleDecrease("right")}
+                                    onClick={() => handleDecrease("turnRight")}
                                 >
                                     <IndeterminateCheckBoxIcon />
                                 </Button>
                                 <Typography
                                     sx={{ mx: 0.7, fontWeight: "bold" }}
                                 >
-                                    {option.right} {/* 숫자 표시 */}
+                                    {option.turnRight} {/* 숫자 표시 */}
                                 </Typography>
                                 <Button
                                     sx={{ p: 0, minWidth: "auto" }}
-                                    onClick={() => handleIncrease("right")}
+                                    onClick={() => handleIncrease("turnRight")}
                                 >
                                     <AddBoxIcon />
                                 </Button>
