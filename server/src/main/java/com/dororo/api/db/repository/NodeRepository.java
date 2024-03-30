@@ -24,7 +24,7 @@ public interface NodeRepository extends JpaRepository<NodeEntity, Integer> {
 		nativeQuery = true)
 	List<NodeEntity> getNodeEntityList(double lng, double lat, float distance);
 
-	@Query(value = "SELECT ST_X(node_point) AS LAT, ST_X(node_point) AS LNG " +
+	@Query(value = "SELECT ST_Y(node_point) AS LAT, ST_X(node_point) AS LNG " +
 		"FROM nodes " +
 		"WHERE node_id = ?1",
 		nativeQuery = true)
