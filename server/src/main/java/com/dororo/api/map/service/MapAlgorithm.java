@@ -80,19 +80,20 @@ public class MapAlgorithm {
 			newMap.addAll(cur.getNodeIds());
 
 			//사용자 입력 조건에 만족하면
-				// newMap.add(cur.getTNodeId()); //도착점 노드
-				// newMap를 resultMap에 추가 (+ distance도 추가 저장)
+			// newMap.add(cur.getTNodeId()); //도착점 노드
+			// newMap를 resultMap에 추가 (+ distance도 추가 저장)
 			if(/*newTurnRight==createMapRequestDto.getTurnRight()
 			&& newTurnLeft==createMapRequestDto.getTurnLeft()
 			&& */newUTurn==createMapRequestDto.getUTurn()
-			&& (newDistance>=createMapRequestDto.getMapDistance()*1000)
-				&& (newDistance<createMapRequestDto.getMapDistance()*1000+500)) {
+					&& (newDistance>=createMapRequestDto.getMapDistance()*1000)
+					&& (newDistance<createMapRequestDto.getMapDistance()*1000+500)) {
 				cnt++;
 				newMap.add(cur.getLinkEntity().getTNodeId());
 				cur.setNodeIds(newMap);
 				// Link -> CreateMapResponseDto로 변환해서 finalMapList에 넣어주기
 				List<LatitudeLongitude> originMapRouteAxis = new ArrayList<>();
 				List<LatitudeLongitude> convertedRouteAxis = new ArrayList<>();
+				System.out.println(cur.getNodeIds());
 
 				for(int i=0;i<cur.getNodeIds().size();i++) originMapRouteAxis.add(nodeRepository.getNodePoint(cur.getNodeIds().get(i)));
 				for(int i=0;i<cur.getNodeIds().size()-1;i++) convertedRouteAxis.add(axisCalculator.calculateBearing(originMapRouteAxis.get(i).getLat(), originMapRouteAxis.get(i).getLng(), originMapRouteAxis.get(i+1).getLat(), originMapRouteAxis.get(i+1).getLng()));
@@ -105,8 +106,8 @@ public class MapAlgorithm {
 			List<LinkEntity> nextLinks = map.get(cur.getLinkEntity().getFNodeId());
 
 			//연결된 링크로 갈 수 있는 지 확인 (거리, 좌우회전 유턴 조건)
-				//못가면 컨티뉴
-				//갈 수 있으면 길이, 좌우회전 유턴 값 추가하고 큐에 넣기
+			//못가면 컨티뉴
+			//갈 수 있으면 길이, 좌우회전 유턴 값 추가하고 큐에 넣기
 			for(int i=0;i<nextLinks.size();i++){
 				LinkEntity next = nextLinks.get(i);
 
@@ -115,9 +116,9 @@ public class MapAlgorithm {
 				if(newDistance>5000)
 					continue;
 
-				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				//좌우회전, 유턴 판별 로직...으로 판별하고 조건에 안맞으면 continue
-				/*if(isTurnRight(cur,next)) {
+					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					//좌우회전, 유턴 판별 로직...으로 판별하고 조건에 안맞으면 continue
+                /*if(isTurnRight(cur,next)) {
 					newTurnRight = cur.getTurnLeft()+1;
 					if(newTurnRight>createMapRequestDto.getTurnRight())
 						continue;
@@ -127,7 +128,7 @@ public class MapAlgorithm {
 					if(newTurnLeft>createMapRequestDto.getTurnLeft())
 						continue;
 				}*/
-				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				else if(isUTurn(cur,next)) {
 					newUTurn=cur.getUTurn()+1;
 					if(newUTurn>createMapRequestDto.getUTurn())
@@ -135,7 +136,7 @@ public class MapAlgorithm {
 				}
 
 				//갈 수 있으면
-				newMap.add(next.getFNodeId());
+				newMap.add(next.getTNodeId());	// 다음 링크의 To 노드 아이디 좌표에 저장
 				newDistance+=next.getLinkDistance();
 				q.offer(new Link(cur.getLinkEntity(), newTurnLeft, newTurnRight, newUTurn, newDistance, newMap));
 			}
@@ -155,7 +156,7 @@ public class MapAlgorithm {
 	}
 
 	private boolean isUTurn(Link cur, LinkEntity next) {
-		if(next.getTNodeId().equals(cur.getLinkEntity().getFNodeId()))	// 다음 링크의 목표 노드가 현재 링크의 출발 노드와 같으면 유턴으로 판별
+		if(next.getTNodeId().equals(cur.getLinkEntity().getFNodeId()))    // 다음 링크의 목표 노드가 현재 링크의 출발 노드와 같으면 유턴으로 판별
 			return true;
 		return false;
 	}
