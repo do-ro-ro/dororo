@@ -44,6 +44,7 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
             lat: lat,
             lng: lng,
         },
+        return: true,
     });
 
     const navigate = useNavigate();
