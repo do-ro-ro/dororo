@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -36,20 +37,28 @@ public class MapController {
         return new ResponseEntity(detailMapResponseDto, HttpStatus.OK);
     }
 
-    //맵 생성
+    //맵 생성(샘플)
     @PostMapping("")
     public ResponseEntity createMap(@RequestBody CreateMapRequestDto createMapRequestDto,
                                     @RequestHeader("access") String access) {
-        List<CreateMapResponseDto>  createMapList =  mapService.createMap(createMapRequestDto,access);
+        List<CreateMapResponseDto>  createMapList =  mapService.createMapSample(createMapRequestDto,access);
 
         return new ResponseEntity(createMapList, HttpStatus.CREATED);
     }
-
+// 찐 맵 생성
+//    @PostMapping("")
+//    public ResponseEntity createMap(@RequestBody CreateMapRequestDto createMapRequestDto,
+//                                    @RequestHeader("access") String access) {
+//        List<CreateMapResponseDto>  createMapList =  mapService.createMapSample(createMapRequestDto,access);
+//
+//        return new ResponseEntity(createMapList, HttpStatus.CREATED);
+//    }
     //맵 저장
     @PostMapping("/save")
-    public ResponseEntity saveMap(@RequestBody AddMapRequestDto addMapRequestDto,
+    public ResponseEntity saveMap(@RequestPart(value= "request") AddMapRequestDto addMapRequestDto,
+                                  @RequestPart(value= "mapImage") MultipartFile mapImage,
                                   @RequestHeader("access") String access) {
-        mapService.saveMap(addMapRequestDto,access);
+        mapService.saveMap(addMapRequestDto,access, mapImage);
         return ResponseEntity.ok().body("Map saved successfully");
     }
 

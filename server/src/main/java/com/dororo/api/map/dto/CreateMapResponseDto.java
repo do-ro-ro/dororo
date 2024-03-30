@@ -16,6 +16,6 @@ public class CreateMapResponseDto {
     private List<LatitudeLongitude> originMapRouteAxis;
     private List<LatitudeLongitude> convertedRouteAxis;
     //맵의 길이
-    private float mapDistance;
+//    private float mapDistance;
 
 }
