@@ -24,19 +24,17 @@ function CourseDrivePage() {
     const [km, setKm] = useState(0);
 
     // filteredCourse 배열의 길이만큼 false 값을 가진 배열 생성
-    const initialVisited = Array(filteredCourse.length).fill(false);
+    const visited = Array(filteredCourse.length).fill(false);
 
     // useState를 사용하여 배열 상태 생성
-    const [visited, setVisited] = useState(initialVisited);
 
-    const location = useLocation();
-
+    // 시작 위치에 도착하면 운행 시작 버튼 활성화
     useEffect(() => {
         if (courseNode.length > 2) {
-            let latPlus = courseNode[2].lat + 0.0003;
-            let latMinus = courseNode[2].lat - 0.0003;
-            let lngPlus = courseNode[2].lng + 0.0004;
-            let lngMinus = courseNode[2].lng - 0.0004;
+            let latPlus = courseNode[0].lat + 0.0003;
+            let latMinus = courseNode[0].lat - 0.0003;
+            let lngPlus = courseNode[0].lng + 0.0004;
+            let lngMinus = courseNode[0].lng - 0.0004;
 
             let targetLat = lat; // 타겟 경도
             let targetLng = lng; // 타겟 위도
@@ -44,13 +42,15 @@ function CourseDrivePage() {
                 if (targetLng >= lngMinus && targetLng <= lngPlus) {
                     setOnStartPoint(true);
                 } else {
-                    setIsDriving(false);
+                    setOnStartPoint(false);
                 }
             } else {
-                setIsDriving(false);
+                setOnStartPoint(false);
             }
         }
     }, [courseNode, lat, lng]);
+
+    const location = useLocation();
 
     useEffect(() => {
         setCourseNode(location.state.originMapRouteAxis);
@@ -82,6 +82,7 @@ function CourseDrivePage() {
                     setCourseLine={setCourseLine}
                     filteredCourse={filteredCourse}
                     setFilteredCourse={setFilteredCourse}
+                    visited={visited}
                     setTime={setTime}
                     setKm={setKm}
                 />
