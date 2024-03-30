@@ -294,7 +294,7 @@ function Map({ course }) {
 
                 console.log(marker);
                 marker.addListener(
-                    "click",
+                    "touchend",
                     function () {
                         if (!this._marker_data.options.draggable) {
                             console.log(
@@ -320,37 +320,27 @@ function Map({ course }) {
                             this.setDraggable(false);
 
                             this.stopAnimation();
+                            const newposition = marker.getPosition();
+                            console.log("드래그 후 포지션", newposition);
+                            // 코스 업데이트
+                            // const updatedCourse = filteredCourse.map(
+                            //     (point, index) =>
+                            //         index === selectedMarker
+                            //             ? {
+                            //                   lat: newposition.lat(),
+                            //                   lng: newposition.lng(),
+                            //               }
+                            //             : point,
+                            // );
+
+                            console.log(
+                                "드래그 후 코스 업데이트",
+                                filteredCourse,
+                            );
                         }
                     },
                     marker,
                 );
-
-                marker.addListener("dragstart", function () {
-                    this.stopAnimation();
-                });
-
-                // 마커가 draggable 가능할 때에만 이벤트 리스너 달아주기
-                if (marker._marker_data.options.draggable === true) {
-                    marker.addListener("dragend", function () {
-                        const newposition = marker.getPosition();
-                        console.log("드래그 후 포지션", newposition);
-
-                        // 코스 업데이트
-                        const updatedCourse = filteredCourse.map(
-                            (point, index) =>
-                                index === selectedMarker
-                                    ? {
-                                          lat: newposition.lat(),
-                                          lng: newposition.lng(),
-                                      }
-                                    : point,
-                        );
-
-                        console.log("드래그 후 코스 업데이트", filteredCourse);
-                    });
-
-                    setMarkers((prev) => [...prev, marker]);
-                }
             });
         }
     }, [checkAPI]);
