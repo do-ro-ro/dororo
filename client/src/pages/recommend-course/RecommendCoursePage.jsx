@@ -13,7 +13,6 @@ function RecommendedCoursePage() {
     useEffect(() => {
         if (optionData.state && optionData.state.data) {
             setCourseNode(optionData.state.data);
-            console.log(optionData.state.data);
         }
     }, [optionData.state]);
 

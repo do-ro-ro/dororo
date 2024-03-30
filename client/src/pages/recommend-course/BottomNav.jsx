@@ -6,7 +6,7 @@ import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import CourseSelectModal from "./CourseSelectModal";
 
-const BottomNav = ({ handlePrev, handleNext, currentIndex, locations }) => {
+const BottomNav = ({ handlePrev, handleNext, currentIndex, courseNode }) => {
     const [showCourseSelectModal, setShowCourseSelectModal] = useState(false);
 
     const openCourseSelectModal = () => {
@@ -19,7 +19,7 @@ const BottomNav = ({ handlePrev, handleNext, currentIndex, locations }) => {
     // "이전 코스 보기"와 "다음 코스 보기" 아이콘의 색상을 조건에 따라 결정
     const prevIconColor = currentIndex === 0 ? "#9e9e9e" : "#6386BE";
     const nextIconColor =
-        currentIndex === locations.length - 1 ? "#9e9e9e" : "#6386BE";
+        currentIndex === courseNode.length - 1 ? "#9e9e9e" : "#6386BE";
 
     return (
         <Box
@@ -68,8 +68,8 @@ const BottomNav = ({ handlePrev, handleNext, currentIndex, locations }) => {
                     alignItems: "center",
                 }}
                 onClick={
-                    currentIndex < locations.length - 1 ? handleNext : null
-                } // currentIndex가 locations.length - 1보다 작을 때만 다음 코스 보기 활성화
+                    currentIndex < courseNode.length - 1 ? handleNext : null
+                } // currentIndex가 courseNode.length - 1보다 작을 때만 다음 코스 보기 활성화
             >
                 <RedoIcon sx={{ fontSize: "5vh", color: nextIconColor }} />
                 <Typography variant="caption">다음 코스 보기</Typography>
