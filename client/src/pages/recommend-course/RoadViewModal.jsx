@@ -14,7 +14,7 @@ const style = {
 };
 
 // closeModal 함수 구현이 필요합니다.
-const RoadViewModal = ({ open, closeModal, lat, lon }) => {
+const RoadViewModal = ({ open, closeModal, lat, lng }) => {
     const { kakao } = window;
     useEffect(() => {
         const script = document.createElement("script");
@@ -29,7 +29,7 @@ const RoadViewModal = ({ open, closeModal, lat, lon }) => {
                 const roadview = new kakao.maps.Roadview(roadviewContainer);
                 const roadviewClient = new kakao.maps.RoadviewClient();
 
-                const position = new kakao.maps.LatLng(lat, lon);
+                const position = new kakao.maps.LatLng(lat, lng);
 
                 roadviewClient.getNearestPanoId(position, 50, (panoId) => {
                     roadview.setPanoId(panoId, position);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Typography } from "@mui/material";
 
-const CourseDetailInfo = ({ locations }) => {
+const CourseDetailInfo = ({ courseNode }) => {
     const [results, setResults] = useState([]);
     useEffect(() => {
         const getKakaoMapAddress = async (latitude, longitude) => {
@@ -29,15 +29,15 @@ const CourseDetailInfo = ({ locations }) => {
         };
 
         const fetchAddresses = async () => {
-            const addressPromises = locations.lat.map((latitude, index) =>
-                getKakaoMapAddress(latitude, locations.lon[index]),
+            const addressPromises = courseNode.map((node) =>
+                getKakaoMapAddress(node.lat, node.lng),
             );
             const addressResults = await Promise.all(addressPromises);
             setResults(addressResults); // 배열에 결과 저장
         };
 
         fetchAddresses();
-    }, [locations]); // locations가 변경될 때마다 useEffect 실행
+    }, [courseNode]); // courseNode가 변경될 때마다 useEffect 실행
 
     return (
         <Box>
