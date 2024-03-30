@@ -1,5 +1,8 @@
 package com.dororo.api.convert;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class AxisCalculator {
 
     //각도계산

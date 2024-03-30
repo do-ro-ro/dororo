@@ -101,9 +101,16 @@ public class MapService {
         List<LinkEntity> startLinks = mapAlgorithm.getStartLinks(startNodeId);
 
         //맵 리스트 받아오기
-        //List<CreateMapResponseDto> createdMapList = mapAlgorithm.getMap(startNodeId, startLinks,createMapRequestDto);
+        List<CreateMapResponseDto> createdMapList = mapAlgorithm.getMap(startNodeId, startLinks,createMapRequestDto);
 
-        return null;
+        /*for(int i=0;i<createdMapList.size();i++) {
+            System.out.println("origin : "+createdMapList.get(i).getOriginMapRouteAxis().toString());
+            System.out.println("convert : "+createdMapList.get(i).getConvertedRouteAxis().toString());
+            System.out.println("distance : "+createdMapList.get(i).getMapDistance());
+            System.out.println("=========================================================");
+        }*/
+
+        return createdMapList;
     }
 
     public List<CreateMapResponseDto> createMapSample(CreateMapRequestDto createMapRequestDto,String access) {

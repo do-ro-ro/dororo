@@ -13,6 +13,7 @@ import org.antlr.v4.runtime.misc.Array2DHashSet;
 import org.aspectj.weaver.Iterators;
 import org.springframework.stereotype.Component;
 
+import com.dororo.api.convert.AxisCalculator;
 import com.dororo.api.convert.LatitudeLongitude;
 import com.dororo.api.db.entity.LinkEntity;
 import com.dororo.api.db.entity.NodeEntity;
@@ -28,6 +29,7 @@ import lombok.AllArgsConstructor;
 public class MapAlgorithm {
 	private final NodeRepository nodeRepository;
 	private final LinkRepository linkRepository;
+	private final AxisCalculator axisCalculator;
 
 	List<NodeEntity> nodeEntityList;
 	List<LinkEntity> linkEntityList;
@@ -54,28 +56,63 @@ public class MapAlgorithm {
 	public List<CreateMapResponseDto> getMap(String startNode, List<LinkEntity> startLinks, CreateMapRequestDto createMapRequestDto) {
 		List<CreateMapResponseDto> finalMapList = new ArrayList<>();
 		Map<String, List<LinkEntity>> map = makeEdgeList(linkEntityList);
-		List<String> resultMap = new ArrayList<>(); //distance추가한 class로 받아야 함
+
 
 		Queue<Link> q = new ArrayDeque<>();
 		List<String> mapInit = new ArrayList<>();
-		mapInit.add(startNode);
+		int cnt = 0;
 
+		mapInit.add(startNode);
 		//시작 노드에 연결된 링크 큐에 추가
 		for(int i=0;i<startLinks.size();i++) {
 			q.offer(new Link(startLinks.get(i), 0, 0, 0, 0, mapInit));
 		}
 		while(!q.isEmpty()){
+			if(cnt > 10) break;
 			Link cur = q.poll();
 
 			int newTurnRight = cur.getTurnRight();
 			int newTurnLeft = cur.getTurnLeft();
 			int newUTurn = cur.getUTurn();
+			float newDistance = cur.getMapDistance();
+			//System.out.println("DIs : "+newDistance);
 			List<String> newMap = new ArrayList<>();
 			newMap.addAll(cur.getNodeIds());
 
 			//사용자 입력 조건에 만족하면
 				// newMap.add(cur.getTNodeId()); //도착점 노드
 				// newMap를 resultMap에 추가 (+ distance도 추가 저장)
+			if(/*newTurnRight==createMapRequestDto.getTurnRight()
+			&& newTurnLeft==createMapRequestDto.getTurnLeft()
+			&& */newUTurn==createMapRequestDto.getUTurn()
+			&& (newDistance>=createMapRequestDto.getMapDistance()*1000)
+				&& (newDistance<createMapRequestDto.getMapDistance()*1000+500)) {
+				cnt++;
+				newMap.add(cur.getLinkEntity().getTNodeId());
+				cur.setNodeIds(newMap);
+				// Link -> CreateMapResponseDto로 변환해서 finalMapList에 넣어주기
+				List<LatitudeLongitude> originMapRouteAxis = new ArrayList<>();
+				List<LatitudeLongitude> convertedRouteAxis = new ArrayList<>();
+
+				long beforeTime = System.currentTimeMillis();
+				for(int i=0;i<cur.getNodeIds().size();i++) originMapRouteAxis.add(
+					new LatitudeLongitude(nodeRepository.getNodeLatitude(cur.getNodeIds().get(i)),nodeRepository.getNodeLongitude(cur.getNodeIds().get(i))));
+				long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+				long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
+				System.out.println("bfs시간차이(m) : "+secDiffTime);
+
+				/*long beforeTime = System.currentTimeMillis();
+				for(int i=0;i<cur.getNodeIds().size();i++) originMapRouteAxis.add(nodeRepository.getNodePoint(cur.getNodeIds().get(i)));
+				long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+				long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
+				System.out.println("bfs시간차이(m) : "+secDiffTime);*/
+
+				for(int i=0;i<cur.getNodeIds().size()-1;i++) convertedRouteAxis.add(axisCalculator.calculateBearing(originMapRouteAxis.get(i).getLat(), originMapRouteAxis.get(i).getLng(), originMapRouteAxis.get(i+1).getLat(), originMapRouteAxis.get(i+1).getLng()));
+
+
+				finalMapList.add(new CreateMapResponseDto(originMapRouteAxis, convertedRouteAxis, newDistance));
+
+			}
 
 			//cur의 f_node_id로 map 조회 -> 연결된 링크 불러옴
 			List<LinkEntity> nextLinks = map.get(cur.getLinkEntity().getFNodeId());
@@ -87,13 +124,13 @@ public class MapAlgorithm {
 				LinkEntity next = nextLinks.get(i);
 
 				//거리 조건 확인
-				float newDistance = (float)(cur.getMapDistance() + next.getLinkDistance());
-				if(newDistance>createMapRequestDto.getMapDistance()+0.3)
+				newDistance += next.getLinkDistance();
+				if(newDistance>5000)
 					continue;
 
 				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				//좌우회전, 유턴 판별 로직...으로 판별하고 조건에 안맞으면 continue
-				if(isTurnRight(cur,next)) {
+				/*if(isTurnRight(cur,next)) {
 					newTurnRight = cur.getTurnLeft()+1;
 					if(newTurnRight>createMapRequestDto.getTurnRight())
 						continue;
@@ -102,7 +139,7 @@ public class MapAlgorithm {
 					newTurnLeft=cur.getTurnLeft()+1;
 					if(newTurnLeft>createMapRequestDto.getTurnLeft())
 						continue;
-				}
+				}*/
 				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				else if(isUTurn(cur,next)) {
 					newUTurn=cur.getUTurn()+1;
@@ -112,14 +149,10 @@ public class MapAlgorithm {
 
 				//갈 수 있으면
 				newMap.add(next.getFNodeId());
+				newDistance+=next.getLinkDistance();
 				q.offer(new Link(cur.getLinkEntity(), newTurnLeft, newTurnRight, newUTurn, newDistance, newMap));
 			}
 		}
-		//resultMap내용들 조정해서 finalMapList에 담기
-			//resultMap[]의 노드 ID들을 좌표들로 변환 : originMapRouteAxis
-			//좌표 값 조정: convertedRouteAxis
-			//distance
-		//finalMapList 에 추가
 
 		return finalMapList;
 	}
@@ -141,6 +174,7 @@ public class MapAlgorithm {
 	}
 
 	private Map<String, List<LinkEntity>> makeEdgeList(List<LinkEntity> linkEntityList) {
+
 		Map<String, List<LinkEntity>> map = new HashMap<>();
 
 		for(int i=0;i<linkEntityList.size();i++){
@@ -154,6 +188,7 @@ public class MapAlgorithm {
 			}
 			map.put(key, values);
 		}
+
 		return map;
 	}
 
