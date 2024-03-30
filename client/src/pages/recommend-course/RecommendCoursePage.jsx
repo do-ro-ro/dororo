@@ -6,13 +6,13 @@ import BottomNav from "./BottomNav";
 import { useLocation } from "react-router-dom";
 
 function RecommendedCoursePage() {
-    const [courseNode, setCourseNode] = useState([]);
+    const [locations, setLocations] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const optionData = useLocation(); // OptionModal에서 뿌린 데이터
 
     useEffect(() => {
         if (optionData.state && optionData.state.data) {
-            setCourseNode(optionData.state.data);
+            setLocations(optionData.state.data);
         }
     }, [optionData.state]);
 
@@ -22,7 +22,7 @@ function RecommendedCoursePage() {
 
     const handleNext = () => {
         setCurrentIndex((prevIndex) =>
-            Math.min(prevIndex + 1, courseNode.length - 1),
+            Math.min(prevIndex + 1, locations.length - 1),
         );
     };
 
@@ -33,11 +33,11 @@ function RecommendedCoursePage() {
                 handlePrev={handlePrev}
                 handleNext={handleNext}
                 currentIndex={currentIndex}
-                courseNode={courseNode}
+                locations={locations}
             ></BottomNav>
-            {courseNode.length > 0 && (
+            {locations.length > 0 && (
                 <Recommend
-                    courseNode={courseNode[currentIndex]}
+                    location={locations[currentIndex]}
                     currentIndex={currentIndex}
                 ></Recommend>
             )}
