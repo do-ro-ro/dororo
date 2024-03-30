@@ -9,10 +9,9 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class CreateMapRequestDto {
-
     private int turnLeft;
     private int turnRight;
-    private int uTurn;
+    private int uuuTurn;
     private float mapDistance;
     private LatitudeLongitude startPoint;
 }

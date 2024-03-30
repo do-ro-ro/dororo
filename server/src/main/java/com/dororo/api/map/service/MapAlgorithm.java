@@ -1,16 +1,12 @@
 package com.dororo.api.map.service;
 
-import java.sql.SQLOutput;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import org.antlr.v4.runtime.misc.Array2DHashSet;
-import org.aspectj.weaver.Iterators;
 import org.springframework.stereotype.Component;
 
 import com.dororo.api.convert.AxisCalculator;
@@ -40,13 +36,6 @@ public class MapAlgorithm {
 		return nodeRepository.getStartNode(startPoint.getLng(), startPoint.getLat());
 	}
 
-	public List<NodeEntity> getNodes (LatitudeLongitude startPoint, float distance) { //반경 내 노드 저장
-		distance = distance / 100;
-		nodeEntityList = nodeRepository.getNodeEntityList(startPoint.getLng(), startPoint.getLat(), distance);
-
-		return nodeEntityList;
-	}
-
 	public void getLinks (LatitudeLongitude startPoint, float distance) { //반경 내 링크 저장
 		distance = distance / 100;
 		linkEntityList = linkRepository.getLinkEntityList(startPoint.getLng(), startPoint.getLat(), distance);
@@ -63,7 +52,7 @@ public class MapAlgorithm {
 		int cnt = 0;
 		int minDiff = 100; //충족해야하는 조건과의 최소 차이
 		int fulfilledLeft = 0, fulfilledRight = 0, fulfilledUTurn = 0; //충족된 좌,우회전,유턴 횟수
-		int sumNeedTurns = createMapRequestDto.getUTurn() + createMapRequestDto.getTurnLeft() + createMapRequestDto.getTurnRight(); //조건 합
+		int sumNeedTurns = createMapRequestDto.getUuuTurn() + createMapRequestDto.getTurnLeft() + createMapRequestDto.getTurnRight(); //조건 합
 
 		mapInit.add(startNode);
 		//시작 노드에 연결된 링크 큐에 추가
@@ -93,25 +82,27 @@ public class MapAlgorithm {
 			}
 
 			//사용자 입력 조건에 만족하면
-			// newMap.add(cur.getTNodeId()); //도착점 노드
-			// newMap를 resultMap에 추가 (+ distance도 추가 저장)
 			if(/*newTurnRight==createMapRequestDto.getTurnRight()
 			&& newTurnLeft==createMapRequestDto.getTurnLeft()
-			&& */newUTurn==createMapRequestDto.getUTurn()
+			&& */newUTurn==createMapRequestDto.getUuuTurn()
 					&& (newDistance>=createMapRequestDto.getMapDistance()*1000)
 					&& (newDistance<createMapRequestDto.getMapDistance()*1000+500)) {
 				cnt++;
-				//newMap.add(cur.getLinkEntity().getTNodeId());
+
 				cur.setNodeIds(newMap);
 				// Link -> CreateMapResponseDto로 변환해서 finalMapList에 넣어주기
 				List<LatitudeLongitude> originMapRouteAxis = new ArrayList<>();
 				List<LatitudeLongitude> convertedRouteAxis = new ArrayList<>();
-				//System.out.println(cur.getNodeIds());
 
 				for(int i=0;i<cur.getNodeIds().size();i++) originMapRouteAxis.add(nodeRepository.getNodePoint(cur.getNodeIds().get(i)));
 				for(int i=0;i<cur.getNodeIds().size()-1;i++) convertedRouteAxis.add(axisCalculator.calculateBearing(originMapRouteAxis.get(i).getLat(), originMapRouteAxis.get(i).getLng(), originMapRouteAxis.get(i+1).getLat(), originMapRouteAxis.get(i+1).getLng()));
 
 				finalMapList.add(new CreateMapResponseDto(originMapRouteAxis, convertedRouteAxis, newDistance));
+
+				System.out.println("좌회전 횟수: " + newTurnLeft);
+				System.out.println("우회전 횟수: " + newTurnRight);
+				System.out.println("유턴 횟수: " + newUTurn);
+
 				continue;
 			}
 
@@ -133,7 +124,7 @@ public class MapAlgorithm {
 					continue;
 
 				String turnInfo = getTurnInfo(cur, next);
-				// 좌우회전, 유턴 판별 로직...으로 판별하고 조건에 안맞으면 continue
+				// 좌우회전, 유턴 판별하고 조건에 안맞으면 continue
                 if(turnInfo.equals("left")) {
 					newTurnLeft = cur.getTurnLeft()+1;
 					if(newTurnLeft>createMapRequestDto.getTurnLeft())
@@ -144,7 +135,13 @@ public class MapAlgorithm {
 						continue;
 				} else if(isUTurn(cur,next)) {
 					newUTurn=cur.getUTurn()+1;
-					if(newUTurn>createMapRequestDto.getUTurn())
+					/*
+					System.out.println("유턴 추가!  ");
+					System.out.println("cur : "+ nodeRepository.getNodePoint(cur.getLinkEntity().getFNodeId())+", "+
+						nodeRepository.getNodePoint(cur.getLinkEntity().getTNodeId()));
+					System.out.println("next : "+next.getFNodeId()+", "+next.getTNodeId());
+					*/
+					if(newUTurn>createMapRequestDto.getUuuTurn())
 						continue;
 				}
 
@@ -154,15 +151,12 @@ public class MapAlgorithm {
 				q.offer(new Link(next, newTurnLeft, newTurnRight, newUTurn, newDistance, tempMap));
 			}
 		}
-		System.out.println("좌회전 횟수: " + fulfilledLeft);
-		System.out.println("우회전 횟수: " + fulfilledRight);
-		System.out.println("유턴 횟수: " + fulfilledUTurn);
 
 		//경로 안나왔을 때
 		if(cnt == 0){
 			throw new NoMapException(createMapRequestDto.getTurnLeft()-fulfilledLeft,
 					createMapRequestDto.getTurnRight()-fulfilledRight,
-					createMapRequestDto.getUTurn()-fulfilledUTurn);
+					createMapRequestDto.getUuuTurn()-fulfilledUTurn);
 		}
 		return finalMapList;
 	}
