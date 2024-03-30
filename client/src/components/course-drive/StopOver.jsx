@@ -39,6 +39,7 @@ const StopOver = ({
     courseLine,
     filteredCourse,
     setFilteredCourse,
+    visited,
     setTime,
     setKm,
 }) => {
