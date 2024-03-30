@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import startPin from "../../assets/map_marker_start.png";
 import endPin from "../../assets/map_marker_end.png";
 import waypointPin from "../../assets/waypoint_yet.png";
+import waypointPinSelected from "../../assets/waypoint_passed.png";
 import { useLocation } from "react-router-dom";
 
 // 커스텀 대안
@@ -22,6 +23,8 @@ function Map({ course }) {
     const [map, setMap] = useState(null);
     const [markers, setMarkers] = useState([]);
 
+    const [selectedMarker, setSelectedMarker] = useState(null);
+
     // polyline을 그리기 위한 보정된 path(꼭지점) 좌표를 저장하는 리스트
     const [courseLine, setCourseLine] = useState([]);
 
@@ -38,21 +41,7 @@ function Map({ course }) {
     // 실행취소 기능 구현을 위한 상태와 함수
     const [isPolylineEditing, setIsPolylineEditing] = useState(false);
     const [polyline, setPolyline] = useState(null);
-    // if (polyline) {
-    //     polyline.addListener(
-    //         "click",
-    //         function () {
-    //             if (this.isEditing()) {
-    //                 this.endEdit();
-    //                 setIsPolylineEditing(false);
-    //             } else {
-    //                 this.startEdit();
-    //                 setIsPolylineEditing(true);
-    //             }
-    //         },
-    //         polyline,
-    //     );
-    // }
+
     const handleUndo = () => {
         if (isPolylineEditing) {
             polyline.endEdit(); // 드래그 상태 종료
@@ -111,14 +100,10 @@ function Map({ course }) {
             startName: "출발지",
             startX: `${startPoint.lng}`,
             startY: `${startPoint.lat}`,
-            // startX: "128.855674",
-            // startY: "35.093555",
             startTime: "202403201103",
             endName: "도착지",
             endX: `${endPoint.lng}`,
             endY: `${endPoint.lat}`,
-            // endX: "128.862074",
-            // endY: "35.089101",
             viaPoints: filteredCourse.map((point) => ({
                 viaPointId: `test${filteredCourse.indexOf(point) + 1}`,
                 viaPointName: `name${filteredCourse.indexOf(point) + 1}`,
@@ -226,20 +211,7 @@ function Map({ course }) {
                                 latlng,
                             );
 
-                        const marker = new window.Tmapv2.Marker({
-                            position: new window.Tmapv2.LatLng(
-                                convertPoint._lat,
-                                convertPoint._lng,
-                            ),
-                            icon: markerImg,
-                            iconSize: size,
-                            draggable: draggable,
-                            opacity: 0,
-                            visible: true,
-                            map: map,
-                        });
-
-                        setResultMarkerArr((prev) => [...prev, marker]);
+                        setResultMarkerArr((prev) => [...prev, convertPoint]);
                     }
                 });
             })
@@ -257,13 +229,15 @@ function Map({ course }) {
 
     useEffect(() => {
         if (map !== null) {
+            setCourseLine([]);
+            setResultMarkerArr([]);
             postRouteSequential30();
             // console.log(courseLine);
         }
     }, [map]);
 
     useEffect(() => {
-        console.log(courseLine); // courseLine이 변경될 때 로그를 출력
+        // console.log(courseLine); // courseLine이 변경될 때 로그를 출력
         if (courseLine.length > 0) {
             const newPolyline = new window.Tmapv2.Polyline({
                 path: courseLine,
@@ -276,6 +250,88 @@ function Map({ course }) {
                 directionColor: "white",
             });
             setPolyline(newPolyline);
+        }
+
+        // resultMarkerArr에 결과값이 있으면
+        if (resultMarkerArr?.length > 0) {
+            // 마커 그려주기
+            resultMarkerArr.map((convertPoint) => {
+                // console.log(convertPoint);
+                const marker = new window.Tmapv2.Marker({
+                    position: new window.Tmapv2.LatLng(
+                        convertPoint._lat,
+                        convertPoint._lng,
+                    ),
+                    icon: waypointPin,
+                    iconSize: new window.Tmapv2.Size(24, 24),
+                    draggable: false,
+                    opacity: 0,
+                    visible: true,
+                    map: map,
+                });
+
+                console.log(marker);
+                marker.addListener(
+                    "click",
+                    function () {
+                        if (!this._marker_data.options.draggable) {
+                            console.log(
+                                "애드리스너 테스트 - 클릭했을 때 드래거블이 false인 경우",
+                                this,
+                            );
+
+                            // 마커 애니메이션 활성화를 위한 aniType
+                            const aniType = marker.animate(
+                                Tmapv2.MarkerOptions.ANIMATE_BOUNCE,
+                            );
+
+                            this._marker_data.options.draggable = true;
+                            this._marker_data.options.animation = aniType;
+                            this._marker_data.options.animationLength = 500;
+                            console.log("애드리스너 변화 시킨 marker", this);
+                            setSelectedMarker(this);
+                        } else {
+                            console.log(
+                                "애드리스너 테스트 - 클릭했을 때 드래거블이 true인 경우",
+                                this,
+                            );
+                            this._marker_data.options.draggable = false;
+
+                            this.stopAnimation();
+
+                            setSelectedMarker(null);
+                        }
+                    },
+                    marker,
+                );
+
+                marker.addListener("dragstart", function () {
+                    this.stopAnimation();
+                });
+
+                // 마커가 draggable 가능할 때에만 이벤트 리스너 달아주기
+                if (marker._marker_data.options.draggable === true) {
+                    marker.addListener("dragend", function () {
+                        const newposition = marker.getPosition();
+                        console.log("드래그 후 포지션", newposition);
+
+                        // 코스 업데이트
+                        const updatedCourse = filteredCourse.map(
+                            (point, index) =>
+                                index === selectedMarker
+                                    ? {
+                                          lat: newposition.lat(),
+                                          lng: newposition.lng(),
+                                      }
+                                    : point,
+                        );
+                        setFilteredCourse(updatedCourse);
+                        console.log("드래그 후 코스 업데이트", filteredCourse);
+                    });
+
+                    setMarkers((prev) => [...prev, marker]);
+                }
+            });
         }
     }, [courseLine]);
 
