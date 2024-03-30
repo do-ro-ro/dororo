@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import NowLocation from "./NowLocation";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
     Modal,
@@ -19,6 +19,7 @@ import TurnRightIcon from "@mui/icons-material/TurnRight";
 import UTurnLeftIcon from "@mui/icons-material/UTurnLeft";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
+import { optionPost } from "../../apis/server/MainOption";
 
 // 모달 스타일 정의
 const style = {
@@ -33,16 +34,34 @@ const style = {
     p: 4,
 };
 
-const OptionModal = ({ open, closeModal, setOption, option }) => {
-    const [lat, setLat] = useState(35.09504003528538);
-    const [lon, setLon] = useState(128.90489491914798);
-    const handleMethodChange = (e) => {
-        setOption({ ...option, method: e.target.value });
-        console.log(option);
+const OptionModal = ({ open, closeModal, lat, lng }) => {
+    const [option, setOption] = useState({
+        mapDistance: 5,
+        turnLeft: 1,
+        turnRight: 1,
+        uturn: 1,
+        startPoint: {
+            lat: lat,
+            lng: lng,
+        },
+        return: true,
+    });
+
+    const navigate = useNavigate();
+
+    // const handleMethodChange = (e) => {
+    //     setOption({ ...option, method: e.target.value });
+    //     console.log(option);
+    // };
+
+    const handleConfirmClick = async () => {
+        const response = await optionPost(option); // 옵션 객체를 서버에 전송
+        closeModal(); // 모달 닫기
+        navigate("/recommend", { state: { data: response } });
     };
 
     const handleSliderChange = (e) => {
-        setOption({ ...option, length: Math.max(e.target.value, 5) });
+        setOption({ ...option, mapDistance: Math.max(e.target.value, 5) });
     };
 
     const handleDecrease = (direction) => {
@@ -72,7 +91,7 @@ const OptionModal = ({ open, closeModal, setOption, option }) => {
                         코스 옵션 설정하기
                     </Typography>
                 </Box>
-                <Box>
+                {/* <Box>
                     <Typography
                         variant="h6"
                         component="h2"
@@ -134,7 +153,7 @@ const OptionModal = ({ open, closeModal, setOption, option }) => {
                             />
                         </Box>
                     </RadioGroup>
-                </Box>
+                </Box> */}
                 <Box>
                     <Typography
                         variant="h6"
@@ -156,8 +175,8 @@ const OptionModal = ({ open, closeModal, setOption, option }) => {
                         <Box sx={{ width: "90%" }}>
                             <Slider
                                 value={
-                                    typeof option.length === "number"
-                                        ? option.length
+                                    typeof option.mapDistance === "number"
+                                        ? option.mapDistance
                                         : 0
                                 }
                                 onChange={handleSliderChange}
@@ -245,18 +264,18 @@ const OptionModal = ({ open, closeModal, setOption, option }) => {
                             >
                                 <Button
                                     sx={{ p: 0, minWidth: "auto" }}
-                                    onClick={() => handleDecrease("left")}
+                                    onClick={() => handleDecrease("turnLeft")}
                                 >
                                     <IndeterminateCheckBoxIcon />
                                 </Button>
                                 <Typography
                                     sx={{ mx: 0.7, fontWeight: "bold" }}
                                 >
-                                    {option.left} {/* 숫자 표시 */}
+                                    {option.turnLeft} {/* 숫자 표시 */}
                                 </Typography>
                                 <Button
                                     sx={{ p: 0, minWidth: "auto" }}
-                                    onClick={() => handleIncrease("left")}
+                                    onClick={() => handleIncrease("turnLeft")}
                                 >
                                     <AddBoxIcon />
                                 </Button>
@@ -314,18 +333,18 @@ const OptionModal = ({ open, closeModal, setOption, option }) => {
                             >
                                 <Button
                                     sx={{ p: 0, minWidth: "auto" }}
-                                    onClick={() => handleDecrease("right")}
+                                    onClick={() => handleDecrease("turnRight")}
                                 >
                                     <IndeterminateCheckBoxIcon />
                                 </Button>
                                 <Typography
                                     sx={{ mx: 0.7, fontWeight: "bold" }}
                                 >
-                                    {option.right} {/* 숫자 표시 */}
+                                    {option.turnRight} {/* 숫자 표시 */}
                                 </Typography>
                                 <Button
                                     sx={{ p: 0, minWidth: "auto" }}
-                                    onClick={() => handleIncrease("right")}
+                                    onClick={() => handleIncrease("turnRight")}
                                 >
                                     <AddBoxIcon />
                                 </Button>
@@ -404,11 +423,11 @@ const OptionModal = ({ open, closeModal, setOption, option }) => {
                 </Box>
                 {/* 확인 버튼을 누르면 axios post로 option을 보내고 코스옵션
                 기본으로 되돌리는 함수 정의하기 */}
-                <Box>
-                    <NowLocation setLat={setLat} setLon={setLon} />
-                </Box>
+
                 <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
-                    <Button variant="contained">확인</Button>
+                    <Button variant="contained" onClick={handleConfirmClick}>
+                        확인
+                    </Button>
 
                     <Button
                         variant="contained"

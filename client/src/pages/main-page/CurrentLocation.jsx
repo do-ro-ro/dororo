@@ -1,12 +1,11 @@
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 
-const CurrentLocation = ({ setLat, setLon, setTimestamp }) => {
+const CurrentLocation = ({ setLat, setLng }) => {
     // 위치 정보를 가져오고 상태를 업데이트하는 함수
     const fetchCurrentPosition = () => {
         navigator.geolocation.getCurrentPosition((position) => {
             setLat(position.coords.latitude);
-            setLon(position.coords.longitude);
-            setTimestamp(position.timestamp);
+            setLng(position.coords.longitude);
             console.log(position);
         });
     };
