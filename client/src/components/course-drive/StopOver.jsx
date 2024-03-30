@@ -36,8 +36,6 @@ import waypoint_30 from "../../assets/waypoints_number/waypoint_30.png";
 const StopOver = ({
     lat,
     lng,
-    courseNode,
-    setCourseNode,
     courseLine,
     filteredCourse,
     setFilteredCourse,
