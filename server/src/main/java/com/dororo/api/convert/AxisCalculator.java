@@ -63,7 +63,6 @@ public class AxisCalculator {
             lat2 = lat2 - 0.00015; //도착지점 남동쪽으로 당기기
             lon2 = lon2 + 0.00008; //차선기준 위로 옮기기
         }
-        System.out.println(lat2 + ", " + lon2);
 
         return new LatitudeLongitude(lat2, lon2);
     }
