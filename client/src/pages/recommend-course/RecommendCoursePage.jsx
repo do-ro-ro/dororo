@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+
 import Topbar from "../../components/topbar/Topbar";
 import Recommend from "./Recommend";
 import BottomNav from "./BottomNav";
