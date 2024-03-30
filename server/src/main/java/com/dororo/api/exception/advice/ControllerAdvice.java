@@ -24,6 +24,7 @@ public class ControllerAdvice {
     // <------------------------ Map part ------------------------>
     @ExceptionHandler(value = NoMapException.class)
     public ResponseEntity noMap(NoMapException e) {
+        System.out.println("nomapppppp");
         NoMapExceptionResponseDto noMapExceptionResponseDto = new NoMapExceptionResponseDto(e.getLackLeft(), e.getLackRight(), e.getLackUTurn());
         return new ResponseEntity(noMapExceptionResponseDto, e.getHttpStatus());
     }

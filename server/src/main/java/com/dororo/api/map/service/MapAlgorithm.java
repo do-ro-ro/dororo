@@ -68,7 +68,9 @@ public class MapAlgorithm {
 		mapInit.add(startNode);
 		//시작 노드에 연결된 링크 큐에 추가
 		for(int i=0;i<startLinks.size();i++) {
+			mapInit.add(startLinks.get(i).getTNodeId());
 			q.offer(new Link(startLinks.get(i), 0, 0, 0, 0, mapInit));
+			mapInit.remove(mapInit.size()-1);
 		}
 		while(!q.isEmpty()){
 			if(cnt > 10) break;
@@ -97,27 +99,30 @@ public class MapAlgorithm {
 					&& (newDistance>=createMapRequestDto.getMapDistance()*1000)
 					&& (newDistance<createMapRequestDto.getMapDistance()*1000+500)) {
 				cnt++;
-				newMap.add(cur.getLinkEntity().getTNodeId());
+				//newMap.add(cur.getLinkEntity().getTNodeId());
 				cur.setNodeIds(newMap);
 				// Link -> CreateMapResponseDto로 변환해서 finalMapList에 넣어주기
 				List<LatitudeLongitude> originMapRouteAxis = new ArrayList<>();
 				List<LatitudeLongitude> convertedRouteAxis = new ArrayList<>();
-				System.out.println(cur.getNodeIds());
+				//System.out.println(cur.getNodeIds());
 
 				for(int i=0;i<cur.getNodeIds().size();i++) originMapRouteAxis.add(nodeRepository.getNodePoint(cur.getNodeIds().get(i)));
 				for(int i=0;i<cur.getNodeIds().size()-1;i++) convertedRouteAxis.add(axisCalculator.calculateBearing(originMapRouteAxis.get(i).getLat(), originMapRouteAxis.get(i).getLng(), originMapRouteAxis.get(i+1).getLat(), originMapRouteAxis.get(i+1).getLng()));
 
 				finalMapList.add(new CreateMapResponseDto(originMapRouteAxis, convertedRouteAxis, newDistance));
-
+				continue;
 			}
 
-			//cur의 f_node_id로 map 조회 -> 연결된 링크 불러옴
-			List<LinkEntity> nextLinks = map.get(cur.getLinkEntity().getFNodeId());
+			//cur의 t_node_id로 map 조회 -> 연결된 링크 불러옴
+			List<LinkEntity> nextLinks = map.get(cur.getLinkEntity().getTNodeId());
 
 			//연결된 링크로 갈 수 있는 지 확인 (거리, 좌우회전 유턴 조건)
 			//못가면 컨티뉴
 			//갈 수 있으면 길이, 좌우회전 유턴 값 추가하고 큐에 넣기
 			for(int i=0;i<nextLinks.size();i++){
+				List<String> tempMap = new ArrayList<>();
+				tempMap.addAll(newMap);
+
 				LinkEntity next = nextLinks.get(i);
 
 				//거리 조건 확인
@@ -125,19 +130,18 @@ public class MapAlgorithm {
 				if(newDistance>createMapRequestDto.getMapDistance()*1000)
 					continue;
 
-					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-					//좌우회전, 유턴 판별 로직...으로 판별하고 조건에 안맞으면 continue
-                /*if(isTurnRight(cur,next)) {
-					newTurnRight = cur.getTurnLeft()+1;
+				String turnInfo = getTurnInfo(cur, next);
+					// 좌우회전, 유턴 판별 로직...으로 판별하고 조건에 안맞으면 continue
+                if(turnInfo.equals("left")) {
+					newTurnLeft = cur.getTurnLeft()+1;
+					if(newTurnLeft>createMapRequestDto.getTurnLeft())
+						continue;
+				}
+				else if(turnInfo.equals("right")){
+					newTurnRight = cur.getTurnRight()+1;
 					if(newTurnRight>createMapRequestDto.getTurnRight())
 						continue;
 				}
-				else if(isTurnLeft(cur,next)) {
-					newTurnLeft=cur.getTurnLeft()+1;
-					if(newTurnLeft>createMapRequestDto.getTurnLeft())
-						continue;
-				}*/
-					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				else if(isUTurn(cur,next)) {
 					newUTurn=cur.getUTurn()+1;
 					if(newUTurn>createMapRequestDto.getUTurn())
@@ -145,9 +149,9 @@ public class MapAlgorithm {
 				}
 
 				//갈 수 있으면
-				newMap.add(next.getTNodeId());	// 다음 링크의 To 노드 아이디 좌표에 저장
+				tempMap.add(next.getTNodeId());	// 다음 링크의 To 노드 아이디 좌표에 저장
 				newDistance+=next.getLinkDistance();
-				q.offer(new Link(cur.getLinkEntity(), newTurnLeft, newTurnRight, newUTurn, newDistance, newMap));
+				q.offer(new Link(next, newTurnLeft, newTurnRight, newUTurn, newDistance, tempMap));
 			}
 		}
 
@@ -160,14 +164,43 @@ public class MapAlgorithm {
 		return finalMapList;
 	}
 
-	private boolean isTurnLeft(Link cur, LinkEntity next) {
-		//cur.t_node와 next.t_node 좌표 비교해서 좌회전인지
-		return false;
-	}
-
-	private boolean isTurnRight(Link cur, LinkEntity next) {
+	private String getTurnInfo(Link cur, LinkEntity next) {
+		long beforeTime = System.currentTimeMillis();
 		//cur.t_node와 next.t_node 좌표 비교해서 우회전인지
-		return false;
+		LatitudeLongitude prevNode = nodeRepository.getNodePoint(cur.getLinkEntity().getFNodeId());
+		LatitudeLongitude curNode = nodeRepository.getNodePoint(cur.getLinkEntity().getTNodeId());
+		LatitudeLongitude nextNode = nodeRepository.getNodePoint(next.getTNodeId());
+
+		double prevNodeY = prevNode.getLat();
+		double prevNodeX = prevNode.getLng();
+
+		double curNodeY = curNode.getLat();
+		double curNodeX = curNode.getLng();
+
+		double nextNodeY = nextNode.getLat();
+		double nextNodeX = nextNode.getLng();
+
+		double o1 = Math.atan2((prevNodeY-curNodeY), (prevNodeX-curNodeX));
+		double o2 = Math.atan2((nextNodeY-curNodeY), (nextNodeX-curNodeX));
+
+		double degree = Math.abs((o1-o2)*180/Math.PI);
+
+		long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+		long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
+		System.out.println("시간차이(m) : "+secDiffTime);
+		System.out.println("degree : "+ degree);
+
+		if(degree>60 && degree<120){
+			System.out.println("prevNode : "+ prevNodeX +", "+prevNodeY);
+			System.out.println("curNode : "+ curNodeX +", "+curNodeY);
+			System.out.println("nextNode : "+ nextNodeX +", "+nextNodeY);
+			return "left";
+		}
+
+		else if(degree>240 && degree<300)
+			return "right";
+
+		return "noTurn";
 	}
 
 	private boolean isUTurn(Link cur, LinkEntity next) {
