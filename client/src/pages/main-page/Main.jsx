@@ -18,7 +18,6 @@ const Main = () => {
 
     const closeModal = () => {
         setShowModal(false);
-        console.log(option);
     };
     return (
         <>
@@ -26,7 +25,7 @@ const Main = () => {
                 <Search setLat={setLat} setLng={setLng}></Search>
             </div>
             <div className="relative ">
-                <Map lat={lat} lng={lgn}></Map>
+                <Map lat={lat} lng={lng}></Map>
                 <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 mb-2">
                     <RecommendButton openModal={openModal}></RecommendButton>
                 </div>
@@ -35,7 +34,6 @@ const Main = () => {
                 <CurrentLocation
                     setLat={setLat}
                     setLng={setLng}
-                    setTimestamp={setTimestamp}
                 ></CurrentLocation>
             </div>
             <div>

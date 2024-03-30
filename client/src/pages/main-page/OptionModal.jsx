@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
     Modal,
@@ -44,10 +44,10 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
         },
     });
 
-    const handleMethodChange = (e) => {
-        setOption({ ...option, method: e.target.value });
-        console.log(option);
-    };
+    // const handleMethodChange = (e) => {
+    //     setOption({ ...option, method: e.target.value });
+    //     console.log(option);
+    // };
 
     const handleSliderChange = (e) => {
         setOption({ ...option, mapDistance: Math.max(e.target.value, 5) });
@@ -80,7 +80,7 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
                         코스 옵션 설정하기
                     </Typography>
                 </Box>
-                <Box>
+                {/* <Box>
                     <Typography
                         variant="h6"
                         component="h2"
@@ -142,7 +142,7 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
                             />
                         </Box>
                     </RadioGroup>
-                </Box>
+                </Box> */}
                 <Box>
                     <Typography
                         variant="h6"
