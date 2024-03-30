@@ -7,7 +7,7 @@ import {
     Typography,
 } from "@mui/material";
 import Topbar from "../../components/topbar/Topbar";
-import { Cancel, CheckCircle } from "@mui/icons-material";
+import { Cancel, CatchingPokemonSharp, CheckCircle } from "@mui/icons-material";
 import SampleCourseImg from "../../assets/sample_course_img.png";
 import DriveIcon from "../../assets/drive_icon.png";
 import Map from "../main-page/Map";
@@ -16,6 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import DeleteDialog from "../../components/community-detail/DeleteDialog";
 import ShareModal from "../../components/course-detail/ShareModal";
 import { getMapDetail } from "../../apis/server/Map";
+import { current } from "@reduxjs/toolkit";
 
 const DummyMap = {
     map_id: 0,
@@ -37,7 +38,6 @@ function CourseDetailPage() {
 
     const handleShareModal = () => {
         setOpenShareModal(true);
-        console.log("열려라 모달!");
     };
 
     const navigate = useNavigate();
@@ -47,7 +47,7 @@ function CourseDetailPage() {
             try {
                 const response = await getMapDetail(courseId);
                 const updatedCourse = response;
-                console.log(response);
+                // console.log(response);
                 setCurrentCourse(updatedCourse);
                 // console.log(updatedMapPosts);
                 // console.log(currentMapPosts);
@@ -142,7 +142,9 @@ function CourseDetailPage() {
                         <Button
                             variant="contained"
                             sx={{ width: "90vw", py: 1 }}
-                            onClick={() => navigate(`drive`)}
+                            onClick={() =>
+                                navigate(`drive`, { state: currentCourse })
+                            }
                         >
                             <Stack direction={"row"} alignItems={"center"}>
                                 <img src={DriveIcon} />
