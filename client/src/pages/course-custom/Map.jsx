@@ -23,13 +23,16 @@ function Map({ course }) {
     const [map, setMap] = useState(null);
     const [markers, setMarkers] = useState([]);
 
-    const [selectedMarker, setSelectedMarker] = useState(null);
+    // const [selectedMarker, setSelectedMarker] = useState(null);
 
     // polyline을 그리기 위한 보정된 path(꼭지점) 좌표를 저장하는 리스트
     const [courseLine, setCourseLine] = useState([]);
 
     // viaPoint 설정을 위해 첫점과 끝점을 제외한 path 좌표를 저장하는 리스트
     const [filteredCourse, setFilteredCourse] = useState([]);
+
+    // 수정 로직 작성을 위해 마커 이동시 위치를 갱신하는 리스트
+    const [editedCourse, setEditedCourse] = useState([]);
 
     // 지도 위 거점을 찍기 위한 오리지널 노드 좌표를 저장하는 리스트
     const [courseNode, setCourseNode] = useState([]);
@@ -38,26 +41,51 @@ function Map({ course }) {
     const [resultMarkerArr, setResultMarkerArr] = useState([]);
     const [resultInfoArr, setResultInfoArr] = useState([]);
 
-    // 실행취소 기능 구현을 위한 상태와 함수
-    const [isPolylineEditing, setIsPolylineEditing] = useState(false);
-    const [polyline, setPolyline] = useState(null);
-
-    const handleUndo = () => {
-        if (isPolylineEditing) {
-            polyline.endEdit(); // 드래그 상태 종료
-            setIsPolylineEditing(false); // 드래그 상태를 false로 업데이트
-        }
-    };
-
-    const startPoint = currentCourse?.originMapRouteAxis[0];
-    const endPoint =
+    // API 호출을 위한 세팅들
+    const basicStartPoint = currentCourse?.originMapRouteAxis[0];
+    const basicEndPoint =
         currentCourse?.originMapRouteAxis[
             currentCourse.originMapRouteAxis.length - 1
         ];
 
+    const [startPoint, setStartPoint] = useState(null);
+    const [endPoint, setEndPoint] = useState(null);
+
+    // 처음 호출 시 APIparam
+    const basicAPIparam = {
+        startName: "출발지",
+        startX: `${basicStartPoint?.lng}`,
+        startY: `${basicStartPoint?.lat}`,
+        startTime: "202403201103",
+        endName: "도착지",
+        endX: `${basicEndPoint?.lng}`,
+        endY: `${basicEndPoint?.lat}`,
+        viaPoints: filteredCourse.map((point) => ({
+            viaPointId: `test${filteredCourse?.indexOf(point) + 1}`,
+            viaPointName: `name${filteredCourse?.indexOf(point) + 1}`,
+            viaX: `${point.lng}`,
+            viaY: `${point.lat}`,
+        })),
+        reqCoordType: "WGS84GEO",
+        resCoordType: "EPSG3857",
+        searchOption: "2",
+    };
+    // param 변경을 위한 상태
+    const [APIparam, setAPIparam] = useState(basicAPIparam);
+
+    // API 호출 확인을 위한 상태
+    const [checkAPI, setCheckAPI] = useState(0);
+
     // 코스정보를 받아왔을 때 웨이포인트는 보정 전 좌표로 등록하기
     useEffect(() => {
+        // 코스 정보를 받아오면
         if (course.length > 1) {
+            setStartPoint(currentCourse?.originMapRouteAxis[0]);
+            setEndPoint(
+                currentCourse?.originMapRouteAxis[
+                    currentCourse.originMapRouteAxis.length - 1
+                ],
+            );
             setFilteredCourse(
                 currentCourse.originMapRouteAxis.slice(
                     1,
@@ -69,8 +97,8 @@ function Map({ course }) {
 
     // 지도 시작점을 위한 센터 포인트 정의
     const centerPoint = {
-        lat: (startPoint.lat + endPoint.lat) / 2,
-        lng: (startPoint.lng + endPoint.lng) / 2,
+        lat: (basicStartPoint.lat + basicEndPoint?.lat) / 2,
+        lng: (basicStartPoint?.lng + basicEndPoint?.lng) / 2,
     };
 
     // 지도 초기화
@@ -88,32 +116,15 @@ function Map({ course }) {
         setMap(newMap);
     };
 
-    const postRouteSequential30 = async () => {
-        const searchOption = "2";
+    const postRouteSequential30 = async (option) => {
+        // const searchOption = "2";
 
         const headers = {
             appKey: import.meta.env.VITE_TMAP_API_KEY,
             "Content-Type": "application/json",
         };
 
-        const param = {
-            startName: "출발지",
-            startX: `${startPoint.lng}`,
-            startY: `${startPoint.lat}`,
-            startTime: "202403201103",
-            endName: "도착지",
-            endX: `${endPoint.lng}`,
-            endY: `${endPoint.lat}`,
-            viaPoints: filteredCourse.map((point) => ({
-                viaPointId: `test${filteredCourse.indexOf(point) + 1}`,
-                viaPointName: `name${filteredCourse.indexOf(point) + 1}`,
-                viaX: `${point.lng}`,
-                viaY: `${point.lat}`,
-            })),
-            reqCoordType: "WGS84GEO",
-            resCoordType: "EPSG3857",
-            searchOption: searchOption,
-        };
+        const param = option;
 
         fetch(
             "https://apis.openapi.sk.com/tmap/routes/routeSequential30?version=1&format=json",
@@ -134,15 +145,15 @@ function Map({ course }) {
                 const resultFeatures = data.features;
                 // console.log(resultFeatures);
 
-                const tDistance =
-                    "총 거리 : " +
-                    (resultData.totalDistance / 1000).toFixed(1) +
-                    "km,  ";
-                const tTime =
-                    "총 시간 : " +
-                    (resultData.totalTime / 60).toFixed(0) +
-                    "분,  ";
-                const tFare = "총 요금 : " + resultData.totalFare + "원";
+                // const tDistance =
+                //     "총 거리 : " +
+                //     (resultData.totalDistance / 1000).toFixed(1) +
+                //     "km,  ";
+                // const tTime =
+                //     "총 시간 : " +
+                //     (resultData.totalTime / 60).toFixed(0) +
+                //     "분,  ";
+                // const tFare = "총 요금 : " + resultData.totalFare + "원";
 
                 // resultInfoArr에 값이 존재하면, 갱신할 것
                 if (resultInfoArr.length > 0) {
@@ -169,6 +180,7 @@ function Map({ course }) {
                                         latlng,
                                     );
 
+                                // 코스라인 상태에 lineString인 좌표들 담아주기
                                 setCourseLine((prev) => [
                                     ...prev,
                                     convertPoint,
@@ -211,33 +223,42 @@ function Map({ course }) {
                                 latlng,
                             );
 
+                        // 마커값 결과 상태에 담아주기
                         setResultMarkerArr((prev) => [...prev, convertPoint]);
                     }
                 });
+                setCheckAPI((prev) => prev + 1);
             })
             .catch((error) => {
                 console.error("Error:", error);
             });
     };
 
+    // 맨 처음 컴포넌트 랜딩 시
     useEffect(() => {
         console.log(currentCourse);
+        // 맵이 없으면
         if (map === null) {
+            // 맵 생성하기
             initMap();
         }
     }, []);
 
+    // initMap을 통해 map이 그려지면 발생하는 hook
     useEffect(() => {
+        // 맵이 있는지 확인한 후에
         if (map !== null) {
-            setCourseLine([]);
+            //
+            // setCourseLine([]);
             setResultMarkerArr([]);
-            postRouteSequential30();
+            postRouteSequential30(basicAPIparam);
             // console.log(courseLine);
         }
     }, [map]);
 
+    // API가 호출될 때마다 발생하는 useEffect
     useEffect(() => {
-        // console.log(courseLine); // courseLine이 변경될 때 로그를 출력
+        // courseLine이 존재하면 (경유지 탐색을 돌고 난 후라면)
         if (courseLine.length > 0) {
             const newPolyline = new window.Tmapv2.Polyline({
                 path: courseLine,
@@ -249,8 +270,9 @@ function Map({ course }) {
                 direction: true,
                 directionColor: "white",
             });
-            setPolyline(newPolyline);
+            // setPolyline(newPolyline);
         }
+        setCourseLine([]);
 
         // resultMarkerArr에 결과값이 있으면
         if (resultMarkerArr?.length > 0) {
@@ -285,21 +307,19 @@ function Map({ course }) {
                                 Tmapv2.MarkerOptions.ANIMATE_BOUNCE,
                             );
 
-                            this._marker_data.options.draggable = true;
+                            this.setDraggable(true);
                             this._marker_data.options.animation = aniType;
                             this._marker_data.options.animationLength = 500;
                             console.log("애드리스너 변화 시킨 marker", this);
-                            setSelectedMarker(this);
                         } else {
                             console.log(
                                 "애드리스너 테스트 - 클릭했을 때 드래거블이 true인 경우",
                                 this,
                             );
-                            this._marker_data.options.draggable = false;
+
+                            this.setDraggable(false);
 
                             this.stopAnimation();
-
-                            setSelectedMarker(null);
                         }
                     },
                     marker,
@@ -325,7 +345,7 @@ function Map({ course }) {
                                       }
                                     : point,
                         );
-                        setFilteredCourse(updatedCourse);
+
                         console.log("드래그 후 코스 업데이트", filteredCourse);
                     });
 
@@ -333,17 +353,16 @@ function Map({ course }) {
                 }
             });
         }
-    }, [courseLine]);
+    }, [checkAPI]);
 
     return (
         <>
             <Box>
-                <Button onClick={handleUndo}>실행 취소</Button>
-                <div id="map_div">
-                    <Box position={"fixed"}>
-                        <Button>수정 완료</Button>
-                    </Box>
-                </div>
+                {/* <Button onClick={handleUndo}>실행 취소</Button> */}
+                <div id="map_div"></div>
+                <Box position={"fixed"}>
+                    <Button>수정 완료</Button>
+                </Box>
             </Box>
         </>
     );
