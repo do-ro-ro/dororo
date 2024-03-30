@@ -19,6 +19,7 @@ import com.dororo.api.db.entity.LinkEntity;
 import com.dororo.api.db.entity.NodeEntity;
 import com.dororo.api.db.repository.LinkRepository;
 import com.dororo.api.db.repository.NodeRepository;
+import com.dororo.api.exception.NoMapException;
 import com.dororo.api.map.dto.CreateMapRequestDto;
 import com.dororo.api.map.dto.CreateMapResponseDto;
 
@@ -57,10 +58,12 @@ public class MapAlgorithm {
 		List<CreateMapResponseDto> finalMapList = new ArrayList<>();
 		Map<String, List<LinkEntity>> map = makeEdgeList(linkEntityList);
 
-
 		Queue<Link> q = new ArrayDeque<>();
 		List<String> mapInit = new ArrayList<>();
 		int cnt = 0;
+		int minDiff = 100; //충족해야하는 조건과의 최소 차이
+		int fulfilledLeft = 0, fulfilledRight = 0, fulfilledUTurn = 0; //충족된 좌,우회전,유턴 횟수
+		int sumNeedTurns = createMapRequestDto.getUTurn() + createMapRequestDto.getTurnLeft() + createMapRequestDto.getTurnRight(); //조건 합
 
 		mapInit.add(startNode);
 		//시작 노드에 연결된 링크 큐에 추가
@@ -75,9 +78,15 @@ public class MapAlgorithm {
 			int newTurnLeft = cur.getTurnLeft();
 			int newUTurn = cur.getUTurn();
 			float newDistance = cur.getMapDistance();
-			//System.out.println("DIs : "+newDistance);
 			List<String> newMap = new ArrayList<>();
 			newMap.addAll(cur.getNodeIds());
+
+			if(minDiff > sumNeedTurns-(newTurnLeft+newTurnRight+newUTurn)){
+				minDiff = sumNeedTurns-(newTurnLeft+newTurnRight+newUTurn);
+				fulfilledLeft = newTurnLeft;
+				fulfilledRight = newTurnRight;
+				fulfilledUTurn = newUTurn;
+			}
 
 			//사용자 입력 조건에 만족하면
 			// newMap.add(cur.getTNodeId()); //도착점 노드
@@ -113,7 +122,7 @@ public class MapAlgorithm {
 
 				//거리 조건 확인
 				newDistance += next.getLinkDistance();
-				if(newDistance>5000)
+				if(newDistance>createMapRequestDto.getMapDistance()*1000)
 					continue;
 
 					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -142,6 +151,12 @@ public class MapAlgorithm {
 			}
 		}
 
+		//경로 안나왔을 때
+		if(cnt == 0){
+			throw new NoMapException(createMapRequestDto.getTurnLeft()-fulfilledLeft,
+				createMapRequestDto.getTurnRight()-fulfilledRight,
+				createMapRequestDto.getUTurn()-fulfilledUTurn);
+		}
 		return finalMapList;
 	}
 
