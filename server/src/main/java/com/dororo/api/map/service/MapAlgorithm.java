@@ -135,12 +135,11 @@ public class MapAlgorithm {
 						continue;
 				} else if(isUTurn(cur,next)) {
 					newUTurn=cur.getUTurn()+1;
-					/*
-					System.out.println("유턴 추가!  ");
+					/*System.out.println("==========유턴 추가!===========");
 					System.out.println("cur : "+ nodeRepository.getNodePoint(cur.getLinkEntity().getFNodeId())+", "+
 						nodeRepository.getNodePoint(cur.getLinkEntity().getTNodeId()));
-					System.out.println("next : "+next.getFNodeId()+", "+next.getTNodeId());
-					*/
+					System.out.println("next : "+nodeRepository.getNodePoint(next.getFNodeId())+", "+
+						nodeRepository.getNodePoint(next.getTNodeId()));*/
 					if(newUTurn>createMapRequestDto.getUuuTurn())
 						continue;
 				}
@@ -162,8 +161,8 @@ public class MapAlgorithm {
 	}
 
 	private String getTurnInfo(Link cur, LinkEntity next) {
-		long beforeTime = System.currentTimeMillis();
-		//cur.t_node와 next.t_node 좌표 비교해서 우회전인지
+		//long beforeTime = System.currentTimeMillis();
+
 		LatitudeLongitude prevNode = nodeRepository.getNodePoint(cur.getLinkEntity().getFNodeId());
 		LatitudeLongitude curNode = nodeRepository.getNodePoint(cur.getLinkEntity().getTNodeId());
 		LatitudeLongitude nextNode = nodeRepository.getNodePoint(next.getTNodeId());
@@ -182,15 +181,18 @@ public class MapAlgorithm {
 
 		double degree = Math.abs((o1-o2)*180/Math.PI);
 
+		/*
 		long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
 		long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
 		System.out.println("시간차이(m) : "+secDiffTime);
+		*/
+
 		System.out.println("degree : "+ degree);
 
 		if(degree>60 && degree<120){
-			System.out.println("prevNode : "+ prevNodeX +", "+prevNodeY);
+			/*System.out.println("prevNode : "+ prevNodeX +", "+prevNodeY);
 			System.out.println("curNode : "+ curNodeX +", "+curNodeY);
-			System.out.println("nextNode : "+ nextNodeX +", "+nextNodeY);
+			System.out.println("nextNode : "+ nextNodeX +", "+nextNodeY);*/
 			return "left";
 		} else if(degree>240 && degree<300)
 			return "right";

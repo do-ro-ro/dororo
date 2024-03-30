@@ -41,12 +41,6 @@ public class MapController {
     @PostMapping("")
     public ResponseEntity createMap(@RequestBody CreateMapRequestDto createMapRequestDto,
                                     @RequestHeader("access") String access) {
-        System.out.println("============controller===========");
-        System.out.println("uTurn : "+createMapRequestDto.getUuuTurn());
-        System.out.println("right : "+createMapRequestDto.getTurnRight());
-        System.out.println("left : "+createMapRequestDto.getTurnLeft());
-        System.out.println("dis : "+createMapRequestDto.getMapDistance());
-        System.out.println(createMapRequestDto.getStartPoint().toString());
         List<CreateMapResponseDto>  createMapList =  mapService.createMap(createMapRequestDto,access);
 
         return new ResponseEntity(createMapList, HttpStatus.CREATED);
