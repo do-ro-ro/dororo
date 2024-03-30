@@ -6,22 +6,22 @@ import endpin from "../../assets/end_pin.png";
 import waypin from "../../assets/waypoint_yet.png";
 import CourseInfo from "./CourseInfo";
 
-const Recommend = ({ locations, currentIndex }) => {
+const Recommend = ({ courseNode, currentIndex }) => {
     let [map, setMap] = useState(null);
     const [resultMarkerArr, setResultMarkerArr] = useState([]);
     const [resultInfoArr, setResultInfoArr] = useState([]);
     const [showRoadViewModal, setShowRoadViewModal] = useState(false);
     const [currentLocation, setCurrentLocation] = useState({
         lat: null,
-        lon: null,
+        lng: null,
     });
     const [courseInfo, setCourseInfo] = useState({
         distance: "",
         time: "",
     });
 
-    const openRoadViewModal = (lat, lon) => {
-        setCurrentLocation({ lat, lon });
+    const openRoadViewModal = (lat, lng) => {
+        setCurrentLocation({ lat, lng });
         setShowRoadViewModal(true);
     };
 
@@ -43,18 +43,18 @@ const Recommend = ({ locations, currentIndex }) => {
 
     const calculateCenterCoordinate = (locations) => {
         let latSum = 0;
-        let lonSum = 0;
+        let lngSum = 0;
         const count = locations.lat.length;
         for (let i = 0; i < count; i++) {
             latSum += locations.lat[i];
-            lonSum += locations.lon[i];
+            lngSum += locations.lng[i];
         }
-        return { lat: latSum / count, lon: lonSum / count };
+        return { lat: latSum / count, lng: lngSum / count };
     };
 
     // 지도 업데이트 함수: 중심 좌표를 업데이트하고 마커를 다시 그립니다.
     const updateMap = (center, locations) => {
-        map.setCenter(new window.Tmapv2.LatLng(center.lat, center.lon));
+        map.setCenter(new window.Tmapv2.LatLng(center.lat, center.lng));
 
         // 기존 마커 삭제
         resultMarkerArr.forEach((marker) => marker.setMap(null));
@@ -68,7 +68,7 @@ const Recommend = ({ locations, currentIndex }) => {
         const startMarker = new window.Tmapv2.Marker({
             position: new window.Tmapv2.LatLng(
                 locations.lat[0],
-                locations.lon[0],
+                locations.lng[0],
             ),
             icon: startpin, // 시작점 아이콘
             iconSize: new window.Tmapv2.Size(24, 38),
@@ -76,8 +76,8 @@ const Recommend = ({ locations, currentIndex }) => {
         });
         setResultMarkerArr((prev) => [...prev, startMarker]);
         startMarker.addListener("touchstart", () => {
-            openRoadViewModal(locations.lat[0], locations.lon[0]);
-            console.log(`lat: ${locations.lat[0]}, lon: ${locations.lon[0]}`);
+            openRoadViewModal(locations.lat[0], locations.lng[0]);
+            console.log(`lat: ${locations.lat[0]}, lng: ${locations.lng[0]}`);
         });
 
         // 끝점 마커 생성
@@ -86,7 +86,7 @@ const Recommend = ({ locations, currentIndex }) => {
         const endMarker = new window.Tmapv2.Marker({
             position: new window.Tmapv2.LatLng(
                 locations.lat[endMarkerIndex],
-                locations.lon[endMarkerIndex],
+                locations.lng[endMarkerIndex],
             ),
             icon: endpin, // 끝점 아이콘으로 수정
             iconSize: new window.Tmapv2.Size(24, 38),
@@ -96,10 +96,10 @@ const Recommend = ({ locations, currentIndex }) => {
         endMarker.addListener("touchstart", () => {
             openRoadViewModal(
                 locations.lat[endMarkerIndex],
-                locations.lon[endMarkerIndex],
+                locations.lng[endMarkerIndex],
             );
             console.log(
-                `lat: ${locations.lat[endMarkerIndex]}, lon: ${locations.lon[endMarkerIndex]}`,
+                `lat: ${locations.lat[endMarkerIndex]}, lng: ${locations.lng[endMarkerIndex]}`,
             );
         });
 
@@ -110,7 +110,7 @@ const Recommend = ({ locations, currentIndex }) => {
             const waypointMarker = new window.Tmapv2.Marker({
                 position: new window.Tmapv2.LatLng(
                     locations.lat[i],
-                    locations.lon[i],
+                    locations.lng[i],
                 ),
                 icon: waypin, // 경유지 아이콘
                 iconSize: new window.Tmapv2.Size(24, 24),
@@ -118,9 +118,9 @@ const Recommend = ({ locations, currentIndex }) => {
             });
             setResultMarkerArr((prev) => [...prev, waypointMarker]);
             waypointMarker.addListener("touchstart", () => {
-                openRoadViewModal(locations.lat[i], locations.lon[i]);
+                openRoadViewModal(locations.lat[i], locations.lng[i]);
                 console.log(
-                    `lat: ${locations.lat[i]}, lon: ${locations.lon[i]}`,
+                    `lat: ${locations.lat[i]}, lng: ${locations.lng[i]}`,
                 );
             });
         }
@@ -130,7 +130,7 @@ const Recommend = ({ locations, currentIndex }) => {
         setResultMarkerArr([]);
 
         map = new window.Tmapv2.Map("map_div", {
-            center: new window.Tmapv2.LatLng(center.lat, center.lon),
+            center: new window.Tmapv2.LatLng(center.lat, center.lng),
             width: "100%",
             height: "100vh",
             zoom: 15,
@@ -144,7 +144,7 @@ const Recommend = ({ locations, currentIndex }) => {
         const startMarker = new window.Tmapv2.Marker({
             position: new window.Tmapv2.LatLng(
                 locations.lat[0],
-                locations.lon[0],
+                locations.lng[0],
             ),
             icon: startpin,
             iconSize: new window.Tmapv2.Size(24, 38),
@@ -152,15 +152,15 @@ const Recommend = ({ locations, currentIndex }) => {
         });
         setResultMarkerArr((prev) => [...prev, startMarker]);
         startMarker.addListener("touchstart", () => {
-            openRoadViewModal(locations.lat[0], locations.lon[0]);
-            console.log(`lat: ${locations.lat[0]}, lon: ${locations.lon[0]}`);
+            openRoadViewModal(locations.lat[0], locations.lng[0]);
+            console.log(`lat: ${locations.lat[0]}, lng: ${locations.lng[0]}`);
         });
         // 끝점 마커 생성
         const endMarkerIndex = locations.lat.length - 1;
         const endMarker = new window.Tmapv2.Marker({
             position: new window.Tmapv2.LatLng(
                 locations.lat[endMarkerIndex],
-                locations.lon[endMarkerIndex],
+                locations.lng[endMarkerIndex],
             ),
             icon: endpin,
             iconSize: new window.Tmapv2.Size(24, 38),
@@ -171,10 +171,10 @@ const Recommend = ({ locations, currentIndex }) => {
         endMarker.addListener("touchstart", () => {
             openRoadViewModal(
                 locations.lat[endMarkerIndex],
-                locations.lon[endMarkerIndex],
+                locations.lng[endMarkerIndex],
             );
             console.log(
-                `lat: ${locations.lat[endMarkerIndex]}, lon: ${locations.lon[endMarkerIndex]}`,
+                `lat: ${locations.lat[endMarkerIndex]}, lng: ${locations.lng[endMarkerIndex]}`,
             );
         });
 
@@ -182,7 +182,7 @@ const Recommend = ({ locations, currentIndex }) => {
             const waypointMarker = new window.Tmapv2.Marker({
                 position: new window.Tmapv2.LatLng(
                     locations.lat[i],
-                    locations.lon[i],
+                    locations.lng[i],
                 ),
                 icon: waypin,
                 iconSize: new window.Tmapv2.Size(24, 24),
@@ -191,9 +191,9 @@ const Recommend = ({ locations, currentIndex }) => {
             setResultMarkerArr((prev) => [...prev, waypointMarker]);
 
             waypointMarker.addListener("touchstart", () => {
-                openRoadViewModal(locations.lat[i], locations.lon[i]);
+                openRoadViewModal(locations.lat[i], locations.lng[i]);
                 console.log(
-                    `lat: ${locations.lat[i]}, lon: ${locations.lon[i]}`,
+                    `lat: ${locations.lat[i]}, lng: ${locations.lng[i]}`,
                 );
             });
         }
@@ -206,25 +206,25 @@ const Recommend = ({ locations, currentIndex }) => {
 
     const fetchRoute = () => {
         const startLat = locations.lat[0];
-        const startLon = locations.lon[0];
+        const startLng = locations.lng[0];
         const endLat = locations.lat[locations.lat.length - 1];
-        const endLon = locations.lon[locations.lon.length - 1];
+        const endLng = locations.lng[locations.lng.length - 1];
 
         // 경유지 정보 생성
         const viaPoints = locations.lat.slice(1, -1).map((lat, index) => ({
             viaPointId: `via${index}`,
             viaPointName: `Via ${index + 1}`,
-            viaX: locations.lon[index + 1].toString(),
+            viaX: locations.lng[index + 1].toString(),
             viaY: lat.toString(),
         }));
 
         const param = {
             startName: "출발지",
-            startX: startLon.toString(),
+            startX: startLng.toString(),
             startY: startLat.toString(),
             startTime: "201708081103",
             endName: "도착지",
-            endX: endLon.toString(),
+            endX: endLng.toString(),
             endY: endLat.toString(),
             viaPoints: viaPoints,
             reqCoordType: "WGS84GEO",
@@ -304,13 +304,13 @@ const Recommend = ({ locations, currentIndex }) => {
                             size = new window.Tmapv2.Size(8, 8);
                         }
 
-                        const latlon = new window.Tmapv2.Point(
+                        const latlng = new window.Tmapv2.Point(
                             geometry.coordinates[0],
                             geometry.coordinates[1],
                         );
                         const convertPoint =
                             new window.Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
-                                latlon,
+                                latlng,
                             );
 
                         const marker = new window.Tmapv2.Marker({
@@ -355,7 +355,7 @@ const Recommend = ({ locations, currentIndex }) => {
                         open={showRoadViewModal}
                         closeModal={closeRoadViewModal}
                         lat={currentLocation.lat}
-                        lon={currentLocation.lon}
+                        lng={currentLocation.lng}
                     />
                 )}
             </div>
