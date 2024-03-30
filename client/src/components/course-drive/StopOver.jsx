@@ -32,6 +32,7 @@ import waypoint_27 from "../../assets/waypoints_number/waypoint_27.png";
 import waypoint_28 from "../../assets/waypoints_number/waypoint_28.png";
 import waypoint_29 from "../../assets/waypoints_number/waypoint_29.png";
 import waypoint_30 from "../../assets/waypoints_number/waypoint_30.png";
+import waypoint_passed from "../../assets/waypoint_passed.png";
 
 const StopOver = ({
     lat,
@@ -39,10 +40,12 @@ const StopOver = ({
     courseLine,
     filteredCourse,
     setFilteredCourse,
-    visited,
+    // visited,
     setTime,
     setKm,
 }) => {
+    const [visited, setVisited] = useState([]);
+    // const visited = Array(filteredCourse.length).fill(false);
     let [map, setMap] = useState(null);
     const [resultMarkerArr, setResultMarkerArr] = useState([]);
     const [resultInfoArr, setResultInfoArr] = useState([]);
@@ -81,10 +84,57 @@ const StopOver = ({
     ];
 
     useEffect(() => {
-        if (courseLine.length > 2) {
-            initTmap();
+        if (filteredCourse.length >= 2) {
+            setVisited(Array(filteredCourse.length).fill(false));
         }
     }, [filteredCourse]);
+
+    useEffect(() => {
+        const waypoints = filteredCourse.map((point, index) => ({
+            lat: point.lat,
+            lng: point.lng,
+            icon: visited[index] ? waypoint_passed : points[index],
+        }));
+
+        waypoints.forEach((waypoint) => {
+            const marker = new window.Tmapv2.Marker({
+                position: new window.Tmapv2.LatLng(waypoint.lat, waypoint.lng),
+                icon: waypoint.icon,
+                iconSize: new window.Tmapv2.Size(24, 38),
+                map: map,
+            });
+            setResultMarkerArr((prev) => [...prev, marker]);
+        });
+    }, [visited]);
+    useEffect(() => {
+        if (visited.length >= 2) {
+            for (let i = 0; i < visited.length; i++) {
+                let latPlus = filteredCourse[i].lat + 0.0003;
+                let latMinus = filteredCourse[i].lat - 0.0003;
+                let lngPlus = filteredCourse[i].lng + 0.0004;
+                let lngMinus = filteredCourse[i].lng - 0.0004;
+
+                let targetLat = lat; // 타겟 경도
+                let targetLng = lng; // 타겟 위도
+                if (targetLat >= latMinus && targetLat <= latPlus) {
+                    if (targetLng >= lngMinus && targetLng <= lngPlus) {
+                        // console.log(visited);
+                        setVisited((prevVisited) => {
+                            const newVisited = [...prevVisited];
+                            newVisited[i] = true;
+                            return newVisited;
+                        });
+                    }
+                }
+            }
+        }
+    }, [lat, lng, filteredCourse]);
+
+    useEffect(() => {
+        if (courseLine.length > 2 && visited.length >= 2) {
+            initTmap();
+        }
+    }, [filteredCourse, visited]);
 
     useEffect(() => {
         if (courseLine.length > 1) {
@@ -162,7 +212,7 @@ const StopOver = ({
         const waypoints = filteredCourse.map((point, index) => ({
             lat: point.lat,
             lng: point.lng,
-            icon: points[index],
+            icon: visited[index] ? waypoint_passed : points[index],
         }));
 
         waypoints.forEach((waypoint) => {
