@@ -94,21 +94,8 @@ public class MapAlgorithm {
 				List<LatitudeLongitude> originMapRouteAxis = new ArrayList<>();
 				List<LatitudeLongitude> convertedRouteAxis = new ArrayList<>();
 
-				long beforeTime = System.currentTimeMillis();
-				for(int i=0;i<cur.getNodeIds().size();i++) originMapRouteAxis.add(
-					new LatitudeLongitude(nodeRepository.getNodeLatitude(cur.getNodeIds().get(i)),nodeRepository.getNodeLongitude(cur.getNodeIds().get(i))));
-				long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
-				long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
-				System.out.println("bfs시간차이(m) : "+secDiffTime);
-
-				/*long beforeTime = System.currentTimeMillis();
 				for(int i=0;i<cur.getNodeIds().size();i++) originMapRouteAxis.add(nodeRepository.getNodePoint(cur.getNodeIds().get(i)));
-				long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
-				long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
-				System.out.println("bfs시간차이(m) : "+secDiffTime);*/
-
 				for(int i=0;i<cur.getNodeIds().size()-1;i++) convertedRouteAxis.add(axisCalculator.calculateBearing(originMapRouteAxis.get(i).getLat(), originMapRouteAxis.get(i).getLng(), originMapRouteAxis.get(i+1).getLat(), originMapRouteAxis.get(i+1).getLng()));
-
 
 				finalMapList.add(new CreateMapResponseDto(originMapRouteAxis, convertedRouteAxis, newDistance));
 

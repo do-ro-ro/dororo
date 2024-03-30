@@ -36,9 +36,21 @@ public interface NodeRepository extends JpaRepository<NodeEntity, Integer> {
 		nativeQuery = true)
 	double getNodeLongitude(String startNodeId);
 
-	@Query(value = "SELECT ST_X(node_point) AS LATITUDE, ST_X(node_point) AS LONGITUDE " +
+	@Query(value = "SELECT ST_X(node_point) AS LAT, ST_X(node_point) AS LNG " +
 		"FROM nodes " +
 		"WHERE node_id = ?1",
 		nativeQuery = true)
-	LatitudeLongitude getNodePoint(String startNodeId);
+	List<Object[]> getNodePointAsArray(String startNodeId);
+
+	default LatitudeLongitude getNodePoint(String startNodeId) {
+		List<Object[]> result = getNodePointAsArray(startNodeId);
+		if (result != null && !result.isEmpty()) {
+			Object[] row = result.get(0);
+			double lat = (double) row[0];
+			double lng = (double) row[1];
+			return new LatitudeLongitude(lat, lng);
+		} else {
+			return null;
+		}
+	}
 }
