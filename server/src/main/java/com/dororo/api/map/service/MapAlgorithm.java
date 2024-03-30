@@ -228,6 +228,6 @@ public class MapAlgorithm {
 	public List<LinkEntity> getStartLinks(String startNode) {
 		List<LinkEntity> startLinks = linkRepository.getStartLinks(startNode);
 
-		return startLinks;
+		return startLinks;//
 	}
 }
