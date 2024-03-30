@@ -77,7 +77,6 @@ public class MapAlgorithm {
 				// newMap.add(cur.getTNodeId()); //도착점 노드
 				// newMap를 resultMap에 추가 (+ distance도 추가 저장)
 
-
 			//cur의 f_node_id로 map 조회 -> 연결된 링크 불러옴
 			List<LinkEntity> nextLinks = map.get(cur.getLinkEntity().getFNodeId());
 
@@ -136,7 +135,7 @@ public class MapAlgorithm {
 	}
 
 	private boolean isUTurn(Link cur, LinkEntity next) {
-		if(cur.getLinkEntity().getTNodeId().equals(next.getFNodeId()))
+		if(next.getTNodeId().equals(cur.getLinkEntity().getFNodeId()))	// 다음 링크의 목표 노드가 현재 링크의 출발 노드와 같으면 유턴으로 판별
 			return true;
 		return false;
 	}

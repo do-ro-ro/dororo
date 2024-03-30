@@ -3,10 +3,10 @@ package com.dororo.api.convert;
 public class AxisCalculator {
 
     //각도계산
-    public static double calculateBearing(double lat1, double lon1, double lat2, double lon2) {
-        double phi1 = Math.toRadians(lat1);
+    public static LatitudeLongitude calculateBearing(double lat1, double lon1, double lat2, double lon2) {
+        double phi1 = Math.toRadians(lat1); // 위도를 일반각으로
         double phi2 = Math.toRadians(lat2);
-        double lambda1 = Math.toRadians(lon1);
+        double lambda1 = Math.toRadians(lon1);  // 경도를 일반각으로
         double lambda2 = Math.toRadians(lon2);
 
         double y = Math.sin(lambda2 - lambda1) * Math.cos(phi2);
@@ -62,7 +62,7 @@ public class AxisCalculator {
         }
         System.out.println(lat2 + ", " + lon2);
 
-        return 1.0;
+        return new LatitudeLongitude(lat2, lon2);
     }
 
 }
