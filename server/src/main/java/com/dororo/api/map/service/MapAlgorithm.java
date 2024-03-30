@@ -54,7 +54,7 @@ public class MapAlgorithm {
 	public List<CreateMapResponseDto> getMap(String startNode, List<LinkEntity> startLinks, CreateMapRequestDto createMapRequestDto) {
 		List<CreateMapResponseDto> finalMapList = new ArrayList<>();
 		Map<String, List<LinkEntity>> map = makeEdgeList(linkEntityList);
-		//List<String>[] resultMap = new ArrayList<>(); //distance추가한 class로 받아야 함
+		List<String> resultMap = new ArrayList<>(); //distance추가한 class로 받아야 함
 
 		Queue<Link> q = new ArrayDeque<>();
 		List<String> mapInit = new ArrayList<>();
@@ -71,11 +71,12 @@ public class MapAlgorithm {
 			int newTurnLeft = cur.getTurnLeft();
 			int newUTurn = cur.getUTurn();
 			List<String> newMap = new ArrayList<>();
-			newMap.addAll(cur.getMapIds());
+			newMap.addAll(cur.getNodeIds());
 
 			//사용자 입력 조건에 만족하면
-				// newMap를 resultMap에 추가 (+ distance도 추가 저장)
 				// newMap.add(cur.getTNodeId()); //도착점 노드
+				// newMap를 resultMap에 추가 (+ distance도 추가 저장)
+
 
 			//cur의 f_node_id로 map 조회 -> 연결된 링크 불러옴
 			List<LinkEntity> nextLinks = map.get(cur.getLinkEntity().getFNodeId());
@@ -119,6 +120,7 @@ public class MapAlgorithm {
 			//resultMap[]의 노드 ID들을 좌표들로 변환 : originMapRouteAxis
 			//좌표 값 조정: convertedRouteAxis
 			//distance
+		//finalMapList 에 추가
 
 		return finalMapList;
 	}

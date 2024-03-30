@@ -20,5 +20,5 @@ public class Link {
 	private int uTurn;
 	private float mapDistance;
 
-	private List<String> mapIds;
+	private List<String> nodeIds;
 }
