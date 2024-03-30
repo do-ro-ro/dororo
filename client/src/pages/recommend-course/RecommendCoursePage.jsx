@@ -3,23 +3,19 @@ import axios from "axios";
 import Topbar from "../../components/topbar/Topbar";
 import Recommend from "./Recommend";
 import BottomNav from "./BottomNav";
+import { useLocation } from "react-router-dom";
 
 function RecommendedCoursePage() {
-    const [locations, setLocation] = useState([]);
+    const [courseNode, setCourseNode] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const optionData = useLocation(); // OptionModal에서 뿌린 데이터
 
     useEffect(() => {
-        axios
-            .get(
-                "https://ccd8f72d-f344-4e8d-8ee0-579f9c938880.mock.pstmn.io/maps",
-            )
-            .then((res) => {
-                setLocation(res.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, []);
+        if (optionData.state && optionData.state.data) {
+            setCourseNode(optionData.state.data);
+            console.log(optionData.state.data);
+        }
+    }, [optionData.state]);
 
     const handlePrev = () => {
         setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
@@ -27,7 +23,7 @@ function RecommendedCoursePage() {
 
     const handleNext = () => {
         setCurrentIndex((prevIndex) =>
-            Math.min(prevIndex + 1, locations.length - 1),
+            Math.min(prevIndex + 1, courseNode.length - 1),
         );
     };
 
@@ -38,11 +34,11 @@ function RecommendedCoursePage() {
                 handlePrev={handlePrev}
                 handleNext={handleNext}
                 currentIndex={currentIndex}
-                locations={locations}
+                courseNode={courseNode}
             ></BottomNav>
-            {locations.length > 0 && (
+            {courseNode.length > 0 && (
                 <Recommend
-                    locations={locations[currentIndex]}
+                    courseNode={courseNode[currentIndex]}
                     currentIndex={currentIndex}
                 ></Recommend>
             )}

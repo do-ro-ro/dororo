@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
     Modal,
@@ -45,14 +46,17 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
         },
     });
 
+    const navigate = useNavigate();
+
     // const handleMethodChange = (e) => {
     //     setOption({ ...option, method: e.target.value });
     //     console.log(option);
     // };
 
     const handleConfirmClick = async () => {
-        await optionPost(option); // 옵션 객체를 서버에 전송
+        const response = await optionPost(option); // 옵션 객체를 서버에 전송
         closeModal(); // 모달 닫기
+        navigate("/recommend", { state: { data: response } });
     };
 
     const handleSliderChange = (e) => {
