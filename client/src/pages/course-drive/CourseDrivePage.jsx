@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import RealTimeCurrentLocation from "../../components/course-drive/RealTimeCurrentLocation";
 // import Map from "../../components/course-drive/Map";
 import StopOver from "../../components/course-drive/StopOver";
-import ServerTest from "../../components/course-drive/ServerTest";
 import Topbar from "../../components/topbar/Topbar";
 import { Button, Stack, Typography } from "@mui/material";
 import IntroductionModal from "../../components/course-drive/IntroductionModal";
@@ -34,10 +33,10 @@ function CourseDrivePage() {
     // 시작 위치에 도착하면 운행 시작 버튼 활성화
     useEffect(() => {
         if (courseNode.length > 2) {
-            let latPlus = courseNode[0].lat + 1.0003;
-            let latMinus = courseNode[0].lat - 1.0003;
-            let lngPlus = courseNode[0].lng + 1.0004;
-            let lngMinus = courseNode[0].lng - 1.0004;
+            let latPlus = courseNode[0].lat + 0.0003;
+            let latMinus = courseNode[0].lat - 0.0003;
+            let lngPlus = courseNode[0].lng + 0.0004;
+            let lngMinus = courseNode[0].lng - 0.0004;
 
             let targetLat = lat; // 타겟 경도
             let targetLng = lng; // 타겟 위도
