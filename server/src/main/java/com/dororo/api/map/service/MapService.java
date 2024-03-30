@@ -1,7 +1,9 @@
 package com.dororo.api.map.service;
 
 import com.dororo.api.convert.LatitudeLongitude;
+import com.dororo.api.db.entity.LinkEntity;
 import com.dororo.api.db.entity.MapEntity;
+import com.dororo.api.db.entity.NodeEntity;
 import com.dororo.api.db.entity.UserEntity;
 import com.dororo.api.db.repository.MapRepository;
 import com.dororo.api.db.repository.UserRepository;
@@ -31,8 +33,9 @@ public class MapService {
     @Autowired
     private AuthUtils authUtils;
     @Autowired
+    private MapAlgorithm mapAlgorithm;
+    @Autowired
     private S3Uploader s3Uploader;
-
 
     public List<MapResponseDto> getAllMaps(MapEntity.Maptype maptype, String access) {
 
@@ -84,6 +87,30 @@ public class MapService {
         System.out.println(updateRequestDto.getMapCompletion());
         mapEntity.setMapCompletion(updateRequestDto.getMapCompletion());
         mapRepository.save(mapEntity); // 변경된 엔티티 저장
+    }
+
+    public List<CreateMapResponseDto> createMap(CreateMapRequestDto createMapRequestDto,String access) {
+
+        //시작점에서 가장 가까운 노드 구하기
+        String startNodeId = mapAlgorithm.getStartNode(createMapRequestDto.getStartPoint());
+
+        //반경 내 링크 리스트 구하기
+        mapAlgorithm.getLinks(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
+
+        //출발 노드에 연결된 링크 구하기
+        List<LinkEntity> startLinks = mapAlgorithm.getStartLinks(startNodeId);
+
+        //맵 리스트 받아오기
+        List<CreateMapResponseDto> createdMapList = mapAlgorithm.getMap(startNodeId, startLinks,createMapRequestDto);
+
+        /*for(int i=0;i<createdMapList.size();i++) {
+            System.out.println("origin : "+createdMapList.get(i).getOriginMapRouteAxis().toString());
+            System.out.println("convert : "+createdMapList.get(i).getConvertedRouteAxis().toString());
+            System.out.println("distance : "+createdMapList.get(i).getMapDistance());
+            System.out.println("=========================================================");
+        }*/
+
+        return createdMapList;
     }
 
     public List<CreateMapResponseDto> createMapSample(CreateMapRequestDto createMapRequestDto,String access) {
@@ -146,11 +173,6 @@ public class MapService {
         return mapList;
     }
 
-    public List<CreateMapResponseDto> createMap(CreateMapRequestDto createMapRequestDto,String access) {
-        List<CreateMapResponseDto> mapList = new ArrayList<>();
-
-        return mapList;
-    }
     public void saveMap(AddMapRequestDto addMapRequestDto, String access, MultipartFile mapImage) {
 
         //로그인 한 유저 정보

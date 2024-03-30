@@ -14,5 +14,6 @@ public class CreateMapRequestDto {
     private int turnRight;
     private int uTurn;
     private float mapDistance;
+    private boolean isReturn; //왕복 편도 여부
     private LatitudeLongitude startPoint;
 }
