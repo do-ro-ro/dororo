@@ -18,6 +18,7 @@ import TurnRightIcon from "@mui/icons-material/TurnRight";
 import UTurnLeftIcon from "@mui/icons-material/UTurnLeft";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
+import { optionPost } from "../../apis/server/MainOption";
 
 // 모달 스타일 정의
 const style = {
@@ -48,6 +49,11 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
     //     setOption({ ...option, method: e.target.value });
     //     console.log(option);
     // };
+
+    const handleConfirmClick = async () => {
+        await optionPost(option); // 옵션 객체를 서버에 전송
+        closeModal(); // 모달 닫기
+    };
 
     const handleSliderChange = (e) => {
         setOption({ ...option, mapDistance: Math.max(e.target.value, 5) });
@@ -414,7 +420,9 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
                 기본으로 되돌리는 함수 정의하기 */}
 
                 <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
-                    <Button variant="contained">확인</Button>
+                    <Button variant="contained" onClick={handleConfirmClick}>
+                        확인
+                    </Button>
 
                     <Button
                         variant="contained"
