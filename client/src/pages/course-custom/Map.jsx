@@ -31,27 +31,28 @@ function Map({ course }) {
     // 지도 위 거점을 찍기 위한 오리지널 노드 좌표를 저장하는 리스트
     const [courseNode, setCourseNode] = useState([]);
 
+    // 경유지 찾기 API를 통해 그린 마커가 들어있는 배열
     const [resultMarkerArr, setResultMarkerArr] = useState([]);
     const [resultInfoArr, setResultInfoArr] = useState([]);
 
     // 실행취소 기능 구현을 위한 상태와 함수
     const [isPolylineEditing, setIsPolylineEditing] = useState(false);
     const [polyline, setPolyline] = useState(null);
-    if (polyline) {
-        polyline.addListener(
-            "click",
-            function () {
-                if (this.isEditing()) {
-                    this.endEdit();
-                    setIsPolylineEditing(false);
-                } else {
-                    this.startEdit();
-                    setIsPolylineEditing(true);
-                }
-            },
-            polyline,
-        );
-    }
+    // if (polyline) {
+    //     polyline.addListener(
+    //         "click",
+    //         function () {
+    //             if (this.isEditing()) {
+    //                 this.endEdit();
+    //                 setIsPolylineEditing(false);
+    //             } else {
+    //                 this.startEdit();
+    //                 setIsPolylineEditing(true);
+    //             }
+    //         },
+    //         polyline,
+    //     );
+    // }
     const handleUndo = () => {
         if (isPolylineEditing) {
             polyline.endEdit(); // 드래그 상태 종료
@@ -64,6 +65,8 @@ function Map({ course }) {
         currentCourse?.originMapRouteAxis[
             currentCourse.originMapRouteAxis.length - 1
         ];
+
+    // 코스정보를 받아왔을 때 웨이포인트는 보정 전 좌표로 등록하기
     useEffect(() => {
         if (course.length > 1) {
             setFilteredCourse(
@@ -232,7 +235,7 @@ function Map({ course }) {
                             iconSize: size,
                             draggable: draggable,
                             opacity: 0,
-                            visible: false,
+                            visible: true,
                             map: map,
                         });
 
@@ -268,7 +271,7 @@ function Map({ course }) {
                 strokeWeight: 8,
                 strokeOpacity: 100,
                 map: map,
-                draggable: true, //드래그 여부
+                draggable: false, //드래그 여부
                 direction: true,
                 directionColor: "white",
             });
