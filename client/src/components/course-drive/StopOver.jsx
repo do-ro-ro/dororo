@@ -36,9 +36,11 @@ import waypoint_30 from "../../assets/waypoints_number/waypoint_30.png";
 const StopOver = ({
     lat,
     lng,
-    coolList,
-    fillterList,
-    setFillterList,
+    courseNode,
+    setCourseNode,
+    courseLine,
+    filteredCourse,
+    setFilteredCourse,
     setTime,
     setKm,
 }) => {
@@ -80,16 +82,25 @@ const StopOver = ({
     ];
 
     useEffect(() => {
-        if (coolList.length > 2) {
+        if (courseLine.length > 2) {
             initTmap();
         }
-    }, [fillterList]);
+    }, [filteredCourse]);
 
     useEffect(() => {
-        if (coolList.length > 1) {
-            setFillterList(coolList.slice(1, coolList.length - 1));
+        if (courseLine.length > 1) {
+            setFilteredCourse(courseLine.slice(1, courseLine.length - 1));
+            // setFillterList(coolList.slice(1, coolList.length - 1));
+            // setCourseNode(courseNode.slice(1, courseNode.length - 1));
         }
-    }, [coolList]);
+    }, [courseLine]);
+
+    useEffect(() => {
+        if (map && lat && lng) {
+            // Move map center to current marker position
+            map.setCenter(new window.Tmapv2.LatLng(lat, lng));
+        }
+    }, [map, lat, lng]);
 
     useEffect(() => {
         // 추가: 현재 위치 마커 설정
@@ -119,7 +130,7 @@ const StopOver = ({
         map = new window.Tmapv2.Map("map_div", {
             center: new window.Tmapv2.LatLng(lat, lng),
             width: "100%",
-            height: "100vh",
+            height: "50vh",
             zoom: 16,
             zoomControl: true,
             scrollwheel: true,
@@ -129,8 +140,8 @@ const StopOver = ({
         // 출발지
         const marker_s = new window.Tmapv2.Marker({
             position: new window.Tmapv2.LatLng(
-                coolList[0].lat,
-                coolList[0].lng,
+                courseLine[0].lat,
+                courseLine[0].lng,
             ),
             icon: start_pointer,
             iconSize: new window.Tmapv2.Size(24, 38),
@@ -140,8 +151,8 @@ const StopOver = ({
 
         const marker_e = new window.Tmapv2.Marker({
             position: new window.Tmapv2.LatLng(
-                coolList[coolList.length - 1].lat,
-                coolList[coolList.length - 1].lng,
+                courseLine[courseLine.length - 1].lat,
+                courseLine[courseLine.length - 1].lng,
             ),
             icon: end_pointer,
             iconSize: new window.Tmapv2.Size(24, 38),
@@ -149,7 +160,7 @@ const StopOver = ({
         });
         setResultMarkerArr((prev) => [...prev, marker_e]);
 
-        const waypoints = fillterList.map((point, index) => ({
+        const waypoints = filteredCourse.map((point, index) => ({
             lat: point.lat,
             lng: point.lng,
             icon: points[index],
@@ -175,15 +186,15 @@ const StopOver = ({
 
         const param = {
             startName: "출발지",
-            startX: coolList[0].lng.toString(),
-            startY: coolList[0].lat.toString(),
+            startX: courseLine[0].lng.toString(),
+            startY: courseLine[0].lat.toString(),
             startTime: "201708081103",
             endName: "도착지",
-            endX: coolList[coolList.length - 1].lng.toString(),
-            endY: coolList[coolList.length - 1].lat.toString(),
-            viaPoints: fillterList.map((point) => ({
-                viaPointId: `test${fillterList.indexOf(point) + 1}`,
-                viaPointName: `name${fillterList.indexOf(point) + 1}`,
+            endX: courseLine[courseLine.length - 1].lng.toString(),
+            endY: courseLine[courseLine.length - 1].lat.toString(),
+            viaPoints: filteredCourse.map((point) => ({
+                viaPointId: `test${filteredCourse.indexOf(point) + 1}`,
+                viaPointName: `name${filteredCourse.indexOf(point) + 1}`,
                 viaX: point.lng.toString(),
                 viaY: point.lat.toString(),
             })),
