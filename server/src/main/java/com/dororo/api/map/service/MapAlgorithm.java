@@ -68,10 +68,12 @@ public class MapAlgorithm {
 		mapInit.add(startNode);
 		//시작 노드에 연결된 링크 큐에 추가
 		for(int i=0;i<startLinks.size();i++) {
-			mapInit.add(startLinks.get(i).getTNodeId());
-			q.offer(new Link(startLinks.get(i), 0, 0, 0, 0, mapInit));
-			mapInit.remove(mapInit.size()-1);
+			List<String> tempMapInit = new ArrayList<>();
+			tempMapInit.addAll(mapInit);
+			tempMapInit.add(startLinks.get(i).getTNodeId());
+			q.offer(new Link(startLinks.get(i), 0, 0, 0, 0, tempMapInit));
 		}
+
 		while(!q.isEmpty()){
 			if(cnt > 10) break;
 			Link cur = q.poll();
@@ -131,35 +133,36 @@ public class MapAlgorithm {
 					continue;
 
 				String turnInfo = getTurnInfo(cur, next);
-					// 좌우회전, 유턴 판별 로직...으로 판별하고 조건에 안맞으면 continue
+				// 좌우회전, 유턴 판별 로직...으로 판별하고 조건에 안맞으면 continue
                 if(turnInfo.equals("left")) {
 					newTurnLeft = cur.getTurnLeft()+1;
 					if(newTurnLeft>createMapRequestDto.getTurnLeft())
 						continue;
-				}
-				else if(turnInfo.equals("right")){
+				} else if(turnInfo.equals("right")){
 					newTurnRight = cur.getTurnRight()+1;
 					if(newTurnRight>createMapRequestDto.getTurnRight())
 						continue;
-				}
-				else if(isUTurn(cur,next)) {
+				} else if(isUTurn(cur,next)) {
 					newUTurn=cur.getUTurn()+1;
 					if(newUTurn>createMapRequestDto.getUTurn())
 						continue;
 				}
 
 				//갈 수 있으면
-				tempMap.add(next.getTNodeId());	// 다음 링크의 To 노드 아이디 좌표에 저장
+				tempMap.add(next.getTNodeId());    // 다음 링크의 To 노드 아이디 좌표에 저장
 				newDistance+=next.getLinkDistance();
 				q.offer(new Link(next, newTurnLeft, newTurnRight, newUTurn, newDistance, tempMap));
 			}
 		}
+		System.out.println("좌회전 횟수: " + fulfilledLeft);
+		System.out.println("우회전 횟수: " + fulfilledRight);
+		System.out.println("유턴 횟수: " + fulfilledUTurn);
 
 		//경로 안나왔을 때
 		if(cnt == 0){
 			throw new NoMapException(createMapRequestDto.getTurnLeft()-fulfilledLeft,
-				createMapRequestDto.getTurnRight()-fulfilledRight,
-				createMapRequestDto.getUTurn()-fulfilledUTurn);
+					createMapRequestDto.getTurnRight()-fulfilledRight,
+					createMapRequestDto.getUTurn()-fulfilledUTurn);
 		}
 		return finalMapList;
 	}
@@ -195,9 +198,7 @@ public class MapAlgorithm {
 			System.out.println("curNode : "+ curNodeX +", "+curNodeY);
 			System.out.println("nextNode : "+ nextNodeX +", "+nextNodeY);
 			return "left";
-		}
-
-		else if(degree>240 && degree<300)
+		} else if(degree>240 && degree<300)
 			return "right";
 
 		return "noTurn";
