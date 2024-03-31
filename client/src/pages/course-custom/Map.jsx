@@ -47,6 +47,7 @@ function Map({ course }) {
 
     // 저장을 위한 request 배열 상태
     const [courseSaveRequest, setCourseSaveRequest] = useState([]);
+    const [saveButtonClicked, setSaveButtonClicked] = useState(false);
 
     // API 호출을 위한 세팅들
     const basicStartPoint = currentCourse?.originMapRouteAxis[0];
@@ -147,8 +148,8 @@ function Map({ course }) {
         const param = option;
 
         fetch(
-            "https://apis.openapi.sk.com/tmap/routes/routeSequential30?version=1&format=json",
-            // "https://apis.openapi.sk.com/tmap/routes/routeSequential100?version=1&format=json",
+            // "https://apis.openapi.sk.com/tmap/routes/routeSequential30?version=1&format=json",
+            "https://apis.openapi.sk.com/tmap/routes/routeSequential100?version=1&format=json",
             // "https://apis.openapi.sk.com/tmap/routes/routeSequential200?version=1&format=json",
 
             {
@@ -171,11 +172,11 @@ function Map({ course }) {
 
                 const tDistance =
                     "총 거리 : " +
-                    (resultData.totalDistance / 1000).toFixed(1) +
+                    (resultData?.totalDistance / 1000).toFixed(1) +
                     "km,  ";
 
                 // 거리 저장
-                setDistance(resultData.totalDistance);
+                setDistance(resultData?.totalDistance);
                 // const tTime =
                 //     "총 시간 : " +
                 //     (resultData.totalTime / 60).toFixed(0) +
@@ -413,26 +414,13 @@ function Map({ course }) {
     };
 
     // 저장하는 함수
-    const saveCustomCourse = (arr) => {
-        // 배열 (resultMarkerArr)이 존재한다면
-        if (arr.length > 0) {
-            console.log("저장 호출!");
-            // 세이브를 위한 리퀘스트 상태 초기화
-            setCourseSaveRequest([]);
-            // 배열 돌면서
-            arr.map((marker) => {
-                const willBeSavedMarkerPosition = {
-                    lat: marker._lat,
-                    lng: marker._lng,
-                };
-                setCourseSaveRequest((prev) => [
-                    ...prev,
-                    willBeSavedMarkerPosition,
-                ]);
-            });
-            console.log("저장하기 위한 좌표값들", courseSaveRequest);
+    useEffect(() => {
+        // courseSaveRequest 상태가 변경될 때마다 호출되는 부분
+        console.log("저장하기 위한 좌표값들", courseSaveRequest);
 
-            // 바디 정의
+        // 버튼 클릭 여부를 확인하여 API 호출
+        if (saveButtonClicked) {
+            // API 호출 로직
             const body = {
                 request: {
                     originMapRouteAxis: courseSaveRequest,
@@ -443,8 +431,31 @@ function Map({ course }) {
                 },
                 mapImage: "",
             };
-            // API 호출
+            // console.log("리퀘스트 바디", body);
             saveCourse(body);
+        }
+    }, [courseSaveRequest, saveButtonClicked]);
+
+    const saveCustomCourse = (arr) => {
+        // 배열 (resultMarkerArr)이 존재한다면
+        if (arr.length > 0) {
+            console.log("저장 호출!");
+            // 세이브를 위한 리퀘스트 상태 초기화
+            setCourseSaveRequest([]);
+            // 배열 돌면서
+            arr.forEach((marker) => {
+                const willBeSavedMarkerPosition = {
+                    lat: marker._lat,
+                    lng: marker._lng,
+                };
+                setCourseSaveRequest((prev) => [
+                    ...prev,
+                    willBeSavedMarkerPosition,
+                ]);
+            });
+
+            // 버튼 클릭 여부 수정
+            setSaveButtonClicked(true);
         }
     };
 
