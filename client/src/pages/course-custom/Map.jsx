@@ -5,6 +5,7 @@ import endPin from "../../assets/map_marker_end.png";
 import waypointPin from "../../assets/waypoint_yet.png";
 import waypointPinSelected from "../../assets/waypoint_passed.png";
 import { useLocation } from "react-router-dom";
+import { saveCourse } from "../../apis/server/Map";
 
 // 커스텀 대안
 
@@ -24,6 +25,7 @@ function Map({ course }) {
     const [map, setMap] = useState(null);
     const [polyline, setPolyline] = useState(null);
     const [markers, setMarkers] = useState([]);
+    const [distance, setDistance] = useState(null);
 
     // 선택한 마커 확인을 위한 상태
     const [isSelected, setIsSelected] = useState(false);
@@ -167,10 +169,13 @@ function Map({ course }) {
                 const resultFeatures = data.features;
                 // console.log(resultFeatures);
 
-                // const tDistance =
-                //     "총 거리 : " +
-                //     (resultData.totalDistance / 1000).toFixed(1) +
-                //     "km,  ";
+                const tDistance =
+                    "총 거리 : " +
+                    (resultData.totalDistance / 1000).toFixed(1) +
+                    "km,  ";
+
+                // 거리 저장
+                setDistance(resultData.totalDistance);
                 // const tTime =
                 //     "총 시간 : " +
                 //     (resultData.totalTime / 60).toFixed(0) +
@@ -408,14 +413,50 @@ function Map({ course }) {
     };
 
     // 저장하는 함수
-    const saveCustomCourse = () => {};
+    const saveCustomCourse = (arr) => {
+        // 배열 (resultMarkerArr)이 존재한다면
+        if (arr.length > 0) {
+            console.log("저장 호출!");
+            // 세이브를 위한 리퀘스트 상태 초기화
+            setCourseSaveRequest([]);
+            // 배열 돌면서
+            arr.map((marker) => {
+                const willBeSavedMarkerPosition = {
+                    lat: marker._lat,
+                    lng: marker._lng,
+                };
+                setCourseSaveRequest((prev) => [
+                    ...prev,
+                    willBeSavedMarkerPosition,
+                ]);
+            });
+            console.log("저장하기 위한 좌표값들", courseSaveRequest);
+
+            // 바디 정의
+            const body = {
+                request: {
+                    originMapRouteAxis: courseSaveRequest,
+                    convertedRouteAxis: courseSaveRequest,
+                    mapDistance: distance,
+                    mapName: "커스텀한코스",
+                    mapType: "CUSTOM",
+                },
+                mapImage: "",
+            };
+            // API 호출
+            saveCourse(body);
+        }
+    };
+
     return (
         <>
             <Box>
                 {/* <Button onClick={handleUndo}>실행 취소</Button> */}
                 <div id="map_div"></div>
                 <Box position={"fixed"}>
-                    <Button>수정 완료</Button>
+                    <Button onClick={() => saveCustomCourse(resultMarkerArr)}>
+                        수정 완료
+                    </Button>
                     {/* <Button onClick={handleReset}>리셋</Button> */}
                 </Box>
             </Box>
