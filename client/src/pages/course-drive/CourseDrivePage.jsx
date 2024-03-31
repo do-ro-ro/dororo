@@ -120,11 +120,11 @@ function CourseDrivePage() {
                         )}
                     </Stack>
                 </div>
-                <div>현재위치</div>
+                {/* <div>현재위치</div>
                 {lat}
                 <div></div>
                 {lng}
-                <div>머지됨?</div>
+                <div>머지됨?</div> */}
                 {/* <div>거리 : {km} km</div>
                 <div>시간 : {time} 분</div> */}
             </div>
