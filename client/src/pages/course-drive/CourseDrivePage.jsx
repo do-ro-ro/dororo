@@ -124,6 +124,7 @@ function CourseDrivePage() {
                 {lat}
                 <div></div>
                 {lng}
+                <div>머지됨?</div>
                 {/* <div>거리 : {km} km</div>
                 <div>시간 : {time} 분</div> */}
             </div>
