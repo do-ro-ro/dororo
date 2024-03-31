@@ -100,7 +100,7 @@ const StopOver = ({
             const marker = new window.Tmapv2.Marker({
                 position: new window.Tmapv2.LatLng(waypoint.lat, waypoint.lng),
                 icon: waypoint.icon,
-                iconSize: new window.Tmapv2.Size(24, 38),
+                iconSize: new window.Tmapv2.Size(24, 24),
                 map: map,
             });
             setResultMarkerArr((prev) => [...prev, marker]);
