@@ -5,6 +5,7 @@ import endPin from "../../assets/map_marker_end.png";
 import waypointPin from "../../assets/waypoint_yet.png";
 import waypointPinSelected from "../../assets/waypoint_passed.png";
 import { useLocation } from "react-router-dom";
+import { saveCourse } from "../../apis/server/Map";
 
 // 커스텀 대안
 
@@ -24,8 +25,10 @@ function Map({ course }) {
     const [map, setMap] = useState(null);
     const [polyline, setPolyline] = useState(null);
     const [markers, setMarkers] = useState([]);
+    const [distance, setDistance] = useState(null);
 
     // 선택한 마커 확인을 위한 상태
+    const [isSelected, setIsSelected] = useState(false);
     const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(null);
     const [selectedMarkerPosition, setSelectedMarkerPosition] = useState(null);
 
@@ -41,6 +44,10 @@ function Map({ course }) {
     // 경유지 찾기 API를 통해 그린 마커가 들어있는 배열
     const [resultMarkerArr, setResultMarkerArr] = useState([]);
     const [resultInfoArr, setResultInfoArr] = useState([]);
+
+    // 저장을 위한 request 배열 상태
+    const [courseSaveRequest, setCourseSaveRequest] = useState([]);
+    const [saveButtonClicked, setSaveButtonClicked] = useState(false);
 
     // API 호출을 위한 세팅들
     const basicStartPoint = currentCourse?.originMapRouteAxis[0];
@@ -67,6 +74,24 @@ function Map({ course }) {
         reqCoordType: "WGS84GEO",
         resCoordType: "EPSG3857",
         searchOption: "2",
+    };
+
+    // 리셋 버튼을 위한 함수
+    const handleReset = async function () {
+        // 정리
+        if (polyline) {
+            polyline.setMap(null);
+            deleteMarkers();
+        }
+
+        await postRouteSequential30(basicAPIparam);
+        // courseLine이 존재하면 (경유지 탐색을 돌고 난 후라면)
+        drawPolyline();
+        if (markers.length === 0) {
+            drawMarkers();
+        }
+        drawMarkers();
+        drawPolyline();
     };
 
     // API 호출 확인을 위한 상태
@@ -125,6 +150,7 @@ function Map({ course }) {
         fetch(
             // "https://apis.openapi.sk.com/tmap/routes/routeSequential30?version=1&format=json",
             "https://apis.openapi.sk.com/tmap/routes/routeSequential100?version=1&format=json",
+            // "https://apis.openapi.sk.com/tmap/routes/routeSequential200?version=1&format=json",
 
             {
                 method: "POST",
@@ -144,10 +170,13 @@ function Map({ course }) {
                 const resultFeatures = data.features;
                 // console.log(resultFeatures);
 
-                // const tDistance =
-                //     "총 거리 : " +
-                //     (resultData.totalDistance / 1000).toFixed(1) +
-                //     "km,  ";
+                const tDistance =
+                    "총 거리 : " +
+                    (resultData?.totalDistance / 1000).toFixed(1) +
+                    "km,  ";
+
+                // 거리 저장
+                setDistance(resultData?.totalDistance);
                 // const tTime =
                 //     "총 시간 : " +
                 //     (resultData.totalTime / 60).toFixed(0) +
@@ -155,13 +184,14 @@ function Map({ course }) {
                 // const tFare = "총 요금 : " + resultData.totalFare + "원";
 
                 // resultInfoArr에 값이 존재하면, 갱신할 것
-                if (resultInfoArr.length > 0) {
-                    resultInfoArr.forEach((info) => info.setMap(null));
+                if (resultInfoArr?.length > 0) {
+                    resultInfoArr?.forEach((info) => info.setMap(null));
                     setResultInfoArr([]);
                 }
+                setResultMarkerArr([]);
 
                 // resultFeatures 의 정보 추출하기 위한 forEach문
-                resultFeatures.forEach((feature) => {
+                resultFeatures?.forEach((feature) => {
                     const geometry = feature.geometry;
                     const properties = feature.properties;
                     // console.log(geometry);
@@ -280,16 +310,17 @@ function Map({ course }) {
                             );
 
                             this.setDraggable(true);
+                            // this.setIcon(waypointPinSelected);
                             this._marker_data.options.animation = aniType;
                             this._marker_data.options.animationLength = 500;
                             // console.log("애드리스너 변화 시킨 marker", this);
                         } else {
                             // 선택한 마커 인덱스 표기
                             this.setDraggable(false);
+                            // this.setIcon(waypointPin);
 
                             this.stopAnimation();
                             const newposition = marker.getPosition();
-
                             setSelectedMarkerIndex(index);
                             setSelectedMarkerPosition(newposition);
                         }
@@ -344,6 +375,7 @@ function Map({ course }) {
 
         if (markers) {
             // 변경된 markers 기반의 param 세팅
+            // console.log("변경된 마커들 집합", markers);
             const tempStartPoint = markers[0]?.getPosition();
             const tempEndPoint = markers[markers.length - 1]?.getPosition();
             const tempFilteredCourse = markers?.slice(1, markers.length - 1);
@@ -367,8 +399,10 @@ function Map({ course }) {
                 resCoordType: "EPSG3857",
                 searchOption: "2",
             };
-            console.log(tempParam);
+            // console.log(tempParam);
             postRouteSequential30(tempParam);
+
+            console.log("다시 코스 돌린 후 마커 배열", resultMarkerArr);
         }
     }, [selectedMarkerPosition]);
 
@@ -378,13 +412,63 @@ function Map({ course }) {
             markers.map((marker) => marker.setMap(null));
         }
     };
+
+    // 저장하는 함수
+    useEffect(() => {
+        // courseSaveRequest 상태가 변경될 때마다 호출되는 부분
+        console.log("저장하기 위한 좌표값들", courseSaveRequest);
+
+        // 버튼 클릭 여부를 확인하여 API 호출
+        if (saveButtonClicked) {
+            // API 호출 로직
+            const body = {
+                request: {
+                    originMapRouteAxis: courseSaveRequest,
+                    convertedRouteAxis: courseSaveRequest,
+                    mapDistance: distance,
+                    mapName: "커스텀한코스",
+                    mapType: "CUSTOM",
+                },
+                mapImage: "",
+            };
+            // console.log("리퀘스트 바디", body);
+            saveCourse(body);
+        }
+    }, [courseSaveRequest, saveButtonClicked]);
+
+    const saveCustomCourse = (arr) => {
+        // 배열 (resultMarkerArr)이 존재한다면
+        if (arr.length > 0) {
+            console.log("저장 호출!");
+            // 세이브를 위한 리퀘스트 상태 초기화
+            setCourseSaveRequest([]);
+            // 배열 돌면서
+            arr.forEach((marker) => {
+                const willBeSavedMarkerPosition = {
+                    lat: marker._lat,
+                    lng: marker._lng,
+                };
+                setCourseSaveRequest((prev) => [
+                    ...prev,
+                    willBeSavedMarkerPosition,
+                ]);
+            });
+
+            // 버튼 클릭 여부 수정
+            setSaveButtonClicked(true);
+        }
+    };
+
     return (
         <>
             <Box>
                 {/* <Button onClick={handleUndo}>실행 취소</Button> */}
                 <div id="map_div"></div>
                 <Box position={"fixed"}>
-                    <Button onClick={deleteMarkers}>수정 완료</Button>
+                    <Button onClick={() => saveCustomCourse(resultMarkerArr)}>
+                        수정 완료
+                    </Button>
+                    {/* <Button onClick={handleReset}>리셋</Button> */}
                 </Box>
             </Box>
         </>

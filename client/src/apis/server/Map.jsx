@@ -67,4 +67,23 @@ const checkDrive = async ({ mapId, mapCompletion }) => {
     }
 };
 
-export { getMapsList, postMaps, getMapDetail, deleteMap, checkDrive };
+// 코스 저장
+const saveCourse = async (body) => {
+    try {
+        const response = await axiosInstance.post(`/maps/save`, body);
+        if (response.status === 200) {
+            console.log("코스 저장 성공!");
+        }
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export {
+    getMapsList,
+    postMaps,
+    getMapDetail,
+    deleteMap,
+    checkDrive,
+    saveCourse,
+};
