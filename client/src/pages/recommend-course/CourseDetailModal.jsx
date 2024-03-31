@@ -16,10 +16,10 @@ const style = {
     p: 4,
 };
 
-const CourseDetailModal = ({ open, closeModal, locations }) => {
+const CourseDetailModal = ({ open, closeModal, courseNode }) => {
     useEffect(() => {
-        console.log(locations);
-    }, [locations]);
+        console.log(courseNode);
+    }, [courseNode]);
     return (
         <>
             <Modal open={open} onClose={closeModal}>
@@ -33,7 +33,7 @@ const CourseDetailModal = ({ open, closeModal, locations }) => {
                     </Typography>
 
                     <Box>
-                        <CourseDetailInfo locations={locations} />
+                        <CourseDetailInfo courseNode={courseNode} />
                     </Box>
 
                     <Box>

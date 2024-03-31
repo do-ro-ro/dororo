@@ -8,16 +8,7 @@ import OptionModal from "./OptionModal";
 
 const Main = () => {
     const [lat, setLat] = useState(37.501286);
-    const [lon, setLon] = useState(127.0396029);
-    const [timestamp, setTimestamp] = useState();
-
-    const [option, setOption] = useState({
-        method: "",
-        length: 5,
-        left: 1,
-        right: 1,
-        uturn: 1,
-    });
+    const [lng, setLng] = useState(127.0396029);
 
     const [showModal, setShowModal] = useState(false);
 
@@ -27,15 +18,14 @@ const Main = () => {
 
     const closeModal = () => {
         setShowModal(false);
-        console.log(option);
     };
     return (
         <>
             <div>
-                <Search setLat={setLat} setLon={setLon}></Search>
+                <Search setLat={setLat} setLng={setLng}></Search>
             </div>
             <div className="relative ">
-                <Map lat={lat} lon={lon}></Map>
+                <Map lat={lat} lng={lng}></Map>
                 <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 mb-2">
                     <RecommendButton openModal={openModal}></RecommendButton>
                 </div>
@@ -43,8 +33,7 @@ const Main = () => {
             <div className="absolute top-24 right-0  m-4">
                 <CurrentLocation
                     setLat={setLat}
-                    setLon={setLon}
-                    setTimestamp={setTimestamp}
+                    setLng={setLng}
                 ></CurrentLocation>
             </div>
             <div>
@@ -52,8 +41,8 @@ const Main = () => {
                     <OptionModal
                         open={showModal}
                         closeModal={closeModal}
-                        setOption={setOption}
-                        option={option}
+                        lat={lat}
+                        lng={lng}
                     />
                 )}
             </div>

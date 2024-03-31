@@ -3,7 +3,7 @@ import { Box, Typography, Button, Paper } from "@mui/material";
 import { useState } from "react";
 import CourseDetailModal from "./CourseDetailModal";
 
-const CourseInfo = ({ courseInfo, currentIndex, locations }) => {
+const CourseInfo = ({ courseInfo, currentIndex, courseNode }) => {
     const [showCourseDetailModal, setShowCourseDetailModal] = useState(false);
 
     const openCourseDetailModal = () => {
@@ -91,7 +91,7 @@ const CourseInfo = ({ courseInfo, currentIndex, locations }) => {
                     <CourseDetailModal
                         open={showCourseDetailModal}
                         closeModal={closeCourseDetailModal}
-                        locations={locations}
+                        courseNode={courseNode}
                     />
                 )}
             </Box>

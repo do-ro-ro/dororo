@@ -12,7 +12,7 @@ import {
     Typography,
 } from "@mui/material";
 
-const Search = ({ setLat, setLon }) => {
+const Search = ({ setLat, setLng }) => {
     const [keyword, setKeyword] = useState("");
     const [places, setPlaces] = useState([]);
     const [showPlacesList, setShowPlacesList] = useState(false); // 초기 상태를 false로 변경
@@ -55,7 +55,7 @@ const Search = ({ setLat, setLon }) => {
 
     const handleItemClick = (place) => {
         setLat(place.y);
-        setLon(place.x);
+        setLng(place.x);
         setShowPlacesList(false); // 클릭 시 리스트 숨김
     };
 
