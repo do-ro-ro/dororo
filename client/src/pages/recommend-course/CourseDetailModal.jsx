@@ -2,7 +2,6 @@ import { Modal, Box, Typography, Button } from "@mui/material";
 
 import { useEffect } from "react";
 import CourseDetailInfo from "./CourseDetailInfo";
-import GeoTest from "./GeoTest";
 
 const style = {
     position: "absolute",
@@ -34,10 +33,6 @@ const CourseDetailModal = ({ open, closeModal, courseNode }) => {
 
                     <Box>
                         <CourseDetailInfo courseNode={courseNode} />
-                    </Box>
-
-                    <Box>
-                        <GeoTest></GeoTest>
                     </Box>
 
                     <Box
