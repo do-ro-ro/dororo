@@ -13,7 +13,6 @@ import com.dororo.api.convert.AxisCalculator;
 import com.dororo.api.convert.LatitudeLongitude;
 import com.dororo.api.db.entity.LinkEntity;
 import com.dororo.api.db.entity.NodeEntity;
-import com.dororo.api.db.entity.TurnInfoEntity;
 import com.dororo.api.db.repository.LinkRepository;
 import com.dororo.api.db.repository.NodeRepository;
 import com.dororo.api.db.repository.TurninfoRepository;
@@ -78,7 +77,7 @@ public class MapAlgorithm {
 			List<String> tempMapInit = new ArrayList<>();
 			tempMapInit.addAll(mapInit);
 			tempMapInit.add(startLinks.get(i).getTNodeId());
-			q.offer(new Link(startLinks.get(i), 0, 0, 0, 0, tempMapInit));
+			q.offer(new Link(startLinks.get(i), 0, 0, 0, 0, new ArrayList<>(), tempMapInit));	// new ArrayList<>()는 테스트 시 회전 좌표들 저장하기 위한 것이니 나중에 지울 것
 		}
 
 		while(!q.isEmpty()){
@@ -122,6 +121,7 @@ public class MapAlgorithm {
 				System.out.println("좌회전 횟수: " + newTurnLeft);
 				System.out.println("우회전 횟수: " + newTurnRight);
 				System.out.println("유턴 횟수: " + newUTurn);
+				System.out.println("회전 시의 각들: " + cur.getTurnDegrees());
 
 				continue;
 			}
@@ -134,13 +134,14 @@ public class MapAlgorithm {
 			//못가면 컨티뉴
 			//갈 수 있으면 길이, 좌우회전 유턴 값 추가하고 큐에 넣기
 			for(int i=0;i<nextLinks.size();i++){
+				List<Double> tempTurnDegrees = new ArrayList<>();
+				tempTurnDegrees.addAll(cur.getTurnDegrees());	// 이때까지 회전한 곳에서의 각도들 저장 테스트
 				List<String> tempMap = new ArrayList<>();
 				tempMap.addAll(newMap);
 				int tempTurnRight = newTurnRight;
 				int tempTurnLeft = newTurnLeft;
 				int tempUuuTurn = newUTurn;
 				float tempDistance = newDistance;
-
 
 				LinkEntity next = nextLinks.get(i);
 				boolean isUTurnResult = isUTurn(cur,next);
@@ -151,21 +152,16 @@ public class MapAlgorithm {
 						continue;
 				}
 
-				String turnInfo = getTurnInfo(nodeMap, cur, next);
+				String turnInfo = getTurnInfo(nodeMap, cur, next, tempTurnDegrees);
 				// 좌우회전, 유턴 판별하고 조건에 안맞으면 continue
                 if(turnInfo.equals("left")) {
-					tempTurnLeft = cur.getTurnLeft()+1;
-					if(tempTurnLeft<=createMapRequestDto.getTurnLeft())
+					if(cur.getTurnLeft() + 1<=createMapRequestDto.getTurnLeft())
 						tempTurnLeft++;
-					else
-						continue;
 				} else if(turnInfo.equals("right")){
-					tempTurnRight = cur.getTurnRight()+1;
-					if(tempTurnRight<=createMapRequestDto.getTurnRight())
+					if(cur.getTurnRight()+1<=createMapRequestDto.getTurnRight())
 						tempTurnRight++;
 				} else if(isUTurnResult && next.getTNodeId().equals(cur.getLinkEntity().getFNodeId())) {
-					tempUuuTurn=cur.getUTurn()+1;
-					if(tempUuuTurn<=createMapRequestDto.getUuuTurn())
+					if(cur.getUTurn()+1<=createMapRequestDto.getUuuTurn())
 						tempUuuTurn++;
 				}
 				//갈 수 있으면
@@ -174,7 +170,7 @@ public class MapAlgorithm {
 				tempDistance+=next.getLinkDistance();
 				if(tempDistance > createMapRequestDto.getMapDistance()*1000+2000)
 					continue;
-				q.offer(new Link(next, tempTurnLeft, tempTurnRight, tempUuuTurn, tempDistance, tempMap));
+				q.offer(new Link(next, tempTurnLeft, tempTurnRight, tempUuuTurn, tempDistance, tempTurnDegrees, tempMap));
 			}
 		}
 
@@ -188,7 +184,8 @@ public class MapAlgorithm {
 		return finalMapList;
 	}
 
-	private String getTurnInfo(Map<String, LatitudeLongitude> nodeMap, Link cur, LinkEntity next) {
+	private String getTurnInfo(Map<String, LatitudeLongitude> nodeMap, Link cur, LinkEntity next,
+		List<Double> tempTurnDegrees) {
 		//long beforeTime = System.currentTimeMillis();
 
 		LatitudeLongitude prevNode = nodeMap.get(cur.getLinkEntity().getFNodeId());
@@ -214,6 +211,7 @@ public class MapAlgorithm {
 		System.out.println("시간차이(m) : "+secDiffTime);*/
 
 		//System.out.println("degree : "+ degree);
+		tempTurnDegrees.add(degree);
 
 		if(degree>80 && degree<100){
 			/*System.out.println("prevNode : "+ prevNodeX +", "+prevNodeY);

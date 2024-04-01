@@ -19,6 +19,7 @@ public class Link {
 	private int turnRight;
 	private int uTurn;
 	private float mapDistance;
+	private List<Double> turnDegrees;	// 회전했을 때 각들 저장
 
 	private List<String> nodeIds;
 }
