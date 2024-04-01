@@ -116,7 +116,7 @@ function Map({ course, courseName, toSave }) {
             // center: new window.Tmapv2.LatLng(lat, lon),
 
             width: "100vw",
-            height: "80vh",
+            height: "95vh",
             zoom: 16,
         });
 
@@ -405,7 +405,7 @@ function Map({ course, courseName, toSave }) {
             // console.log(tempParam);
             postRouteSequential30(tempParam);
 
-            console.log("다시 코스 돌린 후 마커 배열", resultMarkerArr);
+            // console.log("다시 코스 돌린 후 마커 배열", resultMarkerArr);
         }
     }, [selectedMarkerPosition]);
 
@@ -419,7 +419,7 @@ function Map({ course, courseName, toSave }) {
     // 저장하는 함수
     useEffect(() => {
         // courseSaveRequest 상태가 변경될 때마다 호출되는 부분
-        console.log("저장하기 위한 좌표값들", courseSaveRequest);
+        // console.log("저장하기 위한 좌표값들", courseSaveRequest);
 
         // 버튼 클릭 여부를 확인하여 API 호출
         if (saveButtonClicked) {
@@ -434,7 +434,7 @@ function Map({ course, courseName, toSave }) {
                     path: resultInfoArr,
                 },
             };
-            // console.log("리퀘스트 바디", body);
+            console.log("리퀘스트 바디", body);
             saveCourse(body);
         }
     }, [courseSaveRequest, saveButtonClicked]);

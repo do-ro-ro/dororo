@@ -1,4 +1,11 @@
-import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    Modal,
+    Stack,
+    TextField,
+    Typography,
+} from "@mui/material";
 import Drawer from "./Drawer";
 import Map from "./Map";
 import { useState } from "react";
@@ -45,88 +52,100 @@ function CourseCustomPage() {
                 courseName={courseName}
                 toSave={toSave}
             />
-            <Box position={"fixed"} bottom={"0vh"}>
-                <Button onClick={openCourseSaveModal}>코스 수정</Button>
-                <Modal
-                    open={showCourseSaveModal}
-                    onClose={closeCourseSaveModal}
-                >
-                    <Box sx={style}>
-                        <Typography
-                            variant="h5"
-                            component="h1"
-                            sx={{ fontWeight: 700 }}
-                        >
-                            저장하기
+            <Box
+                position={"fixed"}
+                // bottom={"0vh"}
+                className="fixed z-50 bottom-2 inset-x-0"
+            >
+                <Stack alignItems={"center"}>
+                    <Button
+                        variant="contained"
+                        sx={{ width: "90vw", py: 1 }}
+                        onClick={openCourseSaveModal}
+                    >
+                        <Typography variant="h4" sx={{}}>
+                            코스 수정
                         </Typography>
-                        <Typography
+                    </Button>
+                </Stack>
+            </Box>
+            <Modal open={showCourseSaveModal} onClose={closeCourseSaveModal}>
+                <Box sx={style}>
+                    <Typography
+                        variant="h5"
+                        component="h1"
+                        sx={{ fontWeight: 700 }}
+                    >
+                        저장하기
+                    </Typography>
+                    <Typography
+                        sx={{
+                            fontSize: "0.75rem", // 더 작은 글씨
+                            color: "grey.600", // 회색
+                            mb: 3,
+                        }}
+                    >
+                        코스 이름을 정해주세요! 마이페이지에 저장됩니다.
+                    </Typography>
+
+                    <Box>
+                        <TextField
+                            id="standard-basic"
+                            label="코스명을 입력해주세요"
+                            variant="standard"
+                            onChange={(e) => setCourseName(e.target.value)}
                             sx={{
-                                fontSize: "0.75rem", // 더 작은 글씨
-                                color: "grey.600", // 회색
+                                width: "100%",
                                 mb: 3,
                             }}
-                        >
-                            코스 이름을 정해주세요! 마이페이지에 저장됩니다.
-                        </Typography>
+                            InputProps={{
+                                style: {
+                                    fontSize: "1.25rem", // 입력 필드의 폰트 크기 늘리기
+                                },
+                            }}
+                            InputLabelProps={{
+                                style: {
+                                    fontSize: "0.85rem", // 라벨 폰트 크기 줄이기
+                                },
+                            }}
+                        />
+                    </Box>
 
-                        <Box>
-                            <TextField
-                                id="standard-basic"
-                                label="코스명을 입력해주세요"
-                                variant="standard"
-                                onChange={(e) => setCourseName(e.target.value)}
-                                sx={{
-                                    width: "100%",
-                                    mb: 3,
-                                }}
-                                InputProps={{
-                                    style: {
-                                        fontSize: "1.25rem", // 입력 필드의 폰트 크기 늘리기
-                                    },
-                                }}
-                                InputLabelProps={{
-                                    style: {
-                                        fontSize: "0.85rem", // 라벨 폰트 크기 줄이기
-                                    },
-                                }}
-                            />
-                        </Box>
-
-                        <Box
+                    <Box
+                        sx={{
+                            mt: 4,
+                            display: "flex",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <Button
+                            variant="contained"
                             sx={{
-                                mt: 4,
-                                display: "flex",
-                                justifyContent: "center",
+                                fontSize: "1rem",
+                                mr: 1,
+                            }}
+                            onClick={() => {
+                                setToSave(true);
                             }}
                         >
-                            <Button
-                                variant="contained"
-                                sx={{
-                                    fontSize: "1rem",
-                                    mr: 1,
-                                }}
-                                onClick={() => {
-                                    setToSave(true);
-                                }}
-                            >
-                                저장
-                            </Button>
+                            저장
+                        </Button>
 
-                            <Button
-                                variant="contained"
-                                onClick={closeCourseSaveModal}
-                                sx={{
-                                    fontSize: "1rem",
-                                    ml: 1,
-                                    backgroundColor: "#9e9e9e",
-                                }}
-                            >
-                                닫기
-                            </Button>
-                        </Box>
+                        <Button
+                            variant="contained"
+                            onClick={closeCourseSaveModal}
+                            sx={{
+                                fontSize: "1rem",
+                                ml: 1,
+                                backgroundColor: "#9e9e9e",
+                            }}
+                        >
+                            닫기
+                        </Button>
                     </Box>
-                </Modal>
-            </Box>
+                </Box>
+            </Modal>
+
             {/* <Box position={"absolute"} bottom={"20vw"} mb={20}>
                 <Drawer />
             </Box> */}
