@@ -19,8 +19,7 @@ import basicMapImg from "../../assets/sample_course_img.png";
 // 나가기를 누르면 navigate(-1)이 아니라, 그냥 해당 mapId 정보로 redirect
 
 function Map({ course, toSave }) {
-    const location = useLocation();
-    const currentCourse = location.state;
+    const currentCourse = course;
 
     // Tmap 객체 관리를 위한 상태
     const [map, setMap] = useState(null);
@@ -66,7 +65,7 @@ function Map({ course, toSave }) {
         endName: "도착지",
         endX: `${basicEndPoint?.lng}`,
         endY: `${basicEndPoint?.lat}`,
-        viaPoints: filteredCourse.map((point) => ({
+        viaPoints: filteredCourse?.map((point) => ({
             viaPointId: `test${filteredCourse?.indexOf(point) + 1}`,
             viaPointName: `name${filteredCourse?.indexOf(point) + 1}`,
             viaX: `${point.lng}`,
@@ -101,20 +100,6 @@ function Map({ course, toSave }) {
     // 코스정보를 받아왔을 때 웨이포인트는 보정 전 좌표로 등록하기
     useEffect(() => {
         // 코스 정보를 받아오면
-        if (course.length > 1) {
-            // setStartPoint(currentCourse?.originMapRouteAxis[0]);
-            // setEndPoint(
-            //     currentCourse?.originMapRouteAxis[
-            //         currentCourse.originMapRouteAxis.length - 1
-            //     ],
-            // );
-            setFilteredCourse(
-                currentCourse.originMapRouteAxis.slice(
-                    1,
-                    currentCourse.originMapRouteAxis.length - 1,
-                ),
-            );
-        }
     }, [currentCourse]);
 
     // 지도 시작점을 위한 센터 포인트 정의
@@ -147,10 +132,11 @@ function Map({ course, toSave }) {
         };
 
         const param = option;
+        console.log("API 호출용 param", param);
 
         fetch(
-            // "https://apis.openapi.sk.com/tmap/routes/routeSequential30?version=1&format=json",
-            "https://apis.openapi.sk.com/tmap/routes/routeSequential100?version=1&format=json",
+            "https://apis.openapi.sk.com/tmap/routes/routeSequential30?version=1&format=json",
+            // "https://apis.openapi.sk.com/tmap/routes/routeSequential100?version=1&format=json",
             // "https://apis.openapi.sk.com/tmap/routes/routeSequential200?version=1&format=json",
 
             {
@@ -342,7 +328,16 @@ function Map({ course, toSave }) {
 
     // 맨 처음 컴포넌트 랜딩 시
     useEffect(() => {
-        console.log(currentCourse);
+        // console.log(currentCourse);
+        console.log(course);
+        if (course) {
+            setFilteredCourse(
+                currentCourse?.originMapRouteAxis.slice(
+                    1,
+                    currentCourse?.originMapRouteAxis.length - 1,
+                ),
+            );
+        }
         // 맵이 없으면
         if (map === null) {
             // 맵 생성하기
