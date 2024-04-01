@@ -1,10 +1,41 @@
 import React, { useEffect, useState } from "react";
 
 import RoadViewModal from "./RoadViewModal";
-import startpin from "../../assets/start_pin.png";
-import endpin from "../../assets/end_pin.png";
+
+import start_pointer from "../../assets/map_marker_start.png";
+import end_pointer from "../../assets/map_marker_end.png";
 import waypin from "../../assets/waypoint_yet.png";
 import CourseInfo from "./CourseInfo";
+import waypoint_1 from "../../assets/waypoints_number/waypoint_1.png";
+import waypoint_2 from "../../assets/waypoints_number/waypoint_2.png";
+import waypoint_3 from "../../assets/waypoints_number/waypoint_3.png";
+import waypoint_4 from "../../assets/waypoints_number/waypoint_4.png";
+import waypoint_5 from "../../assets/waypoints_number/waypoint_5.png";
+import waypoint_6 from "../../assets/waypoints_number/waypoint_6.png";
+import waypoint_7 from "../../assets/waypoints_number/waypoint_7.png";
+import waypoint_8 from "../../assets/waypoints_number/waypoint_8.png";
+import waypoint_9 from "../../assets/waypoints_number/waypoint_9.png";
+import waypoint_10 from "../../assets/waypoints_number/waypoint_10.png";
+import waypoint_11 from "../../assets/waypoints_number/waypoint_11.png";
+import waypoint_12 from "../../assets/waypoints_number/waypoint_12.png";
+import waypoint_13 from "../../assets/waypoints_number/waypoint_13.png";
+import waypoint_14 from "../../assets/waypoints_number/waypoint_14.png";
+import waypoint_15 from "../../assets/waypoints_number/waypoint_15.png";
+import waypoint_16 from "../../assets/waypoints_number/waypoint_16.png";
+import waypoint_17 from "../../assets/waypoints_number/waypoint_17.png";
+import waypoint_18 from "../../assets/waypoints_number/waypoint_18.png";
+import waypoint_19 from "../../assets/waypoints_number/waypoint_19.png";
+import waypoint_20 from "../../assets/waypoints_number/waypoint_20.png";
+import waypoint_21 from "../../assets/waypoints_number/waypoint_21.png";
+import waypoint_22 from "../../assets/waypoints_number/waypoint_22.png";
+import waypoint_23 from "../../assets/waypoints_number/waypoint_23.png";
+import waypoint_24 from "../../assets/waypoints_number/waypoint_24.png";
+import waypoint_25 from "../../assets/waypoints_number/waypoint_25.png";
+import waypoint_26 from "../../assets/waypoints_number/waypoint_26.png";
+import waypoint_27 from "../../assets/waypoints_number/waypoint_27.png";
+import waypoint_28 from "../../assets/waypoints_number/waypoint_28.png";
+import waypoint_29 from "../../assets/waypoints_number/waypoint_29.png";
+import waypoint_30 from "../../assets/waypoints_number/waypoint_30.png";
 
 const Recommend = ({
     courseNode,
@@ -24,6 +55,39 @@ const Recommend = ({
         distance: "",
         time: "",
     });
+
+    const points = [
+        waypoint_1,
+        waypoint_2,
+        waypoint_3,
+        waypoint_4,
+        waypoint_5,
+        waypoint_6,
+        waypoint_7,
+        waypoint_8,
+        waypoint_9,
+        waypoint_10,
+        waypoint_11,
+        waypoint_12,
+        waypoint_13,
+        waypoint_14,
+        waypoint_15,
+        waypoint_16,
+        waypoint_17,
+        waypoint_18,
+        waypoint_19,
+        waypoint_20,
+        waypoint_21,
+        waypoint_22,
+        waypoint_23,
+        waypoint_24,
+        waypoint_25,
+        waypoint_26,
+        waypoint_27,
+        waypoint_28,
+        waypoint_29,
+        waypoint_30,
+    ];
 
     // useEffect(() => {
     //     console.log("1", courseNode);
@@ -85,7 +149,7 @@ const Recommend = ({
                 courseNode[0].lat,
                 courseNode[0].lng,
             ),
-            icon: startpin, // 시작점 아이콘
+            icon: start_pointer, // 시작점 아이콘
             iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
@@ -103,7 +167,7 @@ const Recommend = ({
                 courseNode[endMarkerIndex].lat,
                 courseNode[endMarkerIndex].lng,
             ),
-            icon: endpin, // 끝점 아이콘으로 수정
+            icon: end_pointer, // 끝점 아이콘으로 수정
             iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
@@ -127,7 +191,7 @@ const Recommend = ({
                     filteredCourse[i].lat,
                     filteredCourse[i].lng,
                 ),
-                icon: waypin, // 경유지 아이콘
+                icon: points[i], // 경유지 아이콘
                 iconSize: new window.Tmapv2.Size(24, 24),
                 map: map,
             });
@@ -161,7 +225,7 @@ const Recommend = ({
                 courseNode[0].lat,
                 courseNode[0].lng,
             ),
-            icon: startpin,
+            icon: start_pointer,
             iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
@@ -177,7 +241,7 @@ const Recommend = ({
                 courseNode[endMarkerIndex].lat,
                 courseNode[endMarkerIndex].lng,
             ),
-            icon: endpin,
+            icon: end_pointer,
             iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
@@ -199,7 +263,7 @@ const Recommend = ({
                     filteredCourse[i].lat,
                     filteredCourse[i].lng,
                 ),
-                icon: waypin,
+                icon: points[i],
                 iconSize: new window.Tmapv2.Size(24, 24),
                 map: map,
             });
@@ -305,8 +369,11 @@ const Recommend = ({
 
                         const polyline = new window.Tmapv2.Polyline({
                             path: drawInfoArr,
-                            strokeColor: "#FF0000",
-                            strokeWeight: 6,
+                            strokeColor: "#6386BE",
+                            strokeWeight: 8,
+                            strokeOpacity: 100,
+                            direction: true,
+                            directionColor: "white",
                             map: map,
                         });
 
