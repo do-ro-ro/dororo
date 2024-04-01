@@ -62,7 +62,7 @@ public class MapAlgorithm {
 
 		Map<String, List<LinkEntity>> map = makeEdgeList(linkEntityList);
 		Map<String, LatitudeLongitude> nodeMap = makeNodePointList(nodeEntityList);
-
+		System.out.println("turninfo : "+turnInfoEntityList);
 
 		Queue<Link> q = new ArrayDeque<>();
 		List<String> mapInit = new ArrayList<>();
@@ -146,9 +146,9 @@ public class MapAlgorithm {
 				LinkEntity next = nextLinks.get(i);
 				boolean isUTurnResult = isUTurn(cur,next);
 
-				//next링크의 f_node가 uTurn 노드가 아닌 경우, cur링크의 f 노드가 next링크의 t노드랑 같으면 continue
-				if(!isUTurnResult){
-					if(cur.getLinkEntity().getFNodeId().equals(next.getTNodeId()))
+				//uTurn 노드가 아닌 경우, cur링크의 f 노드가 next링크의 t노드랑 같으면 continue
+				if(cur.getLinkEntity().getFNodeId().equals(next.getTNodeId())) {
+					if(!isUTurnResult)
 						continue;
 				}
 
@@ -201,10 +201,16 @@ public class MapAlgorithm {
 		double nextNodeY = nextNode.getLat();
 		double nextNodeX = nextNode.getLng();
 
-		double o1 = Math.atan2((prevNodeY-curNodeY), (prevNodeX-curNodeX));
-		double o2 = Math.atan2((nextNodeY-curNodeY), (nextNodeX-curNodeX));
+		double angle1 = Math.atan2(prevNodeY - curNodeY, prevNodeX - curNodeX) * 180 / Math.PI;
+		double angle2 = Math.atan2(nextNodeY - curNodeY, nextNodeX - curNodeX) * 180 / Math.PI;
 
-		double degree = Math.abs((o1-o2)*180/Math.PI);
+		angle1 = (angle1 + 360) % 360;
+		angle2 = (angle2 + 360) % 360;
+
+		double degree = angle2 - angle1;
+		if (degree < 0) {
+			degree += 360;
+		}
 
 		/*long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
 		long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
@@ -214,12 +220,9 @@ public class MapAlgorithm {
 		tempTurnDegrees.add(degree);
 
 		if(degree>80 && degree<100){
-			/*System.out.println("prevNode : "+ prevNodeX +", "+prevNodeY);
-			System.out.println("curNode : "+ curNodeX +", "+curNodeY);
-			System.out.println("nextNode : "+ nextNodeX +", "+nextNodeY);*/
-			return "left";
-		} else if(degree>260 && degree<280)
 			return "right";
+		} else if(degree>260 && degree<280)
+			return "left";
 
 		return "noTurn";
 	}
@@ -258,10 +261,9 @@ public class MapAlgorithm {
 		return map;
 	}
 
-
 	public List<LinkEntity> getStartLinks(String startNode) {
 		List<LinkEntity> startLinks = linkRepository.getStartLinks(startNode);
 
-		return startLinks;//
+		return startLinks;
 	}
 }
