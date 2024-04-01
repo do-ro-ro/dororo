@@ -13,8 +13,10 @@ import com.dororo.api.convert.AxisCalculator;
 import com.dororo.api.convert.LatitudeLongitude;
 import com.dororo.api.db.entity.LinkEntity;
 import com.dororo.api.db.entity.NodeEntity;
+import com.dororo.api.db.entity.TurnInfoEntity;
 import com.dororo.api.db.repository.LinkRepository;
 import com.dororo.api.db.repository.NodeRepository;
+import com.dororo.api.db.repository.TurninfoRepository;
 import com.dororo.api.exception.NoMapException;
 import com.dororo.api.map.dto.CreateMapRequestDto;
 import com.dororo.api.map.dto.CreateMapResponseDto;
@@ -27,9 +29,10 @@ public class MapAlgorithm {
 	private final NodeRepository nodeRepository;
 	private final LinkRepository linkRepository;
 	private final AxisCalculator axisCalculator;
-
+	private final TurninfoRepository turninfoRepository;
 	List<NodeEntity> nodeEntityList;
 	List<LinkEntity> linkEntityList;
+	List<String> turnInfoEntityList;
 
 	public String getStartNode (LatitudeLongitude startPoint) { //출발 좌표에서 가장 가까운 노드 찾기
 
@@ -49,11 +52,18 @@ public class MapAlgorithm {
 		return;
 	}
 
+	public void getTurnInfos (LatitudeLongitude startPoint, float distance){
+		distance = (distance+1) / 100;
+		turnInfoEntityList = turninfoRepository.getNodeTurnInfos(startPoint.getLng(), startPoint.getLat(), distance);
+		System.out.println("turnInfoSize : " + turnInfoEntityList.size());
+	}
+
 	public List<CreateMapResponseDto> getMap(String startNode, List<LinkEntity> startLinks, CreateMapRequestDto createMapRequestDto) {
 		List<CreateMapResponseDto> finalMapList = new ArrayList<>();
 
 		Map<String, List<LinkEntity>> map = makeEdgeList(linkEntityList);
 		Map<String, LatitudeLongitude> nodeMap = makeNodePointList(nodeEntityList);
+
 
 		Queue<Link> q = new ArrayDeque<>();
 		List<String> mapInit = new ArrayList<>();
@@ -207,7 +217,7 @@ public class MapAlgorithm {
 	}
 
 	private boolean isUTurn(Link cur, LinkEntity next) {
-		if(next.getTNodeId().equals(cur.getLinkEntity().getFNodeId()))    // 다음 링크의 목표 노드가 현재 링크의 출발 노드와 같으면 유턴으로 판별
+		if(next.getTNodeId().equals(cur.getLinkEntity().getFNodeId()) && turnInfoEntityList.contains(next.getTNodeId()))// 다음 링크의 목표 노드가 현재 링크의 출발 노드와 같으면 유턴으로 판별
 			return true;
 		return false;
 	}
@@ -239,6 +249,7 @@ public class MapAlgorithm {
 		}
 		return map;
 	}
+
 
 	public List<LinkEntity> getStartLinks(String startNode) {
 		List<LinkEntity> startLinks = linkRepository.getStartLinks(startNode);

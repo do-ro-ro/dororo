@@ -30,6 +30,8 @@ public interface NodeRepository extends JpaRepository<NodeEntity, Integer> {
 		nativeQuery = true)
 	List<Object[]> getNodePointAsArray(String startNodeId);
 
+
+
 	default LatitudeLongitude getNodePoint(String startNodeId) {	// getNodePointAsArray를 통해 불러온 Object를 LatitudeLongitude 타입으로 변환하는 함수
 		List<Object[]> result = getNodePointAsArray(startNodeId);
 		if (result != null && !result.isEmpty()) {
