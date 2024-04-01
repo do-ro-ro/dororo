@@ -1,12 +1,48 @@
 import React, { useEffect, useState } from "react";
 
 import RoadViewModal from "./RoadViewModal";
-import startpin from "../../assets/start_pin.png";
-import endpin from "../../assets/end_pin.png";
+
+import start_pointer from "../../assets/map_marker_start.png";
+import end_pointer from "../../assets/map_marker_end.png";
 import waypin from "../../assets/waypoint_yet.png";
 import CourseInfo from "./CourseInfo";
+import waypoint_1 from "../../assets/waypoints_number/waypoint_1.png";
+import waypoint_2 from "../../assets/waypoints_number/waypoint_2.png";
+import waypoint_3 from "../../assets/waypoints_number/waypoint_3.png";
+import waypoint_4 from "../../assets/waypoints_number/waypoint_4.png";
+import waypoint_5 from "../../assets/waypoints_number/waypoint_5.png";
+import waypoint_6 from "../../assets/waypoints_number/waypoint_6.png";
+import waypoint_7 from "../../assets/waypoints_number/waypoint_7.png";
+import waypoint_8 from "../../assets/waypoints_number/waypoint_8.png";
+import waypoint_9 from "../../assets/waypoints_number/waypoint_9.png";
+import waypoint_10 from "../../assets/waypoints_number/waypoint_10.png";
+import waypoint_11 from "../../assets/waypoints_number/waypoint_11.png";
+import waypoint_12 from "../../assets/waypoints_number/waypoint_12.png";
+import waypoint_13 from "../../assets/waypoints_number/waypoint_13.png";
+import waypoint_14 from "../../assets/waypoints_number/waypoint_14.png";
+import waypoint_15 from "../../assets/waypoints_number/waypoint_15.png";
+import waypoint_16 from "../../assets/waypoints_number/waypoint_16.png";
+import waypoint_17 from "../../assets/waypoints_number/waypoint_17.png";
+import waypoint_18 from "../../assets/waypoints_number/waypoint_18.png";
+import waypoint_19 from "../../assets/waypoints_number/waypoint_19.png";
+import waypoint_20 from "../../assets/waypoints_number/waypoint_20.png";
+import waypoint_21 from "../../assets/waypoints_number/waypoint_21.png";
+import waypoint_22 from "../../assets/waypoints_number/waypoint_22.png";
+import waypoint_23 from "../../assets/waypoints_number/waypoint_23.png";
+import waypoint_24 from "../../assets/waypoints_number/waypoint_24.png";
+import waypoint_25 from "../../assets/waypoints_number/waypoint_25.png";
+import waypoint_26 from "../../assets/waypoints_number/waypoint_26.png";
+import waypoint_27 from "../../assets/waypoints_number/waypoint_27.png";
+import waypoint_28 from "../../assets/waypoints_number/waypoint_28.png";
+import waypoint_29 from "../../assets/waypoints_number/waypoint_29.png";
+import waypoint_30 from "../../assets/waypoints_number/waypoint_30.png";
 
-const Recommend = ({ location, currentIndex }) => {
+const Recommend = ({
+    courseNode,
+    currentIndex,
+    courseLine,
+    filteredCourse,
+}) => {
     let [map, setMap] = useState(null);
     const [resultMarkerArr, setResultMarkerArr] = useState([]);
     const [resultInfoArr, setResultInfoArr] = useState([]);
@@ -19,40 +55,44 @@ const Recommend = ({ location, currentIndex }) => {
         distance: "",
         time: "",
     });
-    // originMapRouteAxis 좌표들
-    const [courseNode, setCourseNode] = useState([]);
-    // convertedRouteAxis 좌표들 폴리라인
-    const [courseLine, setCourseLine] = useState([]);
 
-    // 첫점 끝점 뺀 originMapRouteAxis 경유지
-    const [filteredCourse, setFilteredCourse] = useState([]);
-
-    useEffect(() => {
-        // courseNode 업데이트
-        if (location.originMapRouteAxis) {
-            setCourseNode(location.originMapRouteAxis);
-        }
-
-        // courseLine 업데이트
-        if (location.convertedRouteAxis) {
-            setCourseLine(location.convertedRouteAxis);
-        }
-
-        // filteredCourse 업데이트
-        // 첫 번째와 마지막 원소를 제외한 나머지로 구성된 배열을 생성합니다.
-        if (
-            location.originMapRouteAxis &&
-            location.originMapRouteAxis.length > 2
-        ) {
-            const filtered = location.originMapRouteAxis.slice(1, -1);
-            setFilteredCourse(filtered);
-        }
-    }, [location]); // location이 변경될 때마다 이 useEffect가 실행됩니다.
+    const points = [
+        waypoint_1,
+        waypoint_2,
+        waypoint_3,
+        waypoint_4,
+        waypoint_5,
+        waypoint_6,
+        waypoint_7,
+        waypoint_8,
+        waypoint_9,
+        waypoint_10,
+        waypoint_11,
+        waypoint_12,
+        waypoint_13,
+        waypoint_14,
+        waypoint_15,
+        waypoint_16,
+        waypoint_17,
+        waypoint_18,
+        waypoint_19,
+        waypoint_20,
+        waypoint_21,
+        waypoint_22,
+        waypoint_23,
+        waypoint_24,
+        waypoint_25,
+        waypoint_26,
+        waypoint_27,
+        waypoint_28,
+        waypoint_29,
+        waypoint_30,
+    ];
 
     // useEffect(() => {
-    //     console.log("courseNode", courseNode);
-    //     console.log("courseLine", courseLine);
-    //     console.log("filteredCourse", filteredCourse);
+    //     console.log("1", courseNode);
+    //     console.log("2", courseLine);
+    //     console.log("3", filteredCourse);
     // }, [courseNode, courseLine, filteredCourse]);
 
     const openRoadViewModal = (lat, lng) => {
@@ -63,18 +103,21 @@ const Recommend = ({ location, currentIndex }) => {
     const closeRoadViewModal = () => {
         setShowRoadViewModal(false);
     };
-    //// 지도 중심점 찾는 함수
+
     useEffect(() => {
         const center = calculateCenterCoordinate(courseNode);
 
-        if (!map) {
-            initTmap(center, courseNode);
-        } else {
-            updateMap(center, courseNode);
+        if (courseNode.length >= 1) {
+            if (map === null) {
+                // console.log("dd");
+                // console.log(courseNode);
+                initTmap(center, courseNode);
+            } else {
+                updateMap(center, courseNode);
+            }
+            fetchRoute();
         }
-
-        fetchRoute();
-    }, [courseNode]);
+    }, [courseNode, filteredCourse, courseLine, map]); // map도 의존성 배열에 추가하여 map 상태 변경에도 반응하도록 함
 
     const calculateCenterCoordinate = (courseNode) => {
         let latSum = 0;
@@ -86,9 +129,10 @@ const Recommend = ({ location, currentIndex }) => {
         }
         return { lat: latSum / count, lng: lngSum / count };
     };
+
     /////////
     // 지도 업데이트 함수, 중심 좌표를 업데이트하고 마커 다시 그림
-    const updateMap = (center, locations) => {
+    const updateMap = (center, courseNode) => {
         map.setCenter(new window.Tmapv2.LatLng(center.lat, center.lng));
 
         // 기존 마커 삭제
@@ -105,7 +149,7 @@ const Recommend = ({ location, currentIndex }) => {
                 courseNode[0].lat,
                 courseNode[0].lng,
             ),
-            icon: startpin, // 시작점 아이콘
+            icon: start_pointer, // 시작점 아이콘
             iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
@@ -123,7 +167,7 @@ const Recommend = ({ location, currentIndex }) => {
                 courseNode[endMarkerIndex].lat,
                 courseNode[endMarkerIndex].lng,
             ),
-            icon: endpin, // 끝점 아이콘으로 수정
+            icon: end_pointer, // 끝점 아이콘으로 수정
             iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
@@ -147,7 +191,7 @@ const Recommend = ({ location, currentIndex }) => {
                     filteredCourse[i].lat,
                     filteredCourse[i].lng,
                 ),
-                icon: waypin, // 경유지 아이콘
+                icon: points[i], // 경유지 아이콘
                 iconSize: new window.Tmapv2.Size(24, 24),
                 map: map,
             });
@@ -181,7 +225,7 @@ const Recommend = ({ location, currentIndex }) => {
                 courseNode[0].lat,
                 courseNode[0].lng,
             ),
-            icon: startpin,
+            icon: start_pointer,
             iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
@@ -197,7 +241,7 @@ const Recommend = ({ location, currentIndex }) => {
                 courseNode[endMarkerIndex].lat,
                 courseNode[endMarkerIndex].lng,
             ),
-            icon: endpin,
+            icon: end_pointer,
             iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
@@ -213,13 +257,13 @@ const Recommend = ({ location, currentIndex }) => {
             );
         });
 
-        for (let i = 0; i < courseNode.length; i++) {
+        for (let i = 0; i < filteredCourse.length; i++) {
             const waypointMarker = new window.Tmapv2.Marker({
                 position: new window.Tmapv2.LatLng(
                     filteredCourse[i].lat,
                     filteredCourse[i].lng,
                 ),
-                icon: waypin,
+                icon: points[i],
                 iconSize: new window.Tmapv2.Size(24, 24),
                 map: map,
             });
@@ -235,15 +279,15 @@ const Recommend = ({ location, currentIndex }) => {
     };
 
     const headers = {
-        appKey: "9HZ42peAS298sFouPX3oN5yCj2KQUJEa9a3SLlSM",
+        appKey: import.meta.env.VITE_TMAP_API_KEY,
         "Content-Type": "application/json",
     };
 
     const fetchRoute = () => {
         const startLat = courseLine[0].lat;
         const startLng = courseLine[0].lng;
-        const endLat = courseLine[courseInfo.length - 1].lat;
-        const endLng = courseLine[courseInfo.length - 1].lng;
+        const endLat = courseLine[courseLine.length - 1].lat;
+        const endLng = courseLine[courseLine.length - 1].lng;
 
         // 경유지 정보 생성
         const viaPoints = courseLine.slice(1, -1).map((point, index) => ({
@@ -288,10 +332,18 @@ const Recommend = ({ location, currentIndex }) => {
                     time: `${tTime}분`,
                 });
 
-                // if (resultInfoArr.length > 0) {
-                //     resultInfoArr.forEach((info) => info.setMap(null));
-                //     setResultInfoArr([]);
-                // }
+                if (resultInfoArr.length > 0) {
+                    resultInfoArr.forEach((info) => {
+                        // 객체가 _isDummy 속성을 가지고 있지 않고, setMap 메소드를 가지고 있는지 확인
+                        if (
+                            !info._isDummy &&
+                            typeof info.setMap === "function"
+                        ) {
+                            info.setMap(null);
+                        }
+                    });
+                    setResultInfoArr([]);
+                }
 
                 resultFeatures.forEach((feature) => {
                     const geometry = feature.geometry;
@@ -317,8 +369,11 @@ const Recommend = ({ location, currentIndex }) => {
 
                         const polyline = new window.Tmapv2.Polyline({
                             path: drawInfoArr,
-                            strokeColor: "#FF0000",
-                            strokeWeight: 6,
+                            strokeColor: "#6386BE",
+                            strokeWeight: 8,
+                            strokeOpacity: 100,
+                            direction: true,
+                            directionColor: "white",
                             map: map,
                         });
 
@@ -329,14 +384,14 @@ const Recommend = ({ location, currentIndex }) => {
 
                         if (properties.pointType === "S") {
                             markerImg = "/upload/tmap/marker/pin_r_m_s.png";
-                            size = new window.Tmapv2.Size(24, 38);
+                            size = new window.Tmapv2.Size(0, 0);
                         } else if (properties.pointType === "E") {
                             markerImg = "/upload/tmap/marker/pin_r_m_e.png";
-                            size = new window.Tmapv2.Size(24, 38);
+                            size = new window.Tmapv2.Size(0, 0);
                         } else {
                             markerImg =
                                 "http://topopen.tmap.co.kr/imgs/point.png";
-                            size = new window.Tmapv2.Size(8, 8);
+                            size = new window.Tmapv2.Size(0, 0);
                         }
 
                         const latlng = new window.Tmapv2.Point(

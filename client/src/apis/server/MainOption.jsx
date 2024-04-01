@@ -6,7 +6,7 @@ const optionPost = async (option) => {
     try {
         const response = await axiosInstance.post("/maps", option);
         if (response.status === 201) {
-            // console.log("Success:", response.data);
+            console.log("Success:", response.data);
             return response.data;
         }
     } catch (error) {
