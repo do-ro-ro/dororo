@@ -22,6 +22,8 @@ function CourseDrivePage() {
     // 첫점과 끝점을 제외한 path 좌표
     const [filteredCourse, setFilteredCourse] = useState([]);
 
+    const [filteredNode, setFilteredNode] = useState([]);
+
     const [time, setTime] = useState(0);
     const [km, setKm] = useState(0);
 
@@ -84,6 +86,8 @@ function CourseDrivePage() {
                     setCourseLine={setCourseLine}
                     filteredCourse={filteredCourse}
                     setFilteredCourse={setFilteredCourse}
+                    filteredNode={filteredNode}
+                    setFilteredNode={setFilteredNode}
                     visited={visited}
                     setTime={setTime}
                     setKm={setKm}
