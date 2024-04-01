@@ -18,7 +18,7 @@ import basicMapImg from "../../assets/sample_course_img.png";
 // 저장을 누르면 코스 이름 입력, 저장. (기존 추천 코스 저장 로직과 동일)
 // 나가기를 누르면 navigate(-1)이 아니라, 그냥 해당 mapId 정보로 redirect
 
-function Map({ course, toSave }) {
+function Map({ course, toSave, courseName }) {
     const currentCourse = course;
 
     // Tmap 객체 관리를 위한 상태
@@ -132,7 +132,7 @@ function Map({ course, toSave }) {
         };
 
         const param = option;
-        console.log("API 호출용 param", param);
+        // console.log("API 호출용 param", param);
 
         fetch(
             "https://apis.openapi.sk.com/tmap/routes/routeSequential30?version=1&format=json",
@@ -270,7 +270,7 @@ function Map({ course, toSave }) {
                 directionColor: "white",
             });
 
-            console.log(resultInfoArr);
+            // console.log(resultInfoArr);
             // 폴리라인에 객체 저장
             setPolyline(newPolyline);
         }
@@ -429,7 +429,7 @@ function Map({ course, toSave }) {
                     originMapRouteAxis: courseSaveRequest,
                     convertedRouteAxis: courseSaveRequest,
                     mapDistance: distance,
-                    mapName: "커스텀한코스",
+                    mapName: courseName,
                     mapType: "CUSTOM",
                     path: resultInfoArr,
                 },
