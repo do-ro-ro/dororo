@@ -37,9 +37,14 @@ import waypoint_passed from "../../assets/waypoint_passed.png";
 const StopOver = ({
     lat,
     lng,
+    courseNode,
+    setCourseNode,
     courseLine,
+    setCourseLine,
     filteredCourse,
     setFilteredCourse,
+    filteredNode,
+    setFilteredNode,
     // visited,
     setTime,
     setKm,
@@ -165,6 +170,7 @@ const StopOver = ({
     useEffect(() => {
         if (courseLine.length > 1) {
             setFilteredCourse(courseLine.slice(1, courseLine.length - 1));
+            setFilteredNode(courseNode.slice(1, courseNode.length - 1));
             // setFillterList(coolList.slice(1, coolList.length - 1));
             // setCourseNode(courseNode.slice(1, courseNode.length - 1));
         }
@@ -219,7 +225,7 @@ const StopOver = ({
                 courseLine[0].lng,
             ),
             icon: start_pointer,
-            iconSize: new window.Tmapv2.Size(24, 24),
+            iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
         setResultMarkerArr((prev) => [...prev, marker_s]);
@@ -230,12 +236,12 @@ const StopOver = ({
                 courseLine[courseLine.length - 1].lng,
             ),
             icon: end_pointer,
-            iconSize: new window.Tmapv2.Size(24, 24),
+            iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
         setResultMarkerArr((prev) => [...prev, marker_e]);
 
-        const waypoints = filteredCourse.map((point, index) => ({
+        const waypoints = filteredNode.map((point, index) => ({
             lat: point.lat,
             lng: point.lng,
             icon: visited[index] ? waypoint_passed : points[index],
