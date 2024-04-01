@@ -1,106 +1,105 @@
-import React, { useState, useEffect } from "react";
 import { Box, Button, Typography } from "@mui/material";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { optionPost } from "../../apis/server/MainOption";
+import car from "../../assets/car.gif";
+import check from "../../assets/check.gif";
+import Quiz from "./Quiz"; // Quiz 컴포넌트를 올바르게 import합니다.
 
-const Quiz = () => {
-    const quizData = [
-        {
-            question:
-                "React는 Facebook에서 개발한 JavaScript 라이브러리입니다.",
-            correctAnswer: "O",
-            explanation:
-                "React는 Facebook의 소프트웨어 엔지니어링 팀에 의해 개발되었습니다.",
-        },
-        {
-            question: "HTML은 프로그래밍 언어입니다.",
-            correctAnswer: "X",
-            explanation: "HTML은 마크업 언어이며, 프로그래밍 언어가 아닙니다.",
-        },
-        // 추가 질문들...
-    ];
+const Loading = () => {
+    const data = useLocation();
+    const option = data.state.data;
 
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [selectedAnswer, setSelectedAnswer] = useState("");
-    const [explanation, setExplanation] = useState("");
+    const [axiosresponse, setAxiosResponse] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        let timer;
-        if (
-            selectedAnswer &&
-            selectedAnswer !== quizData[currentQuestionIndex].correctAnswer
-        ) {
-            timer = setTimeout(() => {
-                if (currentQuestionIndex < quizData.length - 1) {
-                    setCurrentQuestionIndex(currentQuestionIndex + 1);
-                    setSelectedAnswer("");
-                    setExplanation("");
-                }
-            }, 5000);
-        }
-
-        return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
-    }, [selectedAnswer, currentQuestionIndex, quizData]);
-
-    const currentQuestion = quizData[currentQuestionIndex];
-
-    const handleAnswerClick = (answer) => {
-        setSelectedAnswer(answer);
-        if (answer !== currentQuestion.correctAnswer) {
-            setExplanation(currentQuestion.explanation);
-        } else {
-            setExplanation("");
-            if (currentQuestionIndex < quizData.length - 1) {
-                setTimeout(
-                    () => setCurrentQuestionIndex(currentQuestionIndex + 1),
-                    5000,
-                );
+        const fetchData = async () => {
+            setIsLoading(true);
+            try {
+                const response = await optionPost(option);
+                setAxiosResponse(response);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsLoading(false); // 로딩 상태 업데이트
             }
-        }
+        };
+        fetchData();
+    }, [option]);
+
+    const buttonClick = () => {
+        navigate("/recommend", { state: { data: axiosresponse } });
     };
 
     return (
-        <Box sx={{ padding: 2 }}>
-            <Typography variant="h5">{currentQuestion.question}</Typography>
-            <Box sx={{ marginTop: 2 }}>
-                <Button
-                    variant="outlined"
-                    onClick={() => handleAnswerClick("O")}
-                    sx={{
-                        marginRight: 2,
-                        color: "black",
-                        backgroundColor: "white",
-                        "&:hover": {
-                            backgroundColor: "#f5f5f5",
-                        },
-                        border: "1px solid black",
-                    }}
-                >
-                    O
-                </Button>
-                <Button
-                    variant="outlined"
-                    onClick={() => handleAnswerClick("X")}
-                    sx={{
-                        color: "black",
-                        backgroundColor: "white",
-                        "&:hover": {
-                            backgroundColor: "#f5f5f5",
-                        },
-                        border: "1px solid black",
-                    }}
-                >
-                    X
-                </Button>
-            </Box>
-            {selectedAnswer && explanation && (
-                <Typography
-                    variant="subtitle1"
-                    sx={{ marginTop: 2, color: "red" }}
-                >
-                    {explanation}
-                </Typography>
+        <Box
+            sx={{
+                backgroundColor: "#6386BE",
+                width: "100%",
+                height: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+        >
+            {isLoading ? (
+                <>
+                    <img
+                        src={car}
+                        alt="로딩 중..."
+                        style={{
+                            width: "18%",
+                            height: "auto",
+                            borderRadius: "50%",
+                        }}
+                    />
+                    <Typography
+                        variant="h4"
+                        sx={{ color: "#FFFFFF", textAlign: "center" }}
+                    >
+                        최고의 코스를 찾고있어요!
+                    </Typography>
+                </>
+            ) : (
+                <>
+                    <img
+                        src={check}
+                        alt="로딩 완료"
+                        style={{
+                            width: "18%",
+                            height: "auto",
+                            borderRadius: "50%",
+                        }}
+                    />
+                    <Typography
+                        variant="h4"
+                        sx={{ color: "#FFFFFF", textAlign: "center" }}
+                    >
+                        코스 생성 완료!
+                    </Typography>
+                    {!isLoading && (
+                        <Button
+                            onClick={buttonClick}
+                            variant="contained"
+                            sx={{
+                                mt: 4,
+                                backgroundColor: "red",
+                                ":hover": { backgroundColor: "darkred" },
+                            }}
+                        >
+                            확인
+                        </Button>
+                    )}
+                </>
             )}
+            {/* isLoading 상태와 관계없이 Quiz 컴포넌트를 렌더링 */}
+            <Quiz />
         </Box>
     );
 };
 
-export default Quiz;
+export default Loading;
