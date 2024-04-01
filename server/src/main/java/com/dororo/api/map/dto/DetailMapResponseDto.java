@@ -17,11 +17,11 @@ public class DetailMapResponseDto {
 
     private Integer mapId;
     private String mapName;
-    private String mapImage;
     // LineString을 더 친숙한 형식으로 변환해야 할 수 있습니다.
     //private LineString mapRouteAxis;
     private List<LatitudeLongitude> originMapRouteAxis;
     private List<LatitudeLongitude> convertedRouteAxis;
+    private List<LatitudeLongitude> path;
     private MapEntity.Maptype mapType;
     private Float mapDistance;
     private Integer originalMapId;
@@ -34,9 +34,9 @@ public class DetailMapResponseDto {
         return DetailMapResponseDto.builder()
                 .mapId(entity.getMapId())
                 .mapName(entity.getMapName())
-                .mapImage(entity.getMapImage())
                 .originMapRouteAxis(convertFromLineString(entity.getOriginMapRouteAxis()))
                 .convertedRouteAxis(convertFromLineString(entity.getConvertedRouteAxis()))
+                .path(convertFromLineString(entity.getPath()))
                 .mapType(entity.getMapType())
                 .mapDistance(entity.getMapDistance())
                 .originalMapId(entity.getOriginalMapId())

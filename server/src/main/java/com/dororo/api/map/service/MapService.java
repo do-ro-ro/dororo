@@ -173,27 +173,28 @@ public class MapService {
         return mapList;
     }
 
-    public void saveMap(AddMapRequestDto addMapRequestDto, String access, MultipartFile mapImage) {
+    public void saveMap(AddMapRequestDto addMapRequestDto, String access) {
 
         //로그인 한 유저 정보
         UserEntity userEntity = authUtils.getUserEntityFromAccess(access);
-        String imageURL ;
-        if(mapImage != null) {
-
-             imageURL = s3Uploader.uploadFileToS3(mapImage, "map");
-
-        } else {
-             imageURL = " ";
-        }
+//        String imageURL ;
+//        if(mapImage != null) {
+//
+//             imageURL = s3Uploader.uploadFileToS3(mapImage, "map");
+//
+//        } else {
+//             imageURL = " ";
+//        }
 
         // 엔티티 변환 로직
         MapEntity mapEntity = new MapEntity();
         mapEntity.setOriginMapRouteAxis(convertToLineString(addMapRequestDto.getOriginMapRouteAxis()));
         mapEntity.setConvertedRouteAxis(convertToLineString(addMapRequestDto.getConvertedRouteAxis()));
+        mapEntity.setPath(convertToLineString(addMapRequestDto.getPath()));
         mapEntity.setMapDistance(addMapRequestDto.getMapDistance());
         mapEntity.setMapName(addMapRequestDto.getMapName());
         mapEntity.setMapType(addMapRequestDto.getMapType());
-        mapEntity.setMapImage(imageURL);
+//        mapEntity.setMapImage(imageURL);
         mapEntity.setOriginalMapId(0);
         mapEntity.setMapCompletion(false);
         mapEntity.setUserId(userEntity);

@@ -151,10 +151,9 @@ public class MapController {
 
     //맵 저장
     @PostMapping("/save")
-    public ResponseEntity saveMap(@RequestPart(value= "request") AddMapRequestDto addMapRequestDto,
-                                  @RequestPart(value= "mapImage") MultipartFile mapImage,
+    public ResponseEntity saveMap(@RequestBody AddMapRequestDto addMapRequestDto,
                                   @RequestHeader("access") String access) {
-        mapService.saveMap(addMapRequestDto,access, mapImage);
+        mapService.saveMap(addMapRequestDto,access);
         return ResponseEntity.ok().body("Map saved successfully");
     }
 

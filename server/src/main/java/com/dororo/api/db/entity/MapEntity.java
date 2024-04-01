@@ -24,8 +24,6 @@ public class MapEntity {
     private UserEntity userId;
     @Column(nullable = false)
     private String mapName;
-    @Column(nullable = false) @ColumnDefault("''")  // 이미지 없을 경우 빈 스트링으로
-    private String mapImage;
     @Column(nullable = false, columnDefinition = "geometry(LineString, 4326)")
     private LineString originMapRouteAxis;    // 원본 좌표
     @Column(nullable = false, columnDefinition = "geometry(LineString, 4326)")
@@ -40,6 +38,8 @@ public class MapEntity {
     private Integer originalMapId;
     @Column(nullable = false) @ColumnDefault("false")
     private Boolean mapCompletion;
+    @Column(nullable = false) @ColumnDefault("010500002042140000010000000102000000020000009031772DB986164100B1502BFB07114190CB7F48CE861641006822ACA0031141")
+    private LineString path; //PolyLine 좌표
 
     public enum Maptype{
         DEFAULT, CUSTOM, SCRAP
