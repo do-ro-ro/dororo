@@ -6,6 +6,7 @@ import waypointPin from "../../assets/waypoint_yet.png";
 import waypointPinSelected from "../../assets/waypoint_passed.png";
 import { useLocation } from "react-router-dom";
 import { saveCourse } from "../../apis/server/Map";
+import basicMapImg from "../../assets/sample_course_img.png";
 
 // 커스텀 대안
 
@@ -17,7 +18,7 @@ import { saveCourse } from "../../apis/server/Map";
 // 저장을 누르면 코스 이름 입력, 저장. (기존 추천 코스 저장 로직과 동일)
 // 나가기를 누르면 navigate(-1)이 아니라, 그냥 해당 mapId 정보로 redirect
 
-function Map({ course }) {
+function Map({ course, toSave }) {
     const location = useLocation();
     const currentCourse = location.state;
 
@@ -185,7 +186,6 @@ function Map({ course }) {
 
                 // resultInfoArr에 값이 존재하면, 갱신할 것
                 if (resultInfoArr?.length > 0) {
-                    resultInfoArr?.forEach((info) => info.setMap(null));
                     setResultInfoArr([]);
                 }
                 setResultMarkerArr([]);
@@ -215,6 +215,12 @@ function Map({ course }) {
                                     convertPoint,
                                 ]);
 
+                                const pathAxis = {
+                                    lat: convertPoint._lat,
+                                    lng: convertPoint._lng,
+                                };
+                                // 변환한 좌표 담기 위한 리스트 지정
+                                setResultInfoArr((prev) => [...prev, pathAxis]);
                                 return new window.Tmapv2.LatLng(
                                     convertPoint._lat,
                                     convertPoint._lng,
@@ -266,6 +272,7 @@ function Map({ course }) {
     // 라인 그리는 함수
     const drawPolyline = () => {
         if (courseLine.length > 0) {
+            console.log("course path 좌표값", courseLine);
             const newPolyline = new window.Tmapv2.Polyline({
                 path: courseLine,
                 strokeColor: "#6386BE",
@@ -277,6 +284,7 @@ function Map({ course }) {
                 directionColor: "white",
             });
 
+            console.log(resultInfoArr);
             // 폴리라인에 객체 저장
             setPolyline(newPolyline);
         }
@@ -428,8 +436,8 @@ function Map({ course }) {
                     mapDistance: distance,
                     mapName: "커스텀한코스",
                     mapType: "CUSTOM",
+                    path: resultInfoArr,
                 },
-                mapImage: "",
             };
             // console.log("리퀘스트 바디", body);
             saveCourse(body);
