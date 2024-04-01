@@ -41,19 +41,19 @@ public class MapAlgorithm {
 
 	public void getLinks (LatitudeLongitude startPoint, float distance) { //반경 내 링크 저장
 
-		distance = (distance-1) / 100;
+		distance = distance / 100;
 		linkEntityList = linkRepository.getLinkEntityList(startPoint.getLng(), startPoint.getLat(), distance);
 		return;
 	}
 
 	public void getNodes (LatitudeLongitude startPoint, float distance) {
-		distance = (distance+1) / 100;
+		distance = distance / 100;
 		nodeEntityList = nodeRepository.getNodeEntityList(startPoint.getLng(), startPoint.getLat(), distance);
 		return;
 	}
 
 	public void getTurnInfos (LatitudeLongitude startPoint, float distance){
-		distance = (distance+1) / 100;
+		distance = distance / 100;
 		turnInfoEntityList = turninfoRepository.getNodeTurnInfos(startPoint.getLng(), startPoint.getLat(), distance);
 		System.out.println("turnInfoSize : " + turnInfoEntityList.size());
 	}
@@ -127,6 +127,7 @@ public class MapAlgorithm {
 
 			//cur의 t_node_id로 map 조회 -> 연결된 링크 불러옴
 			List<LinkEntity> nextLinks = map.get(cur.getLinkEntity().getTNodeId());
+			if(nextLinks == null) continue;
 
 			//연결된 링크로 갈 수 있는 지 확인 (거리, 좌우회전 유턴 조건)
 			//못가면 컨티뉴
