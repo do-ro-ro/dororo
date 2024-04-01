@@ -84,6 +84,19 @@ const StopOver = ({
     ];
 
     useEffect(() => {
+        // visited 배열이 모두 true 인지 확인
+        const allVisited = visited.every((visit) => visit);
+
+        // visited 배열이 모두 true일 때 발생하는 이벤트 처리
+        if (allVisited && visited.length >= 2) {
+            // 여기에 이벤트 처리 코드 추가
+            console.log(visited);
+            console.log("All waypoints visited!");
+            // 예를 들어, 어떤 동작을 수행하거나 알림을 띄울 수 있습니다.
+        }
+    }, [visited]);
+
+    useEffect(() => {
         if (filteredCourse.length >= 2) {
             setVisited(Array(filteredCourse.length).fill(false));
         }
@@ -109,10 +122,10 @@ const StopOver = ({
     useEffect(() => {
         if (visited.length >= 2) {
             for (let i = 0; i < visited.length; i++) {
-                let latPlus = filteredCourse[i].lat + 0.0003;
-                let latMinus = filteredCourse[i].lat - 0.0003;
-                let lngPlus = filteredCourse[i].lng + 0.0004;
-                let lngMinus = filteredCourse[i].lng - 0.0004;
+                let latPlus = filteredCourse[i].lat + 1.0003;
+                let latMinus = filteredCourse[i].lat - 1.0003;
+                let lngPlus = filteredCourse[i].lng + 1.0004;
+                let lngMinus = filteredCourse[i].lng - 1.0004;
 
                 let targetLat = lat; // 타겟 경도
                 let targetLng = lng; // 타겟 위도
