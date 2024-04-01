@@ -21,6 +21,7 @@ import UTurnLeftIcon from "@mui/icons-material/UTurnLeft";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import { optionPost } from "../../apis/server/MainOption";
+import Loading from "../loading/Loading";
 
 // 모달 스타일 정의
 const style = {
@@ -54,13 +55,17 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
     //     setOption({ ...option, method: e.target.value });
     //     console.log(option);
     // };
-    const handleConfirmClick = async () => {
-        const response = await optionPost(option); // 옵션 객체를 서버에 전송
-        closeModal(); // 모달 닫기
-        // console.log("optionModal", response);
-        navigate("/recommend", { state: { data: response } });
-    };
+    // const handleConfirmClick = async () => {
+    //     const response = await optionPost(option); // 옵션 객체를 서버에 전송
+    //     closeModal(); // 모달 닫기
+    //     // console.log("optionModal", response);
+    //     navigate("/recommend", { state: { data: response } });
+    // };
 
+    const handleConfirmClick = () => {
+        closeModal();
+        navigate("/loading", { state: { data: option } });
+    };
     const handleSliderChange = (e) => {
         setOption({ ...option, mapDistance: Math.max(e.target.value, 5) });
     };
