@@ -123,6 +123,7 @@ public class MapAlgorithm {
 				System.out.println("우회전 횟수: " + newTurnRight);
 				System.out.println("유턴 횟수: " + newUTurn);
 				System.out.println("회전 시의 각들: " + cur.getTurnDegrees());
+				System.out.println("NodeIDs " + cur.getNodeIds());
 
 				continue;
 			}
@@ -137,6 +138,7 @@ public class MapAlgorithm {
 			for(int i=0;i<nextLinks.size();i++){
 				List<Double> tempTurnDegrees = new ArrayList<>();
 				tempTurnDegrees.addAll(cur.getTurnDegrees());	// 이때까지 회전한 곳에서의 각도들 저장 테스트
+
 				List<String> tempMap = new ArrayList<>();
 				tempMap.addAll(newMap);
 
