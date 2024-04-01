@@ -4,7 +4,7 @@ import startPin from "../../assets/map_marker_start.png";
 import endPin from "../../assets/map_marker_end.png";
 import waypointPin from "../../assets/waypoint_yet.png";
 import waypointPinSelected from "../../assets/waypoint_passed.png";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { saveCourse } from "../../apis/server/Map";
 import basicMapImg from "../../assets/sample_course_img.png";
 
@@ -20,6 +20,7 @@ import basicMapImg from "../../assets/sample_course_img.png";
 
 function Map({ course, courseName, toSave }) {
     const currentCourse = course;
+    const navigate = useNavigate();
 
     // Tmap 객체 관리를 위한 상태
     const [map, setMap] = useState(null);
@@ -157,13 +158,12 @@ function Map({ course, courseName, toSave }) {
                 const resultFeatures = data.features;
                 // console.log(resultFeatures);
 
-                const tDistance =
-                    "총 거리 : " +
-                    (resultData?.totalDistance / 1000).toFixed(1) +
-                    "km,  ";
+                const tDistance = (resultData?.totalDistance / 1000).toFixed(1);
 
+                console.log("거리", tDistance);
                 // 거리 저장
                 setDistance(resultData?.totalDistance);
+
                 // const tTime =
                 //     "총 시간 : " +
                 //     (resultData.totalTime / 60).toFixed(0) +
@@ -425,15 +425,14 @@ function Map({ course, courseName, toSave }) {
         if (saveButtonClicked) {
             // API 호출 로직
             const body = {
-                request: {
-                    originMapRouteAxis: courseSaveRequest,
-                    convertedRouteAxis: courseSaveRequest,
-                    mapDistance: distance,
-                    mapName: courseName,
-                    mapType: "CUSTOM",
-                    path: resultInfoArr,
-                },
+                originMapRouteAxis: courseSaveRequest,
+                convertedRouteAxis: courseSaveRequest,
+                mapDistance: distance,
+                mapName: courseName,
+                mapType: "CUSTOM",
+                path: resultInfoArr,
             };
+
             console.log("리퀘스트 바디", body);
             saveCourse(body);
         }
@@ -463,7 +462,10 @@ function Map({ course, courseName, toSave }) {
     };
 
     useEffect(() => {
-        saveCustomCourse(resultMarkerArr);
+        if (toSave) {
+            saveCustomCourse(resultMarkerArr);
+            navigate("/main/myPage");
+        }
     }, [toSave]);
 
     return (
