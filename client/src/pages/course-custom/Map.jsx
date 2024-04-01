@@ -18,7 +18,7 @@ import basicMapImg from "../../assets/sample_course_img.png";
 // 저장을 누르면 코스 이름 입력, 저장. (기존 추천 코스 저장 로직과 동일)
 // 나가기를 누르면 navigate(-1)이 아니라, 그냥 해당 mapId 정보로 redirect
 
-function Map({ course, toSave, courseName }) {
+function Map({ course, courseName, toSave }) {
     const currentCourse = course;
 
     // Tmap 객체 관리를 위한 상태
@@ -462,15 +462,19 @@ function Map({ course, toSave, courseName }) {
         }
     };
 
+    useEffect(() => {
+        saveCustomCourse(resultMarkerArr);
+    }, [toSave]);
+
     return (
         <>
             <Box>
                 {/* <Button onClick={handleUndo}>실행 취소</Button> */}
                 <div id="map_div"></div>
                 <Box position={"fixed"}>
-                    <Button onClick={() => saveCustomCourse(resultMarkerArr)}>
+                    {/* <Button onClick={() => saveCustomCourse(resultMarkerArr)}>
                         수정 완료
-                    </Button>
+                    </Button> */}
                     {/* <Button onClick={handleReset}>리셋</Button> */}
                 </Box>
             </Box>

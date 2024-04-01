@@ -25,6 +25,8 @@ function CourseCustomPage() {
     const [showCourseSaveModal, setShowCourseSaveModal] = useState(false);
     const [courseName, setCourseName] = useState("");
 
+    const [toSave, setToSave] = useState(false);
+
     const openCourseSaveModal = () => {
         setShowCourseSaveModal(true);
     };
@@ -38,7 +40,11 @@ function CourseCustomPage() {
             <Topbar isBackButton={true}>
                 {currentCourse?.mapName} 수정하기
             </Topbar>
-            <Map course={currentCourse} courseName={courseName} />
+            <Map
+                course={currentCourse}
+                courseName={courseName}
+                toSave={toSave}
+            />
             <Box position={"fixed"} bottom={"0vh"}>
                 <Button onClick={openCourseSaveModal}>코스 수정</Button>
                 <Modal
@@ -98,6 +104,9 @@ function CourseCustomPage() {
                                 sx={{
                                     fontSize: "1rem",
                                     mr: 1,
+                                }}
+                                onClick={() => {
+                                    setToSave(true);
                                 }}
                             >
                                 저장
