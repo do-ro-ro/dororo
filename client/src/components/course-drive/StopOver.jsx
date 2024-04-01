@@ -121,7 +121,7 @@ const StopOver = ({
     }, [filteredCourse]);
 
     useEffect(() => {
-        const waypoints = filteredCourse.map((point, index) => ({
+        const waypoints = filteredNode.map((point, index) => ({
             lat: point.lat,
             lng: point.lng,
             icon: visited[index] ? waypoint_passed : points[index],
