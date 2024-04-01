@@ -131,7 +131,6 @@ public class CommunityService {
         MapEntity scrapMapEntity = new MapEntity();
         scrapMapEntity.setUserId(userEntity.get());
         scrapMapEntity.setMapName(originMapEntity.getMapName());
-        scrapMapEntity.setMapImage(originMapEntity.getMapImage());
         scrapMapEntity.setOriginMapRouteAxis(originMapEntity.getOriginMapRouteAxis());
         scrapMapEntity.setConvertedRouteAxis(originMapEntity.getConvertedRouteAxis());
         scrapMapEntity.setMapType(MapEntity.Maptype.SCRAP); // 스크랩한 맵임을 타입으로 명시

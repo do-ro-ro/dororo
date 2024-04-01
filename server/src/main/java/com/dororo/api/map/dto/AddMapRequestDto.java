@@ -18,6 +18,7 @@ public class AddMapRequestDto {
 
     private List<LatitudeLongitude> originMapRouteAxis;
     private List<LatitudeLongitude> convertedRouteAxis;
+    private List<LatitudeLongitude> path;
     private float mapDistance;
     private String mapName;
     private MapEntity.Maptype mapType;
