@@ -14,7 +14,25 @@ function RecommendedCoursePage() {
         if (optionData.state && optionData.state.data) {
             setLocations(optionData.state.data);
         }
-    }, [optionData.state]);
+    }, [optionData.state, locations, currentIndex]);
+
+    useEffect(() => {
+        if (locations.length > 0) {
+            const currentLocation = locations[currentIndex];
+            setCourseNode(currentLocation.originMapRouteAxis);
+            setCourseLine(currentLocation.convertedRouteAxis);
+            const filtered = currentLocation.originMapRouteAxis.slice(1, -1);
+            setFilteredCourse(filtered);
+        }
+    }, [locations, currentIndex]); // locations와 currentIndex가 변경될 때만 이 effect를 실행합니다.
+
+    // originMapRouteAxis 좌표들
+    const [courseNode, setCourseNode] = useState([]);
+    // convertedRouteAxis 좌표들 폴리라인
+    const [courseLine, setCourseLine] = useState([]);
+
+    // 첫점 끝점 뺀 originMapRouteAxis 경유지
+    const [filteredCourse, setFilteredCourse] = useState([]);
 
     const handlePrev = () => {
         setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
@@ -37,7 +55,10 @@ function RecommendedCoursePage() {
             ></BottomNav>
             {locations.length > 0 && (
                 <Recommend
-                    location={locations[currentIndex]}
+                    // location={locations[currentIndex]}
+                    courseNode={courseNode}
+                    courseLine={courseLine}
+                    filteredCourse={filteredCourse}
                     currentIndex={currentIndex}
                 ></Recommend>
             )}
