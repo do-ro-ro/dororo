@@ -118,6 +118,7 @@ public class MapAlgorithm {
 
 				finalMapList.add(new CreateMapResponseDto(originMapRouteAxis, convertedRouteAxis, newDistance));
 
+				System.out.println("=============================================");
 				System.out.println("좌회전 횟수: " + newTurnLeft);
 				System.out.println("우회전 횟수: " + newTurnRight);
 				System.out.println("유턴 횟수: " + newUTurn);
@@ -140,7 +141,15 @@ public class MapAlgorithm {
 				int tempUuuTurn = newUTurn;
 				float tempDistance = newDistance;
 
+
 				LinkEntity next = nextLinks.get(i);
+				boolean isUTurnResult = isUTurn(cur,next);
+
+				//next링크의 f_node가 uTurn 노드가 아닌 경우, cur링크의 f 노드가 next링크의 t노드랑 같으면 continue
+				if(!isUTurnResult){
+					if(cur.getLinkEntity().getFNodeId().equals(next.getTNodeId()))
+						continue;
+				}
 
 				String turnInfo = getTurnInfo(nodeMap, cur, next);
 				// 좌우회전, 유턴 판별하고 조건에 안맞으면 continue
@@ -154,7 +163,7 @@ public class MapAlgorithm {
 					tempTurnRight = cur.getTurnRight()+1;
 					if(tempTurnRight<=createMapRequestDto.getTurnRight())
 						tempTurnRight++;
-				} else if(isUTurn(cur,next)) {
+				} else if(isUTurnResult && next.getTNodeId().equals(cur.getLinkEntity().getFNodeId())) {
 					tempUuuTurn=cur.getUTurn()+1;
 					if(tempUuuTurn<=createMapRequestDto.getUuuTurn())
 						tempUuuTurn++;
@@ -206,12 +215,12 @@ public class MapAlgorithm {
 
 		//System.out.println("degree : "+ degree);
 
-		if(degree>60 && degree<120){
+		if(degree>80 && degree<100){
 			/*System.out.println("prevNode : "+ prevNodeX +", "+prevNodeY);
 			System.out.println("curNode : "+ curNodeX +", "+curNodeY);
 			System.out.println("nextNode : "+ nextNodeX +", "+nextNodeY);*/
 			return "left";
-		} else if(degree>240 && degree<300)
+		} else if(degree>260 && degree<280)
 			return "right";
 
 		return "noTurn";
