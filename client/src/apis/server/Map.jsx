@@ -68,7 +68,23 @@ const checkDrive = async ({ mapId, mapCompletion }) => {
 };
 
 // 코스 저장
-const saveCourse = async (body) => {
+const saveCourse = async (
+    body,
+    // originMapRouteAxis,
+    // convertedRouteAxis,
+    // path,
+    // mapDistance,
+    // mapName,
+    // mapType,
+) => {
+    // const body = {
+    //     originMapRouteAxis: originMapRouteAxis,
+    //     convertedRouteAxis: convertedRouteAxis,
+    //     path: path,
+    //     mapDistance: mapDistance,
+    //     mapName: mapName,
+    //     mapType: mapType,
+    // };
     try {
         const response = await axiosInstance.post(`/maps/save`, body);
         if (response.status === 200) {

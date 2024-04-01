@@ -18,16 +18,6 @@ import ShareModal from "../../components/course-detail/ShareModal";
 import { getMapDetail } from "../../apis/server/Map";
 import { current } from "@reduxjs/toolkit";
 
-const DummyMap = {
-    map_id: 0,
-    map_name: "코스 샘플 1",
-    map_image: SampleCourseImg,
-    map_distance: "5.1km",
-    map_type: "DEFAULT",
-    // map_completion: false,
-    map_completion: true,
-};
-
 function CourseDetailPage() {
     const { courseId } = useParams();
     const [lat, setLat] = useState(37.5652045);
@@ -57,13 +47,14 @@ function CourseDetailPage() {
         };
 
         fetchData();
+        console.log(currentCourse);
     }, []);
 
     return (
         <>
+            <Topbar isBackButton={true}>코스 조회하기</Topbar>
             <div className="relative">
-                <Topbar isBackButton={true}>코스 조회하기</Topbar>
-                <Paper>
+                <Paper sx={{ mt: 8 }}>
                     <Stack>
                         <Stack
                             direction={"row"}
@@ -72,7 +63,9 @@ function CourseDetailPage() {
                             sx={{ p: 2 }}
                         >
                             <Typography variant="h5">
-                                {currentCourse?.mapName}
+                                {currentCourse
+                                    ? currentCourse?.mapName
+                                    : "코스 정보 불러오는 중"}
                             </Typography>
                             <DeleteDialog variant={"course"} />
                         </Stack>

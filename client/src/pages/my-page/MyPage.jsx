@@ -70,7 +70,7 @@ function MyPage() {
     return (
         <>
             <Topbar>마이페이지</Topbar>
-            <Box pb="10vh">
+            <Box pb="15vh" mt={8}>
                 <Stack mx={4} mt={2} height={"90vh"}>
                     <Paper>
                         <Stack
