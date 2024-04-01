@@ -11,12 +11,12 @@ import com.dororo.api.db.entity.TurnInfoEntity;
 
 @Repository
 public interface TurninfoRepository extends JpaRepository<TurnInfoEntity, Integer> {
-	@Query(value = "SELECT distinct node_id " +
+	@Query(value = "SELECT * " +
 		"FROM turn_infos " +
 		"WHERE node_id IN (" +
 		"SELECT node_id " +
 		"FROM nodes " +
 		"WHERE ST_DWithin(node_point, ST_SetSRID(ST_Point(?1, ?2), 4326), ?3)) " +
 		"AND turn_type ='011'",nativeQuery = true)
-	List<String> getNodeTurnInfos(double lng, double lat, float distance);
+	List<TurnInfoEntity> getNodeTurnInfos(double lng, double lat, float distance);
 }

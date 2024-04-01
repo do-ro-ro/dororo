@@ -103,6 +103,8 @@ public class MapService {
         //반경 내 회전정보 리스트 구하기
         mapAlgorithm.getTurnInfos(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
 
+
+
         //출발 노드에 연결된 링크 구하기
         List<LinkEntity> startLinks = mapAlgorithm.getStartLinks(startNodeId);
 

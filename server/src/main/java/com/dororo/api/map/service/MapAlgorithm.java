@@ -13,6 +13,7 @@ import com.dororo.api.convert.AxisCalculator;
 import com.dororo.api.convert.LatitudeLongitude;
 import com.dororo.api.db.entity.LinkEntity;
 import com.dororo.api.db.entity.NodeEntity;
+import com.dororo.api.db.entity.TurnInfoEntity;
 import com.dororo.api.db.repository.LinkRepository;
 import com.dororo.api.db.repository.NodeRepository;
 import com.dororo.api.db.repository.TurninfoRepository;
@@ -31,7 +32,7 @@ public class MapAlgorithm {
 	private final TurninfoRepository turninfoRepository;
 	List<NodeEntity> nodeEntityList;
 	List<LinkEntity> linkEntityList;
-	List<String> turnInfoEntityList;
+	List<TurnInfoEntity> turnInfoEntityList;
 
 	public String getStartNode (LatitudeLongitude startPoint) { //출발 좌표에서 가장 가까운 노드 찾기
 
@@ -60,9 +61,9 @@ public class MapAlgorithm {
 	public List<CreateMapResponseDto> getMap(String startNode, List<LinkEntity> startLinks, CreateMapRequestDto createMapRequestDto) {
 		List<CreateMapResponseDto> finalMapList = new ArrayList<>();
 
-		Map<String, List<LinkEntity>> map = makeEdgeList(linkEntityList);
-		Map<String, LatitudeLongitude> nodeMap = makeNodePointList(nodeEntityList);
-		System.out.println("turninfo : "+turnInfoEntityList);
+		Map<String, List<LinkEntity>> linkMap = makeEdgeMap(linkEntityList);
+		Map<String, LatitudeLongitude> nodeMap = makeNodePointMap(nodeEntityList);
+		Map<String, List<String>> turnInfoMap = makeTurnInfoMap(turnInfoEntityList);
 
 		Queue<Link> q = new ArrayDeque<>();
 		List<String> mapInit = new ArrayList<>();
@@ -86,7 +87,7 @@ public class MapAlgorithm {
 
 			int newTurnRight = cur.getTurnRight();
 			int newTurnLeft = cur.getTurnLeft();
-			int newUTurn = cur.getUTurn();
+			int newUTurn = cur.getUuuTurn();
 			float newDistance = cur.getMapDistance();
 			List<String> newMap = new ArrayList<>();
 			newMap.addAll(cur.getNodeIds());
@@ -126,8 +127,8 @@ public class MapAlgorithm {
 				continue;
 			}
 
-			//cur의 t_node_id로 map 조회 -> 연결된 링크 불러옴
-			List<LinkEntity> nextLinks = map.get(cur.getLinkEntity().getTNodeId());
+			//cur의 t_node_id로 linkMap 조회 -> 연결된 링크 불러옴
+			List<LinkEntity> nextLinks = linkMap.get(cur.getLinkEntity().getTNodeId());
 			if(nextLinks == null) continue;
 
 			//연결된 링크로 갈 수 있는 지 확인 (거리, 좌우회전 유턴 조건)
@@ -138,13 +139,14 @@ public class MapAlgorithm {
 				tempTurnDegrees.addAll(cur.getTurnDegrees());	// 이때까지 회전한 곳에서의 각도들 저장 테스트
 				List<String> tempMap = new ArrayList<>();
 				tempMap.addAll(newMap);
+
 				int tempTurnRight = newTurnRight;
 				int tempTurnLeft = newTurnLeft;
 				int tempUuuTurn = newUTurn;
 				float tempDistance = newDistance;
 
 				LinkEntity next = nextLinks.get(i);
-				boolean isUTurnResult = isUTurn(cur,next);
+				boolean isUTurnResult = isUTurn(turnInfoMap,cur,next);
 
 				//uTurn 노드가 아닌 경우, cur링크의 f 노드가 next링크의 t노드랑 같으면 continue
 				if(cur.getLinkEntity().getFNodeId().equals(next.getTNodeId())) {
@@ -155,14 +157,11 @@ public class MapAlgorithm {
 				String turnInfo = getTurnInfo(nodeMap, cur, next, tempTurnDegrees);
 				// 좌우회전, 유턴 판별하고 조건에 안맞으면 continue
                 if(turnInfo.equals("left")) {
-					if(cur.getTurnLeft() + 1<=createMapRequestDto.getTurnLeft())
-						tempTurnLeft++;
+					tempTurnLeft++;
 				} else if(turnInfo.equals("right")){
-					if(cur.getTurnRight()+1<=createMapRequestDto.getTurnRight())
-						tempTurnRight++;
+					tempTurnRight++;
 				} else if(isUTurnResult && next.getTNodeId().equals(cur.getLinkEntity().getFNodeId())) {
-					if(cur.getUTurn()+1<=createMapRequestDto.getUuuTurn())
-						tempUuuTurn++;
+					tempUuuTurn++;
 				}
 				//갈 수 있으면
 				tempMap.add(next.getTNodeId());    // 다음 링크의 To 노드 아이디 좌표에 저장
@@ -227,13 +226,15 @@ public class MapAlgorithm {
 		return "noTurn";
 	}
 
-	private boolean isUTurn(Link cur, LinkEntity next) {
-		if(next.getTNodeId().equals(cur.getLinkEntity().getFNodeId()) && turnInfoEntityList.contains(next.getTNodeId()))// 다음 링크의 목표 노드가 현재 링크의 출발 노드와 같으면 유턴으로 판별
+	private boolean isUTurn(Map<String, List<String>> turnInfoMap, Link cur, LinkEntity next) {
+		if (!turnInfoMap.containsKey(next.getFNodeId()))
+			return false;
+		if (turnInfoMap.get(next.getFNodeId()).contains(next.getLinkId()))// 다음 링크의 목표 노드가 현재 링크의 출발 노드와 같으면 유턴으로 판별
 			return true;
 		return false;
 	}
 
-	private Map<String, List<LinkEntity>> makeEdgeList(List<LinkEntity> linkEntityList) {
+	private Map<String, List<LinkEntity>> makeEdgeMap(List<LinkEntity> linkEntityList) {
 
 		Map<String, List<LinkEntity>> map = new HashMap<>();
 		System.out.println("linkEnntityList size : "+linkEntityList.size());
@@ -250,7 +251,7 @@ public class MapAlgorithm {
 		}
 		return map;
 	}
-	private Map<String, LatitudeLongitude> makeNodePointList(List<NodeEntity> nodeEntityList) {
+	private Map<String, LatitudeLongitude> makeNodePointMap(List<NodeEntity> nodeEntityList) {
 		Map<String, LatitudeLongitude> map = new HashMap<>();
 		for(int i=0;i<nodeEntityList.size();i++){
 			String node = nodeEntityList.get(i).getNodeId();
@@ -259,6 +260,25 @@ public class MapAlgorithm {
 			map.put(node, point);
 		}
 		return map;
+	}
+
+	private Map<String, List<String>> makeTurnInfoMap(List<TurnInfoEntity> turnInfoEntityList) {
+		Map<String, List<String>> turnInfoMap = new HashMap<>();
+
+		for(int i=0;i<turnInfoEntityList.size();i++){
+			String key = turnInfoEntityList.get(i).getNodeId();
+			String endLink = turnInfoEntityList.get(i).getEdLinkId();
+			//turnInfoMap.get(key).add(endLink);
+			if(turnInfoMap.containsKey(key)) turnInfoMap.get(key).add(endLink);
+			else {
+				List<String> value = new ArrayList<>();
+				value.add(endLink);
+				turnInfoMap.put(key, value);
+			}
+		}
+		System.out.println("turninfo:"+turnInfoMap.size());
+
+		return turnInfoMap;
 	}
 
 	public List<LinkEntity> getStartLinks(String startNode) {
