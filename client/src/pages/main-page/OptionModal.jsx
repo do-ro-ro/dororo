@@ -58,6 +58,7 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
     const handleConfirmClick = async () => {
         const response = await optionPost(option); // 옵션 객체를 서버에 전송
         closeModal(); // 모달 닫기
+        // console.log("optionModal", response);
         navigate("/recommend", { state: { data: response } });
     };
 

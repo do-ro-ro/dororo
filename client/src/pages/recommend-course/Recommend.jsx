@@ -25,323 +25,335 @@ const Recommend = ({
         time: "",
     });
 
-    useEffect(() => {
-        console.log("1", courseNode);
-        console.log("2", courseLine);
-        console.log("3", console.log(filteredCourse));
-    }, [courseNode, courseLine, filteredCourse]);
-
-    // const openRoadViewModal = (lat, lng) => {
-    //     setCurrentLocation({ lat, lng });
-    //     setShowRoadViewModal(true);
-    // };
-
-    // const closeRoadViewModal = () => {
-    //     setShowRoadViewModal(false);
-    // };
-
     // useEffect(() => {
-    //     const center = calculateCenterCoordinate(courseNode);
+    //     console.log("1", courseNode);
+    //     console.log("2", courseLine);
+    //     console.log("3", filteredCourse);
+    // }, [courseNode, courseLine, filteredCourse]);
 
-    //     if (!map) {
-    //         initTmap(center, courseNode);
-    //     } else {
-    //         updateMap(center, courseNode);
-    //     }
+    const openRoadViewModal = (lat, lng) => {
+        setCurrentLocation({ lat, lng });
+        setShowRoadViewModal(true);
+    };
 
-    //     fetchRoute();
-    // }, [courseNode]); // map도 의존성 배열에 추가하여 map 상태 변경에도 반응하도록 함
+    const closeRoadViewModal = () => {
+        setShowRoadViewModal(false);
+    };
 
-    // const calculateCenterCoordinate = (courseNode) => {
-    //     let latSum = 0;
-    //     let lngSum = 0;
-    //     const count = courseNode.length;
-    //     for (let i = 0; i < count; i++) {
-    //         latSum += courseNode[i].lat;
-    //         lngSum += courseNode[i].lng;
-    //     }
-    //     return { lat: latSum / count, lng: lngSum / count };
-    // };
-    // /////////
-    // // 지도 업데이트 함수, 중심 좌표를 업데이트하고 마커 다시 그림
-    // const updateMap = (center, courseNode) => {
-    //     map.setCenter(new window.Tmapv2.LatLng(center.lat, center.lng));
+    useEffect(() => {
+        const center = calculateCenterCoordinate(courseNode);
 
-    //     // 기존 마커 삭제
-    //     resultMarkerArr.forEach((marker) => marker.setMap(null));
-    //     setResultMarkerArr([]);
+        if (courseNode.length >= 1) {
+            if (map === null) {
+                // console.log("dd");
+                // console.log(courseNode);
+                initTmap(center, courseNode);
+            } else {
+                updateMap(center, courseNode);
+            }
+            fetchRoute();
+        }
+    }, [courseNode, filteredCourse, courseLine, map]); // map도 의존성 배열에 추가하여 map 상태 변경에도 반응하도록 함
 
-    //     // 기존 라인 삭제
-    //     resultInfoArr.forEach((line) => line.setMap(null));
-    //     setResultInfoArr([]);
+    const calculateCenterCoordinate = (courseNode) => {
+        let latSum = 0;
+        let lngSum = 0;
+        const count = courseNode.length;
+        for (let i = 0; i < count; i++) {
+            latSum += courseNode[i].lat;
+            lngSum += courseNode[i].lng;
+        }
+        return { lat: latSum / count, lng: lngSum / count };
+    };
 
-    //     // 시작점 마커 생성
-    //     const startMarker = new window.Tmapv2.Marker({
-    //         position: new window.Tmapv2.LatLng(
-    //             courseNode[0].lat,
-    //             courseNode[0].lng,
-    //         ),
-    //         icon: startpin, // 시작점 아이콘
-    //         iconSize: new window.Tmapv2.Size(24, 38),
-    //         map: map,
-    //     });
-    //     setResultMarkerArr((prev) => [...prev, startMarker]);
-    //     startMarker.addListener("touchstart", () => {
-    //         openRoadViewModal(courseNode[0].lat, courseNode[0].lng);
-    //         console.log(`lat: ${courseNode[0].lat}, lng: ${courseNode[0].lng}`);
-    //     });
+    /////////
+    // 지도 업데이트 함수, 중심 좌표를 업데이트하고 마커 다시 그림
+    const updateMap = (center, courseNode) => {
+        map.setCenter(new window.Tmapv2.LatLng(center.lat, center.lng));
 
-    //     // 끝점 마커 생성
-    //     const endMarkerIndex = courseNode.length - 1;
-    //     // 예시: 끝점 마커 생성 부분 수정
-    //     const endMarker = new window.Tmapv2.Marker({
-    //         position: new window.Tmapv2.LatLng(
-    //             courseNode[endMarkerIndex].lat,
-    //             courseNode[endMarkerIndex].lng,
-    //         ),
-    //         icon: endpin, // 끝점 아이콘으로 수정
-    //         iconSize: new window.Tmapv2.Size(24, 38),
-    //         map: map,
-    //     });
+        // 기존 마커 삭제
+        resultMarkerArr.forEach((marker) => marker.setMap(null));
+        setResultMarkerArr([]);
 
-    //     endMarker.addListener("touchstart", () => {
-    //         openRoadViewModal(
-    //             courseNode[endMarkerIndex].lat,
-    //             courseNode[endMarkerIndex].lng,
-    //         );
-    //         console.log(
-    //             `lat: ${courseNode[endMarkerIndex].lat}, lng: ${courseNode[endMarkerIndex].lng}`,
-    //         );
-    //     });
+        // 기존 라인 삭제
+        resultInfoArr.forEach((line) => line.setMap(null));
+        setResultInfoArr([]);
 
-    //     setResultMarkerArr((prev) => [...prev, endMarker]);
+        // 시작점 마커 생성
+        const startMarker = new window.Tmapv2.Marker({
+            position: new window.Tmapv2.LatLng(
+                courseNode[0].lat,
+                courseNode[0].lng,
+            ),
+            icon: startpin, // 시작점 아이콘
+            iconSize: new window.Tmapv2.Size(24, 38),
+            map: map,
+        });
+        setResultMarkerArr((prev) => [...prev, startMarker]);
+        startMarker.addListener("touchstart", () => {
+            openRoadViewModal(courseNode[0].lat, courseNode[0].lng);
+            console.log(`lat: ${courseNode[0].lat}, lng: ${courseNode[0].lng}`);
+        });
 
-    //     // 경유지 마커 생성
-    //     for (let i = 0; i < filteredCourse.length; i++) {
-    //         const waypointMarker = new window.Tmapv2.Marker({
-    //             position: new window.Tmapv2.LatLng(
-    //                 filteredCourse[i].lat,
-    //                 filteredCourse[i].lng,
-    //             ),
-    //             icon: waypin, // 경유지 아이콘
-    //             iconSize: new window.Tmapv2.Size(24, 24),
-    //             map: map,
-    //         });
-    //         setResultMarkerArr((prev) => [...prev, waypointMarker]);
-    //         waypointMarker.addListener("touchstart", () => {
-    //             openRoadViewModal(filteredCourse[i].lat, filteredCourse[i].lng);
-    //             console.log(
-    //                 `lat: ${filteredCourse[i].lat}, lng: ${filteredCourse[i].lng}`,
-    //             );
-    //         });
-    //     }
-    // };
+        // 끝점 마커 생성
+        const endMarkerIndex = courseNode.length - 1;
+        // 예시: 끝점 마커 생성 부분 수정
+        const endMarker = new window.Tmapv2.Marker({
+            position: new window.Tmapv2.LatLng(
+                courseNode[endMarkerIndex].lat,
+                courseNode[endMarkerIndex].lng,
+            ),
+            icon: endpin, // 끝점 아이콘으로 수정
+            iconSize: new window.Tmapv2.Size(24, 38),
+            map: map,
+        });
 
-    // const initTmap = (center, courseNode) => {
-    //     setResultMarkerArr([]);
+        endMarker.addListener("touchstart", () => {
+            openRoadViewModal(
+                courseNode[endMarkerIndex].lat,
+                courseNode[endMarkerIndex].lng,
+            );
+            console.log(
+                `lat: ${courseNode[endMarkerIndex].lat}, lng: ${courseNode[endMarkerIndex].lng}`,
+            );
+        });
 
-    //     map = new window.Tmapv2.Map("map_div", {
-    //         center: new window.Tmapv2.LatLng(center.lat, center.lng),
-    //         width: "100%",
-    //         height: "100vh",
-    //         zoom: 15,
-    //         zoomControl: true,
-    //         scrollwheel: true,
-    //     });
+        setResultMarkerArr((prev) => [...prev, endMarker]);
 
-    //     setMap(map);
+        // 경유지 마커 생성
+        for (let i = 0; i < filteredCourse.length; i++) {
+            const waypointMarker = new window.Tmapv2.Marker({
+                position: new window.Tmapv2.LatLng(
+                    filteredCourse[i].lat,
+                    filteredCourse[i].lng,
+                ),
+                icon: waypin, // 경유지 아이콘
+                iconSize: new window.Tmapv2.Size(24, 24),
+                map: map,
+            });
+            setResultMarkerArr((prev) => [...prev, waypointMarker]);
+            waypointMarker.addListener("touchstart", () => {
+                openRoadViewModal(filteredCourse[i].lat, filteredCourse[i].lng);
+                console.log(
+                    `lat: ${filteredCourse[i].lat}, lng: ${filteredCourse[i].lng}`,
+                );
+            });
+        }
+    };
 
-    //     // 시작점 마커 생성
-    //     const startMarker = new window.Tmapv2.Marker({
-    //         position: new window.Tmapv2.LatLng(
-    //             courseNode[0].lat,
-    //             courseNode[0].lng,
-    //         ),
-    //         icon: startpin,
-    //         iconSize: new window.Tmapv2.Size(24, 38),
-    //         map: map,
-    //     });
-    //     setResultMarkerArr((prev) => [...prev, startMarker]);
-    //     startMarker.addListener("touchstart", () => {
-    //         openRoadViewModal(courseNode[0].lat, courseNode[0].lng);
-    //         console.log(`lat: ${courseNode[0].lat}, lng: ${courseNode[0].lng}`);
-    //     });
-    //     // 끝점 마커 생성
-    //     const endMarkerIndex = courseNode.length - 1;
-    //     const endMarker = new window.Tmapv2.Marker({
-    //         position: new window.Tmapv2.LatLng(
-    //             courseNode[endMarkerIndex].lat,
-    //             courseNode[endMarkerIndex].lng,
-    //         ),
-    //         icon: endpin,
-    //         iconSize: new window.Tmapv2.Size(24, 38),
-    //         map: map,
-    //     });
-    //     setResultMarkerArr((prev) => [...prev, endMarker]);
+    const initTmap = (center, courseNode) => {
+        setResultMarkerArr([]);
 
-    //     endMarker.addListener("touchstart", () => {
-    //         openRoadViewModal(
-    //             courseNode[endMarkerIndex].lat,
-    //             courseNode[endMarkerIndex].lng,
-    //         );
-    //         console.log(
-    //             `lat: ${courseNode[endMarkerIndex].lat}, lng: ${courseNode[endMarkerIndex].lng}`,
-    //         );
-    //     });
+        map = new window.Tmapv2.Map("map_div", {
+            center: new window.Tmapv2.LatLng(center.lat, center.lng),
+            width: "100%",
+            height: "100vh",
+            zoom: 15,
+            zoomControl: true,
+            scrollwheel: true,
+        });
 
-    //     for (let i = 0; i < courseNode.length; i++) {
-    //         const waypointMarker = new window.Tmapv2.Marker({
-    //             position: new window.Tmapv2.LatLng(
-    //                 filteredCourse[i].lat,
-    //                 filteredCourse[i].lng,
-    //             ),
-    //             icon: waypin,
-    //             iconSize: new window.Tmapv2.Size(24, 24),
-    //             map: map,
-    //         });
-    //         setResultMarkerArr((prev) => [...prev, waypointMarker]);
+        setMap(map);
 
-    //         waypointMarker.addListener("touchstart", () => {
-    //             openRoadViewModal(filteredCourse[i].lat, filteredCourse[i].lng);
-    //             console.log(
-    //                 `lat: ${filteredCourse[i].lat}, lng: ${filteredCourse[i].lng}`,
-    //             );
-    //         });
-    //     }
-    // };
+        // 시작점 마커 생성
+        const startMarker = new window.Tmapv2.Marker({
+            position: new window.Tmapv2.LatLng(
+                courseNode[0].lat,
+                courseNode[0].lng,
+            ),
+            icon: startpin,
+            iconSize: new window.Tmapv2.Size(24, 38),
+            map: map,
+        });
+        setResultMarkerArr((prev) => [...prev, startMarker]);
+        startMarker.addListener("touchstart", () => {
+            openRoadViewModal(courseNode[0].lat, courseNode[0].lng);
+            console.log(`lat: ${courseNode[0].lat}, lng: ${courseNode[0].lng}`);
+        });
+        // 끝점 마커 생성
+        const endMarkerIndex = courseNode.length - 1;
+        const endMarker = new window.Tmapv2.Marker({
+            position: new window.Tmapv2.LatLng(
+                courseNode[endMarkerIndex].lat,
+                courseNode[endMarkerIndex].lng,
+            ),
+            icon: endpin,
+            iconSize: new window.Tmapv2.Size(24, 38),
+            map: map,
+        });
+        setResultMarkerArr((prev) => [...prev, endMarker]);
 
-    // const headers = {
-    //     appKey: "9HZ42peAS298sFouPX3oN5yCj2KQUJEa9a3SLlSM",
-    //     "Content-Type": "application/json",
-    // };
+        endMarker.addListener("touchstart", () => {
+            openRoadViewModal(
+                courseNode[endMarkerIndex].lat,
+                courseNode[endMarkerIndex].lng,
+            );
+            console.log(
+                `lat: ${courseNode[endMarkerIndex].lat}, lng: ${courseNode[endMarkerIndex].lng}`,
+            );
+        });
 
-    // const fetchRoute = () => {
-    //     const startLat = courseLine[0].lat;
-    //     const startLng = courseLine[0].lng;
-    //     const endLat = courseLine[courseLine.length - 1].lat;
-    //     const endLng = courseLine[courseLine.length - 1].lng;
+        for (let i = 0; i < filteredCourse.length; i++) {
+            const waypointMarker = new window.Tmapv2.Marker({
+                position: new window.Tmapv2.LatLng(
+                    filteredCourse[i].lat,
+                    filteredCourse[i].lng,
+                ),
+                icon: waypin,
+                iconSize: new window.Tmapv2.Size(24, 24),
+                map: map,
+            });
+            setResultMarkerArr((prev) => [...prev, waypointMarker]);
 
-    //     // 경유지 정보 생성
-    //     const viaPoints = courseLine.slice(1, -1).map((point, index) => ({
-    //         viaPointId: `via${index}`,
-    //         viaPointName: `Via ${index + 1}`,
-    //         viaX: point.lng.toString(), // 경도(lng) 값 사용
-    //         viaY: point.lat.toString(), // 위도(lat) 값 사용
-    //     }));
+            waypointMarker.addListener("touchstart", () => {
+                openRoadViewModal(filteredCourse[i].lat, filteredCourse[i].lng);
+                console.log(
+                    `lat: ${filteredCourse[i].lat}, lng: ${filteredCourse[i].lng}`,
+                );
+            });
+        }
+    };
 
-    //     const param = {
-    //         startName: "출발지",
-    //         startX: startLng.toString(),
-    //         startY: startLat.toString(),
-    //         startTime: "201708081103",
-    //         endName: "도착지",
-    //         endX: endLng.toString(),
-    //         endY: endLat.toString(),
-    //         viaPoints: viaPoints,
-    //         reqCoordType: "WGS84GEO",
-    //         resCoordType: "EPSG3857",
-    //         searchOption: 0,
-    //     };
+    const headers = {
+        appKey: "Kh0PlfvZvH8zcvcN9OrAX4hBB99NjFyZ1E1SZlWP",
+        "Content-Type": "application/json",
+    };
 
-    //     fetch(
-    //         "https://apis.openapi.sk.com/tmap/routes/routeSequential30?version=1&format=json",
-    //         {
-    //             method: "POST",
-    //             headers: headers,
-    //             body: JSON.stringify(param),
-    //         },
-    //     )
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //             const resultData = data.properties;
-    //             const resultFeatures = data.features;
+    const fetchRoute = () => {
+        const startLat = courseLine[0].lat;
+        const startLng = courseLine[0].lng;
+        const endLat = courseLine[courseLine.length - 1].lat;
+        const endLng = courseLine[courseLine.length - 1].lng;
 
-    //             const tDistance = (resultData.totalDistance / 1000).toFixed(1);
+        // 경유지 정보 생성
+        const viaPoints = courseLine.slice(1, -1).map((point, index) => ({
+            viaPointId: `via${index}`,
+            viaPointName: `Via ${index + 1}`,
+            viaX: point.lng.toString(), // 경도(lng) 값 사용
+            viaY: point.lat.toString(), // 위도(lat) 값 사용
+        }));
 
-    //             const tTime = (resultData.totalTime / 60).toFixed(0);
-    //             setCourseInfo({
-    //                 distance: `${tDistance}km`,
-    //                 time: `${tTime}분`,
-    //             });
+        const param = {
+            startName: "출발지",
+            startX: startLng.toString(),
+            startY: startLat.toString(),
+            startTime: "201708081103",
+            endName: "도착지",
+            endX: endLng.toString(),
+            endY: endLat.toString(),
+            viaPoints: viaPoints,
+            reqCoordType: "WGS84GEO",
+            resCoordType: "EPSG3857",
+            searchOption: 0,
+        };
 
-    //             if (resultInfoArr.length > 0) {
-    //                 resultInfoArr.forEach((info) => info.setMap(null));
-    //                 setResultInfoArr([]);
-    //             }
+        fetch(
+            "https://apis.openapi.sk.com/tmap/routes/routeSequential30?version=1&format=json",
+            {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify(param),
+            },
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                const resultData = data.properties;
+                const resultFeatures = data.features;
 
-    //             resultFeatures.forEach((feature) => {
-    //                 const geometry = feature.geometry;
-    //                 const properties = feature.properties;
+                const tDistance = (resultData.totalDistance / 1000).toFixed(1);
 
-    //                 if (geometry.type === "LineString") {
-    //                     const drawInfoArr = geometry.coordinates.map(
-    //                         (coord) => {
-    //                             const latlng = new window.Tmapv2.Point(
-    //                                 coord[0],
-    //                                 coord[1],
-    //                             );
-    //                             const convertPoint =
-    //                                 new window.Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
-    //                                     latlng,
-    //                                 );
-    //                             return new window.Tmapv2.LatLng(
-    //                                 convertPoint._lat,
-    //                                 convertPoint._lng,
-    //                             );
-    //                         },
-    //                     );
+                const tTime = (resultData.totalTime / 60).toFixed(0);
+                setCourseInfo({
+                    distance: `${tDistance}km`,
+                    time: `${tTime}분`,
+                });
 
-    //                     const polyline = new window.Tmapv2.Polyline({
-    //                         path: drawInfoArr,
-    //                         strokeColor: "#FF0000",
-    //                         strokeWeight: 6,
-    //                         map: map,
-    //                     });
+                if (resultInfoArr.length > 0) {
+                    resultInfoArr.forEach((info) => {
+                        // 객체가 _isDummy 속성을 가지고 있지 않고, setMap 메소드를 가지고 있는지 확인
+                        if (
+                            !info._isDummy &&
+                            typeof info.setMap === "function"
+                        ) {
+                            info.setMap(null);
+                        }
+                    });
+                    setResultInfoArr([]);
+                }
 
-    //                     setResultInfoArr((prev) => [...prev, polyline]);
-    //                 } else {
-    //                     let markerImg = "";
-    //                     let size = "";
+                resultFeatures.forEach((feature) => {
+                    const geometry = feature.geometry;
+                    const properties = feature.properties;
 
-    //                     if (properties.pointType === "S") {
-    //                         markerImg = "/upload/tmap/marker/pin_r_m_s.png";
-    //                         size = new window.Tmapv2.Size(24, 38);
-    //                     } else if (properties.pointType === "E") {
-    //                         markerImg = "/upload/tmap/marker/pin_r_m_e.png";
-    //                         size = new window.Tmapv2.Size(24, 38);
-    //                     } else {
-    //                         markerImg =
-    //                             "http://topopen.tmap.co.kr/imgs/point.png";
-    //                         size = new window.Tmapv2.Size(8, 8);
-    //                     }
+                    if (geometry.type === "LineString") {
+                        const drawInfoArr = geometry.coordinates.map(
+                            (coord) => {
+                                const latlng = new window.Tmapv2.Point(
+                                    coord[0],
+                                    coord[1],
+                                );
+                                const convertPoint =
+                                    new window.Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
+                                        latlng,
+                                    );
+                                return new window.Tmapv2.LatLng(
+                                    convertPoint._lat,
+                                    convertPoint._lng,
+                                );
+                            },
+                        );
 
-    //                     const latlng = new window.Tmapv2.Point(
-    //                         geometry.coordinates[0],
-    //                         geometry.coordinates[1],
-    //                     );
-    //                     const convertPoint =
-    //                         new window.Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
-    //                             latlng,
-    //                         );
+                        const polyline = new window.Tmapv2.Polyline({
+                            path: drawInfoArr,
+                            strokeColor: "#FF0000",
+                            strokeWeight: 6,
+                            map: map,
+                        });
 
-    //                     const marker = new window.Tmapv2.Marker({
-    //                         position: new window.Tmapv2.LatLng(
-    //                             convertPoint._lat,
-    //                             convertPoint._lng,
-    //                         ),
-    //                         icon: markerImg,
-    //                         iconSize: size,
-    //                         map: map,
-    //                     });
+                        setResultInfoArr((prev) => [...prev, polyline]);
+                    } else {
+                        let markerImg = "";
+                        let size = "";
 
-    //                     setResultMarkerArr((prev) => [...prev, marker]);
-    //                 }
-    //             });
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error:", error);
-    //         });
-    // };
+                        if (properties.pointType === "S") {
+                            markerImg = "/upload/tmap/marker/pin_r_m_s.png";
+                            size = new window.Tmapv2.Size(0, 0);
+                        } else if (properties.pointType === "E") {
+                            markerImg = "/upload/tmap/marker/pin_r_m_e.png";
+                            size = new window.Tmapv2.Size(0, 0);
+                        } else {
+                            markerImg =
+                                "http://topopen.tmap.co.kr/imgs/point.png";
+                            size = new window.Tmapv2.Size(0, 0);
+                        }
+
+                        const latlng = new window.Tmapv2.Point(
+                            geometry.coordinates[0],
+                            geometry.coordinates[1],
+                        );
+                        const convertPoint =
+                            new window.Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
+                                latlng,
+                            );
+
+                        const marker = new window.Tmapv2.Marker({
+                            position: new window.Tmapv2.LatLng(
+                                convertPoint._lat,
+                                convertPoint._lng,
+                            ),
+                            icon: markerImg,
+                            iconSize: size,
+                            map: map,
+                        });
+
+                        setResultMarkerArr((prev) => [...prev, marker]);
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
 
     return (
         <div>
