@@ -56,9 +56,11 @@ const deleteMap = async (mapId) => {
 };
 
 // 주행 완료 여부 확인 처리
-const checkDrive = async ({ mapId, mapCompletion }) => {
+const checkDrive = async (mapId, body) => {
     try {
-        const response = await axiosInstance.patch(`/maps/${mapId}`);
+        const response = await axiosInstance.post(`/maps/${mapId}`, {
+            mapCompletion: true,
+        });
         if (response.status === 200) {
             console.log("주행 완료");
         }
