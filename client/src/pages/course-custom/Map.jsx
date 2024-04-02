@@ -162,7 +162,7 @@ function Map({ course, courseName, toSave }) {
 
                 console.log("거리", tDistance);
                 // 거리 저장
-                setDistance(resultData?.totalDistance);
+                setDistance(tDistance);
 
                 // const tTime =
                 //     "총 시간 : " +
@@ -419,7 +419,7 @@ function Map({ course, courseName, toSave }) {
     // 저장하는 함수
     useEffect(() => {
         // courseSaveRequest 상태가 변경될 때마다 호출되는 부분
-        // console.log("저장하기 위한 좌표값들", courseSaveRequest);
+        console.log("저장하기 위한 좌표값들", courseSaveRequest);
 
         // 버튼 클릭 여부를 확인하여 API 호출
         if (saveButtonClicked) {
@@ -441,7 +441,7 @@ function Map({ course, courseName, toSave }) {
     const saveCustomCourse = (arr) => {
         // 배열 (resultMarkerArr)이 존재한다면
         if (arr.length > 0) {
-            console.log("저장 호출!");
+            // console.log("저장 호출!");
             // 세이브를 위한 리퀘스트 상태 초기화
             setCourseSaveRequest([]);
             // 배열 돌면서
@@ -462,9 +462,10 @@ function Map({ course, courseName, toSave }) {
     };
 
     useEffect(() => {
-        if (toSave) {
+        console.log("세이브 버튼 누름");
+        console.log(toSave);
+        if (toSave === true) {
             saveCustomCourse(resultMarkerArr);
-            navigate("/main/myPage");
         }
     }, [toSave]);
 
