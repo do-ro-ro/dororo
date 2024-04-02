@@ -58,11 +58,6 @@ const Recommend = ({
         time: "",
     });
 
-    // useEffect(() => {
-    //     console.log("courseNode", courseNode);
-    //     console.log("courseLine", courseLine);
-    // }, [courseNode, courseLine]);
-
     const points = [
         waypoint_1,
         waypoint_2,
@@ -110,7 +105,36 @@ const Recommend = ({
     const closeRoadViewModal = () => {
         setShowRoadViewModal(false);
     };
+    useEffect(() => {
+        // 모든 폴리라인의 좌표를 저장할 빈 배열을 초기화합니다.
+        let allPathCoordinates = [];
 
+        // resultInfoArr 배열의 각 객체에 대해 반복합니다.
+        resultInfoArr.forEach((polylineObj) => {
+            if (
+                polylineObj._shape_data &&
+                Array.isArray(polylineObj._shape_data.path)
+            ) {
+                // 현재 폴리라인 객체의 좌표를 추출하고 allPathCoordinates에 추가합니다.
+                const pathCoordinates = polylineObj._shape_data.path.map(
+                    (point) => ({
+                        lat: point._lat,
+                        lng: point._lng,
+                    }),
+                );
+                allPathCoordinates = allPathCoordinates.concat(pathCoordinates);
+            }
+        });
+
+        // allPathCoordinates 배열에 있는 모든 좌표를 setPath 함수를 사용하여 상태에 설정합니다.
+        if (allPathCoordinates.length > 0) {
+            setPath(allPathCoordinates);
+        }
+    }, [resultInfoArr]);
+
+    useEffect(() => {
+        console.log("result", resultInfoArr);
+    }, [resultInfoArr]);
     useEffect(() => {
         const center = calculateCenterCoordinate(courseNode);
 
@@ -319,7 +343,7 @@ const Recommend = ({
         };
 
         fetch(
-            "https://apis.openapi.sk.com/tmap/routes/routeSequential30?version=1&format=json",
+            "https://apis.openapi.sk.com/tmap/routes/routeSequential100?version=1&format=json",
             {
                 method: "POST",
                 headers: headers,
@@ -368,15 +392,13 @@ const Recommend = ({
                                     new window.Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
                                         latlng,
                                     );
+
                                 return new window.Tmapv2.LatLng(
                                     convertPoint._lat,
                                     convertPoint._lng,
                                 );
-
-                                // path state로 만들어서 일단 저장하고 쏘기
                             },
                         );
-                        setPath(drawInfoArr);
 
                         const polyline = new window.Tmapv2.Polyline({
                             path: drawInfoArr,

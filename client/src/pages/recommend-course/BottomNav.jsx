@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
@@ -6,8 +6,22 @@ import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import CourseSelectModal from "./CourseSelectModal";
 
-const BottomNav = ({ handlePrev, handleNext, currentIndex, locations }) => {
+const BottomNav = ({
+    handlePrev,
+    handleNext,
+    currentIndex,
+    locations,
+    location,
+    path,
+    distance,
+}) => {
     const [showCourseSelectModal, setShowCourseSelectModal] = useState(false);
+
+    useEffect(() => {
+        console.log("location", location);
+        console.log("path", path);
+        console.log("distance", distance);
+    }, [location, path, distance]);
 
     const openCourseSelectModal = () => {
         setShowCourseSelectModal(true);
@@ -79,6 +93,9 @@ const BottomNav = ({ handlePrev, handleNext, currentIndex, locations }) => {
                 <CourseSelectModal
                     open={showCourseSelectModal}
                     closeModal={closeCourseSelectModal}
+                    location={location}
+                    path={path}
+                    distance={distance}
                 />
             )}
         </Box>
