@@ -8,6 +8,9 @@ const optionPost = async (option) => {
         if (response.status === 201) {
             console.log("Success:", response.data);
             return response.data;
+        } else if (response.status === 200) {
+            console.log("200", response.data);
+            return response.data;
         }
     } catch (error) {
         console.error("Error posting option:", error);

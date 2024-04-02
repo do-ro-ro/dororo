@@ -14,6 +14,7 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import MainPage from "./components/navbar/MainPage";
 import Main from "./pages/main-page/Main";
 import OauthPage from "./pages/oauth-page/OauthPage";
+import Loading from "./pages/loading/Loading";
 
 const colorTheme = createTheme({
     palette: {
@@ -66,6 +67,7 @@ function App() {
                             path="/auth/oauth-response"
                             element={<OauthPage />}
                         />
+                        <Route path="/loading" element={<Loading />} />
                     </Routes>
                 </Suspense>
             </ThemeProvider>
