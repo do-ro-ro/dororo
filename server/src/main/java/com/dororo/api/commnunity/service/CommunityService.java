@@ -9,6 +9,7 @@ import com.dororo.api.db.repository.MapRepository;
 import com.dororo.api.db.repository.PostRepository;
 import com.dororo.api.db.repository.UserRepository;
 import com.dororo.api.exception.NoMatchingResourceException;
+import com.dororo.api.exception.PostAlreadyExistsException;
 import com.dororo.api.utils.auth.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -45,9 +46,14 @@ public class CommunityService {
                 .postContent(addPostDto.getPostContent())
                 .reviewRef(addPostDto.getReviewRef())
                 .build();
-        PostEntity savedPost = postRepository.save(postEntity);
+        try {   // DB에 저장
+            postRepository.save(postEntity);
+        } catch (Exception e) { // DB에 저장 시 에러 발생하면 처리할 catch인데, psqlException이 정의돼있지 않아서 일단 Exception만 처리
+            System.out.println("add post 시 에러 발생: " + e.getMessage());
+            throw new PostAlreadyExistsException();
+        }
 
-        return savedPost;
+        return postEntity;
     }
 
     public void scrapPost(String access, Integer postId) {
