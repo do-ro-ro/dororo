@@ -8,16 +8,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import SampleCourseImg from "../../assets/sample_course_img.png";
-
-const DummyMap = {
-    map_id: 0,
-    map_name: "코스 샘플 1",
-    map_image: SampleCourseImg,
-    map_distance: "5.1km",
-    map_type: "DEFAULT",
-    // map_completion: false,
-    map_completion: true,
-};
+import { createMapPosts } from "../../apis/server/Community";
+import { useNavigate, useParams } from "react-router-dom";
 
 const style = {
     position: "absolute",
@@ -31,12 +23,28 @@ const style = {
 };
 
 function ShareModal(props) {
+    const { courseId } = useParams();
+    const mapId = Number(courseId);
     const { open, onClose } = props;
-    // const [openShareModal, setOpenShareModal] = useState(open);
+    const [openShareModal, setOpenShareModal] = useState(false);
+    const navigate = useNavigate();
 
-    // const handleClose = () => {
-    //     setOpenShareModal(false);
-    // };
+    const [inputPostTitle, setInputPostTitle] = useState("");
+    const [inputPostContent, setInputPostContent] = useState("");
+
+    const handleCreatePost = async () => {
+        const response = await createMapPosts(
+            mapId,
+            inputPostTitle,
+            inputPostContent,
+        );
+        if (response?.status === 200) {
+            navigate("/main/community");
+        }
+    };
+    const handleClose = () => {
+        setOpenShareModal(false);
+    };
     return (
         <>
             <Modal
@@ -54,16 +62,15 @@ function ShareModal(props) {
                         코스 공유하기
                     </Typography>
                     <Box id="modal-modal-description" sx={{ my: 2 }}>
-                        <Box display={"flex"} justifyContent={"center"}>
-                            <img width={"200rem"} src={SampleCourseImg} />
-                        </Box>
-
                         <Typography sx={{ mt: 2 }}>제목</Typography>
                         <TextField
                             hiddenLabel
                             id="outlined-hidden-label-small"
                             size="small"
                             sx={{ width: "20rem" }}
+                            onChange={(event) => {
+                                setInputPostTitle(event.target.value);
+                            }}
                         />
                         <Typography sx={{ mt: 2 }}>코스 한줄평</Typography>
                         <TextField
@@ -72,11 +79,16 @@ function ShareModal(props) {
                             size="small"
                             multiline={true}
                             sx={{ width: "20rem" }}
+                            onChange={(event) => {
+                                setInputPostContent(event.target.value);
+                            }}
                         />
                     </Box>
                     <Stack direction={"row"} justifyContent={"end"}>
-                        <Button variant="contained">공유하기</Button>
-                        <Button>취소</Button>
+                        <Button variant="contained" onClick={handleCreatePost}>
+                            공유하기
+                        </Button>
+                        <Button onClick={onClose}>취소</Button>
                     </Stack>
                 </Box>
             </Modal>

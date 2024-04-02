@@ -33,6 +33,7 @@ const createMapPosts = async (mapId, postTitle, postContent) => {
         postContent: postContent,
         reviewRef: "테스트",
     };
+    console.log(body);
     try {
         const response = await axiosInstance.post("/map-posts", body);
         if (response.status === 201) return response.data;
