@@ -12,10 +12,10 @@ public interface LinkRepository extends JpaRepository<LinkEntity, Integer> {
 
 	@Query(value = "SELECT * " +
 		"FROM links " +
-	 	"WHERE f_node_id IN (" +
+	 	"WHERE t_node_id IN (" +
 		"SELECT node_id " +
 		"FROM nodes " +
-		"WHERE ST_DWithin(node_point, ST_SetSRID(ST_Point(?1, ?2), 4326), ?3))",
+		"WHERE ST_DWithin(node_point, ST_SetSRID(ST_Point(?1, ?2), 4326), ?3)) ",
 		nativeQuery = true)
 	List<LinkEntity> getLinkEntityList(double lng, double lat, float distance);
 
