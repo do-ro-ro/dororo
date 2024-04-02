@@ -92,6 +92,10 @@ public class MapAlgorithm {
 			List<String> newMap = new ArrayList<>();
 			newMap.addAll(cur.getNodeIds());
 
+			if(newDistance > createMapRequestDto.getMapDistance()*1000+500) continue;
+			if(newTurnLeft > createMapRequestDto.getTurnLeft()+3) continue;
+			if(newTurnRight > createMapRequestDto.getTurnRight()+3) continue;
+
 			if(minDiff > sumNeedTurns-(newTurnLeft+newTurnRight+newUTurn)){
 				minDiff = sumNeedTurns-(newTurnLeft+newTurnRight+newUTurn);
 				fulfilledLeft = newTurnLeft;
