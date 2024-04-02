@@ -34,6 +34,10 @@ import waypoint_29 from "../../assets/waypoints_number/waypoint_29.png";
 import waypoint_30 from "../../assets/waypoints_number/waypoint_30.png";
 import waypoint_passed from "../../assets/waypoint_passed.png";
 
+import { checkDrive } from "../../apis/server/Map";
+import { useNavigate, useParams } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+
 const StopOver = ({
     lat,
     lng,
@@ -49,6 +53,13 @@ const StopOver = ({
     setTime,
     setKm,
 }) => {
+    const { courseId } = useParams();
+    const [body, setBody] = useState({
+        mapCompletion: true,
+    });
+
+    const navigate = useNavigate();
+
     const [visited, setVisited] = useState([]);
     // const visited = Array(filteredCourse.length).fill(false);
     let [map, setMap] = useState(null);
@@ -105,14 +116,19 @@ const StopOver = ({
 
             if (targetLat >= latMinus && targetLat <= latPlus) {
                 if (targetLng >= lngMinus && targetLng <= lngPlus) {
-                    // 여기에 이벤트 처리 코드 추가
-                    console.log(visited);
+                    handleConfirmClick();
                     alert("동작 잘 됨");
-                    // 예를 들어, 어떤 동작을 수행하거나 알림을 띄울 수 있습니다.
+                    navigate(`/course/${courseId}`);
                 }
             }
         }
     }, [visited, lat, lng]);
+
+    const handleConfirmClick = () => {
+        const response = checkDrive(courseId, {
+            mapCompletion: true,
+        });
+    };
 
     useEffect(() => {
         if (filteredCourse.length >= 2) {
