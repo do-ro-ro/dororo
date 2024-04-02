@@ -76,7 +76,7 @@ function CourseDrivePage() {
             <div className="relative">
                 <RealTimeCurrentLocation setLat={setLat} setLng={setLng} />
                 {/* <ServerTest setcoolList={setcoolList} /> */}
-                <Topbar>코스 이름</Topbar>
+                <Topbar isBackButton={true}>코스 주행</Topbar>
                 <StopOver
                     lat={lat}
                     lng={lng}
