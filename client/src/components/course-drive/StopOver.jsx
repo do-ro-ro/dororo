@@ -36,8 +36,6 @@ import waypoint_passed from "../../assets/waypoint_passed.png";
 
 import { checkDrive } from "../../apis/server/Map";
 import { useNavigate, useParams } from "react-router-dom";
-import { Navigate } from "react-router-dom";
-
 const StopOver = ({
     lat,
     lng,
