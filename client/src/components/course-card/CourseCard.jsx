@@ -3,7 +3,7 @@ import SampleCourseImg from "../../assets/sample_course_img.png";
 import { useNavigate } from "react-router-dom";
 
 function CourseCard(props) {
-    const { children, postId, variant, mapImage, ...rest } = props;
+    const { children, postId, variant, ...rest } = props;
 
     // 클릭시 이동을 위한 navigate
     const navigate = useNavigate();
@@ -27,7 +27,7 @@ function CourseCard(props) {
                 }}
                 onClick={() => handleNavigate(`${postId}`)}
             >
-                <CardMedia sx={{ height: "8rem" }} image={mapImage} />
+                {/* <CardMedia sx={{ height: "8rem" }} image={mapImage} /> */}
                 <Box
                     component={"div"}
                     sx={{

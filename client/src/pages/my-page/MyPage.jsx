@@ -107,14 +107,13 @@ function MyPage() {
                         </Typography>
                         <Button>모두 보기</Button>
                     </Stack>
-                    <Stack direction={"row"}>
-                        {currentUserCourses?.slice(0, 3).map((course) => {
+                    <Stack>
+                        {currentUserCourses?.map((course) => {
                             if (course.mapType !== "SCRAP") {
                                 return (
                                     <CourseCard
                                         key={course.mapId}
                                         postId={course.mapId}
-                                        mapImage={course.mapImage}
                                     >
                                         {course.mapName}
                                     </CourseCard>
