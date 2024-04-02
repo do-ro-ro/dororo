@@ -171,6 +171,7 @@ public class MapController {
     public ResponseEntity updateMap(@PathVariable(name = "mapId") Integer mapId ,
                                     @RequestBody UpdateRequestDto updateRequestDto,
                                     @RequestHeader("access") String access) {
+        System.out.println("@@@@@@@@@@@@@@@PatchMapping In@@@@@@@@@@@");
         mapService.updateMapCompletion(mapId,updateRequestDto,access);
         return ResponseEntity.ok().build(); // 업데이트 성공 응답
     }
