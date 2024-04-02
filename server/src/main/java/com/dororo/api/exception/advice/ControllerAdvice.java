@@ -1,10 +1,8 @@
 package com.dororo.api.exception.advice;
 
-import com.dororo.api.exception.NoMapException;
 import com.dororo.api.exception.NoMatchingResourceException;
 import com.dororo.api.exception.NoTokenInHeaderException;
 import com.dororo.api.exception.RefreshRequiredException;
-import com.dororo.api.map.dto.NoMapExceptionResponseDto;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,12 +20,6 @@ public class ControllerAdvice {
     // <------------------------ Auth part ------------------------>
 
     // <------------------------ Map part ------------------------>
-    @ExceptionHandler(value = NoMapException.class)
-    public ResponseEntity noMap(NoMapException e) {
-        System.out.println("nomapppppp");
-        NoMapExceptionResponseDto noMapExceptionResponseDto = new NoMapExceptionResponseDto(e.getLackLeft(), e.getLackRight(), e.getLackUTurn());
-        return new ResponseEntity(noMapExceptionResponseDto, e.getHttpStatus());
-    }
     // <------------------------ Community part ------------------------>
 
 }

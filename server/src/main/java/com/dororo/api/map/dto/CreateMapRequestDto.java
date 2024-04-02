@@ -9,9 +9,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class CreateMapRequestDto {
+
     private int turnLeft;
     private int turnRight;
-    private int uuuTurn;
+    private int uTurn;
     private float mapDistance;
     private boolean isReturn; //왕복 편도 여부
     private LatitudeLongitude startPoint;
