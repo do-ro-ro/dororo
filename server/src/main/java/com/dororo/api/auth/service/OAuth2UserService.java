@@ -34,12 +34,19 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 		OAuth2User oAuth2User = super.loadUser(request);
 
 		Map<String, String> responseMap = (Map<String, String>)oAuth2User.getAttributes().get("response");
+		System.out.println("responseMap: "+responseMap);
 		String uniqueId = responseMap.get("id").substring(0, 14);
-		String name = responseMap.get("name");
+		System.out.println("uniqueId " + uniqueId);
+
+		String name = "";
 
 		Optional<UserEntity> user = userRepository.findByUniqueId(uniqueId);
-		if (user.isPresent())
+		if (user.isPresent()){
+			System.out.println(user.toString());
+
 			return new CustomOAuth2User(uniqueId);
+
+		}
 
 		String nickname = randomNickname(); //닉네임
 		Optional<UserEntity> duplicatedNickname = userRepository.findByNickname(nickname); //닉네임 중복 검사
