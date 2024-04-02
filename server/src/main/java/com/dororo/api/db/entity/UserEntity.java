@@ -6,12 +6,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
 @Table(name = "users")	// schema 설정 따로 x, public schema 내에 생성됨.
+@ToString
 public class UserEntity {
 
 	@Id
