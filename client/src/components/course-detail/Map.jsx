@@ -3,6 +3,37 @@ import { useEffect, useState } from "react";
 import startPin from "../../assets/map_marker_start.png";
 import endPin from "../../assets/map_marker_end.png";
 import wayPointPin from "../../assets/waypoint_yet.png";
+import RoadViewModal from "../../pages/recommend-course/RoadViewModal";
+import waypoint_1 from "../../assets/waypoints_number/waypoint_1.png";
+import waypoint_2 from "../../assets/waypoints_number/waypoint_2.png";
+import waypoint_3 from "../../assets/waypoints_number/waypoint_3.png";
+import waypoint_4 from "../../assets/waypoints_number/waypoint_4.png";
+import waypoint_5 from "../../assets/waypoints_number/waypoint_5.png";
+import waypoint_6 from "../../assets/waypoints_number/waypoint_6.png";
+import waypoint_7 from "../../assets/waypoints_number/waypoint_7.png";
+import waypoint_8 from "../../assets/waypoints_number/waypoint_8.png";
+import waypoint_9 from "../../assets/waypoints_number/waypoint_9.png";
+import waypoint_10 from "../../assets/waypoints_number/waypoint_10.png";
+import waypoint_11 from "../../assets/waypoints_number/waypoint_11.png";
+import waypoint_12 from "../../assets/waypoints_number/waypoint_12.png";
+import waypoint_13 from "../../assets/waypoints_number/waypoint_13.png";
+import waypoint_14 from "../../assets/waypoints_number/waypoint_14.png";
+import waypoint_15 from "../../assets/waypoints_number/waypoint_15.png";
+import waypoint_16 from "../../assets/waypoints_number/waypoint_16.png";
+import waypoint_17 from "../../assets/waypoints_number/waypoint_17.png";
+import waypoint_18 from "../../assets/waypoints_number/waypoint_18.png";
+import waypoint_19 from "../../assets/waypoints_number/waypoint_19.png";
+import waypoint_20 from "../../assets/waypoints_number/waypoint_20.png";
+import waypoint_21 from "../../assets/waypoints_number/waypoint_21.png";
+import waypoint_22 from "../../assets/waypoints_number/waypoint_22.png";
+import waypoint_23 from "../../assets/waypoints_number/waypoint_23.png";
+import waypoint_24 from "../../assets/waypoints_number/waypoint_24.png";
+import waypoint_25 from "../../assets/waypoints_number/waypoint_25.png";
+import waypoint_26 from "../../assets/waypoints_number/waypoint_26.png";
+import waypoint_27 from "../../assets/waypoints_number/waypoint_27.png";
+import waypoint_28 from "../../assets/waypoints_number/waypoint_28.png";
+import waypoint_29 from "../../assets/waypoints_number/waypoint_29.png";
+import waypoint_30 from "../../assets/waypoints_number/waypoint_30.png";
 
 function Map({ course }) {
     const currentCourse = course;
@@ -17,6 +48,39 @@ function Map({ course }) {
     const [courseLine, setCourseLine] = useState([]);
     const [tempCourseLine, setTempCourseLine] = useState([]);
 
+    //웨이포인트 아이콘을 저장하는 리스트
+    const wayPointIcons = [
+        waypoint_1,
+        waypoint_2,
+        waypoint_3,
+        waypoint_4,
+        waypoint_5,
+        waypoint_6,
+        waypoint_7,
+        waypoint_8,
+        waypoint_9,
+        waypoint_10,
+        waypoint_11,
+        waypoint_12,
+        waypoint_13,
+        waypoint_14,
+        waypoint_15,
+        waypoint_16,
+        waypoint_17,
+        waypoint_18,
+        waypoint_19,
+        waypoint_20,
+        waypoint_21,
+        waypoint_22,
+        waypoint_23,
+        waypoint_24,
+        waypoint_25,
+        waypoint_26,
+        waypoint_27,
+        waypoint_28,
+        waypoint_29,
+        waypoint_30,
+    ];
     // 지도 위 거점을 찍기 위한 오리지널 노드 좌표를 저장하는 리스트
     const [courseNode, setCourseNode] = useState([]);
 
@@ -27,10 +91,21 @@ function Map({ course }) {
             currentCourse.originMapRouteAxis.length - 1
         ];
 
-    // 코스정보를 받아왔을 때 웨이포인트는 보정 전 좌표로 등록하기
-    // useEffect(() => {
-    //     // 코스 정보를 받아오면
-    // }, [currentCourse]);
+    // 로드뷰 모달을 위한 함수들
+    const [currentLocation, setCurrentLocation] = useState({
+        lat: null,
+        lng: null,
+    });
+    const [showRoadViewModal, setShowRoadViewModal] = useState(false);
+
+    const openRoadViewModal = (lat, lng) => {
+        setCurrentLocation({ lat, lng });
+        setShowRoadViewModal(true);
+    };
+
+    const closeRoadViewModal = () => {
+        setShowRoadViewModal(false);
+    };
 
     // 지도 시작점을 위한 센터 포인트 정의
     const centerPoint = {
@@ -81,12 +156,12 @@ function Map({ course }) {
                 // console.log(nodeIndex);
                 if (index === 0) {
                     icon = startPin;
-                    iconSize = new window.Tmapv2.Size(24, 32);
+                    iconSize = new window.Tmapv2.Size(24, 38);
                 } else if (index === courseNode.length - 1) {
                     icon = endPin;
-                    iconSize = new window.Tmapv2.Size(24, 32);
+                    iconSize = new window.Tmapv2.Size(24, 38);
                 } else {
-                    icon = wayPointPin;
+                    icon = wayPointIcons[index - 1];
                     iconSize = new window.Tmapv2.Size(24, 24);
                 }
                 const marker = new window.Tmapv2.Marker({
@@ -103,10 +178,8 @@ function Map({ course }) {
                 // console.log(marker);
                 marker.addListener(
                     "touchend",
-                    function () {
-                        if (!this._marker_data.options.draggable) {
-                        } else {
-                        }
+                    () => {
+                        openRoadViewModal(node.lat, node.lng);
                     },
                     marker,
                 );
@@ -155,6 +228,16 @@ function Map({ course }) {
     return (
         <>
             <div id="map_div"></div>
+            <div>
+                {showRoadViewModal && (
+                    <RoadViewModal
+                        open={showRoadViewModal}
+                        closeModal={closeRoadViewModal}
+                        lat={currentLocation.lat}
+                        lng={currentLocation.lng}
+                    />
+                )}
+            </div>
         </>
     );
 }
