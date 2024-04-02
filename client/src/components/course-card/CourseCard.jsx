@@ -1,7 +1,19 @@
-import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import {
+    Box,
+    Card,
+    CardContent,
+    CardMedia,
+    Stack,
+    Typography,
+} from "@mui/material";
 import SampleCourseImg from "../../assets/sample_course_img.png";
 import { useNavigate } from "react-router-dom";
-import { MapOutlined } from "@mui/icons-material";
+import {
+    Cancel,
+    CheckCircle,
+    MapOutlined,
+    NearMeRounded,
+} from "@mui/icons-material";
 
 function CourseCard(props) {
     const { children, postId, variant, course, ...rest } = props;
@@ -30,34 +42,65 @@ function CourseCard(props) {
                 }}
                 onClick={() => handleNavigate(`${postId}`)}
             >
-                <Box sx={{ display: "flex", flexDirection: "row" }}>
-                    <Box
-                        display={"flex"}
-                        justifyContent={"center"}
-                        alignItems={"center"}
-                        sx={{ width: "25vw", backgroundColor: "#6386BE" }}
-                    >
-                        <MapOutlined
-                            color="white"
-                            sx={{ width: "3rem", height: "3rem" }}
-                        />
-                    </Box>
-                    {/* <CardMedia sx={{ width: "20vw" }} image={SampleCourseImg} /> */}
-                    <Box component={"div"}>
-                        <Typography
-                            sx={{
-                                textOverflow: "ellipsis",
-                                overflow: "hidden",
-                                fontSize: "1.1rem",
-                                fontWeight: "500",
-                                px: 1,
-                                py: 0.2,
-                            }}
+                <Stack
+                    sx={{ width: "100vw" }}
+                    direction={"row"}
+                    justifyContent={"space-between"}
+                    // alignContent={"space-between"}
+                >
+                    <Box sx={{ display: "flex", flexDirection: "row" }}>
+                        <Box
+                            display={"flex"}
+                            justifyContent={"center"}
+                            alignItems={"center"}
+                            sx={{ width: "30px", backgroundColor: "#6386BE" }}
                         >
-                            {variant === "post" ? children : course?.mapName}
-                        </Typography>
+                            <MapOutlined
+                                color="white"
+                                sx={{ width: "1.5rem", height: "1.5rem" }}
+                            />
+                        </Box>
+                        <Box>
+                            <Stack justifyItems={"center"}>
+                                <Typography
+                                    sx={{
+                                        textOverflow: "clip",
+                                        overflow: "hidden",
+                                        fontSize: "1.25rem",
+                                        fontWeight: "500",
+                                        px: 1,
+                                        py: 0.5,
+                                    }}
+                                >
+                                    {variant === "post"
+                                        ? children
+                                        : course?.mapName === ""
+                                        ? "제목없음"
+                                        : course?.mapName}
+                                </Typography>
+                                <Stack direction={"row"} sx={{ px: 1, py: 1 }}>
+                                    <NearMeRounded color="primary" />
+                                    <Typography sx={{ py: 0.2 }}>
+                                        {course?.mapDistance + "km"}
+                                    </Typography>
+                                </Stack>
+                            </Stack>
+                        </Box>
                     </Box>
-                </Box>
+                    <Box display={"flex"} alignItems={"center"}>
+                        {course?.mapCompletion ? (
+                            <CheckCircle
+                                sx={{ width: "20vw", height: "5vh" }}
+                                color="success"
+                            />
+                        ) : (
+                            <Cancel
+                                sx={{ width: "20vw", height: "5vh" }}
+                                color="error"
+                            />
+                        )}
+                    </Box>
+                </Stack>
             </Card>
         </>
     );

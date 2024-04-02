@@ -52,9 +52,8 @@ function CommunityListPage() {
 
     return (
         <>
-            <Box pb={"10vh"}>
-                <Topbar>커뮤니티</Topbar>
-
+            <Topbar>커뮤니티</Topbar>
+            <Box pb={"10vh"} mt={"8vh"}>
                 <Stack mx={4} mt={2}>
                     <Typography variant="h6" sx={{ my: 2 }}>
                         실시간 인기 코스 Top 3
