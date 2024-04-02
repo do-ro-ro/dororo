@@ -167,7 +167,7 @@ public class MapController {
 
 
     //맵 수정 (주행여부 갱신)
-    @PatchMapping("/{mapId}")
+    @PostMapping("/{mapId}")
     public ResponseEntity updateMap(@PathVariable(name = "mapId") Integer mapId ,
                                     @RequestBody UpdateRequestDto updateRequestDto,
                                     @RequestHeader("access") String access) {
