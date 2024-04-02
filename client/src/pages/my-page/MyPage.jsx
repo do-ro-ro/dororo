@@ -131,7 +131,7 @@ function MyPage() {
                         <Typography variant="h6">내가 스크랩한 코스</Typography>
                     </Stack>
                     <Stack>
-                        {currentUserCourses?.map((course) => {
+                        {currentUserCourses?.reverse().map((course) => {
                             if (course.mapType === "SCRAP") {
                                 console.log("스크랩코스", course);
                                 return (
@@ -157,20 +157,21 @@ function MyPage() {
                         <Typography variant="h6">내가 공유한 코스</Typography>
                     </Stack>
                     <Stack direction={"row"}>
-                        {currentMapPostsList?.map((course) => {
-                            if (course.isMine) {
-                                return (
-                                    <CourseCard
-                                        key={course.postId}
-                                        postId={course.postId}
-                                        variant={"my_post"}
-                                        mapImage={course.mapImage}
-                                    >
-                                        {course.postTitle}
-                                    </CourseCard>
-                                );
-                            }
-                        })}
+                        {currentMapPostsList.length > 0 &&
+                            currentMapPostsList?.map((course) => {
+                                if (course.isMine) {
+                                    return (
+                                        <CourseCard
+                                            key={course.postId}
+                                            postId={course.postId}
+                                            variant={"my_post"}
+                                            mapImage={course.mapImage}
+                                        >
+                                            {course.postTitle}
+                                        </CourseCard>
+                                    );
+                                }
+                            })}
                     </Stack>
                     {/* <Stack direction="column">{renderCourseCardRows()}</Stack> */}
                 </Stack>

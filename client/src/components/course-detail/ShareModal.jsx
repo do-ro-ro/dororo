@@ -40,6 +40,8 @@ function ShareModal(props) {
         );
         if (response?.status === 200) {
             navigate("/main/community");
+        } else if (response?.status === 409) {
+            alert("이미 공유된 코스입니다");
         }
     };
     const handleClose = () => {

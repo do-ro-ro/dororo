@@ -9,6 +9,7 @@ import {
 import SampleCourseImg from "../../assets/sample_course_img.png";
 import { useNavigate } from "react-router-dom";
 import {
+    Bookmark,
     Cancel,
     CheckCircle,
     MapOutlined,
@@ -18,7 +19,7 @@ import {
 function CourseCard(props) {
     const { children, postId, variant, course, ...rest } = props;
 
-    // console.log("코스카드 코스", course);
+    console.log("코스카드 코스", course);
     // 클릭시 이동을 위한 navigate
     const navigate = useNavigate();
     const handleNavigate = (postId) => {
@@ -88,17 +89,40 @@ function CourseCard(props) {
                                         ? "제목없음"
                                         : course?.mapName}
                                 </Typography>
-                                <Stack direction={"row"} sx={{ px: 1, py: 1 }}>
-                                    <NearMeRounded color="primary" />
-                                    <Typography sx={{ py: 0.2 }}>
-                                        {course?.mapDistance + "km"}
-                                    </Typography>
-                                </Stack>
+                                {variant === "post" ? (
+                                    <Stack
+                                        direction={"row"}
+                                        alignItems={"center"}
+                                        sx={{ px: 1 }}
+                                    >
+                                        <Typography sx={{}}>
+                                            {course?.userNickName}
+                                        </Typography>
+                                    </Stack>
+                                ) : (
+                                    <Stack
+                                        direction={"row"}
+                                        sx={{ px: 1, py: 1 }}
+                                    >
+                                        <NearMeRounded color="primary" />
+                                        <Typography sx={{ py: 0.2 }}>
+                                            {course?.mapDistance + "km"}
+                                        </Typography>
+                                    </Stack>
+                                )}
                             </Stack>
                         </Box>
                     </Box>
                     <Box display={"flex"} alignItems={"center"}>
-                        {course?.mapCompletion ? (
+                        {variant === "post" ? (
+                            <Stack alignItems={"center"} sx={{}}>
+                                <Bookmark
+                                    color="primary"
+                                    sx={{ width: "20vw", height: "5vh" }}
+                                />
+                                <Typography>{course?.scrapCount}</Typography>
+                            </Stack>
+                        ) : course?.mapCompletion ? (
                             <CheckCircle
                                 sx={{ width: "20vw", height: "5vh" }}
                                 color="success"

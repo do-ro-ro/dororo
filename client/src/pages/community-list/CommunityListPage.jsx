@@ -65,7 +65,7 @@ function CommunityListPage() {
                                     key={course.postId}
                                     postId={course.postId}
                                     variant={"post"}
-                                    mapImage={course.mapImage}
+                                    course={course}
                                 >
                                     {course.postTitle}
                                 </CourseCard>

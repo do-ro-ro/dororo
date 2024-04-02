@@ -5,7 +5,9 @@ const getMapPostsList = async () => {
     try {
         const response = await axiosInstance.get(`/map-posts`);
         if (response.status === 200) {
-            return response.data;
+            return response;
+        } else if (response.status === 409) {
+            return response;
         }
     } catch (error) {
         console.log(error);
