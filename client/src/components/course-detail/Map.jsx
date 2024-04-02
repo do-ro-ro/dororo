@@ -1,5 +1,7 @@
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
+import startPin from "../../assets/map_marker_start.png";
+import wayPointPin from "../../assets/waypoint_yet.png";
 
 function Map({ course }) {
     const currentCourse = course;
@@ -12,6 +14,7 @@ function Map({ course }) {
 
     // polyline을 그리기 위한 보정된 path(꼭지점) 좌표를 저장하는 리스트
     const [courseLine, setCourseLine] = useState([]);
+    const [tempCourseLine, setTempCourseLine] = useState([]);
 
     // 지도 위 거점을 찍기 위한 오리지널 노드 좌표를 저장하는 리스트
     const [courseNode, setCourseNode] = useState([]);
@@ -51,43 +54,42 @@ function Map({ course }) {
 
     // 라인 그리는 함수
     const drawPolyline = () => {
-        if (currentCourse?.path.length > 0) {
-            console.log("course path 좌표값", courseLine);
-            currentCourse?.path.forEach((point) => {
-                const convertedPoint = new window.Tmapv2.LatLng(
-                    point.lat,
-                    point.lng,
-                );
-                setCourseLine((prev) => [...prev, convertedPoint]);
+        if (courseLine?.length > 0) {
+            const newPolyline = new window.Tmapv2.Polyline({
+                path: courseLine,
+                strokeColor: "#6386BE",
+                strokeWeight: 8,
+                strokeOpacity: 100,
+                map: map,
+                draggable: false, //드래그 여부
+                direction: true,
+                directionColor: "white",
             });
-
         }
     };
 
-    useEffect(() => {
-        if ()
-        const newPolyline = new window.Tmapv2.Polyline({
-            path: courseLine,
-            strokeColor: "#6386BE",
-            strokeWeight: 8,
-            strokeOpacity: 100,
-            map: map,
-            draggable: false, //드래그 여부
-            direction: true,
-            directionColor: "white",
-        });
-    }, courseLine)
-
     // 마커 그리는 함수
     const drawMarkers = () => {
-        if (courseNode?.length === 0) {
+        let icon = "";
+        let iconSize = "";
+        if (courseNode?.length > 0) {
             // 마커 그려주기
             courseNode.map((node, index) => {
                 // console.log(convertPoint);
+                const nodeIndex = index;
+                // console.log(nodeIndex);
+                if (index === 0) {
+                    icon = startPin;
+                    iconSize = new window.Tmapv2.Size(24, 32);
+                } else {
+                    icon = wayPointPin;
+                    iconSize = new window.Tmapv2.Size(24, 24);
+                }
                 const marker = new window.Tmapv2.Marker({
                     position: new window.Tmapv2.LatLng(node.lat, node.lng),
-                    icon: waypointPin,
-                    iconSize: new window.Tmapv2.Size(24, 24),
+                    // icon: {nodeIndex === 0 ? startPin : waypointPin},
+                    icon: icon,
+                    iconSize: iconSize,
                     draggable: false,
                     opacity: 0,
                     visible: true,
@@ -130,31 +132,45 @@ function Map({ course }) {
     // 맨 처음 컴포넌트 랜딩 시
     useEffect(() => {
         console.log(currentCourse);
+
+        // currentCourse 받아왔으니, 있으면
+        if (currentCourse?.path.length > 0) {
+            currentCourse?.path.forEach((point) => {
+                const convertedPoint = new window.Tmapv2.LatLng(
+                    point.lat,
+                    point.lng,
+                );
+                // console.log("컨버트한 점", convertedPoint);
+                setTempCourseLine((prev) => [...prev, convertedPoint]);
+            });
+        }
         if (map === null) {
             // 맵 생성하기
             initMap();
         }
     }, []);
 
+    useEffect(() => {
+        // console.log("임시 코스라인", tempCourseLine);
+        setCourseLine(tempCourseLine);
+        setCourseNode(currentCourse?.originMapRouteAxis);
+    }, [map]);
+
     // initMap을 통해 map이 그려지면 발생하는 hook
     useEffect(() => {
         // 맵이 있는지 확인한 후에
+        console.log("코스 노드", courseNode);
         if (map !== null) {
             drawPolyline();
+            drawMarkers();
         }
-    }, [map]);
+    }, [courseLine]);
 
     return (
         <>
             <Box>
                 {/* <Button onClick={handleUndo}>실행 취소</Button> */}
                 <div id="map_div"></div>
-                <Box position={"fixed"}>
-                    {/* <Button onClick={() => saveCustomCourse(resultMarkerArr)}>
-                      수정 완료
-                  </Button> */}
-                    {/* <Button onClick={handleReset}>리셋</Button> */}
-                </Box>
             </Box>
         </>
     );
