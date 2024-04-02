@@ -20,8 +20,8 @@ public class AxisCalculator {
         //위도 0.001 10m 경도 0.001 8m
         //동쪽 출발좌표 아래로이동 도착좌표 왼쪽
         if((bearing > 60 && bearing < 90) ||  (bearing > 90 && bearing < 120)){
-            lon2 = lon2 - 0.00020; //도착지점 서쪽으로
-            lat2 = lat2 - 0.00004; //차선기준 아래로내리기
+            lon2 = lon2 - 0.00025; //도착지점 서쪽으로
+            lat2 = lat2 - 0.00006; //차선기준 아래로내리기
         }
         //남쪽 출발좌표 왼쪽이동 도착좌표 위로
         else if((bearing > 150 && bearing < 180) ||  (bearing > 180 && bearing < 210)){
@@ -30,8 +30,8 @@ public class AxisCalculator {
         }
         //서쪽 출발좌표 위로이동 도착좌표 오른쪽
         else if((bearing > 240 && bearing < 270) ||  (bearing > 270 && bearing < 300)){
-            lon2 = lon2 + 0.00020; //도착지점 동쪽으로 당기기
-            lat2 = lat2 + 0.00004; //차선기준 위로 올리기
+            lon2 = lon2 + 0.00025; //도착지점 동쪽으로 당기기
+            lat2 = lat2 + 0.00006; //차선기준 위로 올리기
         }
         //북쪽 출발좌표 오른쪽이동 도착 아래로
         else if((bearing > 330 && bearing < 360) ||  (bearing > 0 && bearing < 30)){
