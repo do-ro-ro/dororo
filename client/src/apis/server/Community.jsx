@@ -26,12 +26,12 @@ const getMapPosts = async (postId) => {
 };
 
 // 커뮤니티 게시글 생성
-const createMapPosts = async ({ postTitle, postContent, reviewRef }) => {
+const createMapPosts = async (mapId, postTitle, postContent) => {
     const body = {
-        mapId: 0,
+        mapId: mapId,
         postTitle: postTitle,
         postContent: postContent,
-        reviewRef: reviewRef,
+        reviewRef: "테스트",
     };
     try {
         const response = await axiosInstance.post("/map-posts", body);
