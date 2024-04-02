@@ -35,7 +35,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
 		Map<String, String> responseMap = (Map<String, String>)oAuth2User.getAttributes().get("response");
 		String uniqueId = responseMap.get("id").substring(0, 14);
-		String name = "";
+		String name = responseMap.get("name");
 
 		Optional<UserEntity> user = userRepository.findByUniqueId(uniqueId);
 		if (user.isPresent())
