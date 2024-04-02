@@ -17,6 +17,9 @@ import OauthPage from "./pages/oauth-page/OauthPage";
 import Loading from "./pages/loading/Loading";
 
 const colorTheme = createTheme({
+    typography: {
+        fontFamily: "'Noto Sans KR'",
+    },
     palette: {
         primary: {
             main: "#6386BE",
