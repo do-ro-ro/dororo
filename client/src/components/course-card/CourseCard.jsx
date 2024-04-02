@@ -18,7 +18,7 @@ import {
 function CourseCard(props) {
     const { children, postId, variant, course, ...rest } = props;
 
-    console.log("코스카드 코스", course);
+    // console.log("코스카드 코스", course);
     // 클릭시 이동을 위한 navigate
     const navigate = useNavigate();
     const handleNavigate = (postId) => {
@@ -53,10 +53,20 @@ function CourseCard(props) {
                             display={"flex"}
                             justifyContent={"center"}
                             alignItems={"center"}
-                            sx={{ width: "30px", backgroundColor: "#6386BE" }}
+                            sx={{
+                                width: "30px",
+                                backgroundColor:
+                                    course?.mapType === "CUSTOM"
+                                        ? "#F1EAC7"
+                                        : "#6386BE",
+                            }}
                         >
                             <MapOutlined
-                                color="white"
+                                color={
+                                    course?.mapType === "CUSTOM"
+                                        ? "primary"
+                                        : "white"
+                                }
                                 sx={{ width: "1.5rem", height: "1.5rem" }}
                             />
                         </Box>
