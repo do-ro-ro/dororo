@@ -154,10 +154,7 @@ function Map({ course }) {
 
     return (
         <>
-            <Box>
-                {/* <Button onClick={handleUndo}>실행 취소</Button> */}
-                <div id="map_div"></div>
-            </Box>
+            <div id="map_div"></div>
         </>
     );
 }

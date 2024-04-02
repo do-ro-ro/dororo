@@ -65,7 +65,7 @@ function CourseDetailPage() {
                                     ? currentCourse?.mapName
                                     : "코스 정보 불러오는 중"}
                             </Typography>
-                            <DeleteDialog variant={"course"} />
+                            <DeleteDialog variant={"course"} mapId={courseId} />
                         </Stack>
                         <Stack
                             direction={"row"}

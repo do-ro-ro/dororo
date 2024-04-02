@@ -7,10 +7,18 @@ import {
     DialogTitle,
 } from "@mui/material";
 import { useState } from "react";
+import { deleteMap } from "../../apis/server/Map";
+import { useNavigate } from "react-router-dom";
 
 function DeleteDialog(props) {
-    const { variant, ...rest } = props;
+    const { variant, mapId, ...rest } = props;
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
+
+    const handleDelete = async () => {
+        await deleteMap(mapId);
+        navigate("/main/myPage");
+    };
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -48,7 +56,7 @@ function DeleteDialog(props) {
                 <DialogActions>
                     <Button onClick={handleClose}>취소</Button>
                     <Button
-                        onClick={handleClose}
+                        onClick={() => handleDelete()}
                         variant="contained"
                         color="error"
                         autoFocus
