@@ -1,6 +1,8 @@
 import { Modal, Box, Typography, Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { savePost } from "../../apis/server/MapSave";
+import { useNavigate } from "react-router-dom";
 
 const style = {
     position: "absolute",
@@ -14,13 +16,34 @@ const style = {
     p: 4,
 };
 
-const CourseSelectModal = ({ open, closeModal }) => {
-    const [courseName, setCourseName] = useState("");
+const CourseSelectModal = ({ open, closeModal, path, location, distance }) => {
+    const navigate = useNavigate();
 
-    const handleSaveCourse = () => {
-        // 나중에 여기 axios랑 네비게이트
-        console.log("저장된 코스명:", courseName);
-        closeModal(); // 모달 닫기
+    const [mapData, setMapData] = useState({
+        originMapRouteAxis: location.originMapRouteAxis,
+        convertedRouteAxis: location.convertedRouteAxis,
+        path: path,
+        mapDistance: distance,
+        mapName: "",
+        mapType: "DEFAULT",
+    });
+
+    useEffect(() => {
+        console.log(mapData);
+    }, [mapData]);
+
+    const handleSaveCourse = async () => {
+        const response = await savePost(mapData);
+        closeModal();
+        console.log("/saveMap", response);
+        navigate("/main/myPage");
+    };
+
+    const handleCourseNameChange = (event) => {
+        setMapData((prevMapData) => ({
+            ...prevMapData,
+            mapName: event.target.value,
+        }));
     };
 
     return (
@@ -49,7 +72,7 @@ const CourseSelectModal = ({ open, closeModal }) => {
                             id="standard-basic"
                             label="코스명을 입력해주세요"
                             variant="standard"
-                            onChange={(e) => setCourseName(e.target.value)}
+                            onChange={handleCourseNameChange}
                             sx={{
                                 width: "100%",
                                 mb: 3,
@@ -80,6 +103,7 @@ const CourseSelectModal = ({ open, closeModal }) => {
                                 fontSize: "1rem",
                                 mr: 1,
                             }}
+                            onClick={handleSaveCourse}
                         >
                             저장
                         </Button>

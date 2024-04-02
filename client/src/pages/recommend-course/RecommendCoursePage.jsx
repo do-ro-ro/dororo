@@ -66,6 +66,9 @@ function RecommendedCoursePage() {
                 handleNext={handleNext}
                 currentIndex={currentIndex}
                 locations={locations}
+                location={locations[currentIndex]}
+                path={path}
+                distance={distance}
             ></BottomNav>
             {locations.length > 0 && (
                 <Recommend
