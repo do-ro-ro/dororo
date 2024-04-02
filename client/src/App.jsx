@@ -21,6 +21,9 @@ const colorTheme = createTheme({
         primary: {
             main: "#6386BE",
         },
+        white: {
+            main: "#FFFFFF",
+        },
         // 아래에 색 추가하시면 됩니다. MUI Tokens/Palette 참조
     },
 });

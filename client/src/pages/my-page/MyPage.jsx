@@ -114,6 +114,7 @@ function MyPage() {
                                     <CourseCard
                                         key={course.mapId}
                                         postId={course.mapId}
+                                        course={course}
                                     >
                                         {course.mapName}
                                     </CourseCard>

@@ -59,7 +59,7 @@ function CommunityListPage() {
                     <Typography variant="h6" sx={{ my: 2 }}>
                         실시간 인기 코스 Top 3
                     </Typography>
-                    <Stack direction={"row"}>
+                    <Stack>
                         {top3Courses.map((course) => {
                             return (
                                 <CourseCard

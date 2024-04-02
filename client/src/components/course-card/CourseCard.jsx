@@ -1,10 +1,12 @@
 import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import SampleCourseImg from "../../assets/sample_course_img.png";
 import { useNavigate } from "react-router-dom";
+import { MapOutlined } from "@mui/icons-material";
 
 function CourseCard(props) {
-    const { children, postId, variant, ...rest } = props;
+    const { children, postId, variant, course, ...rest } = props;
 
+    console.log("코스카드 코스", course);
     // 클릭시 이동을 위한 navigate
     const navigate = useNavigate();
     const handleNavigate = (postId) => {
@@ -21,25 +23,40 @@ function CourseCard(props) {
         <>
             <Card
                 sx={{
-                    width: "100px",
-                    height: "20vh",
-                    m: 1,
+                    width: "80vw",
+                    height: "10vh",
+                    m: 2,
+                    display: "flex",
                 }}
                 onClick={() => handleNavigate(`${postId}`)}
             >
-                {/* <CardMedia sx={{ height: "8rem" }} image={mapImage} /> */}
-                <Box
-                    component={"div"}
-                    sx={{
-                        textOverflow: "ellipsis",
-                        overflow: "hidden",
-                        fontSize: "0.8rem",
-                        fontWeight: "700",
-                        px: 1,
-                        py: 0.2,
-                    }}
-                >
-                    {children}
+                <Box sx={{ display: "flex", flexDirection: "row" }}>
+                    <Box
+                        display={"flex"}
+                        justifyContent={"center"}
+                        alignItems={"center"}
+                        sx={{ width: "25vw", backgroundColor: "#6386BE" }}
+                    >
+                        <MapOutlined
+                            color="white"
+                            sx={{ width: "3rem", height: "3rem" }}
+                        />
+                    </Box>
+                    {/* <CardMedia sx={{ width: "20vw" }} image={SampleCourseImg} /> */}
+                    <Box component={"div"}>
+                        <Typography
+                            sx={{
+                                textOverflow: "ellipsis",
+                                overflow: "hidden",
+                                fontSize: "1.1rem",
+                                fontWeight: "500",
+                                px: 1,
+                                py: 0.2,
+                            }}
+                        >
+                            {variant === "post" ? children : course?.mapName}
+                        </Typography>
+                    </Box>
                 </Box>
             </Card>
         </>
