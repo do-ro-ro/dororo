@@ -42,6 +42,8 @@ const Recommend = ({
     currentIndex,
     courseLine,
     filteredCourse,
+    setPath,
+    setDistance,
 }) => {
     let [map, setMap] = useState(null);
     const [resultMarkerArr, setResultMarkerArr] = useState([]);
@@ -55,6 +57,11 @@ const Recommend = ({
         distance: "",
         time: "",
     });
+
+    // useEffect(() => {
+    //     console.log("courseNode", courseNode);
+    //     console.log("courseLine", courseLine);
+    // }, [courseNode, courseLine]);
 
     const points = [
         waypoint_1,
@@ -327,6 +334,7 @@ const Recommend = ({
                 const tDistance = (resultData.totalDistance / 1000).toFixed(1);
 
                 const tTime = (resultData.totalTime / 60).toFixed(0);
+                setDistance(tDistance);
                 setCourseInfo({
                     distance: `${tDistance}km`,
                     time: `${tTime}분`,
@@ -364,8 +372,11 @@ const Recommend = ({
                                     convertPoint._lat,
                                     convertPoint._lng,
                                 );
+
+                                // path state로 만들어서 일단 저장하고 쏘기
                             },
                         );
+                        setPath(drawInfoArr);
 
                         const polyline = new window.Tmapv2.Polyline({
                             path: drawInfoArr,

@@ -10,6 +10,20 @@ function RecommendedCoursePage() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const optionData = useLocation(); // OptionModal에서 뿌린 데이터
 
+    const [path, setPath] = useState([
+        {
+            lat: "",
+            lng: "",
+        },
+    ]);
+
+    const [distance, setDistance] = useState(0);
+
+    useEffect(() => {
+        console.log("path", path);
+        console.log("distance", distance);
+    }, [path, distance]);
+
     useEffect(() => {
         if (optionData.state && optionData.state.data) {
             setLocations(optionData.state.data);
@@ -60,6 +74,8 @@ function RecommendedCoursePage() {
                     courseLine={courseLine}
                     filteredCourse={filteredCourse}
                     currentIndex={currentIndex}
+                    setPath={setPath}
+                    setDistance={setDistance}
                 ></Recommend>
             )}
         </div>

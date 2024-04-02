@@ -38,16 +38,20 @@ const style = {
 
 const OptionModal = ({ open, closeModal, lat, lng }) => {
     const [option, setOption] = useState({
-        mapDistance: 5,
+        mapDistance: 1,
         turnLeft: 1,
         turnRight: 1,
-        uturn: 1,
+        uuuTurn: 1,
         startPoint: {
             lat: lat,
             lng: lng,
         },
         return: true,
     });
+
+    // useEffect(() => {
+    //     console.log("option", option);
+    // }, [option]);
 
     const navigate = useNavigate();
 
@@ -67,7 +71,7 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
         navigate("/loading", { state: { data: option } });
     };
     const handleSliderChange = (e) => {
-        setOption({ ...option, mapDistance: Math.max(e.target.value, 5) });
+        setOption({ ...option, mapDistance: Math.max(e.target.value, 1) });
     };
 
     const handleDecrease = (direction) => {
@@ -408,18 +412,18 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
                             >
                                 <Button
                                     sx={{ p: 0, minWidth: "auto" }}
-                                    onClick={() => handleDecrease("uturn")}
+                                    onClick={() => handleDecrease("uuuTurn")}
                                 >
                                     <IndeterminateCheckBoxIcon />
                                 </Button>
                                 <Typography
                                     sx={{ mx: 0.7, fontWeight: "bold" }}
                                 >
-                                    {option.uturn} {/* 숫자 표시 */}
+                                    {option.uuuTurn} {/* 숫자 표시 */}
                                 </Typography>
                                 <Button
                                     sx={{ p: 0, minWidth: "auto" }}
-                                    onClick={() => handleIncrease("uturn")}
+                                    onClick={() => handleIncrease("uuuTurn")}
                                 >
                                     <AddBoxIcon />
                                 </Button>
