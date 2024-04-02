@@ -133,7 +133,7 @@ function MyPage() {
                     <Stack>
                         {currentUserCourses?.reverse().map((course) => {
                             if (course.mapType === "SCRAP") {
-                                console.log("스크랩코스", course);
+                                // console.log("스크랩코스", course);
                                 return (
                                     <CourseCard
                                         key={course.mapId}

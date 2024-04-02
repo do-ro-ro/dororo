@@ -38,9 +38,10 @@ function ShareModal(props) {
             inputPostTitle,
             inputPostContent,
         );
-        if (response?.status === 200) {
-            navigate("/main/community");
-        } else if (response?.status === 409) {
+        console.log(response);
+        if (response) {
+            navigate(`/main/community/${response.postId}`);
+        } else {
             alert("이미 공유된 코스입니다");
         }
     };

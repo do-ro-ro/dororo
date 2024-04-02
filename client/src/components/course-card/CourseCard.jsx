@@ -19,7 +19,7 @@ import {
 function CourseCard(props) {
     const { children, postId, variant, course, ...rest } = props;
 
-    console.log("코스카드 코스", course);
+    // console.log("코스카드 코스", course);
     // 클릭시 이동을 위한 navigate
     const navigate = useNavigate();
     const handleNavigate = (postId) => {
