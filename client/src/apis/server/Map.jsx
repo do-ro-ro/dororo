@@ -56,9 +56,11 @@ const deleteMap = async (mapId) => {
 };
 
 // 주행 완료 여부 확인 처리
-const checkDrive = async ({ mapId, mapCompletion }) => {
+const checkDrive = async (mapId, body) => {
     try {
-        const response = await axiosInstance.patch(`/maps/${mapId}`);
+        const response = await axiosInstance.post(`/maps/${mapId}`, {
+            mapCompletion: true,
+        });
         if (response.status === 200) {
             console.log("주행 완료");
         }
@@ -68,7 +70,23 @@ const checkDrive = async ({ mapId, mapCompletion }) => {
 };
 
 // 코스 저장
-const saveCourse = async (body) => {
+const saveCourse = async (
+    body,
+    // originMapRouteAxis,
+    // convertedRouteAxis,
+    // path,
+    // mapDistance,
+    // mapName,
+    // mapType,
+) => {
+    // const body = {
+    //     originMapRouteAxis: originMapRouteAxis,
+    //     convertedRouteAxis: convertedRouteAxis,
+    //     path: path,
+    //     mapDistance: mapDistance,
+    //     mapName: mapName,
+    //     mapType: mapType,
+    // };
     try {
         const response = await axiosInstance.post(`/maps/save`, body);
         if (response.status === 200) {

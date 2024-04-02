@@ -34,16 +34,31 @@ import waypoint_29 from "../../assets/waypoints_number/waypoint_29.png";
 import waypoint_30 from "../../assets/waypoints_number/waypoint_30.png";
 import waypoint_passed from "../../assets/waypoint_passed.png";
 
+import { checkDrive } from "../../apis/server/Map";
+import { useNavigate, useParams } from "react-router-dom";
 const StopOver = ({
     lat,
     lng,
+    courseNode,
+    setCourseNode,
     courseLine,
+    setCourseLine,
     filteredCourse,
     setFilteredCourse,
+    filteredNode,
+    setFilteredNode,
     // visited,
     setTime,
     setKm,
+    isDriving,
 }) => {
+    const { courseId } = useParams();
+    const [body, setBody] = useState({
+        mapCompletion: true,
+    });
+
+    const navigate = useNavigate();
+
     const [visited, setVisited] = useState([]);
     // const visited = Array(filteredCourse.length).fill(false);
     let [map, setMap] = useState(null);
@@ -88,7 +103,6 @@ const StopOver = ({
         const allVisited = visited.every((visit) => visit);
 
         // visited 배열이 모두 true일 때 발생하는 이벤트 처리
-
         if (allVisited && visited.length >= 2) {
             let targetLat = lat; // 타겟 경도
             let targetLng = lng; // 타겟 위도
@@ -100,14 +114,19 @@ const StopOver = ({
 
             if (targetLat >= latMinus && targetLat <= latPlus) {
                 if (targetLng >= lngMinus && targetLng <= lngPlus) {
-                    // 여기에 이벤트 처리 코드 추가
-                    console.log(visited);
+                    handleConfirmClick();
                     alert("동작 잘 됨");
-                    // 예를 들어, 어떤 동작을 수행하거나 알림을 띄울 수 있습니다.
+                    navigate(`/course/${courseId}`);
                 }
             }
         }
     }, [visited, lat, lng]);
+
+    const handleConfirmClick = () => {
+        const response = checkDrive(courseId, {
+            mapCompletion: true,
+        });
+    };
 
     useEffect(() => {
         if (filteredCourse.length >= 2) {
@@ -116,7 +135,7 @@ const StopOver = ({
     }, [filteredCourse]);
 
     useEffect(() => {
-        const waypoints = filteredCourse.map((point, index) => ({
+        const waypoints = filteredNode.map((point, index) => ({
             lat: point.lat,
             lng: point.lng,
             icon: visited[index] ? waypoint_passed : points[index],
@@ -143,7 +162,11 @@ const StopOver = ({
                 let targetLat = lat; // 타겟 경도
                 let targetLng = lng; // 타겟 위도
                 if (targetLat >= latMinus && targetLat <= latPlus) {
-                    if (targetLng >= lngMinus && targetLng <= lngPlus) {
+                    if (
+                        targetLng >= lngMinus &&
+                        targetLng <= lngPlus &&
+                        isDriving
+                    ) {
                         // console.log(visited);
                         setVisited((prevVisited) => {
                             const newVisited = [...prevVisited];
@@ -165,6 +188,7 @@ const StopOver = ({
     useEffect(() => {
         if (courseLine.length > 1) {
             setFilteredCourse(courseLine.slice(1, courseLine.length - 1));
+            setFilteredNode(courseNode.slice(1, courseNode.length - 1));
             // setFillterList(coolList.slice(1, coolList.length - 1));
             // setCourseNode(courseNode.slice(1, courseNode.length - 1));
         }
@@ -219,7 +243,7 @@ const StopOver = ({
                 courseLine[0].lng,
             ),
             icon: start_pointer,
-            iconSize: new window.Tmapv2.Size(24, 24),
+            iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
         setResultMarkerArr((prev) => [...prev, marker_s]);
@@ -230,12 +254,12 @@ const StopOver = ({
                 courseLine[courseLine.length - 1].lng,
             ),
             icon: end_pointer,
-            iconSize: new window.Tmapv2.Size(24, 24),
+            iconSize: new window.Tmapv2.Size(24, 38),
             map: map,
         });
         setResultMarkerArr((prev) => [...prev, marker_e]);
 
-        const waypoints = filteredCourse.map((point, index) => ({
+        const waypoints = filteredNode.map((point, index) => ({
             lat: point.lat,
             lng: point.lng,
             icon: visited[index] ? waypoint_passed : points[index],

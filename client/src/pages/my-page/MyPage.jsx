@@ -70,7 +70,7 @@ function MyPage() {
     return (
         <>
             <Topbar>마이페이지</Topbar>
-            <Box pb="10vh">
+            <Box pb="15vh" mt={8}>
                 <Stack mx={4} mt={2} height={"90vh"}>
                     <Paper>
                         <Stack
@@ -107,14 +107,13 @@ function MyPage() {
                         </Typography>
                         <Button>모두 보기</Button>
                     </Stack>
-                    <Stack direction={"row"}>
-                        {currentUserCourses?.slice(0, 3).map((course) => {
+                    <Stack>
+                        {currentUserCourses?.map((course) => {
                             if (course.mapType !== "SCRAP") {
                                 return (
                                     <CourseCard
                                         key={course.mapId}
                                         postId={course.mapId}
-                                        mapImage={course.mapImage}
                                     >
                                         {course.mapName}
                                     </CourseCard>
