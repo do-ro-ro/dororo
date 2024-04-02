@@ -10,18 +10,16 @@ import Topbar from "../../components/topbar/Topbar";
 import { Cancel, CatchingPokemonSharp, CheckCircle } from "@mui/icons-material";
 import SampleCourseImg from "../../assets/sample_course_img.png";
 import DriveIcon from "../../assets/drive_icon.png";
-import Map from "../main-page/Map";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DeleteDialog from "../../components/community-detail/DeleteDialog";
 import ShareModal from "../../components/course-detail/ShareModal";
 import { getMapDetail } from "../../apis/server/Map";
 import { current } from "@reduxjs/toolkit";
+import Map from "../../components/course-detail/Map";
 
 function CourseDetailPage() {
     const { courseId } = useParams();
-    const [lat, setLat] = useState(37.5652045);
-    const [lng, setLng] = useState(126.98702028);
     const [openShareModal, setOpenShareModal] = useState(false);
 
     const [currentCourse, setCurrentCourse] = useState(null);
@@ -47,7 +45,7 @@ function CourseDetailPage() {
         };
 
         fetchData();
-        console.log(currentCourse);
+        // console.log(currentCourse);
     }, []);
 
     return (
@@ -67,7 +65,7 @@ function CourseDetailPage() {
                                     ? currentCourse?.mapName
                                     : "코스 정보 불러오는 중"}
                             </Typography>
-                            <DeleteDialog variant={"course"} />
+                            <DeleteDialog variant={"course"} mapId={courseId} />
                         </Stack>
                         <Stack
                             direction={"row"}
@@ -128,7 +126,11 @@ function CourseDetailPage() {
                             />
                         </Stack>
                     </div>
-                    <Map lat={lat} lon={lng} />
+                    {currentCourse ? (
+                        <Map course={currentCourse} />
+                    ) : (
+                        <Box>맵 정보를 불러오고 있습니다...</Box>
+                    )}
                 </div>
                 <div className="fixed z-50 bottom-2 inset-x-0">
                     <Stack alignItems={"center"}>

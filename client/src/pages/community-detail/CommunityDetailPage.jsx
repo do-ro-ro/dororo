@@ -63,8 +63,8 @@ function CommunityDetailPage() {
 
     return (
         <>
-            <Box>
-                <Topbar isBackButton={true}>커뮤니티</Topbar>
+            <Topbar isBackButton={true}>커뮤니티</Topbar>
+            <Box mt={10}>
                 <Stack
                     m={2}
                     direction={"row"}
@@ -99,7 +99,10 @@ function CommunityDetailPage() {
                             {/* <EditArticleModal
                                 currentMapPosts={currentMapPosts}
                             /> */}
-                            <DeleteDialog variant={"post"} />
+                            <DeleteDialog
+                                variant={"post"}
+                                postId={Number(postId)}
+                            />
                         </Stack>
                     ) : null}
                 </Stack>
