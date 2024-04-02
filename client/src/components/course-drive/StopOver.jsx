@@ -50,6 +50,7 @@ const StopOver = ({
     // visited,
     setTime,
     setKm,
+    isDriving,
 }) => {
     const { courseId } = useParams();
     const [body, setBody] = useState({
@@ -102,7 +103,6 @@ const StopOver = ({
         const allVisited = visited.every((visit) => visit);
 
         // visited 배열이 모두 true일 때 발생하는 이벤트 처리
-
         if (allVisited && visited.length >= 2) {
             let targetLat = lat; // 타겟 경도
             let targetLng = lng; // 타겟 위도
@@ -162,7 +162,11 @@ const StopOver = ({
                 let targetLat = lat; // 타겟 경도
                 let targetLng = lng; // 타겟 위도
                 if (targetLat >= latMinus && targetLat <= latPlus) {
-                    if (targetLng >= lngMinus && targetLng <= lngPlus) {
+                    if (
+                        targetLng >= lngMinus &&
+                        targetLng <= lngPlus &&
+                        isDriving
+                    ) {
                         // console.log(visited);
                         setVisited((prevVisited) => {
                             const newVisited = [...prevVisited];
