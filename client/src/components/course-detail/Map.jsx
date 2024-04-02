@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import startPin from "../../assets/map_marker_start.png";
+import endPin from "../../assets/map_marker_end.png";
 import wayPointPin from "../../assets/waypoint_yet.png";
 
 function Map({ course }) {
@@ -45,7 +46,7 @@ function Map({ course }) {
             // center: new window.Tmapv2.LatLng(lat, lon),
 
             width: "100vw",
-            height: "95vh",
+            height: "70vh",
             zoom: 16,
         });
 
@@ -81,6 +82,9 @@ function Map({ course }) {
                 if (index === 0) {
                     icon = startPin;
                     iconSize = new window.Tmapv2.Size(24, 32);
+                } else if (index === courseNode.length - 1) {
+                    icon = endPin;
+                    iconSize = new window.Tmapv2.Size(24, 32);
                 } else {
                     icon = wayPointPin;
                     iconSize = new window.Tmapv2.Size(24, 24);
@@ -101,25 +105,7 @@ function Map({ course }) {
                     "touchend",
                     function () {
                         if (!this._marker_data.options.draggable) {
-                            // 마커 애니메이션 활성화를 위한 aniType
-                            const aniType = marker.animate(
-                                Tmapv2.MarkerOptions.ANIMATE_BOUNCE,
-                            );
-
-                            this.setDraggable(true);
-                            // this.setIcon(waypointPinSelected);
-                            this._marker_data.options.animation = aniType;
-                            this._marker_data.options.animationLength = 500;
-                            // console.log("애드리스너 변화 시킨 marker", this);
                         } else {
-                            // 선택한 마커 인덱스 표기
-                            this.setDraggable(false);
-                            // this.setIcon(waypointPin);
-
-                            this.stopAnimation();
-                            const newposition = marker.getPosition();
-                            setSelectedMarkerIndex(index);
-                            setSelectedMarkerPosition(newposition);
                         }
                     },
                     marker,
