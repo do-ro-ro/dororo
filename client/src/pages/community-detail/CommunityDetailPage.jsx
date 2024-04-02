@@ -21,10 +21,13 @@ import {
     getMapPosts,
     scrapMapPosts,
 } from "../../apis/server/Community";
+import Map from "../../components/course-detail/Map";
+import { getMapDetail } from "../../apis/server/Map";
 
 function CommunityDetailPage() {
     const { postId } = useParams();
     const [currentMapPosts, setCurrentMapPosts] = useState(null);
+    const [currentCourse, setCurrentCourse] = useState(null);
 
     const [isScrapped, setIsScrapped] = useState(false);
     const [scrapCount, setScrapCount] = useState(0);
@@ -39,7 +42,7 @@ function CommunityDetailPage() {
                 setCurrentMapPosts(updatedMapPosts);
                 setScrapCount(updatedMapPosts.scrapCount);
                 setIsScrapped(updatedMapPosts.isScraped);
-                // console.log(updatedMapPosts);
+                console.log(updatedMapPosts);
                 // console.log(currentMapPosts);
             } catch (error) {
                 console.error("게시글 리스트 불러오기 실패", error);
@@ -48,6 +51,25 @@ function CommunityDetailPage() {
 
         fetchData();
     }, []);
+
+    // 게시글 정보를 받아오면, Map 정보 받아오기
+    useEffect(() => {
+        const fetchMapData = async () => {
+            try {
+                const response = await getMapDetail(currentMapPosts?.mapId);
+                const updatedCourse = response;
+                // console.log(response);
+                setCurrentCourse(updatedCourse);
+                // console.log(updatedMapPosts);
+                // console.log(currentMapPosts);
+            } catch (error) {
+                console.error("코스 정보 불러오기 실패", error);
+            }
+        };
+
+        fetchMapData();
+        // console.log(currentCourse);
+    }, [currentMapPosts]);
 
     // snack바 상태 관리
     const [scrapSnackbarOpen, setScrapSnackbarOpen] = useState(false);
@@ -108,10 +130,16 @@ function CommunityDetailPage() {
                 </Stack>
                 <Box>
                     {/* 나중에 지도 넣어줄 영역 */}
-                    <img
+                    {currentCourse ? (
+                        <Map course={currentCourse} variant={"post"} />
+                    ) : (
+                        <Box>지도를 불러오는 중입니다</Box>
+                    )}
+
+                    {/* <img
                         width={"100%"}
                         src={currentMapPosts ? currentMapPosts.mapImage : ""}
-                    />
+                    /> */}
                 </Box>
 
                 <Box m={2}>

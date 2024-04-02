@@ -35,7 +35,7 @@ import waypoint_28 from "../../assets/waypoints_number/waypoint_28.png";
 import waypoint_29 from "../../assets/waypoints_number/waypoint_29.png";
 import waypoint_30 from "../../assets/waypoints_number/waypoint_30.png";
 
-function Map({ course }) {
+function Map({ course, variant }) {
     const currentCourse = course;
 
     // Tmap 객체 관리를 위한 상태
@@ -121,7 +121,7 @@ function Map({ course }) {
             // center: new window.Tmapv2.LatLng(lat, lon),
 
             width: "100vw",
-            height: "70vh",
+            height: variant === "post" ? "50vh" : "70vh",
             zoom: 16,
         });
 
