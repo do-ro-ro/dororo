@@ -91,6 +91,7 @@ function CourseDrivePage() {
                     visited={visited}
                     setTime={setTime}
                     setKm={setKm}
+                    isDriving={isDriving}
                 />
                 {/* UI 테스트용 임시 맵 */}
                 <div className="fixed z-50 bottom-2 inset-x-0">
