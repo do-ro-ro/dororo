@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Avatar } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -37,6 +37,7 @@ const Loading = () => {
     return (
         <Box
             sx={{
+                position: "relative",
                 backgroundColor: "#6386BE",
                 width: "100%",
                 height: "100vh",
@@ -46,58 +47,95 @@ const Loading = () => {
                 alignItems: "center",
             }}
         >
-            {isLoading ? (
-                <>
-                    <img
-                        src={car}
-                        alt="로딩 중..."
-                        style={{
-                            width: "18%",
-                            height: "auto",
-                            borderRadius: "50%",
-                        }}
-                    />
-                    <Typography
-                        variant="h4"
-                        sx={{ color: "#FFFFFF", textAlign: "center" }}
-                    >
-                        최고의 코스를 찾고있어요!
-                    </Typography>
-                </>
-            ) : (
-                <>
-                    <img
-                        src={check}
-                        alt="로딩 완료"
-                        style={{
-                            width: "18%",
-                            height: "auto",
-                            borderRadius: "50%",
-                        }}
-                    />
-                    <Typography
-                        variant="h4"
-                        sx={{ color: "#FFFFFF", textAlign: "center" }}
-                    >
-                        코스 생성 완료!
-                    </Typography>
-                    {!isLoading && (
-                        <Button
-                            onClick={buttonClick}
-                            variant="contained"
+            <Box
+                sx={{
+                    width: "90%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    textAlign: "centers",
+                }}
+            >
+                {isLoading ? (
+                    <>
+                        <Avatar
+                            src={car}
+                            alt="로딩 중..."
                             sx={{
-                                mt: 4,
-                                backgroundColor: "red",
-                                ":hover": { backgroundColor: "darkred" },
+                                width: "22%", // 원하는 너비 설정
+                                height: "auto", // 높이를 자동으로 조절
+                                mb: 2,
+                            }}
+                        />
+
+                        <Box>
+                            <Typography
+                                variant="h4"
+                                sx={{
+                                    color: "#FFFFFF",
+                                    textAlign: "center",
+                                    fontWeight: 600,
+                                }}
+                            >
+                                코스를 찾고있어요!
+                            </Typography>
+                        </Box>
+                    </>
+                ) : (
+                    <>
+                        <Avatar
+                            src={check}
+                            alt="로딩 완료"
+                            sx={{
+                                width: "22%", // 원하는 너비 설정
+                                height: "auto", // 높이를 자동으로 조절
+                                mb: 2,
+                            }}
+                        />
+                        <Typography
+                            variant="h4"
+                            sx={{
+                                color: "#FFFFFF",
+                                textAlign: "center",
+                                fontWeight: 600,
                             }}
                         >
-                            확인
-                        </Button>
-                    )}
-                </>
+                            코스 생성 완료!
+                        </Typography>
+                    </>
+                )}
+                {/* isLoading 상태와 관계없이 Quiz 컴포넌트를 렌더링 */}
+                <Quiz />
+            </Box>
+            {!isLoading && (
+                <Box
+                    sx={{
+                        position: "absolute",
+                        bottom: 0,
+
+                        pb: 3,
+                    }}
+                >
+                    <Button
+                        onClick={buttonClick}
+                        variant="contained"
+                        sx={{
+                            fontSize: "1.25rem",
+                            fontWeight: "bold",
+                            backgroundColor: "red",
+                            ":hover": {
+                                backgroundColor: "red", // 호버 시에도 배경색을 red로 유지
+                                "@media (hover: none)": {
+                                    backgroundColor: "red", // 터치 기반 장치에서 호버 스타일 비활성화
+                                },
+                            },
+                        }}
+                    >
+                        확인
+                    </Button>
+                </Box>
             )}
-            {/* isLoading 상태와 관계없이 Quiz 컴포넌트를 렌더링 */}
-            <Quiz />
         </Box>
     );
 };
