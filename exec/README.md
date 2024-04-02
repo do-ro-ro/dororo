@@ -9,20 +9,37 @@
 
 ## 1. 환경 설정
 
-### Nginx 설치
+### 🔨 개발 환경
+
+-   FrontEnd
+    -   IDE : VisualStudio Code
+    -   JavaScript v
+    -   React v
+-   BackEnd
+    -   IDE : IntelliJ
+    -   JDK17
+    -   SpringBoot v3.2.5
+-   InfraStructure
+    -   server : ubuntu v20.04
+    -   nginx v
+    -   docker v
+        -   PostgreSQL
+        -   Redis
+
+### ✅ Nginx 설치
 
 ```jsx
 $ sudo apt-get install nginx
 ```
 
-### **Encrypt(SSL 발급)**
+### ✅ Encrypt(SSL 발급)
 
 ```jsx
 $ sudo apt-get install letsencrypt
 $ sudo letsencrypt certonly --standalone -d [도메인]
 ```
 
-### Nginx 설정
+### 📋 Nginx 설정
 
 ```
 # Default server configuration
@@ -120,9 +137,9 @@ server {
 }
 ```
 
-### Docker 설치
+### ✅ Docker 설치
 
-### Set up the repository
+#### Set up the repository
 
 1. Update the `apt` package index and install packages to allow `apt` to use a repository over HTTPS:
 
@@ -150,7 +167,7 @@ $ echo \\
 $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ```
 
-### Install Docker Engine
+#### Install Docker Engine
 
 1. Update the apt package index
 
@@ -164,23 +181,21 @@ $ sudo apt-get update
 $ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
----
-
-### Install & Run PostgreSQL
+### ✅ PostgreSQL 설치와 실행
 
 ```
 $ sudo docker pull postgres
 $ sudo docker run -d -p <Your>:<Port> -e POSTGRES_PASSWORD="<YourStrong@Passw0rd>" --name <YourContainerName> postgres
 ```
 
-### Install Redis
+### ✅ Redis 설치와 실행
 
 ```
 $ sudo docker pull redis
 $ sudo docker run -d -p <Your>:<Port> --name <YourConatinerName> redis
 ```
 
-### 환경변수 형태
+### 📋 환경변수 형태
 
 ```jsx
 ---------React---------
@@ -227,8 +242,10 @@ springdoc:
         operations-sorter: alpha    # API를 엔드 포인트들의 알파벳 순서로 정렬
         enabled: true   # 외부에서 접속 가능하게 하는 설정
 
+----------------------------------------------------------------------
 
 application-{profile}.yml 내 환경변수 설정
+
 secret-key: {secret-key}
 spring :
   data:
@@ -281,6 +298,31 @@ cloud:
 ```
 
 ## 2. 배포
+
+### 수동배포 방법
+
+1. 소스 코드 복제
+
+    $ git clone https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22E202.git
+
+2. FrontEnd
+
+```
+$ cd /path-to-git-directory/client
+$ npm ci
+$ npm run build
+$ sudo rm -rf /var/www/html/* && sudo cp -r /home/ubuntu/cd_client/* /var/www/html/
+```
+
+3. BackEnd
+
+```
+$ cd /path-to-git-directory/server
+$ chmod +x gradlew
+$ ./gradlew build
+$ cd /build/libs
+$ nohup java -jar -Dspring.profiles.active={your-want-profile} dororo-0.0.1-SNAPSHOT.jar
+```
 
 ---
 
