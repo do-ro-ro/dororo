@@ -137,7 +137,7 @@ function EditProfileModal({ currentUserInfo }) {
                             }}
                         />
                     </Box>
-                    <Typography>{inputNickname}</Typography>
+                    {/* <Typography>{inputNickname}</Typography> */}
                     <Stack direction={"row"} justifyContent={"end"}>
                         <Button variant="contained">수정하기</Button>
                         <Button onClick={handleClose}>취소</Button>

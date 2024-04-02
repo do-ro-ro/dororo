@@ -17,9 +17,18 @@ import OauthPage from "./pages/oauth-page/OauthPage";
 import Loading from "./pages/loading/Loading";
 
 const colorTheme = createTheme({
+    typography: {
+        fontFamily: "'Noto Sans KR'",
+    },
     palette: {
         primary: {
             main: "#6386BE",
+        },
+        white: {
+            main: "#FFFFFF",
+        },
+        secondary: {
+            main: "#F1EAC7",
         },
         // 아래에 색 추가하시면 됩니다. MUI Tokens/Palette 참조
     },

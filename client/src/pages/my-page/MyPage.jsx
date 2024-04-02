@@ -70,7 +70,7 @@ function MyPage() {
     return (
         <>
             <Topbar>마이페이지</Topbar>
-            <Box pb="15vh" mt={8}>
+            <Box pb="15vh" mb={20} mt={8}>
                 <Stack mx={4} mt={2} height={"90vh"}>
                     <Paper>
                         <Stack
@@ -108,12 +108,13 @@ function MyPage() {
                         <Button>모두 보기</Button>
                     </Stack>
                     <Stack>
-                        {currentUserCourses?.map((course) => {
+                        {currentUserCourses?.reverse().map((course) => {
                             if (course.mapType !== "SCRAP") {
                                 return (
                                     <CourseCard
                                         key={course.mapId}
                                         postId={course.mapId}
+                                        course={course}
                                     >
                                         {course.mapName}
                                     </CourseCard>
@@ -129,17 +130,19 @@ function MyPage() {
                     >
                         <Typography variant="h6">내가 스크랩한 코스</Typography>
                     </Stack>
-                    <Stack direction={"row"}>
-                        {currentUserCourses?.map((course) => {
+                    <Stack>
+                        {currentUserCourses?.reverse().map((course) => {
                             if (course.mapType === "SCRAP") {
+                                // console.log("스크랩코스", course);
                                 return (
                                     <CourseCard
                                         key={course.mapId}
                                         postId={course.mapId}
                                         variant={"course"}
                                         mapImage={course.mapImage}
+                                        course={course}
                                     >
-                                        {course.mapName}
+                                        {course}
                                     </CourseCard>
                                 );
                             }
@@ -154,20 +157,21 @@ function MyPage() {
                         <Typography variant="h6">내가 공유한 코스</Typography>
                     </Stack>
                     <Stack direction={"row"}>
-                        {currentMapPostsList?.map((course) => {
-                            if (course.isMine) {
-                                return (
-                                    <CourseCard
-                                        key={course.postId}
-                                        postId={course.postId}
-                                        variant={"my_post"}
-                                        mapImage={course.mapImage}
-                                    >
-                                        {course.postTitle}
-                                    </CourseCard>
-                                );
-                            }
-                        })}
+                        {currentMapPostsList.length > 0 &&
+                            currentMapPostsList?.map((course) => {
+                                if (course.isMine) {
+                                    return (
+                                        <CourseCard
+                                            key={course.postId}
+                                            postId={course.postId}
+                                            variant={"my_post"}
+                                            mapImage={course.mapImage}
+                                        >
+                                            {course.postTitle}
+                                        </CourseCard>
+                                    );
+                                }
+                            })}
                     </Stack>
                     {/* <Stack direction="column">{renderCourseCardRows()}</Stack> */}
                 </Stack>

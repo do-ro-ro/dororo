@@ -16,7 +16,7 @@ function CommunityListPage() {
         const fetchData = async () => {
             try {
                 const response = await getMapPostsList();
-                const updatedMapPostsList = response;
+                const updatedMapPostsList = response.data;
                 // console.log(response);
                 setCurrentMapPostsList(updatedMapPostsList);
                 console.log(updatedMapPostsList);
@@ -30,21 +30,28 @@ function CommunityListPage() {
     }, []);
 
     // Top3 코스
-    const top3Courses = currentMapPostsList
-        .sort((a, b) => b.scrapCount - a.scrapCount)
-        .slice(0, 3);
+    const top3Courses =
+        currentMapPostsList.length > 0
+            ? currentMapPostsList
+                  .sort((a, b) => b.scrapCount - a.scrapCount)
+                  .slice(0, 3)
+            : null;
 
     const [isActivated, setIsActivated] = useState(true);
 
     // 최신순 정렬된 리스트
-    const sortLatest = currentMapPostsList.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-    );
+    const sortLatest =
+        currentMapPostsList.length > 0
+            ? currentMapPostsList.sort(
+                  (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+              )
+            : null;
 
     // 인기순 정렬된 리스트
-    const popularCourses = currentMapPostsList.sort(
-        (a, b) => b.scrapCount - a.scrapCount,
-    );
+    const popularCourses =
+        currentMapPostsList.length > 0
+            ? currentMapPostsList.sort((a, b) => b.scrapCount - a.scrapCount)
+            : null;
 
     const coursesToDisplay = isActivated ? sortLatest : popularCourses;
 
@@ -52,21 +59,20 @@ function CommunityListPage() {
 
     return (
         <>
-            <Box pb={"10vh"}>
-                <Topbar>커뮤니티</Topbar>
-
+            <Topbar>커뮤니티</Topbar>
+            <Box pb={"10vh"} mt={"8vh"}>
                 <Stack mx={4} mt={2}>
                     <Typography variant="h6" sx={{ my: 2 }}>
                         실시간 인기 코스 Top 3
                     </Typography>
-                    <Stack direction={"row"}>
-                        {top3Courses.map((course) => {
+                    <Stack>
+                        {top3Courses?.map((course) => {
                             return (
                                 <CourseCard
                                     key={course.postId}
                                     postId={course.postId}
                                     variant={"post"}
-                                    mapImage={course.mapImage}
+                                    course={course}
                                 >
                                     {course.postTitle}
                                 </CourseCard>
@@ -99,7 +105,7 @@ function CommunityListPage() {
                     </Stack>
                     {/* <Stack direction="column">{renderCourseCardRows()}</Stack> */}
                     <Stack>
-                        {currentMapPostsList
+                        {currentMapPostsList.length > 0
                             ? coursesToDisplay.map((course) => {
                                   return (
                                       <Box
