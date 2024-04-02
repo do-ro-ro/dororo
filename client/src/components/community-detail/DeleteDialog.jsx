@@ -9,15 +9,21 @@ import {
 import { useState } from "react";
 import { deleteMap } from "../../apis/server/Map";
 import { useNavigate } from "react-router-dom";
+import { deleteMapPosts } from "../../apis/server/Community";
 
 function DeleteDialog(props) {
-    const { variant, mapId, ...rest } = props;
+    const { variant, mapId, postId, ...rest } = props;
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleDelete = async () => {
-        await deleteMap(mapId);
-        navigate("/main/myPage");
+        if (variant === "course") {
+            await deleteMap(mapId);
+            navigate("/main/myPage");
+        } else {
+            await deleteMapPosts(postId);
+            navigate("/main/community");
+        }
     };
 
     const handleClickOpen = () => {

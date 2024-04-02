@@ -99,7 +99,10 @@ function CommunityDetailPage() {
                             {/* <EditArticleModal
                                 currentMapPosts={currentMapPosts}
                             /> */}
-                            <DeleteDialog variant={"post"} />
+                            <DeleteDialog
+                                variant={"post"}
+                                postId={Number(postId)}
+                            />
                         </Stack>
                     ) : null}
                 </Stack>

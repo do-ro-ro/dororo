@@ -39,7 +39,7 @@ const createMapPosts = async (mapId, postTitle, postContent) => {
         if (response.status === 201) return response.data;
         // console.log(response.status);
     } catch (error) {
-        console.log(body);
+        console.log(error);
     }
 };
 
