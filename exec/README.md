@@ -68,9 +68,19 @@ $ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugi
 
 ---
 
-### Install PostgreSQL
+### Install & Run PostgreSQL
+
+```
+$ sudo docker pull postgres
+$ sudo docker run -d -p <Your>:<Port> -e POSTGRES_PASSWORD="<YourStrong@Passw0rd>" --name <YourContainerName> postgres
+```
 
 ### Install redis
+
+```
+$ sudo docker pull redis
+$ sudo docker run -d -p <Your>:<Port> --name <YourConatinerName> redis
+```
 
 ### 환경변수 형태
 
