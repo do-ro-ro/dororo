@@ -1,11 +1,16 @@
 package com.dororo.api.map.service;
 
+import com.dororo.api.convert.AxisCalculator;
 import com.dororo.api.convert.LatitudeLongitude;
 import com.dororo.api.db.entity.LinkEntity;
 import com.dororo.api.db.entity.MapEntity;
 import com.dororo.api.db.entity.NodeEntity;
+import com.dororo.api.db.entity.TurnInfoEntity;
 import com.dororo.api.db.entity.UserEntity;
+import com.dororo.api.db.repository.LinkRepository;
 import com.dororo.api.db.repository.MapRepository;
+import com.dororo.api.db.repository.NodeRepository;
+import com.dororo.api.db.repository.TurninfoRepository;
 import com.dororo.api.db.repository.UserRepository;
 import com.dororo.api.map.dto.*;
 import com.dororo.api.utils.auth.AuthUtils;
@@ -31,11 +36,19 @@ public class MapService {
     @Autowired
     private MapRepository mapRepository;
     @Autowired
+    private LinkRepository linkRepository;
+    @Autowired
+    private NodeRepository nodeRepository;
+    @Autowired
+    private TurninfoRepository turninfoRepository;
+
+    @Autowired
     private AuthUtils authUtils;
     @Autowired
-    private MapAlgorithm mapAlgorithm;
-    @Autowired
     private S3Uploader s3Uploader;
+    @Autowired
+    private AxisCalculator axisCalculator;
+
 
     public List<MapResponseDto> getAllMaps(MapEntity.Maptype maptype, String access) {
 
@@ -93,32 +106,23 @@ public class MapService {
 
     public List<CreateMapResponseDto> createMap(CreateMapRequestDto createMapRequestDto,String access) {
 
+        MapAlgorithm mapAlgorithm = new MapAlgorithm(nodeRepository, linkRepository, turninfoRepository, axisCalculator);
+
         //시작점에서 가장 가까운 노드 구하기
         String startNodeId = mapAlgorithm.getStartNode(createMapRequestDto.getStartPoint());
 
         //반경 내 노드 리스트 구하기
-        mapAlgorithm.getNodes(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
-
+        List<NodeEntity> nodeEntityList = getNodes(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
         //반경 내 링크 리스트 구하기
-        mapAlgorithm.getLinks(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
-
+        List<LinkEntity> linkEntityList = getLinks(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
         //반경 내 회전정보 리스트 구하기
-        mapAlgorithm.getTurnInfos(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
-
-
+        List<TurnInfoEntity> turnInfoEntityList = getTurnInfos(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
 
         //출발 노드에 연결된 링크 구하기
         List<LinkEntity> startLinks = mapAlgorithm.getStartLinks(startNodeId);
 
         //맵 리스트 받아오기
-        List<CreateMapResponseDto> createdMapList = mapAlgorithm.getMap(startNodeId, startLinks,createMapRequestDto);
-
-        /*for(int i=0;i<createdMapList.size();i++) {
-            System.out.println("origin : "+createdMapList.get(i).getOriginMapRouteAxis().toString());
-            System.out.println("convert : "+createdMapList.get(i).getConvertedRouteAxis().toString());
-            System.out.println("distance : "+createdMapList.get(i).getMapDistance());
-            System.out.println("=========================================================");
-        }*/
+        List<CreateMapResponseDto> createdMapList = mapAlgorithm.getMap(nodeEntityList, linkEntityList, turnInfoEntityList, startNodeId, startLinks,createMapRequestDto);
 
         return createdMapList;
     }
@@ -210,5 +214,20 @@ public class MapService {
         mapEntity.setUserId(userEntity);
         // 데이터베이스 저장
         mapRepository.save(mapEntity);
+    }
+
+    public List<LinkEntity> getLinks (LatitudeLongitude startPoint, float distance) { //반경 내 링크 저장
+        distance = distance / 100;
+        return linkRepository.getLinkEntityList(startPoint.getLng(), startPoint.getLat(), distance);
+    }
+
+    public List<NodeEntity> getNodes (LatitudeLongitude startPoint, float distance) {
+        distance = distance / 100;
+        return nodeRepository.getNodeEntityList(startPoint.getLng(), startPoint.getLat(), distance);
+    }
+
+    public List<TurnInfoEntity> getTurnInfos (LatitudeLongitude startPoint, float distance){
+        distance = distance / 100;
+        return turninfoRepository.getNodeTurnInfos(startPoint.getLng(), startPoint.getLat(), distance);
     }
 }
