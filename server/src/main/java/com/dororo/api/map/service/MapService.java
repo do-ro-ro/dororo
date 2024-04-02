@@ -82,11 +82,13 @@ public class MapService {
     }
 
     public void updateMapCompletion(Integer mapId, UpdateRequestDto updateRequestDto,String access) {
+        System.out.println("@@@@@@@@@@@@PatchMapping service 안@@@@@@@@@@@@@@@@@");
         MapEntity mapEntity = mapRepository.findById(mapId)
                 .orElseThrow(() -> new EntityNotFoundException("Map not found with id: " + mapId));
         System.out.println(updateRequestDto.getMapCompletion());
         mapEntity.setMapCompletion(updateRequestDto.getMapCompletion());
         mapRepository.save(mapEntity); // 변경된 엔티티 저장
+        System.out.println("@@@@@@@@@@@@PatchMapping service 끝!!!!!!!!!!!!!!!!!!!!");
     }
 
     public List<CreateMapResponseDto> createMap(CreateMapRequestDto createMapRequestDto,String access) {
