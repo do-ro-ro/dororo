@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dororo.api.convert.AxisCalculator;
 import com.dororo.api.convert.LatitudeLongitude;
@@ -22,43 +22,33 @@ import com.dororo.api.map.dto.CreateMapRequestDto;
 import com.dororo.api.map.dto.CreateMapResponseDto;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@Component
+
+@Getter
 public class MapAlgorithm {
+
 	private final NodeRepository nodeRepository;
 	private final LinkRepository linkRepository;
-	private final AxisCalculator axisCalculator;
 	private final TurninfoRepository turninfoRepository;
-	List<NodeEntity> nodeEntityList;
-	List<LinkEntity> linkEntityList;
-	List<TurnInfoEntity> turnInfoEntityList;
+	private final AxisCalculator axisCalculator;
+
+	public MapAlgorithm(NodeRepository nodeRepository, LinkRepository linkRepository,
+		TurninfoRepository turninfoRepository, AxisCalculator axisCalculator) {
+		this.nodeRepository = nodeRepository;
+		this.linkRepository = linkRepository;
+		this.turninfoRepository = turninfoRepository;
+		this.axisCalculator = axisCalculator;
+	}
 
 	public String getStartNode (LatitudeLongitude startPoint) { //출발 좌표에서 가장 가까운 노드 찾기
 
 		return nodeRepository.getStartNode(startPoint.getLng(), startPoint.getLat());
 	}
 
-	public void getLinks (LatitudeLongitude startPoint, float distance) { //반경 내 링크 저장
-
-		distance = distance / 100;
-		linkEntityList = linkRepository.getLinkEntityList(startPoint.getLng(), startPoint.getLat(), distance);
-		return;
-	}
-
-	public void getNodes (LatitudeLongitude startPoint, float distance) {
-		distance = distance / 100;
-		nodeEntityList = nodeRepository.getNodeEntityList(startPoint.getLng(), startPoint.getLat(), distance);
-		return;
-	}
-
-	public void getTurnInfos (LatitudeLongitude startPoint, float distance){
-		distance = distance / 100;
-		turnInfoEntityList = turninfoRepository.getNodeTurnInfos(startPoint.getLng(), startPoint.getLat(), distance);
-		System.out.println("turnInfoSize : " + turnInfoEntityList.size());
-	}
-
-	public List<CreateMapResponseDto> getMap(String startNode, List<LinkEntity> startLinks, CreateMapRequestDto createMapRequestDto) {
+	public List<CreateMapResponseDto> getMap(List<NodeEntity> nodeEntityList, List<LinkEntity> linkEntityList, List<TurnInfoEntity> turnInfoEntityList,
+											String startNode, List<LinkEntity> startLinks, CreateMapRequestDto createMapRequestDto) {
 		List<CreateMapResponseDto> finalMapList = new ArrayList<>();
 
 		Map<String, List<LinkEntity>> linkMap = makeEdgeMap(linkEntityList);
@@ -92,10 +82,6 @@ public class MapAlgorithm {
 			List<String> newMap = new ArrayList<>();
 			newMap.addAll(cur.getNodeIds());
 
-			if(newDistance > createMapRequestDto.getMapDistance()*1000+500) continue;
-			if(newTurnLeft > createMapRequestDto.getTurnLeft()+3) continue;
-			if(newTurnRight > createMapRequestDto.getTurnRight()+3) continue;
-
 			if(minDiff > sumNeedTurns-(newTurnLeft+newTurnRight+newUTurn)){
 				minDiff = sumNeedTurns-(newTurnLeft+newTurnRight+newUTurn);
 				fulfilledLeft = newTurnLeft;
@@ -118,6 +104,11 @@ public class MapAlgorithm {
 				List<LatitudeLongitude> convertedRouteAxis = new ArrayList<>();
 
 				for(int i=0;i<cur.getNodeIds().size();i++) originMapRouteAxis.add(nodeMap.get(cur.getNodeIds().get(i)));
+
+				//출발 노드 옮기기
+				convertedRouteAxis.add(axisCalculator.startNodeCalc(originMapRouteAxis.get(0).getLat(), originMapRouteAxis.get(0).getLng(), originMapRouteAxis.get(1).getLat(), originMapRouteAxis.get(1).getLng()));
+
+				//나머지 노드 조정
 				for(int i=0;i<cur.getNodeIds().size()-1;i++) convertedRouteAxis.add(axisCalculator.calculateBearing(originMapRouteAxis.get(i).getLat(), originMapRouteAxis.get(i).getLng(), originMapRouteAxis.get(i+1).getLat(), originMapRouteAxis.get(i+1).getLng()));
 
 				finalMapList.add(new CreateMapResponseDto(originMapRouteAxis, convertedRouteAxis, newDistance));
