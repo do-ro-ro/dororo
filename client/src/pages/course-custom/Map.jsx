@@ -282,16 +282,40 @@ function Map({ course, courseName, toSave }) {
         if (courseNode?.length > 0) {
             // 마커 그려주기
             courseNode.map((node, index) => {
+                let marker = {};
+
+                if (index === 0) {
+                    marker = new window.Tmapv2.Marker({
+                        position: new window.Tmapv2.LatLng(node.lat, node.lng),
+                        icon: startPin,
+                        iconSize: new window.Tmapv2.Size(24, 38),
+                        draggable: false,
+                        opacity: 0,
+                        visible: true,
+                        map: map,
+                    });
+                } else if (index === courseNode?.length - 1) {
+                    marker = new window.Tmapv2.Marker({
+                        position: new window.Tmapv2.LatLng(node.lat, node.lng),
+                        icon: endPin,
+                        iconSize: new window.Tmapv2.Size(24, 38),
+                        draggable: false,
+                        opacity: 0,
+                        visible: true,
+                        map: map,
+                    });
+                } else {
+                    marker = new window.Tmapv2.Marker({
+                        position: new window.Tmapv2.LatLng(node.lat, node.lng),
+                        icon: waypointPin,
+                        iconSize: new window.Tmapv2.Size(24, 24),
+                        draggable: false,
+                        opacity: 0,
+                        visible: true,
+                        map: map,
+                    });
+                }
                 // console.log(convertPoint);
-                const marker = new window.Tmapv2.Marker({
-                    position: new window.Tmapv2.LatLng(node.lat, node.lng),
-                    icon: waypointPin,
-                    iconSize: new window.Tmapv2.Size(24, 24),
-                    draggable: false,
-                    opacity: 0,
-                    visible: true,
-                    map: map,
-                });
 
                 // console.log(marker);
                 marker.addListener(
