@@ -196,7 +196,7 @@ $ sudo docker pull redis
 $ sudo docker run -d -p <Your>:<Port> --name <YourConatinerName> redis
 ```
 
-### 📋 환경변수 형태
+### 📋 프레임워크 설정 파일 내용
 
 ```jsx
 ---------React---------
