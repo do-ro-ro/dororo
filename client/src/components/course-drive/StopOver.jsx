@@ -116,7 +116,8 @@ const StopOver = ({
                 if (targetLng >= lngMinus && targetLng <= lngPlus) {
                     handleConfirmClick();
                     alert("동작 잘 됨");
-                    navigate(`/course/${courseId}`);
+                    navigate("/main/myPage");
+                    // navigate(`/course/${courseId}`);
                 }
             }
         }
