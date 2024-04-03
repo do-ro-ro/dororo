@@ -106,7 +106,7 @@ const Loading = () => {
                     </>
                 )}
                 {/* isLoading 상태와 관계없이 Quiz 컴포넌트를 렌더링 */}
-                <Quiz />
+                {/* <Quiz /> */}
             </Box>
             {!isLoading && (
                 <Box
@@ -123,11 +123,11 @@ const Loading = () => {
                         sx={{
                             fontSize: "1.25rem",
                             fontWeight: "bold",
-                            backgroundColor: "red",
+                            backgroundColor: "green",
                             ":hover": {
-                                backgroundColor: "red", // 호버 시에도 배경색을 red로 유지
+                                backgroundColor: "green", // 호버 시에도 배경색을 red로 유지
                                 "@media (hover: none)": {
-                                    backgroundColor: "red", // 터치 기반 장치에서 호버 스타일 비활성화
+                                    backgroundColor: "green", // 터치 기반 장치에서 호버 스타일 비활성화
                                 },
                             },
                         }}
