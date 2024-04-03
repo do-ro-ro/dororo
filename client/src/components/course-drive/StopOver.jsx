@@ -116,7 +116,8 @@ const StopOver = ({
                 if (targetLng >= lngMinus && targetLng <= lngPlus) {
                     handleConfirmClick();
                     alert("동작 잘 됨");
-                    navigate(`/course/${courseId}`);
+                    navigate("/main/myPage");
+                    // navigate(`/course/${courseId}`);
                 }
             }
         }
@@ -140,7 +141,7 @@ const StopOver = ({
             lng: point.lng,
             icon: visited[index] ? waypoint_passed : points[index],
             iconSize: visited[index]
-                ? new window.Tmapv2.Size(36, 36)
+                ? new window.Tmapv2.Size(36, 72)
                 : new window.Tmapv2.Size(36, 72),
         }));
 
