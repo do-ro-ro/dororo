@@ -19,4 +19,13 @@ public interface TurninfoRepository extends JpaRepository<TurnInfoEntity, Intege
 		"WHERE ST_DWithin(node_point, ST_SetSRID(ST_Point(?1, ?2), 4326), ?3)) " +
 		"AND turn_type ='011'",nativeQuery = true)
 	List<TurnInfoEntity> getNodeTurnInfos(double lng, double lat, float distance);
+
+	@Query(value = "SELECT node_id " +
+			"FROM turn_infos " +
+			"WHERE node_id IN (" +
+			"SELECT node_id " +
+			"FROM nodes " +
+			"WHERE ST_DWithin(node_point, ST_SetSRID(ST_Point(?1, ?2), 4326), ?3)) " +
+			"AND turn_type ='101'",nativeQuery = true)
+	List<String> getNodeTurnLeftInfos(double lng, double lat, float distance);
 }
