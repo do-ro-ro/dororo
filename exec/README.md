@@ -1,4 +1,4 @@
-# 🚙 DORORO PORTING MANUAL
+# 🚘 DORORO PORTING MANUAL
 
 ## 목차
 
@@ -300,7 +300,7 @@ cloud:
 
 ## 2. 배포
 
-### 수동배포 방법
+### 🚀 수동배포 방법
 
 1. 소스 코드 복제
 
@@ -329,14 +329,14 @@ $ nohup java -jar -Dspring.profiles.active={your-want-profile} dororo-0.0.1-SNAP
 
 ## 3. 외부 서비스
 
-### 소셜 로그인
+### 🔐 소셜 로그인
 
 [네이버 로그인](https://developers.naver.com/docs/login/overview/overview.md)
 
 1. 네이버 개발자 센터에서 내 어플리케이션 등록
 2. API 설정, Callback URL, 서비스 URL 지정
 
-### 지도
+### 🌐 지도
 
 TMAP
 
