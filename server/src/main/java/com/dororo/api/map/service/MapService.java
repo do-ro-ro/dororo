@@ -112,11 +112,23 @@ public class MapService {
         String startNodeId = mapAlgorithm.getStartNode(createMapRequestDto.getStartPoint());
 
         //반경 내 노드 리스트 구하기
+        long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
         List<NodeEntity> nodeEntityList = getNodes(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = afterTime - beforeTime; //두 시간에 차 계산
+        System.out.println("DB에서 node entity list 조회해오기: "+ secDiffTime + "ms");
         //반경 내 링크 리스트 구하기
+        beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
         List<LinkEntity> linkEntityList = getLinks(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
+        afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        secDiffTime = afterTime - beforeTime; //두 시간에 차 계산
+        System.out.println("DB에서 link entity list 조회해오기: "+ secDiffTime + "ms");
         //반경 내 회전정보 리스트 구하기
+        beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
         List<TurnInfoEntity> turnInfoEntityList = getTurnInfos(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
+        afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        secDiffTime = afterTime - beforeTime; //두 시간에 차 계산
+        System.out.println("DB에서 link turn info list 조회해오기: "+ secDiffTime + "ms");
 
         //출발 노드에 연결된 링크 구하기
         List<LinkEntity> startLinks = mapAlgorithm.getStartLinks(startNodeId);

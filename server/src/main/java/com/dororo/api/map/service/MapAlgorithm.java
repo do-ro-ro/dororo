@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.dororo.api.convert.AxisCalculator;
 import com.dororo.api.convert.LatitudeLongitude;
 import com.dororo.api.db.entity.LinkEntity;
@@ -21,9 +19,9 @@ import com.dororo.api.exception.NoMapException;
 import com.dororo.api.map.dto.CreateMapRequestDto;
 import com.dororo.api.map.dto.CreateMapResponseDto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import static com.dororo.api.convert.ConvertUtils.convertToPointLatLng;
 
 
 @Getter
@@ -51,9 +49,23 @@ public class MapAlgorithm {
 											String startNode, List<LinkEntity> startLinks, CreateMapRequestDto createMapRequestDto) {
 		List<CreateMapResponseDto> finalMapList = new ArrayList<>();
 
+		long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
 		Map<String, List<LinkEntity>> linkMap = makeEdgeMap(linkEntityList);
+		long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+		long secDiffTime = afterTime - beforeTime; //두 시간에 차 계산
+		System.out.println("Link Map 만들기: "+ secDiffTime + "ms");
+
+		beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
 		Map<String, LatitudeLongitude> nodeMap = makeNodePointMap(nodeEntityList);
+		afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+		secDiffTime = afterTime - beforeTime; //두 시간에 차 계산
+		System.out.println("Node Map 만들기: "+ secDiffTime + "ms");
+
+		beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
 		Map<String, List<String>> turnInfoMap = makeTurnInfoMap(turnInfoEntityList);
+		afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+		secDiffTime = afterTime - beforeTime; //두 시간에 차 계산
+		System.out.println("Turn info Map 만들기: "+ secDiffTime + "ms");
 
 		Queue<Link> q = new ArrayDeque<>();
 		List<String> mapInit = new ArrayList<>();
@@ -250,9 +262,10 @@ public class MapAlgorithm {
 	}
 	private Map<String, LatitudeLongitude> makeNodePointMap(List<NodeEntity> nodeEntityList) {
 		Map<String, LatitudeLongitude> map = new HashMap<>();
+		System.out.println("노드 엔티티 개수 : " + nodeEntityList.size());
 		for(int i=0;i<nodeEntityList.size();i++){
 			String node = nodeEntityList.get(i).getNodeId();
-			LatitudeLongitude point = nodeRepository.getNodePoint(node);
+			LatitudeLongitude point = convertToPointLatLng(nodeEntityList.get(i).getNodePoint());
 
 			map.put(node, point);
 		}
