@@ -353,15 +353,19 @@ Kakao Map
 
 ## 4. 시연 시나리오
 
-### 1. 코스 추천
+### 1. 랜딩 페이지 & 로그인
 
-![Alt text](image.png)  
-![Alt text](image-1.png)
+<img src = ./assets/landing.gif width=165 height = 330/>
 
-### 2. 코스 주행
+### 2. 코스 추천
+
+<img src = ./assets/findlocation.gif width=165 height = 330/> <img src = ./assets/createoption.gif width=165 height = 330/>
+<img src = ./assets/createcomplete.gif width=165 height = 330/>
+
+### 3. 코스 주행
 
 <img src = image-2.png width=165 height = 330/>
 
-### 3. 코스 커스텀
+### 4. 코스 커스텀
 
-![Alt text](image-3.png)
+<img src = ./assets/custom.gif width=165 height = 330/>
