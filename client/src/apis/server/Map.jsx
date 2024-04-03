@@ -91,6 +91,7 @@ const saveCourse = async (
         const response = await axiosInstance.post(`/maps/save`, body);
         if (response.status === 200) {
             console.log("코스 저장 성공!");
+            return response;
         }
     } catch (e) {
         console.log(e);
