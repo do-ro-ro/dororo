@@ -2,36 +2,36 @@ import React, { useEffect, useState } from "react";
 import me_pointer from "../../assets/me_pointer.png";
 import start_pointer from "../../assets/map_marker_start.png";
 import end_pointer from "../../assets/map_marker_end.png";
-import waypoint_1 from "../../assets/waypoints_number/waypoint_1.png";
-import waypoint_2 from "../../assets/waypoints_number/waypoint_2.png";
-import waypoint_3 from "../../assets/waypoints_number/waypoint_3.png";
-import waypoint_4 from "../../assets/waypoints_number/waypoint_4.png";
-import waypoint_5 from "../../assets/waypoints_number/waypoint_5.png";
-import waypoint_6 from "../../assets/waypoints_number/waypoint_6.png";
-import waypoint_7 from "../../assets/waypoints_number/waypoint_7.png";
-import waypoint_8 from "../../assets/waypoints_number/waypoint_8.png";
-import waypoint_9 from "../../assets/waypoints_number/waypoint_9.png";
-import waypoint_10 from "../../assets/waypoints_number/waypoint_10.png";
-import waypoint_11 from "../../assets/waypoints_number/waypoint_11.png";
-import waypoint_12 from "../../assets/waypoints_number/waypoint_12.png";
-import waypoint_13 from "../../assets/waypoints_number/waypoint_13.png";
-import waypoint_14 from "../../assets/waypoints_number/waypoint_14.png";
-import waypoint_15 from "../../assets/waypoints_number/waypoint_15.png";
-import waypoint_16 from "../../assets/waypoints_number/waypoint_16.png";
-import waypoint_17 from "../../assets/waypoints_number/waypoint_17.png";
-import waypoint_18 from "../../assets/waypoints_number/waypoint_18.png";
-import waypoint_19 from "../../assets/waypoints_number/waypoint_19.png";
-import waypoint_20 from "../../assets/waypoints_number/waypoint_20.png";
-import waypoint_21 from "../../assets/waypoints_number/waypoint_21.png";
-import waypoint_22 from "../../assets/waypoints_number/waypoint_22.png";
-import waypoint_23 from "../../assets/waypoints_number/waypoint_23.png";
-import waypoint_24 from "../../assets/waypoints_number/waypoint_24.png";
-import waypoint_25 from "../../assets/waypoints_number/waypoint_25.png";
-import waypoint_26 from "../../assets/waypoints_number/waypoint_26.png";
-import waypoint_27 from "../../assets/waypoints_number/waypoint_27.png";
-import waypoint_28 from "../../assets/waypoints_number/waypoint_28.png";
-import waypoint_29 from "../../assets/waypoints_number/waypoint_29.png";
-import waypoint_30 from "../../assets/waypoints_number/waypoint_30.png";
+import waypoint_1 from "../../assets/waypoints_number/waypoint_drive_1.png";
+import waypoint_2 from "../../assets/waypoints_number/waypoint_drive_2.png";
+import waypoint_3 from "../../assets/waypoints_number/waypoint_drive_3.png";
+import waypoint_4 from "../../assets/waypoints_number/waypoint_drive_4.png";
+import waypoint_5 from "../../assets/waypoints_number/waypoint_drive_5.png";
+import waypoint_6 from "../../assets/waypoints_number/waypoint_drive_6.png";
+import waypoint_7 from "../../assets/waypoints_number/waypoint_drive_7.png";
+import waypoint_8 from "../../assets/waypoints_number/waypoint_drive_8.png";
+import waypoint_9 from "../../assets/waypoints_number/waypoint_drive_9.png";
+import waypoint_10 from "../../assets/waypoints_number/waypoint_drive_10.png";
+import waypoint_11 from "../../assets/waypoints_number/waypoint_drive_11.png";
+import waypoint_12 from "../../assets/waypoints_number/waypoint_drive_12.png";
+import waypoint_13 from "../../assets/waypoints_number/waypoint_drive_13.png";
+import waypoint_14 from "../../assets/waypoints_number/waypoint_drive_14.png";
+import waypoint_15 from "../../assets/waypoints_number/waypoint_drive_15.png";
+import waypoint_16 from "../../assets/waypoints_number/waypoint_drive_16.png";
+import waypoint_17 from "../../assets/waypoints_number/waypoint_drive_17.png";
+import waypoint_18 from "../../assets/waypoints_number/waypoint_drive_18.png";
+import waypoint_19 from "../../assets/waypoints_number/waypoint_drive_19.png";
+import waypoint_20 from "../../assets/waypoints_number/waypoint_drive_20.png";
+import waypoint_21 from "../../assets/waypoints_number/waypoint_drive_21.png";
+import waypoint_22 from "../../assets/waypoints_number/waypoint_drive_22.png";
+import waypoint_23 from "../../assets/waypoints_number/waypoint_drive_23.png";
+import waypoint_24 from "../../assets/waypoints_number/waypoint_drive_24.png";
+import waypoint_25 from "../../assets/waypoints_number/waypoint_drive_25.png";
+import waypoint_26 from "../../assets/waypoints_number/waypoint_drive_26.png";
+import waypoint_27 from "../../assets/waypoints_number/waypoint_drive_27.png";
+import waypoint_28 from "../../assets/waypoints_number/waypoint_drive_28.png";
+import waypoint_29 from "../../assets/waypoints_number/waypoint_drive_29.png";
+import waypoint_30 from "../../assets/waypoints_number/waypoint_drive_30.png";
 import waypoint_passed from "../../assets/waypoint_passed.png";
 
 import { checkDrive } from "../../apis/server/Map";
@@ -145,7 +145,7 @@ const StopOver = ({
             const marker = new window.Tmapv2.Marker({
                 position: new window.Tmapv2.LatLng(waypoint.lat, waypoint.lng),
                 icon: waypoint.icon,
-                iconSize: new window.Tmapv2.Size(24, 24),
+                iconSize: new window.Tmapv2.Size(36, 72),
                 map: map,
             });
             setResultMarkerArr((prev) => [...prev, marker]);
@@ -212,7 +212,7 @@ const StopOver = ({
             const marker = new window.Tmapv2.Marker({
                 position: new window.Tmapv2.LatLng(lat, lng),
                 icon: me_pointer, // 사용할 아이콘의 URL로 교체
-                iconSize: new window.Tmapv2.Size(24, 24), // 아이콘 크기 조정
+                iconSize: new window.Tmapv2.Size(36, 57), // 아이콘 크기 조정
                 map: map,
             });
             setCurrentLocationMarker(marker);
@@ -243,7 +243,7 @@ const StopOver = ({
                 courseLine[0].lng,
             ),
             icon: start_pointer,
-            iconSize: new window.Tmapv2.Size(24, 38),
+            iconSize: new window.Tmapv2.Size(36, 57),
             map: map,
         });
         setResultMarkerArr((prev) => [...prev, marker_s]);
@@ -254,7 +254,7 @@ const StopOver = ({
                 courseLine[courseLine.length - 1].lng,
             ),
             icon: end_pointer,
-            iconSize: new window.Tmapv2.Size(24, 38),
+            iconSize: new window.Tmapv2.Size(36, 57),
             map: map,
         });
         setResultMarkerArr((prev) => [...prev, marker_e]);
@@ -269,7 +269,7 @@ const StopOver = ({
             const marker = new window.Tmapv2.Marker({
                 position: new window.Tmapv2.LatLng(waypoint.lat, waypoint.lng),
                 icon: waypoint.icon,
-                iconSize: new window.Tmapv2.Size(24, 24),
+                iconSize: new window.Tmapv2.Size(36, 72),
                 map: map,
             });
             setResultMarkerArr((prev) => [...prev, marker]);
