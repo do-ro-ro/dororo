@@ -22,12 +22,25 @@ function MyPage() {
     const [currentUserCourses, setCurrentUserCourses] = useState(null);
     const [currentMapPostsList, setCurrentMapPostsList] = useState([]);
     const [getAllPosts, setGetAllPosts] = useState(false);
+    const [getAllScrappedPosts, setGetAllScrappedPosts] = useState(false);
+    const [getAllSharedPosts, setGetAllSharedPosts] = useState(false);
 
     const profileImage =
         currentUserInfo?.profileImage ||
         "https://ssafy-dororo.s3.ap-northeast-2.amazonaws.com/user/blank-profile.png";
 
     const [imgSrc, setImgSrc] = useState(profileImage);
+
+    const recommendedPostLists = currentUserCourses
+        ?.reverse()
+        .filter((course) => course.mapType !== "SCRAP");
+    const scrappedPostLists = currentUserCourses
+        ?.reverse()
+        .filter((course) => course.mapType === "SCRAP");
+
+    const mySharedPostLists = currentMapPostsList
+        ?.reverse()
+        .filter((post) => post.isMine === true);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -55,8 +68,8 @@ function MyPage() {
         const fetchPostsData = async () => {
             try {
                 const response = await getMapPostsList();
-                const updatedMapPostsList = response;
-                // console.log(response);
+                const updatedMapPostsList = response.data;
+                console.log(response);
                 setCurrentMapPostsList(updatedMapPostsList);
                 // console.log(updatedMapPostsList);
                 // console.log(currentMapPostsList);
@@ -71,7 +84,7 @@ function MyPage() {
     return (
         <>
             <Topbar>마이페이지</Topbar>
-            <Box pb="15vh" mb={20} mt={8}>
+            <Box pb="30vh" mb={30} mt={8}>
                 <Stack mx={4} mt={2} height={"90vh"}>
                     <Paper>
                         <Stack
@@ -120,38 +133,31 @@ function MyPage() {
                     </Stack>
                     {getAllPosts ? (
                         <Stack>
-                            {currentUserCourses?.reverse().map((course) => {
-                                if (course.mapType !== "SCRAP") {
-                                    return (
-                                        <CourseCard
-                                            key={course.mapId}
-                                            postId={course.mapId}
-                                            course={course}
-                                        >
-                                            {course.mapName}
-                                        </CourseCard>
-                                    );
-                                }
+                            {recommendedPostLists?.map((course) => {
+                                return (
+                                    <CourseCard
+                                        key={course.mapId}
+                                        postId={course.mapId}
+                                        course={course}
+                                    >
+                                        {course.mapName}
+                                    </CourseCard>
+                                );
                             })}
                         </Stack>
                     ) : (
                         <Stack>
-                            {currentUserCourses
-                                ?.reverse()
-                                .slice(0, 3)
-                                .map((course) => {
-                                    if (course.mapType !== "SCRAP") {
-                                        return (
-                                            <CourseCard
-                                                key={course.mapId}
-                                                postId={course.mapId}
-                                                course={course}
-                                            >
-                                                {course.mapName}
-                                            </CourseCard>
-                                        );
-                                    }
-                                })}
+                            {recommendedPostLists?.slice(0, 3).map((course) => {
+                                return (
+                                    <CourseCard
+                                        key={course.mapId}
+                                        postId={course.mapId}
+                                        course={course}
+                                    >
+                                        {course.mapName}
+                                    </CourseCard>
+                                );
+                            })}
                         </Stack>
                     )}
 
@@ -162,11 +168,21 @@ function MyPage() {
                         alignItems={"center"}
                     >
                         <Typography variant="h6">내가 스크랩한 코스</Typography>
+                        <Button
+                            onClick={() => {
+                                if (getAllScrappedPosts) {
+                                    setGetAllScrappedPosts(false);
+                                } else {
+                                    setGetAllScrappedPosts(true);
+                                }
+                            }}
+                        >
+                            {!getAllScrappedPosts ? "모두 보기" : "접기"}
+                        </Button>
                     </Stack>
-                    <Stack>
-                        {currentUserCourses?.reverse().map((course) => {
-                            if (course.mapType === "SCRAP") {
-                                // console.log("스크랩코스", course);
+                    {getAllScrappedPosts ? (
+                        <Stack>
+                            {scrappedPostLists.map((course) => {
                                 return (
                                     <CourseCard
                                         key={course.mapId}
@@ -178,34 +194,79 @@ function MyPage() {
                                         {course}
                                     </CourseCard>
                                 );
-                            }
-                        })}
-                    </Stack>
-                    <Stack
-                        sx={{ my: 2 }}
-                        direction={"row"}
-                        justifyContent={"space-between"}
-                        alignItems={"center"}
-                    >
-                        <Typography variant="h6">내가 공유한 코스</Typography>
-                    </Stack>
-                    <Stack direction={"row"}>
-                        {currentMapPostsList.length > 0 &&
-                            currentMapPostsList?.map((course) => {
-                                if (course.isMine) {
+                            })}
+                        </Stack>
+                    ) : (
+                        <Stack>
+                            {scrappedPostLists?.slice(0, 3).map((course) => {
+                                return (
+                                    <CourseCard
+                                        key={course.mapId}
+                                        postId={course.mapId}
+                                        variant={"course"}
+                                        mapImage={course.mapImage}
+                                        course={course}
+                                    >
+                                        {course}
+                                    </CourseCard>
+                                );
+                            })}
+                        </Stack>
+                    )}
+                    <Box>
+                        <Stack
+                            sx={{ my: 2 }}
+                            direction={"row"}
+                            justifyContent={"space-between"}
+                            alignItems={"center"}
+                        >
+                            <Typography variant="h6">
+                                내가 공유한 코스
+                            </Typography>
+                            <Button
+                                onClick={() => {
+                                    if (getAllSharedPosts) {
+                                        setGetAllSharedPosts(false);
+                                    } else {
+                                        setGetAllSharedPosts(true);
+                                    }
+                                }}
+                            >
+                                {!getAllSharedPosts ? "모두 보기" : "접기"}
+                            </Button>
+                        </Stack>
+                        {getAllSharedPosts ? (
+                            <Stack>
+                                {mySharedPostLists?.map((course) => {
                                     return (
                                         <CourseCard
                                             key={course.postId}
                                             postId={course.postId}
                                             variant={"my_post"}
-                                            mapImage={course.mapImage}
                                         >
                                             {course.postTitle}
                                         </CourseCard>
                                     );
-                                }
-                            })}
-                    </Stack>
+                                })}
+                            </Stack>
+                        ) : (
+                            <Stack>
+                                {mySharedPostLists
+                                    ?.slice(0, 3)
+                                    .map((course) => {
+                                        return (
+                                            <CourseCard
+                                                key={course.postId}
+                                                postId={course.postId}
+                                                variant={"my_post"}
+                                            >
+                                                {course.postTitle}
+                                            </CourseCard>
+                                        );
+                                    })}
+                            </Stack>
+                        )}
+                    </Box>
                     {/* <Stack direction="column">{renderCourseCardRows()}</Stack> */}
                 </Stack>
             </Box>
