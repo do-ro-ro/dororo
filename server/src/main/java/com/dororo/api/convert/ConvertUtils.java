@@ -3,6 +3,7 @@ package com.dororo.api.convert;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,5 +30,16 @@ public class ConvertUtils {
 
         return geometryFactory.createLineString(coordinates);
     }
+
+    // Point를 LatitudeLongitude로 변환하는 유틸리티 메서드
+    public static LatitudeLongitude convertToPointLatLng(Point point) {
+        if (point != null) {
+            double lat = point.getY(); // Point의 Y 좌표가 위도
+            double lng = point.getX(); // Point의 X 좌표가 경도
+            return new LatitudeLongitude(lat, lng);
+        }
+        return null; // Point가 null이면 null 반환
+    }
+
 
 }

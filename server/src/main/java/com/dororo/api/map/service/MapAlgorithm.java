@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.dororo.api.convert.AxisCalculator;
 import com.dororo.api.convert.LatitudeLongitude;
 import com.dororo.api.db.entity.LinkEntity;
@@ -21,9 +19,9 @@ import com.dororo.api.exception.NoMapException;
 import com.dororo.api.map.dto.CreateMapRequestDto;
 import com.dororo.api.map.dto.CreateMapResponseDto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import static com.dororo.api.convert.ConvertUtils.convertToPointLatLng;
 
 
 @Getter
@@ -234,7 +232,6 @@ public class MapAlgorithm {
 	private Map<String, List<LinkEntity>> makeEdgeMap(List<LinkEntity> linkEntityList) {
 
 		Map<String, List<LinkEntity>> map = new HashMap<>();
-		System.out.println("linkEnntityList size : "+linkEntityList.size());
 		for(int i=0;i<linkEntityList.size();i++){
 			List<LinkEntity> values = new ArrayList<>();
 			String key = linkEntityList.get(i).getFNodeId();
@@ -252,7 +249,7 @@ public class MapAlgorithm {
 		Map<String, LatitudeLongitude> map = new HashMap<>();
 		for(int i=0;i<nodeEntityList.size();i++){
 			String node = nodeEntityList.get(i).getNodeId();
-			LatitudeLongitude point = nodeRepository.getNodePoint(node);
+			LatitudeLongitude point = convertToPointLatLng(nodeEntityList.get(i).getNodePoint());
 
 			map.put(node, point);
 		}
