@@ -331,10 +331,10 @@ $ nohup java -jar -Dspring.profiles.active={your-want-profile} dororo-0.0.1-SNAP
 
 ### 소셜 로그인
 
+[네이버 로그인](https://developers.naver.com/docs/login/overview/overview.md)
+
 1. 네이버 개발자 센터에서 내 어플리케이션 등록
 2. API 설정, Callback URL, 서비스 URL 지정
-
--   네이버 로그인 : https://developers.naver.com/docs/login/overview/overview.md
 
 ---
 
