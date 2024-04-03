@@ -78,7 +78,7 @@ const Search = ({ setLat, setLng }) => {
                     size="medium"
                     value={keyword}
                     onChange={handleInputChange}
-                    placeholder="지역검색"
+                    placeholder="출발지 설정"
                     sx={{
                         border: 2,
                         borderColor: "#6389BE",

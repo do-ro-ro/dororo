@@ -6,7 +6,7 @@ const CourseDetailInfo = ({ courseNode }) => {
     const [results, setResults] = useState([]);
     useEffect(() => {
         const getKakaoMapAddress = async (latitude, longitude) => {
-            const apiKey = "ba3c93196c8237fa05ea50dbee2b9bdc"; // 자신의 Kakao API 키로 대체하세요
+            const apiKey = import.meta.env.VITE_KAKAOMAP_REST_API_KEY; // 자신의 Kakao API 키로 대체하세요
             const apiUrl = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`;
 
             try {
