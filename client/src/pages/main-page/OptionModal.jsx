@@ -36,7 +36,7 @@ const style = {
     p: 4,
 };
 
-const OptionModal = ({ open, closeModal, lat, lng }) => {
+const OptionModal = ({ open, closeModal, lat, lng, address }) => {
     const [option, setOption] = useState({
         mapDistance: 1,
         turnLeft: 1,
@@ -48,6 +48,8 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
         },
         return: true,
     });
+
+    const [sliderValue, setSliderValue] = useState(1);
 
     // useEffect(() => {
     //     console.log("option", option);
@@ -71,7 +73,9 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
         navigate("/loading", { state: { data: option } });
     };
     const handleSliderChange = (e) => {
-        setOption({ ...option, mapDistance: Math.max(e.target.value, 1) });
+        const newValue = Math.max(e.target.value, 1);
+        setOption({ ...option, mapDistance: newValue });
+        setSliderValue(newValue);
     };
 
     const handleDecrease = (direction) => {
@@ -170,7 +174,7 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
                         component="h2"
                         sx={{ mt: 2, fontWeight: 600 }}
                     >
-                        코스길이
+                        출발지 위치
                     </Typography>
                     <Typography
                         sx={{
@@ -179,8 +183,48 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
                             mb: 2,
                         }}
                     >
-                        최소 길이는 5km 입니다. 코스 길이를 설정해주세요.
+                        출발지를 기준으로 코스를 탐색합니다.
                     </Typography>
+                    <Box sx={{ textAlign: "center" }}>
+                        <Typography
+                            sx={{
+                                color: "#6386BE",
+                                fontWeight: "bold",
+                                fontSize: "1.2rem",
+                            }}
+                        >
+                            {address}
+                        </Typography>
+                    </Box>
+                </Box>
+                <Box>
+                    <Typography
+                        variant="h6"
+                        component="h2"
+                        sx={{ mt: 2, fontWeight: 600 }}
+                    >
+                        최소 코스 길이
+                    </Typography>
+                    <Typography
+                        sx={{
+                            fontSize: "0.75rem", // 더 작은 글씨
+                            color: "grey.600", // 회색
+                            mb: 2,
+                        }}
+                    >
+                        최소 길이는 1km 입니다. 코스 길이를 설정해주세요.
+                    </Typography>
+                    <Box sx={{ textAlign: "center" }}>
+                        <Typography
+                            sx={{
+                                color: "#6386BE",
+                                fontWeight: "bold",
+                                fontSize: "1.3rem",
+                            }}
+                        >
+                            {sliderValue}km
+                        </Typography>
+                    </Box>
                     <Box sx={{ display: "flex", justifyContent: "center" }}>
                         <Box sx={{ width: "90%" }}>
                             <Slider
@@ -190,9 +234,10 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
                                         : 0
                                 }
                                 onChange={handleSliderChange}
-                                valueLabelDisplay="auto"
+                                valueLabelDisplay="off"
                                 min={0}
-                                max={10}
+                                max={3}
+                                step={0.2}
                             />
                         </Box>
                     </Box>
@@ -203,7 +248,7 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
                         component="h2"
                         sx={{ mt: 2, fontWeight: 600 }}
                     >
-                        코스 옵션
+                        최소 코스 옵션
                     </Typography>
                     <Typography
                         sx={{
