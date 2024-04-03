@@ -437,7 +437,7 @@ function Map({ course, courseName, toSave }) {
     useEffect(() => {
         // 맵이 있는지 확인한 후에
         if (map !== null) {
-            // courseNode에 보정전 좌표값 넣어주기
+            // 여기서는 courseNode에 보정 후 좌표값 넣어주기
             setCourseNode(currentCourse?.convertedRouteAxis);
             postRouteSequential30(basicAPIparam);
             // console.log(courseLine);
