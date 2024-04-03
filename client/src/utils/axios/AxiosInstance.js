@@ -38,7 +38,7 @@ axiosInstance.interceptors.response.use(
         if (error.response.status === 403 && !originalRequest._retry) {
             originalRequest._retry = true; // 재시도 표시
             // 리프레시 토큰
-            const refresh = localStorage.getItem("refreshToken");
+            const refresh = localStorage.getItem("refresh");
 
             // const refresh =
             //     "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5OHc4Z3hxVGtpV3BRXyIsImlhdCI6MTcxMTMzNzMwMSwiZXhwIjoxNzE0MDE1NzAxfQ.IMVHPA7WjwqlgOyMXf2HpW03DuHOC3FZD1F_EtmP2P8";
