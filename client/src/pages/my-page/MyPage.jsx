@@ -21,6 +21,7 @@ function MyPage() {
     const [currentUserInfo, setCurrentUserInfo] = useState(null);
     const [currentUserCourses, setCurrentUserCourses] = useState(null);
     const [currentMapPostsList, setCurrentMapPostsList] = useState([]);
+    const [getAllPosts, setGetAllPosts] = useState(false);
 
     const profileImage =
         currentUserInfo?.profileImage ||
@@ -105,23 +106,55 @@ function MyPage() {
                         <Typography variant="h6" sx={{ my: 2 }}>
                             내가 추천받은 코스
                         </Typography>
-                        <Button>모두 보기</Button>
+                        <Button
+                            onClick={() => {
+                                if (getAllPosts) {
+                                    setGetAllPosts(false);
+                                } else {
+                                    setGetAllPosts(true);
+                                }
+                            }}
+                        >
+                            모두 보기
+                        </Button>
                     </Stack>
-                    <Stack>
-                        {currentUserCourses?.reverse().map((course) => {
-                            if (course.mapType !== "SCRAP") {
-                                return (
-                                    <CourseCard
-                                        key={course.mapId}
-                                        postId={course.mapId}
-                                        course={course}
-                                    >
-                                        {course.mapName}
-                                    </CourseCard>
-                                );
-                            }
-                        })}
-                    </Stack>
+                    {getAllPosts ? (
+                        <Stack>
+                            {currentUserCourses?.reverse().map((course) => {
+                                if (course.mapType !== "SCRAP") {
+                                    return (
+                                        <CourseCard
+                                            key={course.mapId}
+                                            postId={course.mapId}
+                                            course={course}
+                                        >
+                                            {course.mapName}
+                                        </CourseCard>
+                                    );
+                                }
+                            })}
+                        </Stack>
+                    ) : (
+                        <Stack>
+                            {currentUserCourses
+                                ?.reverse()
+                                .slice(0, 3)
+                                .map((course) => {
+                                    if (course.mapType !== "SCRAP") {
+                                        return (
+                                            <CourseCard
+                                                key={course.mapId}
+                                                postId={course.mapId}
+                                                course={course}
+                                            >
+                                                {course.mapName}
+                                            </CourseCard>
+                                        );
+                                    }
+                                })}
+                        </Stack>
+                    )}
+
                     <Stack
                         sx={{ my: 2 }}
                         direction={"row"}
