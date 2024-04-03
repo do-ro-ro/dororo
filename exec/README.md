@@ -336,6 +336,17 @@ $ nohup java -jar -Dspring.profiles.active={your-want-profile} dororo-0.0.1-SNAP
 1. 네이버 개발자 센터에서 내 어플리케이션 등록
 2. API 설정, Callback URL, 서비스 URL 지정
 
+TMAP
+
+1. [SK Open API](https://openapi.sk.com/) 앱 등록
+2. PRODUCTS -> TMAP 옆 API 버튼 클릭 -> 우측 상단 개발 가이드 클릭 -> 스크롤 후 중간쯤 "구매를 원하시면 여기를 클릭" 하이퍼 텍스트 클릭 -> 앱 등록
+3. [TMAP 기능](https://openapi.sk.com/products/detail?svcSeq=4&menuSeq=3) 참고하여 필요한 API 사용
+
+Kakao Map
+
+1. [카카오 개발자 센터](https://developers.kakao.com/) 앱 등록
+2. [MAPS API](https://apis.map.kakao.com/web/) 참고하여 필요한 API 사용
+
 ---
 
 ## 4. 시연 시나리오
