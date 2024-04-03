@@ -352,3 +352,16 @@ Kakao Map
 ---
 
 ## 4. 시연 시나리오
+
+### 1. 코스 추천
+
+![Alt text](image.png)  
+![Alt text](image-1.png)
+
+### 2. 코스 주행
+
+<img src = image-2.png width=165 height = 330/>
+
+### 3. 코스 커스텀
+
+![Alt text](image-3.png)
