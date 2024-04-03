@@ -72,7 +72,7 @@ function CourseDrivePage() {
 
     return (
         <>
-            <IntroductionModal />
+            {/* <IntroductionModal /> */}
             <div className="relative">
                 <RealTimeCurrentLocation setLat={setLat} setLng={setLng} />
                 {/* <ServerTest setcoolList={setcoolList} /> */}
