@@ -36,7 +36,7 @@ const style = {
     p: 4,
 };
 
-const OptionModal = ({ open, closeModal, lat, lng }) => {
+const OptionModal = ({ open, closeModal, lat, lng, address }) => {
     const [option, setOption] = useState({
         mapDistance: 1,
         turnLeft: 1,
@@ -174,7 +174,7 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
                         component="h2"
                         sx={{ mt: 2, fontWeight: 600 }}
                     >
-                        코스 탐색 위치
+                        출발지 위치
                     </Typography>
                     <Typography
                         sx={{
@@ -183,8 +183,19 @@ const OptionModal = ({ open, closeModal, lat, lng }) => {
                             mb: 2,
                         }}
                     >
-                        지역 검색, 현재 위치 아이콘을 이용하여 지정합니다.
+                        출발지를 기준으로 코스를 탐색합니다.
                     </Typography>
+                    <Box sx={{ textAlign: "center" }}>
+                        <Typography
+                            sx={{
+                                color: "#6386BE",
+                                fontWeight: "bold",
+                                fontSize: "1.2rem",
+                            }}
+                        >
+                            {address}
+                        </Typography>
+                    </Box>
                 </Box>
                 <Box>
                     <Typography
