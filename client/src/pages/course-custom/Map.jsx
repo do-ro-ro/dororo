@@ -81,10 +81,10 @@ function Map({ course, courseName, toSave }) {
     const [saveButtonClicked, setSaveButtonClicked] = useState(false);
 
     // API 호출을 위한 세팅들
-    const basicStartPoint = currentCourse?.originMapRouteAxis[0];
+    const basicStartPoint = currentCourse?.convertedRouteAxis[0];
     const basicEndPoint =
-        currentCourse?.originMapRouteAxis[
-            currentCourse.originMapRouteAxis.length - 1
+        currentCourse?.convertedRouteAxis[
+            currentCourse.convertedRouteAxis.length - 1
         ];
 
     //웨이포인트 아이콘을 저장하는 리스트
@@ -420,9 +420,9 @@ function Map({ course, courseName, toSave }) {
         console.log(course);
         if (course) {
             setFilteredCourse(
-                currentCourse?.originMapRouteAxis.slice(
+                currentCourse?.convertedRouteAxis.slice(
                     1,
-                    currentCourse?.originMapRouteAxis.length - 1,
+                    currentCourse?.convertedRouteAxis.length - 1,
                 ),
             );
         }
