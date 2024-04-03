@@ -23,7 +23,7 @@
 -   InfraStructure
     -   server : ubuntu v20.04
     -   nginx v1.18.0
-    -   docker v 25.0.4
+    -   docker v25.0.4
         -   PostgreSQL v15.6
         -   Redis v7.2.4
 
