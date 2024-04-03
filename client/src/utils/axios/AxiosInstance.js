@@ -10,11 +10,12 @@ const axiosInstance = axios.create({
 // 이렇게 설정해두면 aixos 요청을 할때마다 header에 accesToken이 자동적으로 담겨서 요청이 됨
 axiosInstance.interceptors.request.use(
     (config) => {
-        // const token = localStorage.getItem("accessToken");
+        const token = localStorage.getItem("accessToken");
 
-        // 로그인 구현 전 테스트 위한 token 직접 입력
-        const token =
-            "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5OHc4Z3hxVGtpV3BRXyIsImlhdCI6MTcxMTMzNzMwMSwiZXhwIjoxNzE0MDE1NzAxfQ.IMVHPA7WjwqlgOyMXf2HpW03DuHOC3FZD1F_EtmP2P8";
+        // 로컬에서 테스트 하고싶다면 토큰 이걸로
+        // const token =
+        //     "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5OHc4Z3hxVGtpV3BRXyIsImlhdCI6MTcxMTMzNzMwMSwiZXhwIjoxNzE0MDE1NzAxfQ.IMVHPA7WjwqlgOyMXf2HpW03DuHOC3FZD1F_EtmP2P8";
+
         if (token) {
             config.headers["access"] = `${token}`;
         }
@@ -37,9 +38,10 @@ axiosInstance.interceptors.response.use(
         if (error.response.status === 403 && !originalRequest._retry) {
             originalRequest._retry = true; // 재시도 표시
             // 리프레시 토큰
-            // const refresh = localStorage.getItem("refresh");
-            const refresh =
-                "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5OHc4Z3hxVGtpV3BRXyIsImlhdCI6MTcxMTMzNzMwMSwiZXhwIjoxNzE0MDE1NzAxfQ.IMVHPA7WjwqlgOyMXf2HpW03DuHOC3FZD1F_EtmP2P8";
+            const refresh = localStorage.getItem("refreshToken");
+
+            // const refresh =
+            //     "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5OHc4Z3hxVGtpV3BRXyIsImlhdCI6MTcxMTMzNzMwMSwiZXhwIjoxNzE0MDE1NzAxfQ.IMVHPA7WjwqlgOyMXf2HpW03DuHOC3FZD1F_EtmP2P8";
 
             // refreshToken으로 새 accessToken 요청
             try {
