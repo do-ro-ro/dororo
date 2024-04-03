@@ -19,6 +19,7 @@ export default defineConfig({
                 short_name: "도로로",
                 description: "지금 바로 도로로!",
                 theme_color: "#6386BE",
+                display: "fullscreen",
                 background_color: "#6386BE",
                 icons: [
                     {
