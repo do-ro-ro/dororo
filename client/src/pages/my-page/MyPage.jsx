@@ -84,7 +84,7 @@ function MyPage() {
     return (
         <>
             <Topbar>마이페이지</Topbar>
-            <Box pb="30vh" mb={30} mt={8}>
+            <Box mb={"10vh"} mt={8}>
                 <Stack mx={4} mt={2} height={"90vh"}>
                     <Paper>
                         <Stack
@@ -213,7 +213,7 @@ function MyPage() {
                             })}
                         </Stack>
                     )}
-                    <Box>
+                    <Box sx={{ pb: 10 }}>
                         <Stack
                             sx={{ my: 2 }}
                             direction={"row"}

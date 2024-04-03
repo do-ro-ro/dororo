@@ -60,7 +60,7 @@ function RecommendedCoursePage() {
 
     return (
         <div>
-            <Topbar>추천 코스 안내</Topbar>
+            <Topbar isQuitButton={true}>추천 코스 안내</Topbar>
             <BottomNav
                 handlePrev={handlePrev}
                 handleNext={handleNext}

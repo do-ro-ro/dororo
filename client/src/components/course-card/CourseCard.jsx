@@ -10,6 +10,8 @@ import SampleCourseImg from "../../assets/sample_course_img.png";
 import { useNavigate } from "react-router-dom";
 import {
     Bookmark,
+    BookmarkBorder,
+    BookmarkOutlined,
     Cancel,
     CheckCircle,
     MapOutlined,
@@ -119,10 +121,18 @@ function CourseCard(props) {
                     <Box display={"flex"} alignItems={"center"}>
                         {variant === "post" || variant === "my_post" ? (
                             <Stack alignItems={"center"} sx={{}}>
-                                <Bookmark
-                                    color="primary"
-                                    sx={{ width: "20vw", height: "5vh" }}
-                                />
+                                {course?.isScraped ? (
+                                    <Bookmark
+                                        color="primary"
+                                        sx={{ width: "20vw", height: "5vh" }}
+                                    />
+                                ) : (
+                                    <BookmarkBorder
+                                        color="primary"
+                                        sx={{ width: "20vw", height: "5vh" }}
+                                    />
+                                )}
+
                                 <Typography>{course?.scrapCount}</Typography>
                             </Stack>
                         ) : course?.mapCompletion ? (
