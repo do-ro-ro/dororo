@@ -139,13 +139,16 @@ const StopOver = ({
             lat: point.lat,
             lng: point.lng,
             icon: visited[index] ? waypoint_passed : points[index],
+            iconSize: visited[index]
+                ? new window.Tmapv2.Size(36, 36)
+                : new window.Tmapv2.Size(36, 72),
         }));
 
         waypoints.forEach((waypoint) => {
             const marker = new window.Tmapv2.Marker({
                 position: new window.Tmapv2.LatLng(waypoint.lat, waypoint.lng),
                 icon: waypoint.icon,
-                iconSize: new window.Tmapv2.Size(36, 72),
+                iconSize: waypoint.iconSize,
                 map: map,
             });
             setResultMarkerArr((prev) => [...prev, marker]);
@@ -214,6 +217,7 @@ const StopOver = ({
                 icon: me_pointer, // 사용할 아이콘의 URL로 교체
                 iconSize: new window.Tmapv2.Size(36, 57), // 아이콘 크기 조정
                 map: map,
+                zindex: 100,
             });
             setCurrentLocationMarker(marker);
             setResultMarkerArr((prev) => [...prev, marker]);
