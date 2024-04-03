@@ -115,14 +115,16 @@ public class MapService {
         List<NodeEntity> nodeEntityList = getNodes(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
         //반경 내 링크 리스트 구하기
         List<LinkEntity> linkEntityList = getLinks(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
-        //반경 내 회전정보 리스트 구하기
+        //반경 내 회전정보 리스트 구하기(유턴 가능)
         List<TurnInfoEntity> turnInfoEntityList = getTurnInfos(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
+        //반경 내 좌회전 금지 리스트 구하기
+        List<String> turnLeftInfoEntityList = getLeftTurnInfos(createMapRequestDto.getStartPoint(), createMapRequestDto.getMapDistance());
 
         //출발 노드에 연결된 링크 구하기
         List<LinkEntity> startLinks = mapAlgorithm.getStartLinks(startNodeId);
 
         //맵 리스트 받아오기
-        List<CreateMapResponseDto> createdMapList = mapAlgorithm.getMap(nodeEntityList, linkEntityList, turnInfoEntityList, startNodeId, startLinks,createMapRequestDto);
+        List<CreateMapResponseDto> createdMapList = mapAlgorithm.getMap(nodeEntityList, linkEntityList, turnInfoEntityList, startNodeId, startLinks,createMapRequestDto, turnLeftInfoEntityList);
 
         return createdMapList;
     }
@@ -229,5 +231,11 @@ public class MapService {
     public List<TurnInfoEntity> getTurnInfos (LatitudeLongitude startPoint, float distance){
         distance = distance / 100;
         return turninfoRepository.getNodeTurnInfos(startPoint.getLng(), startPoint.getLat(), distance);
+    }
+
+
+    public List<String>  getLeftTurnInfos (LatitudeLongitude startPoint, float distance){
+        distance = distance / 100;
+        return turninfoRepository.getNodeTurnLeftInfos(startPoint.getLng(), startPoint.getLat(), distance);
     }
 }

@@ -46,12 +46,13 @@ public class MapAlgorithm {
 	}
 
 	public List<CreateMapResponseDto> getMap(List<NodeEntity> nodeEntityList, List<LinkEntity> linkEntityList, List<TurnInfoEntity> turnInfoEntityList,
-											String startNode, List<LinkEntity> startLinks, CreateMapRequestDto createMapRequestDto) {
+											 String startNode, List<LinkEntity> startLinks, CreateMapRequestDto createMapRequestDto, List<String> turnLeftInfoEntityList) {
 		List<CreateMapResponseDto> finalMapList = new ArrayList<>();
 
 		Map<String, List<LinkEntity>> linkMap = makeEdgeMap(linkEntityList);
 		Map<String, LatitudeLongitude> nodeMap = makeNodePointMap(nodeEntityList);
 		Map<String, List<String>> turnInfoMap = makeTurnInfoMap(turnInfoEntityList);
+//		Map<String, List<String>> turnLeftInfoMap = makeTurnLeftInfoMap(turnLeftInfoEntityList);
 
 		Queue<Link> q = new ArrayDeque<>();
 		List<String> mapInit = new ArrayList<>();
@@ -152,6 +153,10 @@ public class MapAlgorithm {
 				String turnInfo = getTurnInfo(nodeMap, cur, next, tempTurnDegrees);
 				// 좌우회전, 유턴 판별하고 조건에 안맞으면 continue
                 if(turnInfo.equals("left")) {
+					//좌회전 금지 노드면 continue
+					if(turnLeftInfoEntityList.contains(next.getFNodeId())){
+						continue;
+					}
 					tempTurnLeft++;
 				} else if(turnInfo.equals("right")){
 					tempTurnRight++;
@@ -177,6 +182,8 @@ public class MapAlgorithm {
 		}
 		return finalMapList;
 	}
+
+
 
 	private String getTurnInfo(Map<String, LatitudeLongitude> nodeMap, Link cur, LinkEntity next,
 		List<Double> tempTurnDegrees) {
@@ -215,8 +222,10 @@ public class MapAlgorithm {
 
 		if(degree>80 && degree<100){
 			return "right";
-		} else if(degree>260 && degree<280)
+		} else if(degree>260 && degree<280){
 			return "left";
+		}
+
 
 		return "noTurn";
 	}
