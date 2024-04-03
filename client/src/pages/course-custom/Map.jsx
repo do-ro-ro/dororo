@@ -7,6 +7,36 @@ import waypointPinSelected from "../../assets/waypoint_passed.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { saveCourse } from "../../apis/server/Map";
 import basicMapImg from "../../assets/sample_course_img.png";
+import waypoint_1 from "../../assets/waypoints_number/waypoint_1.png";
+import waypoint_2 from "../../assets/waypoints_number/waypoint_2.png";
+import waypoint_3 from "../../assets/waypoints_number/waypoint_3.png";
+import waypoint_4 from "../../assets/waypoints_number/waypoint_4.png";
+import waypoint_5 from "../../assets/waypoints_number/waypoint_5.png";
+import waypoint_6 from "../../assets/waypoints_number/waypoint_6.png";
+import waypoint_7 from "../../assets/waypoints_number/waypoint_7.png";
+import waypoint_8 from "../../assets/waypoints_number/waypoint_8.png";
+import waypoint_9 from "../../assets/waypoints_number/waypoint_9.png";
+import waypoint_10 from "../../assets/waypoints_number/waypoint_10.png";
+import waypoint_11 from "../../assets/waypoints_number/waypoint_11.png";
+import waypoint_12 from "../../assets/waypoints_number/waypoint_12.png";
+import waypoint_13 from "../../assets/waypoints_number/waypoint_13.png";
+import waypoint_14 from "../../assets/waypoints_number/waypoint_14.png";
+import waypoint_15 from "../../assets/waypoints_number/waypoint_15.png";
+import waypoint_16 from "../../assets/waypoints_number/waypoint_16.png";
+import waypoint_17 from "../../assets/waypoints_number/waypoint_17.png";
+import waypoint_18 from "../../assets/waypoints_number/waypoint_18.png";
+import waypoint_19 from "../../assets/waypoints_number/waypoint_19.png";
+import waypoint_20 from "../../assets/waypoints_number/waypoint_20.png";
+import waypoint_21 from "../../assets/waypoints_number/waypoint_21.png";
+import waypoint_22 from "../../assets/waypoints_number/waypoint_22.png";
+import waypoint_23 from "../../assets/waypoints_number/waypoint_23.png";
+import waypoint_24 from "../../assets/waypoints_number/waypoint_24.png";
+import waypoint_25 from "../../assets/waypoints_number/waypoint_25.png";
+import waypoint_26 from "../../assets/waypoints_number/waypoint_26.png";
+import waypoint_27 from "../../assets/waypoints_number/waypoint_27.png";
+import waypoint_28 from "../../assets/waypoints_number/waypoint_28.png";
+import waypoint_29 from "../../assets/waypoints_number/waypoint_29.png";
+import waypoint_30 from "../../assets/waypoints_number/waypoint_30.png";
 
 // 커스텀 대안
 
@@ -56,6 +86,40 @@ function Map({ course, courseName, toSave }) {
         currentCourse?.originMapRouteAxis[
             currentCourse.originMapRouteAxis.length - 1
         ];
+
+    //웨이포인트 아이콘을 저장하는 리스트
+    const wayPointIcons = [
+        waypoint_1,
+        waypoint_2,
+        waypoint_3,
+        waypoint_4,
+        waypoint_5,
+        waypoint_6,
+        waypoint_7,
+        waypoint_8,
+        waypoint_9,
+        waypoint_10,
+        waypoint_11,
+        waypoint_12,
+        waypoint_13,
+        waypoint_14,
+        waypoint_15,
+        waypoint_16,
+        waypoint_17,
+        waypoint_18,
+        waypoint_19,
+        waypoint_20,
+        waypoint_21,
+        waypoint_22,
+        waypoint_23,
+        waypoint_24,
+        waypoint_25,
+        waypoint_26,
+        waypoint_27,
+        waypoint_28,
+        waypoint_29,
+        waypoint_30,
+    ];
 
     // 처음 호출 시 APIparam
     const basicAPIparam = {
@@ -282,16 +346,40 @@ function Map({ course, courseName, toSave }) {
         if (courseNode?.length > 0) {
             // 마커 그려주기
             courseNode.map((node, index) => {
+                let marker = {};
+
+                if (index === 0) {
+                    marker = new window.Tmapv2.Marker({
+                        position: new window.Tmapv2.LatLng(node.lat, node.lng),
+                        icon: startPin,
+                        iconSize: new window.Tmapv2.Size(24, 38),
+                        draggable: false,
+                        opacity: 0,
+                        visible: true,
+                        map: map,
+                    });
+                } else if (index === courseNode?.length - 1) {
+                    marker = new window.Tmapv2.Marker({
+                        position: new window.Tmapv2.LatLng(node.lat, node.lng),
+                        icon: endPin,
+                        iconSize: new window.Tmapv2.Size(24, 38),
+                        draggable: false,
+                        opacity: 0,
+                        visible: true,
+                        map: map,
+                    });
+                } else {
+                    marker = new window.Tmapv2.Marker({
+                        position: new window.Tmapv2.LatLng(node.lat, node.lng),
+                        icon: wayPointIcons[index],
+                        iconSize: new window.Tmapv2.Size(24, 24),
+                        draggable: false,
+                        opacity: 0,
+                        visible: true,
+                        map: map,
+                    });
+                }
                 // console.log(convertPoint);
-                const marker = new window.Tmapv2.Marker({
-                    position: new window.Tmapv2.LatLng(node.lat, node.lng),
-                    icon: waypointPin,
-                    iconSize: new window.Tmapv2.Size(24, 24),
-                    draggable: false,
-                    opacity: 0,
-                    visible: true,
-                    map: map,
-                });
 
                 // console.log(marker);
                 marker.addListener(
@@ -433,8 +521,9 @@ function Map({ course, courseName, toSave }) {
                 path: resultInfoArr,
             };
 
-            console.log("리퀘스트 바디", body);
+            // console.log("리퀘스트 바디", body);
             saveCourse(body);
+            navigate("/main");
         }
     }, [courseSaveRequest, saveButtonClicked]);
 
@@ -462,8 +551,8 @@ function Map({ course, courseName, toSave }) {
     };
 
     useEffect(() => {
-        console.log("세이브 버튼 누름");
-        console.log(toSave);
+        // console.log("세이브 버튼 누름");
+        // console.log(toSave);
         if (toSave === true) {
             saveCustomCourse(resultMarkerArr);
         }
