@@ -181,7 +181,7 @@ const Recommend = ({
                 courseNode[0].lng,
             ),
             icon: start_pointer, // 시작점 아이콘
-            iconSize: new window.Tmapv2.Size(24, 38),
+            iconSize: new window.Tmapv2.Size(36, 57),
             map: map,
         });
         setResultMarkerArr((prev) => [...prev, startMarker]);
@@ -199,7 +199,7 @@ const Recommend = ({
                 courseNode[endMarkerIndex].lng,
             ),
             icon: end_pointer, // 끝점 아이콘으로 수정
-            iconSize: new window.Tmapv2.Size(24, 38),
+            iconSize: new window.Tmapv2.Size(36, 57),
             map: map,
         });
 
@@ -257,7 +257,7 @@ const Recommend = ({
                 courseNode[0].lng,
             ),
             icon: start_pointer,
-            iconSize: new window.Tmapv2.Size(24, 38),
+            iconSize: new window.Tmapv2.Size(36, 57),
             map: map,
         });
         setResultMarkerArr((prev) => [...prev, startMarker]);
@@ -273,7 +273,7 @@ const Recommend = ({
                 courseNode[endMarkerIndex].lng,
             ),
             icon: end_pointer,
-            iconSize: new window.Tmapv2.Size(24, 38),
+            iconSize: new window.Tmapv2.Size(36, 57),
             map: map,
         });
         setResultMarkerArr((prev) => [...prev, endMarker]);

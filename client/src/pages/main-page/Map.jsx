@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import me_pointer from "../../assets/me_pointer.png";
 
 const Map = ({ lat, lng }) => {
     const [map, setMap] = useState(null);
@@ -16,6 +17,8 @@ const Map = ({ lat, lng }) => {
                 const newMarker = new window.Tmapv2.Marker({
                     position: new window.Tmapv2.LatLng(lat, lng),
                     map: map,
+                    icon: me_pointer,
+                    iconSize: new window.Tmapv2.Size(36, 57),
                 });
                 setMarker(newMarker); // 마커 상태 업데이트
             }
