@@ -41,7 +41,7 @@ function CommunityListPage() {
 
     // 최신순 정렬된 리스트
     const sortLatest =
-        currentMapPostsList.length > 0
+        currentMapPostsList?.length > 0
             ? currentMapPostsList.sort(
                   (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
               )
@@ -49,7 +49,7 @@ function CommunityListPage() {
 
     // 인기순 정렬된 리스트
     const popularCourses =
-        currentMapPostsList.length > 0
+        currentMapPostsList?.length > 0
             ? currentMapPostsList.sort((a, b) => b.scrapCount - a.scrapCount)
             : null;
 
@@ -108,57 +108,56 @@ function CommunityListPage() {
                         {currentMapPostsList.length > 0
                             ? coursesToDisplay.map((course) => {
                                   return (
-                                      <Box
+                                      <CourseCard
                                           key={course.postId}
-                                          sx={{
-                                              pt: 3,
-                                              height: "8rem",
-                                              borderBottom: 1,
-                                              borderBottomColor: "lightgray",
-                                          }}
-                                          onClick={() =>
-                                              navigate(`${course.postId}`)
-                                          }
+                                          postId={course.postId}
+                                          variant={"post"}
+                                          course={course}
                                       >
-                                          <Stack direction={"row"}>
-                                              <Box sx={{ mr: 2 }}>
-                                                  <img
-                                                      src={course.mapImage}
-                                                      width={"100vw"}
-                                                  />
-                                              </Box>
-                                              <Stack>
-                                                  <Typography variant="subtitle1">
-                                                      {course.postTitle}
-                                                  </Typography>
-                                                  <Typography variant="subtitle2">
-                                                      {course.userNickName}
-                                                  </Typography>
-                                                  <Stack
-                                                      direction={"row"}
-                                                      sx={{ mt: 1 }}
-                                                  >
-                                                      {course.isScraped ? (
-                                                          <Bookmark color="primary" />
-                                                      ) : (
-                                                          <BookmarkBorder color="primary" />
-                                                      )}
-                                                      <Typography color="primary">
-                                                          {course.scrapCount}
-                                                      </Typography>
-                                                  </Stack>
-                                              </Stack>
-                                          </Stack>
-                                      </Box>
-                                      //   <CourseCard
+                                          {course.postTitle}
+                                      </CourseCard>
+                                      //   <Box
                                       //       key={course.postId}
-                                      //       postId={course.postId}
-                                      //       variant={"post"}
-                                      //       mapImage={course.mapImage}
-                                      //       userName={course.userName}
+                                      //       sx={{
+                                      //           pt: 3,
+                                      //           height: "8rem",
+                                      //           borderBottom: 1,
+                                      //           borderBottomColor: "lightgray",
+                                      //       }}
+                                      //       onClick={() =>
+                                      //           navigate(`${course.postId}`)
+                                      //       }
                                       //   >
-                                      //       {course.postTitle}
-                                      //   </CourseCard>
+                                      //       <Stack direction={"row"}>
+                                      //           <Box sx={{ mr: 2 }}>
+                                      //               <img
+                                      //                   src={course.mapImage}
+                                      //                   width={"100vw"}
+                                      //               />
+                                      //           </Box>
+                                      //           <Stack>
+                                      //               <Typography variant="subtitle1">
+                                      //                   {course.postTitle}
+                                      //               </Typography>
+                                      //               <Typography variant="subtitle2">
+                                      //                   {course.userNickName}
+                                      //               </Typography>
+                                      //               <Stack
+                                      //                   direction={"row"}
+                                      //                   sx={{ mt: 1 }}
+                                      //               >
+                                      //                   {course.isScraped ? (
+                                      //                       <Bookmark color="primary" />
+                                      //                   ) : (
+                                      //                       <BookmarkBorder color="primary" />
+                                      //                   )}
+                                      //                   <Typography color="primary">
+                                      //                       {course.scrapCount}
+                                      //                   </Typography>
+                                      //               </Stack>
+                                      //           </Stack>
+                                      //       </Stack>
+                                      //   </Box>
                                   );
                               })
                             : "게시글을 불러오고 있습니다"}

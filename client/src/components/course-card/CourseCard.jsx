@@ -10,6 +10,8 @@ import SampleCourseImg from "../../assets/sample_course_img.png";
 import { useNavigate } from "react-router-dom";
 import {
     Bookmark,
+    BookmarkBorder,
+    BookmarkOutlined,
     Cancel,
     CheckCircle,
     MapOutlined,
@@ -74,8 +76,11 @@ function CourseCard(props) {
                         <Box>
                             <Stack justifyItems={"center"}>
                                 <Typography
+                                    // flexWrap={"wrap"}
+                                    noWrap
                                     sx={{
-                                        textOverflow: "clip",
+                                        width: "50vw",
+                                        textOverflow: "ellipsis",
                                         overflow: "hidden",
                                         fontSize: "1.25rem",
                                         fontWeight: "500",
@@ -83,13 +88,13 @@ function CourseCard(props) {
                                         py: 0.5,
                                     }}
                                 >
-                                    {variant === "post"
+                                    {variant === "post" || variant === "my_post"
                                         ? children
                                         : course?.mapName === ""
                                         ? "제목없음"
                                         : course?.mapName}
                                 </Typography>
-                                {variant === "post" ? (
+                                {variant === "post" || variant === "my_post" ? (
                                     <Stack
                                         direction={"row"}
                                         alignItems={"center"}
@@ -114,12 +119,20 @@ function CourseCard(props) {
                         </Box>
                     </Box>
                     <Box display={"flex"} alignItems={"center"}>
-                        {variant === "post" ? (
+                        {variant === "post" || variant === "my_post" ? (
                             <Stack alignItems={"center"} sx={{}}>
-                                <Bookmark
-                                    color="primary"
-                                    sx={{ width: "20vw", height: "5vh" }}
-                                />
+                                {course?.isScraped ? (
+                                    <Bookmark
+                                        color="primary"
+                                        sx={{ width: "20vw", height: "5vh" }}
+                                    />
+                                ) : (
+                                    <BookmarkBorder
+                                        color="primary"
+                                        sx={{ width: "20vw", height: "5vh" }}
+                                    />
+                                )}
+
                                 <Typography>{course?.scrapCount}</Typography>
                             </Stack>
                         ) : course?.mapCompletion ? (

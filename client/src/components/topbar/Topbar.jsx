@@ -1,4 +1,4 @@
-import { ArrowBack } from "@mui/icons-material";
+import { ArrowBack, Cancel, Close } from "@mui/icons-material";
 import {
     AppBar,
     Box,
@@ -10,7 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 function Topbar(props) {
-    const { children, pageInfo, isBackButton, ...rest } = props;
+    const { children, pageInfo, isBackButton, isQuitButton, ...rest } = props;
 
     const navigate = useNavigate();
 
@@ -46,7 +46,19 @@ function Topbar(props) {
                                 {children}
                             </Typography>
                             {isBackButton ? (
-                                <div style={{ width: 24 }} />
+                                <div style={{ width: 28 }} />
+                            ) : isQuitButton ? (
+                                <IconButton
+                                    edge="start"
+                                    color="inherit"
+                                    // sx={{ width: 20, height: 20 }}
+                                    onClick={() => navigate("/main")}
+                                >
+                                    <Close
+                                        color="primary"
+                                        // sx={{ width: 20, height: 20 }}
+                                    />
+                                </IconButton>
                             ) : null}
                         </Toolbar>
                     </Container>

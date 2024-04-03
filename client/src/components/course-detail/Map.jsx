@@ -141,6 +141,7 @@ function Map({ course, variant }) {
                 direction: true,
                 directionColor: "white",
             });
+            console.log("폴리라인", newPolyline);
         }
     };
 
@@ -156,10 +157,10 @@ function Map({ course, variant }) {
                 // console.log(nodeIndex);
                 if (index === 0) {
                     icon = startPin;
-                    iconSize = new window.Tmapv2.Size(24, 38);
+                    iconSize = new window.Tmapv2.Size(36, 57);
                 } else if (index === courseNode.length - 1) {
                     icon = endPin;
-                    iconSize = new window.Tmapv2.Size(24, 38);
+                    iconSize = new window.Tmapv2.Size(36, 57);
                 } else {
                     icon = wayPointIcons[index - 1];
                     iconSize = new window.Tmapv2.Size(24, 24);
