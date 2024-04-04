@@ -29,7 +29,7 @@ const style = {
     p: 4,
 };
 
-function EditArticleModal() {
+function EditArticleModal({ currentMapPosts }) {
     // EditModal 상태 관리
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -61,21 +61,24 @@ function EditArticleModal() {
                     </Typography>
                     <Box id="modal-modal-description" sx={{ my: 2 }}>
                         <Box display={"flex"} justifyContent={"center"}>
-                            <img width={"200rem"} src={SampleCourseImg} />
+                            <img
+                                width={"200rem"}
+                                src={currentMapPosts.mapImage}
+                            />
                         </Box>
 
                         <Typography sx={{ mt: 2 }}>제목</Typography>
                         <TextField
                             hiddenLabel
                             id="outlined-hidden-label-small"
-                            defaultValue={DummyCourse.post_title}
+                            defaultValue={currentMapPosts.postTitle}
                             size="small"
                         />
                         <Typography sx={{ mt: 2 }}>내용</Typography>
                         <TextField
                             hiddenLabel
                             id="outlined-hidden-label-small"
-                            defaultValue={DummyCourse.post_content}
+                            defaultValue={currentMapPosts.postContent}
                             size="small"
                             multiline={true}
                             sx={{ width: "20rem" }}
@@ -83,7 +86,7 @@ function EditArticleModal() {
                     </Box>
                     <Stack direction={"row"} justifyContent={"end"}>
                         <Button variant="contained">수정하기</Button>
-                        <Button>취소</Button>
+                        <Button onClick={handleClose}>취소</Button>
                     </Stack>
                 </Box>
             </Modal>

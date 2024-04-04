@@ -39,3 +39,6 @@ out/
 ### yaml ###
 application-local.yml
 application-prod.yml
+
+### MAC ###
+*.DS_Store

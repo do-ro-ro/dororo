@@ -1,37 +1,154 @@
-import { Box } from "@mui/material";
+import {
+    Box,
+    Button,
+    Modal,
+    Stack,
+    TextField,
+    Typography,
+} from "@mui/material";
 import Drawer from "./Drawer";
 import Map from "./Map";
 import { useState } from "react";
 import FooterBar from "./FooterBar";
-import { getCourse } from "../../apis/tmap/getCourse";
+// import { getCourse } from "../../apis/tmap/getCourse";
+import Topbar from "../../components/topbar/Topbar";
+import { useLocation } from "react-router-dom";
+
+const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "90%",
+    bgcolor: "background.paper",
+    border: "4px solid #6386BE",
+    boxShadow: 24,
+    p: 4,
+};
 
 function CourseCustomPage() {
-    const dummyMap = { map_name: "테스트코스" };
-    const [lng] = useState(128.8556740624568);
-    const [lat] = useState(35.09355579715464);
+    const location = useLocation();
+    const currentCourse = location.state;
+    const [showCourseSaveModal, setShowCourseSaveModal] = useState(false);
+    const [courseName, setCourseName] = useState("");
 
-    // const course = getCourse;
-    const course = [
-        { lng: 128.855674, lat: 35.093555 },
-        { lng: 128.859205, lat: 35.093515 },
-        { lng: 128.859254, lat: 35.08902 },
-        { lng: 128.862074, lat: 35.089101 },
-    ];
+    const [toSave, setToSave] = useState(false);
+
+    const openCourseSaveModal = () => {
+        setShowCourseSaveModal(true);
+    };
+
+    const closeCourseSaveModal = () => {
+        setShowCourseSaveModal(false);
+    };
+
     return (
         <>
+            <Topbar isBackButton={true}>
+                {currentCourse?.mapName} 수정하기
+            </Topbar>
+            <Map
+                course={currentCourse}
+                courseName={courseName}
+                toSave={toSave}
+            />
             <Box
-                bgcolor={"white"}
-                border={"grey"}
-                boxShadow="2px"
-                textAlign={"center"}
-                py="2vh"
+                position={"fixed"}
+                // bottom={"0vh"}
+                className="fixed z-50 bottom-2 inset-x-0"
             >
-                {dummyMap.map_name} 수정하기
+                <Stack alignItems={"center"}>
+                    <Button
+                        variant="contained"
+                        sx={{ width: "90vw", py: 1 }}
+                        onClick={openCourseSaveModal}
+                    >
+                        <Typography variant="h4" sx={{}}>
+                            코스 수정
+                        </Typography>
+                    </Button>
+                </Stack>
             </Box>
-            <Map course={course} lat={lat} lng={lng} />
-            <Box position={"absolute"} bottom={"20vw"} mb={20}>
+            <Modal open={showCourseSaveModal} onClose={closeCourseSaveModal}>
+                <Box sx={style}>
+                    <Typography
+                        variant="h5"
+                        component="h1"
+                        sx={{ fontWeight: 700 }}
+                    >
+                        저장하기
+                    </Typography>
+                    <Typography
+                        sx={{
+                            fontSize: "0.75rem", // 더 작은 글씨
+                            color: "grey.600", // 회색
+                            mb: 3,
+                        }}
+                    >
+                        코스 이름을 정해주세요! 마이페이지에 저장됩니다.
+                    </Typography>
+
+                    <Box>
+                        <TextField
+                            id="standard-basic"
+                            label="코스명을 입력해주세요"
+                            variant="standard"
+                            onChange={(e) => setCourseName(e.target.value)}
+                            sx={{
+                                width: "100%",
+                                mb: 3,
+                            }}
+                            InputProps={{
+                                style: {
+                                    fontSize: "1.25rem", // 입력 필드의 폰트 크기 늘리기
+                                },
+                            }}
+                            InputLabelProps={{
+                                style: {
+                                    fontSize: "0.85rem", // 라벨 폰트 크기 줄이기
+                                },
+                            }}
+                        />
+                    </Box>
+
+                    <Box
+                        sx={{
+                            mt: 4,
+                            display: "flex",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <Button
+                            variant="contained"
+                            sx={{
+                                fontSize: "1rem",
+                                mr: 1,
+                            }}
+                            onClick={() => {
+                                setToSave(true);
+                            }}
+                        >
+                            저장
+                        </Button>
+
+                        <Button
+                            variant="contained"
+                            onClick={closeCourseSaveModal}
+                            sx={{
+                                fontSize: "1rem",
+                                ml: 1,
+                                backgroundColor: "#9e9e9e",
+                            }}
+                        >
+                            닫기
+                        </Button>
+                    </Box>
+                </Box>
+            </Modal>
+
+            {/* <Box position={"absolute"} bottom={"20vw"} mb={20}>
                 <Drawer />
-            </Box>
+            </Box> */}
             {/* <FooterBar /> */}
         </>
     );

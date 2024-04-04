@@ -23,6 +23,8 @@ public class PostEntity {
 	@JoinColumn(name = "mapId", nullable = false)
 	private MapEntity mapId;
 	@Column(nullable = false)
+	private String writerUniqueId;	// Users(UserEntity) 테이블의 uniqueId, 외래키는 설정 안해줌
+	@Column(nullable = false)
 	private String postTitle;
 	@Column(nullable = false)
 	private String postContent;
@@ -36,8 +38,9 @@ public class PostEntity {
 	private String reviewRef;
 
 	@Builder
-	public PostEntity(MapEntity mapId, String postTitle, String postContent, String reviewRef) {
+	public PostEntity(MapEntity mapId, String writerUniqueId, String postTitle, String postContent, String reviewRef) {
 		this.mapId = mapId;
+		this.writerUniqueId = writerUniqueId;
 		this.postTitle = postTitle;
 		this.postContent = postContent;
 		this.scrapCount = 0;
@@ -54,6 +57,13 @@ public class PostEntity {
 	@PreUpdate
 	protected void onUpdate() {	// 엔티티가 업데이트 되는 시점에 실행되는 메서드
 		this.updatedAt = new Timestamp(System.currentTimeMillis());
+	}
+
+	public void modifyScrapCount(String mode) {
+		if (mode.equals("PLUS")) this.scrapCount += 1;
+		else {
+			if (this.scrapCount > 0) this.scrapCount -= 1;	// 스크랩 수가 0이하일 때 혹시 모를 스크랩 카운트 음수화 방지
+		}
 	}
 
 }

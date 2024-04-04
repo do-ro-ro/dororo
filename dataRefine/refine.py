@@ -22,12 +22,13 @@ def convert_to_string_without_decimal(data_list):
                 if numeric_value.is_integer():
                     converted_list.append(str(int(numeric_value)))
                 else:
-                    converted_list.append(item)
+                    converted_list.append(item) 
             except ValueError:
                 # 변환 실패시 원래 값 유지
                 converted_list.append(item)
         else:
             converted_list.append(str(item))
+
     return converted_list
 
 def get_accident():
@@ -84,17 +85,23 @@ def get_traffic():   # 교통량은 api를 통해 받아옴
 
 def do_query(param_list: list, query: str):    # POSTGRES_OBJECT를 이용해서 db 데이터 수정하는 로직
     for data in param_list:
-        link_id = data[0]
-        volume = data[1]  # 여기서 volume은 string이 아니라 integer 타입이어야 합니다.
+        POSTGRES_OBJECT.execute(query, (data, ))
 
-        # 안전한 파라미터 바인딩을 사용합니다.
-        # %s와 %s는 psycopg2에서 파라미터를 위한 placeholder입니다.
-        # query에 들어갈 실제 값은 execute 함수의 두 번째 인자인 튜플에 들어갑니다.
-        POSTGRES_OBJECT.execute(query, (volume, link_id))
+            
+    # for data in param_list:
+    #     link_id = data[0]
+    #     volume = data[1]  # 여기서 volume은 string이 아니라 integer 타입이어야 합니다.
+
+    #     # 안전한 파라미터 바인딩을 사용합니다.
+    #     # %s와 %s는 psycopg2에서 파라미터를 위한 placeholder입니다.
+    #     # query에 들어갈 실제 값은 execute 함수의 두 번째 인자인 튜플에 들어갑니다.
+    #     POSTGRES_OBJECT.execute(query, (volume, link_id))
+    
+    POSTGRES_OBJECT.commit()
 
 def main():
-    # accident_data_list = get_accident()
-    # do_query(accident_data_list, "UPDATE links SET accident_volume = accident_volume + 1 WHERE link_id = %s")
+    accident_data_list = get_accident()
+    do_query(accident_data_list, "UPDATE links SET accident_volume = accident_volume + 1 WHERE link_id = %s")
     # traffic_data_list = get_traffic()
     # do_query(traffic_data_list, "UPDATE links SET traffic = traffic + %s WHERE link_id = %s")
     pass
