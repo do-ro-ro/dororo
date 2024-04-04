@@ -362,10 +362,14 @@ Kakao Map
 <img src = ./assets/findlocation.gif width=165 height = 330/> <img src = ./assets/createoption.gif width=165 height = 330/>
 <img src = ./assets/createcomplete.gif width=165 height = 330/>
 
-### 3. 코스 주행
+### 3. 코스 저장
 
-<img src = image-2.png width=165 height = 330/>
+<img src = ./assets/selectcourse.gif width=165 height = 330/>
 
-### 4. 코스 커스텀
+### 4. 코스 주행
+
+<img src = ./assets/drive.gif width=165 height = 330/>
+
+### 5. 코스 커스텀
 
 <img src = ./assets/custom.gif width=165 height = 330/>
