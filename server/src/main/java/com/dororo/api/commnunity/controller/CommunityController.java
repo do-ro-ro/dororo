@@ -49,7 +49,9 @@ public class CommunityController {
             @ApiResponse(responseCode = "400", description = "요청에 필요한 헤더(액세스 토큰)가 없음",
                     content = @Content(schema = @Schema(example = "No token in header."))),
             @ApiResponse(responseCode = "401", description = "액세스 토큰 만료 or 형식 안맞음",
-                    content = @Content(schema = @Schema(example = "Get new AccessToken")))
+                    content = @Content(schema = @Schema(example = "Get new AccessToken"))),
+            @ApiResponse(responseCode = "409", description = "이미 해당 맵으로 게시한 게시글이 존재함",
+                    content = @Content(schema = @Schema(example = "Already posteed map")))
     })
     @PostMapping("")
     public ResponseEntity addPost(@Parameter(name = "access", description = "액세스 토큰", in = ParameterIn.HEADER) @RequestHeader("access") String access,

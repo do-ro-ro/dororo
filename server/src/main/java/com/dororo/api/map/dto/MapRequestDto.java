@@ -19,7 +19,6 @@ import static com.dororo.api.convert.ConvertUtils.convertToLineString;
 public class MapRequestDto {
 
     private String mapName;
-    private String mapImage;
     //받을때는 위도 경도 로 받기.
     private List<LatitudeLongitude> originMapRouteAxis;
     private List<LatitudeLongitude> convertedRouteAxis;
@@ -37,7 +36,6 @@ public class MapRequestDto {
     public MapEntity toEntity(MapRequestDto mapRequestDto) {
         MapEntity mapEntity = new MapEntity();
         mapEntity.setMapName(mapRequestDto.getMapName());
-        mapEntity.setMapImage(mapRequestDto.getMapImage());
         mapEntity.setOriginMapRouteAxis(convertToLineString(mapRequestDto.getOriginMapRouteAxis()));
         mapEntity.setConvertedRouteAxis(convertToLineString(mapRequestDto.getConvertedRouteAxis()));
         mapEntity.setMapType(mapRequestDto.getMapType());

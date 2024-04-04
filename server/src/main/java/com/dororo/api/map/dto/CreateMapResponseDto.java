@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class CreateMapResponseDto {
 
     //경로 <위도,경도> 리스트

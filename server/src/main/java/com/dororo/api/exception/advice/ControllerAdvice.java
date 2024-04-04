@@ -1,8 +1,7 @@
 package com.dororo.api.exception.advice;
 
-import com.dororo.api.exception.NoMatchingResourceException;
-import com.dororo.api.exception.NoTokenInHeaderException;
-import com.dororo.api.exception.RefreshRequiredException;
+import com.dororo.api.exception.*;
+import com.dororo.api.map.dto.NoMapExceptionResponseDto;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,6 +19,17 @@ public class ControllerAdvice {
     // <------------------------ Auth part ------------------------>
 
     // <------------------------ Map part ------------------------>
+    @ExceptionHandler(value = NoMapException.class)
+    public ResponseEntity noMap(NoMapException e) {
+        System.out.println("nomapppppp");
+        NoMapExceptionResponseDto noMapExceptionResponseDto = new NoMapExceptionResponseDto(e.getLackLeft(), e.getLackRight(), e.getLackUTurn());
+        return new ResponseEntity(noMapExceptionResponseDto, e.getHttpStatus());
+    }
     // <------------------------ Community part ------------------------>
+    @ExceptionHandler(value = PostAlreadyExistsException.class) // 맵을 기반으로 만든 게시글이 이미 존재할 때 던져 줄 예외
+    public ResponseEntity postAlreadyExists(PostAlreadyExistsException e) {
+        System.out.println("Post already exists");
+        return new ResponseEntity(e.getMessage(), e.getHttpStatus());
+    }
 
 }
