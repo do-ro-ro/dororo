@@ -33,6 +33,7 @@ import waypoint_28 from "../../assets/waypoints_number/waypoint_drive_28.png";
 import waypoint_29 from "../../assets/waypoints_number/waypoint_drive_29.png";
 import waypoint_30 from "../../assets/waypoints_number/waypoint_drive_30.png";
 import waypoint_passed from "../../assets/waypoint_passed.png";
+import Swal from "sweetalert2";
 
 import { checkDrive } from "../../apis/server/Map";
 import { useNavigate, useParams } from "react-router-dom";
@@ -115,8 +116,26 @@ const StopOver = ({
             if (targetLat >= latMinus && targetLat <= latPlus) {
                 if (targetLng >= lngMinus && targetLng <= lngPlus) {
                     handleConfirmClick();
-                    alert("동작 잘 됨");
-                    navigate("/main/myPage");
+                    Swal.fire({
+                        title: "주행 완료!",
+                        text: "버튼을 누르면 마이페이지로 이동합니다.",
+                        icon: "success",
+                        confirmButtonText: "확인",
+                        didOpen: () => {
+                            // SweetAlert2의 확인 버튼을 선택합니다.
+                            const confirmButton = Swal.getConfirmButton();
+                            // 인라인 스타일을 직접 변경합니다.
+                            if (confirmButton) {
+                                confirmButton.style.backgroundColor = "#6386BE"; // 여기서 원하는 색으로 변경하세요.
+                                confirmButton.style.borderColor = "6386BE"; // 테두리 색도 변경할 수 있습니다.
+                            }
+                        },
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            navigate("/main/myPage");
+                        }
+                    });
+
                     // navigate(`/course/${courseId}`);
                 }
             }
