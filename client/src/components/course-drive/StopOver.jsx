@@ -122,7 +122,6 @@ const StopOver = ({
             }
         }
     }, [visited, lat, lng]);
-
     const handleConfirmClick = () => {
         const response = checkDrive(courseId, {
             mapCompletion: true,
