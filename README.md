@@ -17,14 +17,14 @@
 ## 서비스 화면
 | 기능           | 설명                     | 이미지 예시                                       |
 |----------------|:------------------------:|--------------------------------------------------|
-| **로딩 페이지**    |                          | <img src="exec/assets/landing.gif" width="200" height="400" /> |
+| **로딩 페이지**    | **소셜 로그인**                         | <img src="exec/assets/landing.gif" width="200" height="400" /> |
 | **코스 추천**  | **출발지 설정**          | <img src="exec/assets/findlocation.gif" width="200" height="400" /> |
 |                | **코스 옵션 설정**       | <img src="exec/assets/createoption.gif" width="200" height="400" /> |
 |                | **코스 추천 결과**       | <img src="exec/assets/createcomplete.gif" width="200" height="400" /> |
 |                | **코스 선택 및 저장**    | <img src="exec/assets/selectcourse.gif" width="200" height="400" /> |
 | **코스 주행**  | **코스 조회**            | <img src="exec/assets/image-2.png" width="200" height="400" /> |
 |                | **코스 주행**            | <img src="exec/assets/drive.gif" width="200" height="400" /> |
-| 코스 커스텀    |                          | <img src="exec/assets/custom.gif" width="200" height="400" /> |  
+| **코스 커스텀**    | **코스 커스텀**                          | <img src="exec/assets/custom.gif" width="200" height="400" /> |  
 
 ## 주요 기능
 * 코스 추천 기능 : 운전 연습에 적합한 코스를 판별하고 추천해주는 기능
