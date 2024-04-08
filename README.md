@@ -1,6 +1,6 @@
-# :oncoming_automobile:도로로
+# :oncoming_automobile: 도로로
 
-## 서비스 소개
+## :mag: 서비스 소개
 <p align="center">
 <img src="assets/logo.PNG">
 </p>
@@ -12,12 +12,12 @@
 도로로와 함께 내 주변에서 운전 연습하기 좋은 코스를 찾아봐요!
 
 > 개발 기간  
-2024.02.20 - 2024.04.04
++ 2024.02.20 - 2024.04.04
 
-## 서비스 화면
+## :tv: 서비스 화면
 | 기능           | 설명                     | 이미지 예시                                       |
 |----------------|:------------------------:|--------------------------------------------------|
-| **로딩 페이지**    | **소셜 로그인**                         | <img src="exec/assets/landing.gif" width="200" height="400" /> |
+| **로딩 페이지**    | **소셜 로그인**                         | <img src="exec/assets/landing.gif" width="200" height="400" />                                                                                                |
 | **코스 추천**  | **출발지 설정**          | <img src="exec/assets/findlocation.gif" width="200" height="400" /> |
 |                | **코스 옵션 설정**       | <img src="exec/assets/createoption.gif" width="200" height="400" /> |
 |                | **코스 추천 결과**       | <img src="exec/assets/createcomplete.gif" width="200" height="400" /> |
