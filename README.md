@@ -2,7 +2,7 @@
 
 ## 서비스 소개
 <p align="center">
-<img src="assets/logo_11.png">
+<img src="assets/logo.PNG">
 </p>
 
 **운전 연습을 하고 싶은데, 어떻게 해야할 지 모르겠을 때? 도로로와 함께 해보세요!**  
@@ -24,7 +24,23 @@
   * 완주 여부가 저장됩니다.  
 * 코스 커스텀 기능 : 주행 완료한 코스를 사용자가 원하는 대로 수정하는 기능
 
-## 개발 환경
+## 기술 스택
+### Back
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">  
+<img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+<img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=PostgreSQL&logoColor=white">  
+<img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">  
+
+
+### Front
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">  
+<img src="https://img.shields.io/badge/pwa-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white">   
+
+<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white">  
+<img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+
+### Infra
 
 ## 아키텍쳐
 
