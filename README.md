@@ -26,7 +26,7 @@
 |                | **코스 주행**            | <img src="exec/assets/drive.gif" width="200" height="400" /> |
 | **코스 커스텀**    | **코스 커스텀**                          | <img src="exec/assets/custom.gif" width="200" height="400" /> |  
 
-## 주요 기능
+## :wrench: 주요 기능
 * 코스 추천 기능 : 운전 연습에 적합한 코스를 판별하고 추천해주는 기능
   * 사용자가 설정한 옵션이 포함된 코스가 최대 5개 추천됩니다.  
   * 옵션은 좌회전/우회전/유턴 횟수를 설정할 수 있습니다.  
@@ -36,7 +36,7 @@
   * 완주 여부가 저장됩니다.  
 * 코스 커스텀 기능 : 주행 완료한 코스를 사용자가 원하는 대로 수정하는 기능
 
-## 기술 스택
+## :page_facing_up: 기술 스택
 ### Back
 <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
 <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=PostgreSQL&logoColor=white">  
@@ -63,6 +63,7 @@
 <img src="https://img.shields.io/badge/Jira Software-0052CC?style=for-the-badge&logo=JiraSoftware&logoColor=white"> 
 <img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white"> 
 
+## ERD
 
 ## 아키텍쳐
 
