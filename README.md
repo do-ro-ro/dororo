@@ -16,7 +16,7 @@
 
 ## 아키텍쳐
 
-<img src = ./assets/architecture.png width=400 height = 300/>
+<img src = ./assets/architecture.png width=500 height = 400/>  
 ## 팀원 소개
 <table>
   <tr style="width : 100%">
