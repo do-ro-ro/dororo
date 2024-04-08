@@ -64,7 +64,7 @@
 <img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white"> 
 
 ## ERD
-
+<img src = ./assets/ERD.PNG width=600 height = 400/>
 ## 아키텍쳐
 
 <img src = ./assets/architecture.png width=600 height = 400/>
