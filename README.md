@@ -16,8 +16,10 @@
 
 ## 아키텍쳐
 
-<img src = ./assets/architecture.png width=500 height = 400/>  
+<img src = ./assets/architecture.png width=500 height = 400/>
+
 ## 팀원 소개
+
 <table>
   <tr style="width : 100%">
     <td align="center"><img src="./assets/son.png" width="120" height="120" /><br />손종민</td>
