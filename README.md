@@ -11,8 +11,39 @@
 이런 고민을 하고 있다면,  
 도로로와 함께 내 주변에서 운전 연습하기 좋은 코스를 찾아봐요!
 
-## 서비스 화면
+> 개발 기간  
+2024.02.20 - 2024.04.04
 
+## 서비스 화면
+<tr style="width : 100%">
+    <td align="center"><img src="" width="120" height="120" /><br />로딩 페이지</td>
+</tr>
+<tr style="width : 100%">
+    <td align="center"><img src="" width="120" height="120" /><br />출발지 설정</td>
+    <td align="center"><img src="" width="120" height="120" /><br />코스 옵션 설정</td>
+    <td align="center"><img src="" width="120" height="120" /><br />코스 추천 결과</td>
+    <td align="center"><img src="" width="120" height="120" /><br />코스 선택 및 저장</td>
+  </tr>
+* 로딩 페이지  
+<img src="exec/assets/landing.gif" width="200" height="400" /> 
+
+* 코스 추천   
+  * 출발지 설정  
+  <img src="exec/assets/findlocation.gif" width="200" height="400" />  
+  * 코스 옵션 설정   
+  <img src="exec/assets/createoption.gif" width="200" height="400" />  
+  * 코스 추천 결과  
+  <img src="exec/assets/createcomplete.gif" width="200" height="400" />  
+  * 코스 선택 및 저장  
+  <img src="exec/assets/selectcourse.gif" width="200" height="400" />  
+
+* 코스 주행  
+  * 코스 조회  
+  <img src="exec/assets/image-2.png" width="200" height="400" />  
+  * 코스 주행  
+   <img src="exec/assets/drive.gif" width="200" height="400" />  
+* 코스 커스텀  
+<img src="exec/assets/custom.gif" width="200" height="400" />  
 
 ## 주요 기능
 * 코스 추천 기능 : 운전 연습에 적합한 코스를 판별하고 추천해주는 기능
