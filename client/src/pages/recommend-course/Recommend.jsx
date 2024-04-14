@@ -343,7 +343,7 @@ const Recommend = ({
         };
 
         fetch(
-            "https://apis.openapi.sk.com/tmap/routes/routeSequential100?version=1&format=json",
+            "https://apis.openapi.sk.com/tmap/routes/routeSequential30?version=1&format=json",
             {
                 method: "POST",
                 headers: headers,
